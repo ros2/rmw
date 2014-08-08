@@ -10,6 +10,9 @@ namespace ros_middleware_interface
 
 NodeHandle create_node();
 
+template<typename T>
+const rosidl_generator_cpp::MessageTypeSupportHandle& get_type_support_handle();
+
 PublisherHandle create_publisher(const NodeHandle& node_handle, const rosidl_generator_cpp::MessageTypeSupportHandle & type_support_handle, const char * topic_name);
 
 void publish(const PublisherHandle& publisher_handle, const void * ros_message);
