@@ -7,8 +7,14 @@ find_package(ament_cmake REQUIRED)
 ament_export_dependencies(rosidl_generator_cpp)
 ament_export_include_directories(include)
 
-ament_package()
+ament_package(
+  CONFIG_EXTRAS "ros_middleware_interface-extras.cmake"
+)
 
+install(
+  DIRECTORY cmake
+  DESTINATION share/${PROJECT_NAME}
+)
 install(
   DIRECTORY include/
   DESTINATION include
