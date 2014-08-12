@@ -17,6 +17,16 @@ PublisherHandle create_publisher(const NodeHandle& node_handle, const rosidl_gen
 
 void publish(const PublisherHandle& publisher_handle, const void * ros_message);
 
+SubscriberHandle create_subscriber(const NodeHandle& node_handle, const rosidl_generator_cpp::MessageTypeSupportHandle & type_support_handle, const char * topic_name);
+
+void take(const SubscriberHandle& subscriber_handle, const void * ros_message);
+
+GuardConditionHandle create_guard_condition();
+
+void trigger_guard_condition(const GuardConditionHandle& guard_condition_handle);
+
+void wait(SubscriberHandles& subscriber_handles, GuardConditionHandles& guard_condition_handles);
+
 }
 
 #endif  // __ros_middleware_interface__functions__h__

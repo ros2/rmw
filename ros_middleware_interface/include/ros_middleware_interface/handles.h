@@ -14,6 +14,26 @@ typedef struct PublisherHandle {
   void * _data;
 } PublisherHandle;
 
+typedef struct SubscriberHandle {
+  const char * implementation_identifier_;
+  void * data_;
+} SubscriberHandle;
+
+typedef struct GuardConditionHandle {
+  const char * implementation_identifier_;
+  void * data_;
+} GuardConditionHandle;
+
+typedef struct SubscriberHandles {
+  unsigned long subscriber_count_;
+  const void * * subscribers_;
+} SubscriberHandles;
+
+typedef struct GuardConditionHandles {
+  unsigned long guard_condition_count_;
+  const void * * guard_conditions_;
+} GuardConditionHandles;
+
 }
 
 #endif  // __ros_middleware_interface__handles__h__
