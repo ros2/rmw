@@ -26,12 +26,12 @@ typedef struct GuardConditionHandle {
 
 typedef struct SubscriberHandles {
   unsigned long subscriber_count_;
-  const void * * subscribers_;
+  void * * subscribers_;
 } SubscriberHandles;
 
 typedef struct GuardConditionHandles {
   unsigned long guard_condition_count_;
-  const void * * guard_conditions_;
+  void * * guard_conditions_;
 } GuardConditionHandles;
 
 }
