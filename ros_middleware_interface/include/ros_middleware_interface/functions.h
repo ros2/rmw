@@ -19,7 +19,7 @@ void publish(const PublisherHandle& publisher_handle, const void * ros_message);
 
 SubscriberHandle create_subscriber(const NodeHandle& node_handle, const rosidl_generator_cpp::MessageTypeSupportHandle & type_support_handle, const char * topic_name);
 
-bool take(const SubscriberHandle& subscriber_handle, const void * ros_message);
+bool take(const SubscriberHandle& subscriber_handle, void * ros_message);
 
 GuardConditionHandle create_guard_condition();
 
