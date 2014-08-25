@@ -25,7 +25,7 @@ GuardConditionHandle create_guard_condition();
 
 void trigger_guard_condition(const GuardConditionHandle& guard_condition_handle);
 
-void wait(SubscriberHandles& subscriber_handles, GuardConditionHandles& guard_condition_handles);
+void wait(SubscriberHandles& subscriber_handles, GuardConditionHandles& guard_condition_handles, bool non_blocking);
 
 }
 
