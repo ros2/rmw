@@ -8,6 +8,8 @@
 namespace ros_middleware_interface
 {
 
+void init();
+
 NodeHandle create_node();
 
 template<typename T>
