@@ -4,8 +4,6 @@
 # @public
 #
 macro(register_ros_middleware_implementation)
-  #message(" - register_ros_middleware_implementation()")
-
   if(NOT "${ARGN} " STREQUAL " ")
     message(FATAL_ERROR "register_ros_middleware_implementation() called with "
       "unused arguments: ${ARGN}")

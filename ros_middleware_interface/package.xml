@@ -2,11 +2,12 @@
 <package format="2">
   <name>ros_middleware_interface</name>
   <version>0.0.0</version>
-  <description>The ros_middleware_interface package</description>
+  <description>Contains the ROS middleware API.</description>
   <maintainer email="dthomas@osrfoundation.org">Dirk Thomas</maintainer>
+  <maintainer email="william@osrfoundation.org">William Woodall</maintainer>
   <license>Apache License 2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <build_export_depend>rosidl_generator_cpp</build_export_depend>
+  <build_export_depend>rosidl_generator_c</build_export_depend>
 </package>
