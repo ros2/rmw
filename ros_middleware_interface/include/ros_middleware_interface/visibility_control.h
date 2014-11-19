@@ -22,7 +22,7 @@ extern "C"
 #endif
 
 #if defined _WIN32 || defined __CYGWIN__
-  #ifdef BUILDING_DLL
+  #ifdef RMW_BUILDING_DLL
     #ifdef __GNUC__
       #define RMW_PUBLIC __attribute__ ((dllexport))
     #else
