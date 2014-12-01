@@ -30,6 +30,10 @@ extern "C"
 #include "visibility_control.h"
 
 RMW_PUBLIC
+const char *
+rmw_get_implementation_identifier();
+
+RMW_PUBLIC
 rmw_ret_t
 rmw_init();
 
