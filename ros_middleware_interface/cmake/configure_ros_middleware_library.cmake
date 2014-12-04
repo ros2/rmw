@@ -25,7 +25,7 @@ macro(configure_ros_middleware_library library_target)
       # (this is already the default on Windows)
       set_target_properties(ros_middleware_opensplice_cpp
         PROPERTIES
-          COMPILE_FLAGS "-fvisibility=hidden -fvisibility-inlines-hidden"
+          COMPILE_FLAGS "-fvisibility=hidden -fvisibility-inlines-hidden -std=c++11"
       )
     endif()
     if(WIN32)
