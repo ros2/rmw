@@ -18,6 +18,7 @@
 # @public
 #
 macro(configure_ros_middleware_library library_target)
+  if(TARGET ros_middleware_opensplice_cpp)
     # Set the visibility to hidden by default if possible
     if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR
        "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
@@ -34,4 +35,15 @@ macro(configure_ros_middleware_library library_target)
       set_target_properties(ros_middleware_opensplice_cpp
         PROPERTIES COMPILE_FLAGS "-DRMW_BUILDING_DLL")
     endif()
+  elseif(TARGET ros_middleware_connext_cpp)
+    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR
+       "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+      # Set the visibility of symbols to hidden by default for gcc and clang
+      # (this is already the default on Windows)
+      set_target_properties(ros_middleware_connext_cpp
+        PROPERTIES
+          COMPILE_FLAGS "-fvisibility=hidden -fvisibility-inlines-hidden -std=c++11"
+      )
+    endif()
+  endif()
 endmacro()
