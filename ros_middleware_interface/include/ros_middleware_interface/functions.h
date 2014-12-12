@@ -2,6 +2,7 @@
 #define __ros_middleware_interface__functions__h__
 
 #include "rosidl_generator_cpp/MessageTypeSupport.h"
+#include "rosidl_generator_cpp/ServiceTypeSupport.h"
 
 #include "handles.h"
 
@@ -27,8 +28,19 @@ GuardConditionHandle create_guard_condition();
 
 void trigger_guard_condition(const GuardConditionHandle& guard_condition_handle);
 
-void wait(SubscriberHandles& subscriber_handles, GuardConditionHandles& guard_condition_handles, bool non_blocking);
+void wait(SubscriberHandles& subscriber_handles, GuardConditionHandles& guard_condition_handles, ServiceHandles& service_handles, bool non_blocking);
 
+ClientHandle create_client(const NodeHandle& node_handle, const rosidl_generator_cpp::ServiceTypeSupportHandle & service_type_support_handle, const char * service_name);
+
+void send_request(const ClientHandle& client_handle, const void * ros_request);
+
+bool receive_response(const ClientHandle& client_handle, void * ros_response);
+
+ServiceHandle create_service(const NodeHandle& node_handle, const rosidl_generator_cpp::ServiceTypeSupportHandle & service_type_support_handle, const char * service_name);
+
+bool take_request(const ServiceHandle& service_handle, void * ros_request);
+
+void send_response(const ServiceHandle& service_handle, void * ros_request, void * ros_response);
 }
 
 #endif  // __ros_middleware_interface__functions__h__

@@ -34,6 +34,21 @@ typedef struct GuardConditionHandles {
   void * * guard_conditions_;
 } GuardConditionHandles;
 
+typedef struct ClientHandle {
+  const char * implementation_identifier_;
+  void * data_;
+} ClientHandle;
+
+typedef struct ServiceHandle {
+  const char * implementation_identifier_;
+  void * data_;
+} ServiceHandle;
+
+typedef struct ServiceHandles {
+  unsigned long service_count_;
+  void * * services_;
+} ServiceHandles;
+
 }
 
 #endif  // __ros_middleware_interface__handles__h__
