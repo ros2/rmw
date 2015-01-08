@@ -38,9 +38,9 @@ bool receive_response(const ClientHandle& client_handle, void * ros_response);
 
 ServiceHandle create_service(const NodeHandle& node_handle, const rosidl_generator_cpp::ServiceTypeSupportHandle & service_type_support_handle, const char * service_name);
 
-bool take_request(const ServiceHandle& service_handle, void * ros_request);
+bool take_request(const ServiceHandle& service_handle, void * ros_request, void * ros_request_header);
 
-void send_response(const ServiceHandle& service_handle, void * ros_request, void * ros_response);
+void send_response(const ServiceHandle& service_handle, void * ros_request_header, void * ros_response);
 }
 
 #endif  // __ros_middleware_interface__functions__h__
