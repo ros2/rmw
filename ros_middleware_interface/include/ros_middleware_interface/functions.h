@@ -9,6 +9,12 @@
 namespace ros_middleware_interface
 {
 
+typedef enum
+{
+  ROS2_RETCODE_OK = 0,
+  ROS2_RETCODE_ERROR = 1,
+} ROS2_RETCODE_t;
+
 void init();
 
 NodeHandle create_node();
@@ -34,7 +40,7 @@ ClientHandle create_client(const NodeHandle& node_handle, const rosidl_generator
 
 void send_request(const ClientHandle& client_handle, const void * ros_request);
 
-bool receive_response(const ClientHandle& client_handle, void * ros_response);
+ROS2_RETCODE_t receive_response(const ClientHandle& client_handle, void * ros_response);
 
 ServiceHandle create_service(const NodeHandle& node_handle, const rosidl_generator_cpp::ServiceTypeSupportHandle & service_type_support_handle, const char * service_name);
 
