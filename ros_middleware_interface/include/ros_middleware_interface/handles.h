@@ -39,6 +39,11 @@ typedef struct ClientHandle {
   void * data_;
 } ClientHandle;
 
+typedef struct ClientHandles {
+  unsigned long client_count_;
+  void * * clients_;
+} ClientHandles;
+
 typedef struct ServiceHandle {
   const char * implementation_identifier_;
   void * data_;

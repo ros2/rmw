@@ -8,8 +8,7 @@ namespace ros_middleware_interface
 
 typedef struct RequestId {
   int8_t writer_guid[16];
-  int32_t high;
-  uint32_t low;
+  int64_t sequence_number;
 } RequestId;
 
 }
