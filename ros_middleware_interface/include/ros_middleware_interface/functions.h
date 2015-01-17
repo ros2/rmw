@@ -2,11 +2,18 @@
 #define __ros_middleware_interface__functions__h__
 
 #include "rosidl_generator_cpp/MessageTypeSupport.h"
+#include "rosidl_generator_cpp/ServiceTypeSupport.h"
 
 #include "handles.h"
 
 namespace ros_middleware_interface
 {
+
+typedef enum
+{
+  ROS2_RETCODE_OK = 0,
+  ROS2_RETCODE_ERROR = 1,
+} ROS2_RETCODE_t;
 
 void init();
 
@@ -27,8 +34,21 @@ GuardConditionHandle create_guard_condition();
 
 void trigger_guard_condition(const GuardConditionHandle& guard_condition_handle);
 
-void wait(SubscriberHandles& subscriber_handles, GuardConditionHandles& guard_condition_handles, bool non_blocking);
+void wait(SubscriberHandles& subscriber_handles, GuardConditionHandles& guard_condition_handles, ServiceHandles& service_handles, ClientHandles& client_handles, bool non_blocking);
 
+ClientHandle create_client(const NodeHandle& node_handle, const rosidl_generator_cpp::ServiceTypeSupportHandle & service_type_support_handle, const char * service_name);
+
+int64_t send_request(const ClientHandle& client_handle, const void * ros_request);
+
+ROS2_RETCODE_t receive_response(const ClientHandle& client_handle, void * ros_response);
+
+bool take_response(const ClientHandle& client_handle, void * ros_response, void * ros_request_header);
+
+ServiceHandle create_service(const NodeHandle& node_handle, const rosidl_generator_cpp::ServiceTypeSupportHandle & service_type_support_handle, const char * service_name);
+
+bool take_request(const ServiceHandle& service_handle, void * ros_request, void * ros_request_header);
+
+void send_response(const ServiceHandle& service_handle, void * ros_request_header, void * ros_response);
 }
 
 #endif  // __ros_middleware_interface__functions__h__
