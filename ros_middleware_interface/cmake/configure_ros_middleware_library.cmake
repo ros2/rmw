@@ -23,7 +23,7 @@ macro(configure_ros_middleware_library library_target)
      "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     # Set the visibility of symbols to hidden by default for gcc and clang
     # (this is already the default on Windows)
-    set_target_properties(library_target
+    set_target_properties(${library_target}
       PROPERTIES
         COMPILE_FLAGS "-fvisibility=hidden -fvisibility-inlines-hidden -std=c++11"
     )
@@ -31,7 +31,7 @@ macro(configure_ros_middleware_library library_target)
   if(WIN32)
     # Causes the visibility macros to use dllexport rather than dllimport
     # which is appropriate when building the dll but not consuming it.
-    set_target_properties(library_target
+    set_target_properties(${library_target}
       PROPERTIES COMPILE_FLAGS "-DRMW_BUILDING_DLL")
   endif()
 endmacro()
