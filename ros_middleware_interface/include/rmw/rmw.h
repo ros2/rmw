@@ -26,6 +26,7 @@ extern "C"
 #include <stdint.h>
 
 #include <rosidl_generator_c/message_type_support.h>
+#include <rosidl_generator_c/service_type_support.h>
 
 #include "types.h"
 #include "visibility_control.h"
@@ -79,7 +80,7 @@ rmw_take(const rmw_subscription_t * subscription, void * ros_message);
 RMW_PUBLIC
 rmw_client_t *
 rmw_create_client(const rmw_node_t * node,
-                  const rosidl_message_type_support_t * type_support,
+                  const rosidl_service_type_support_t * type_support,
                   const char * service_name);
 
 RMW_PUBLIC
@@ -96,12 +97,12 @@ rmw_send_request(const rmw_client_t * client, const void * ros_request,
 RMW_PUBLIC
 rmw_ret_t
 rmw_take_response(const rmw_client_t * client,
-                  void * ros_response, void * ros_request_header);
+                  void * ros_request_header, void * ros_response);
 
 RMW_PUBLIC
 rmw_service_t *
 rmw_create_service(const rmw_node_t * node,
-                   const rosidl_message_type_support_t * type_support,
+                   const rosidl_service_type_support_t * type_support,
                    const char * service_name);
 
 RMW_PUBLIC
@@ -113,7 +114,7 @@ rmw_destroy_service(rmw_service_t * service);
 RMW_PUBLIC
 rmw_ret_t
 rmw_take_request(const rmw_service_t * service,
-                 void * ros_request, void * ros_request_header);
+                 void * ros_request_header, void * ros_request);
 
 RMW_PUBLIC
 rmw_ret_t
