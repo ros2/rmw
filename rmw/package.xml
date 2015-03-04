@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>ros_middleware_interface</name>
+  <name>rmw</name>
   <version>0.0.0</version>
   <description>Contains the ROS middleware API.</description>
   <maintainer email="dthomas@osrfoundation.org">Dirk Thomas</maintainer>
@@ -9,5 +9,6 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <!-- This is required for the definition of the rosidl typesupport types -->
   <build_export_depend>rosidl_generator_c</build_export_depend>
 </package>

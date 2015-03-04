@@ -17,7 +17,7 @@
 #
 # @public
 #
-macro(configure_ros_middleware_library library_target)
+macro(configure_rmw_library library_target)
   # Set the visibility to hidden by default if possible
   if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR
      "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
