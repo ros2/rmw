@@ -21,6 +21,8 @@ extern "C"
 {
 #endif
 
+#include <stdint.h>
+
 #include "visibility_control.h"
 
 typedef int rmw_ret_t;
@@ -45,6 +47,18 @@ typedef struct RMW_PUBLIC rmw_subscription_t
   void * data;
 } rmw_subscription_t;
 
+typedef struct RMW_PUBLIC rmw_service_t
+{
+  const char * implementation_identifier;
+  void * data;
+} rmw_service_t;
+
+typedef struct RMW_PUBLIC rmw_client_t
+{
+  const char * implementation_identifier;
+  void * data;
+} rmw_client_t;
+
 typedef struct RMW_PUBLIC rmw_guard_condition_t
 {
   const char * implementation_identifier;
@@ -57,11 +71,29 @@ typedef struct RMW_PUBLIC rmw_subscriptions_t
   void * * subscribers;
 } rmw_subscriptions_t;
 
+typedef struct RMW_PUBLIC rmw_services_t
+{
+  unsigned long service_count;
+  void * * services;
+} rmw_services_t;
+
+typedef struct RMW_PUBLIC rmw_clients_t
+{
+  unsigned long client_count;
+  void * * clients;
+} rmw_clients_t;
+
 typedef struct RMW_PUBLIC rmw_guard_conditions_t
 {
   unsigned long guard_condition_count;
   void * * guard_conditions;
 } rmw_guard_conditions_t;
+
+typedef struct RMW_PUBLIC rmw_request_id
+{
+  int8_t writer_guid[16];
+  int64_t sequence_number;
+} rmw_request_id;
 
 #if __cplusplus
 }
