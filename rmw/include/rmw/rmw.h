@@ -119,7 +119,7 @@ rmw_take_request(const rmw_service_t * service,
 RMW_PUBLIC
 rmw_ret_t
 rmw_send_response(const rmw_service_t * service,
-                  void * ros_request_header, void * ros_response);
+                  void * ros_request, void * ros_response);
 
 RMW_PUBLIC
 rmw_guard_condition_t *
