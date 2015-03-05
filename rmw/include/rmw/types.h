@@ -89,11 +89,11 @@ typedef struct RMW_PUBLIC rmw_guard_conditions_t
   void * * guard_conditions;
 } rmw_guard_conditions_t;
 
-typedef struct RMW_PUBLIC rmw_request_id
+typedef struct RMW_PUBLIC rmw_request_id_t
 {
   int8_t writer_guid[16];
   int64_t sequence_number;
-} rmw_request_id;
+} rmw_request_id_t;
 
 #if __cplusplus
 }
