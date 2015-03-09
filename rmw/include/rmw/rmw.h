@@ -75,7 +75,7 @@ rmw_destroy_subscription(rmw_subscription_t * subscription);
 
 RMW_PUBLIC
 rmw_ret_t
-rmw_take(const rmw_subscription_t * subscription, void * ros_message);
+rmw_take(const rmw_subscription_t * subscription, void * ros_message, bool * taken);
 
 RMW_PUBLIC
 rmw_client_t *
@@ -97,7 +97,7 @@ rmw_send_request(const rmw_client_t * client, const void * ros_request,
 RMW_PUBLIC
 rmw_ret_t
 rmw_take_response(const rmw_client_t * client,
-                  void * ros_request_header, void * ros_response);
+                  void * ros_request_header, void * ros_response, bool * taken);
 
 RMW_PUBLIC
 rmw_service_t *
@@ -114,7 +114,7 @@ rmw_destroy_service(rmw_service_t * service);
 RMW_PUBLIC
 rmw_ret_t
 rmw_take_request(const rmw_service_t * service,
-                 void * ros_request_header, void * ros_request);
+                 void * ros_request_header, void * ros_request, bool * taken);
 
 RMW_PUBLIC
 rmw_ret_t
