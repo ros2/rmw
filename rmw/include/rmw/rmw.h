@@ -92,8 +92,6 @@ rmw_ret_t
 rmw_send_request(const rmw_client_t * client, const void * ros_request,
                  int64_t * sequence_id);
 
-// If there is no reponse to take, ros_response and ros_request_header should
-// be set to NULL. This is done instead of returning true or false.
 RMW_PUBLIC
 rmw_ret_t
 rmw_take_response(const rmw_client_t * client,
@@ -109,8 +107,6 @@ RMW_PUBLIC
 rmw_ret_t
 rmw_destroy_service(rmw_service_t * service);
 
-// If there is no reponse to take, ros_response and ros_request_header should
-// be set to NULL. This is done instead of returning true or false.
 RMW_PUBLIC
 rmw_ret_t
 rmw_take_request(const rmw_service_t * service,
@@ -119,7 +115,7 @@ rmw_take_request(const rmw_service_t * service,
 RMW_PUBLIC
 rmw_ret_t
 rmw_send_response(const rmw_service_t * service,
-                  void * ros_request, void * ros_response);
+                  void * ros_request_header, void * ros_response);
 
 RMW_PUBLIC
 rmw_guard_condition_t *
