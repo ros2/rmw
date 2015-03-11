@@ -108,6 +108,38 @@ rmw_guard_condition_free(rmw_guard_condition_t * guard_condition)
   rmw_free(guard_condition);
 }
 
+RMW_LOCAL
+rmw_client_t *
+rmw_client_allocate()
+{
+  // Could be overridden with custom (maybe static) client struct allocator
+  return (rmw_client_t *)rmw_allocate(sizeof(rmw_client_t));
+}
+
+RMW_LOCAL
+void
+rmw_client_free(rmw_client_t * client)
+{
+  // Should have matching overide with rmw_client_allocate
+  rmw_free(client);
+}
+
+RMW_LOCAL
+rmw_service_t *
+rmw_service_allocate()
+{
+  // Could be overridden with custom (maybe static) client struct allocator
+  return (rmw_service_t *)rmw_allocate(sizeof(rmw_service_t));
+}
+
+RMW_LOCAL
+void
+rmw_service_free(rmw_service_t * service)
+{
+  // Should have matching overide with rmw_service_allocate
+  rmw_free(service);
+}
+
 #if __cplusplus
 }
 #endif
