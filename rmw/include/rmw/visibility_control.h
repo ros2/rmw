@@ -25,18 +25,17 @@ extern "C"
 //     https://gcc.gnu.org/wiki/Visibility
 
 #if defined _WIN32 || defined __CYGWIN__
-  #ifdef RMW_BUILDING_DLL
-    #ifdef __GNUC__
-      #define RMW_PUBLIC __attribute__ ((dllexport))
-    #else
-      #define RMW_PUBLIC __declspec(dllexport)
-    #endif
+  #ifdef __GNUC__
+    #define RMW_EXPORT __attribute__ ((dllexport))
+    #define RMW_IMPORT __attribute__ ((dllimport))
   #else
-    #ifdef __GNUC__
-      #define RMW_PUBLIC __attribute__ ((dllimport))
-    #else
-      #define RMW_PUBLIC __declspec(dllimport)
-    #endif
+    #define RMW_EXPORT __declspec(dllexport)
+    #define RMW_IMPORT __declspec(dllimport)
+  #endif
+  #ifdef RMW_BUILDING_DLL
+    #define RMW_PUBLIC RMW_EXPORT
+  #else
+    #define RMW_PUBLIC RMW_IMPORT
   #endif
   #define RMW_LOCAL
 #else
