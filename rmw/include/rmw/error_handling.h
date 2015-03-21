@@ -23,9 +23,10 @@ extern "C"
 
 #include <string.h>
 
+#include "macros.h"
 #include "visibility_control.h"
 
-__thread char * __rmw_error_string = 0;
+RMW_THREAD_LOCAL char * __rmw_error_string = 0;
 
 RMW_LOCAL
 void
