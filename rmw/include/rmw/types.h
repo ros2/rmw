@@ -67,25 +67,25 @@ typedef struct RMW_PUBLIC rmw_guard_condition_t
 typedef struct RMW_PUBLIC rmw_subscriptions_t
 {
   unsigned long subscriber_count;
-  void * * subscribers;
+  void ** subscribers;
 } rmw_subscriptions_t;
 
 typedef struct RMW_PUBLIC rmw_services_t
 {
   unsigned long service_count;
-  void * * services;
+  void ** services;
 } rmw_services_t;
 
 typedef struct RMW_PUBLIC rmw_clients_t
 {
   unsigned long client_count;
-  void * * clients;
+  void ** clients;
 } rmw_clients_t;
 
 typedef struct RMW_PUBLIC rmw_guard_conditions_t
 {
   unsigned long guard_condition_count;
-  void * * guard_conditions;
+  void ** guard_conditions;
 } rmw_guard_conditions_t;
 
 typedef struct RMW_PUBLIC rmw_request_id_t
