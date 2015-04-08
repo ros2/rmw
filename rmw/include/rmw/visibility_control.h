@@ -38,11 +38,11 @@ extern "C"
   #endif
   #define RMW_LOCAL
 #else
-  #define RMW_EXPORT __attribute__ ((visibility ("default")))
+  #define RMW_EXPORT __attribute__ ((visibility("default")))
   #define RMW_IMPORT
   #if __GNUC__ >= 4
-    #define RMW_PUBLIC __attribute__ ((visibility ("default")))
-    #define RMW_LOCAL  __attribute__ ((visibility ("hidden")))
+    #define RMW_PUBLIC __attribute__ ((visibility("default")))
+    #define RMW_LOCAL  __attribute__ ((visibility("hidden")))
   #else
     #define RMW_PUBLIC
     #define RMW_LOCAL

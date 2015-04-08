@@ -48,10 +48,11 @@ rmw_destroy_node(rmw_node_t * node);
 
 RMW_PUBLIC
 rmw_publisher_t *
-rmw_create_publisher(const rmw_node_t * node,
-                     const rosidl_message_type_support_t * type_support,
-                     const char * topic_name,
-                     size_t queue_size);
+rmw_create_publisher(
+  const rmw_node_t * node,
+  const rosidl_message_type_support_t * type_support,
+  const char * topic_name,
+  size_t queue_size);
 
 RMW_PUBLIC
 rmw_ret_t
@@ -63,10 +64,11 @@ rmw_publish(const rmw_publisher_t * publisher, const void * ros_message);
 
 RMW_PUBLIC
 rmw_subscription_t *
-rmw_create_subscription(const rmw_node_t * node,
-                        const rosidl_message_type_support_t * type_support,
-                        const char * topic_name,
-                        size_t queue_size);
+rmw_create_subscription(
+  const rmw_node_t * node,
+  const rosidl_message_type_support_t * type_support,
+  const char * topic_name,
+  size_t queue_size);
 
 RMW_PUBLIC
 rmw_ret_t
@@ -78,9 +80,10 @@ rmw_take(const rmw_subscription_t * subscription, void * ros_message, bool * tak
 
 RMW_PUBLIC
 rmw_client_t *
-rmw_create_client(const rmw_node_t * node,
-                  const rosidl_service_type_support_t * type_support,
-                  const char * service_name);
+rmw_create_client(
+  const rmw_node_t * node,
+  const rosidl_service_type_support_t * type_support,
+  const char * service_name);
 
 RMW_PUBLIC
 rmw_ret_t
@@ -88,19 +91,25 @@ rmw_destroy_client(rmw_client_t * client);
 
 RMW_PUBLIC
 rmw_ret_t
-rmw_send_request(const rmw_client_t * client, const void * ros_request,
-                 int64_t * sequence_id);
+rmw_send_request(
+  const rmw_client_t * client,
+  const void * ros_request,
+  int64_t * sequence_id);
 
 RMW_PUBLIC
 rmw_ret_t
-rmw_take_response(const rmw_client_t * client,
-                  void * ros_request_header, void * ros_response, bool * taken);
+rmw_take_response(
+  const rmw_client_t * client,
+  void * ros_request_header,
+  void * ros_response,
+  bool * taken);
 
 RMW_PUBLIC
 rmw_service_t *
-rmw_create_service(const rmw_node_t * node,
-                   const rosidl_service_type_support_t * type_support,
-                   const char * service_name);
+rmw_create_service(
+  const rmw_node_t * node,
+  const rosidl_service_type_support_t * type_support,
+  const char * service_name);
 
 RMW_PUBLIC
 rmw_ret_t
@@ -108,13 +117,18 @@ rmw_destroy_service(rmw_service_t * service);
 
 RMW_PUBLIC
 rmw_ret_t
-rmw_take_request(const rmw_service_t * service,
-                 void * ros_request_header, void * ros_request, bool * taken);
+rmw_take_request(
+  const rmw_service_t * service,
+  void * ros_request_header,
+  void * ros_request,
+  bool * taken);
 
 RMW_PUBLIC
 rmw_ret_t
-rmw_send_response(const rmw_service_t * service,
-                  void * ros_request_header, void * ros_response);
+rmw_send_response(
+  const rmw_service_t * service,
+  void * ros_request_header,
+  void * ros_response);
 
 RMW_PUBLIC
 rmw_guard_condition_t *
@@ -130,11 +144,12 @@ rmw_trigger_guard_condition(const rmw_guard_condition_t * guard_condition);
 
 RMW_PUBLIC
 rmw_ret_t
-rmw_wait(rmw_subscriptions_t * subscriptions,
-         rmw_guard_conditions_t * guard_conditions,
-         rmw_services_t * services,
-         rmw_clients_t * clients,
-         bool non_blocking);
+rmw_wait(
+  rmw_subscriptions_t * subscriptions,
+  rmw_guard_conditions_t * guard_conditions,
+  rmw_services_t * services,
+  rmw_clients_t * clients,
+  bool non_blocking);
 
 #if __cplusplus
 }

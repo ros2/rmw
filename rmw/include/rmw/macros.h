@@ -16,7 +16,7 @@
 #define RMW_RMW_MACROS_H_
 
 #if defined _WIN32 || defined __CYGWIN__
-  #define RMW_THREAD_LOCAL __declspec( thread )
+  #define RMW_THREAD_LOCAL __declspec(thread)
 #else
   #define RMW_THREAD_LOCAL __thread
 #endif
