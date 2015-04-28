@@ -15,13 +15,17 @@
 #
 # Register the current package as a ROS middleware implementation.
 #
+# :param typesupport_package_name: the package name providing type support for
+#   for the registered RMW implementation
+# :type typesupport_package_name: string
+#
 # @public
 #
-macro(register_rmw_implementation)
+macro(register_rmw_implementation typesupport_package_name)
   if(NOT "${ARGN} " STREQUAL " ")
     message(FATAL_ERROR "register_rmw_implementation() called with "
       "unused arguments: ${ARGN}")
   endif()
 
-  ament_index_register_resource("rmw_implementation")
+  ament_index_register_resource("rmw_implementation" CONTENT "${typesupport_package_name}")
 endmacro()

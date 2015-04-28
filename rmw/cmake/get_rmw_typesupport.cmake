@@ -1,4 +1,4 @@
-# Copyright 2014 Open Source Robotics Foundation, Inc.
+# Copyright 2015 Open Source Robotics Foundation, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# copied from rmw/rmw-extras.cmake
+#
+# Get the type support package name for specific ROS middleware implementation.
+#
+# :param rmw_implementation: the package name of the ROS middleware
+#   implementation
+# :type rmw_implementation: string
+#
+# @public
+#
+macro(get_rmw_typesupport var rmw_implementation)
+  if(NOT "${ARGN} " STREQUAL " ")
+    message(FATAL_ERROR "get_rmw_typesupport() called with unused arguments: ${ARGN}")
+  endif()
 
-include("${rmw_DIR}/configure_rmw_library.cmake")
-include("${rmw_DIR}/get_rmw_typesupport.cmake")
-include("${rmw_DIR}/register_rmw_implementation.cmake")
+  ament_index_get_resource(${var} "rmw_implementation" "${rmw_implementation}")
+endmacro()
