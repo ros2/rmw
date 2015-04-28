@@ -44,7 +44,7 @@ macro(configure_rmw_library library_target)
   if(WIN32)
     # Causes the visibility macros to use dllexport rather than dllimport
     # which is appropriate when building the dll but not consuming it.
-    set_target_properties(${library_target}
-      PROPERTIES COMPILE_FLAGS "-DRMW_BUILDING_DLL")
+    target_compile_definitions(${library_target}
+      PRIVATE "-DRMW_BUILDING_DLL")
   endif()
 endmacro()
