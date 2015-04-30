@@ -27,7 +27,11 @@
 #
 # But it doesn't seem to set the compiler flags correctly on clang and
 # also doesn't work very well when the headers and library are in
-# different projects like this
+# different projects like this.
+#
+# Effectively, using this macro results in the RMW_BUILDING_DLL definition
+# being set on Windows, and the -fvisibility* flags being passed to gcc and
+# clang.
 #
 # @public
 #
@@ -44,7 +48,7 @@ macro(configure_rmw_library library_target)
   if(WIN32)
     # Causes the visibility macros to use dllexport rather than dllimport
     # which is appropriate when building the dll but not consuming it.
-    set_target_properties(${library_target}
-      PROPERTIES COMPILE_FLAGS "-DRMW_BUILDING_DLL")
+    target_compile_definitions(${library_target}
+      PRIVATE "RMW_BUILDING_DLL")
   endif()
 endmacro()
