@@ -1,11 +1,15 @@
 cmake_minimum_required(VERSION 2.8.3)
 
-project(rmw NONE)
+project(rmw C)
 
 find_package(ament_cmake REQUIRED)
 
+include_directories(include)
+add_library(${PROJECT_NAME} SHARED "src/error_handling.c")
+
 ament_export_dependencies(rosidl_generator_c)
 ament_export_include_directories(include)
+ament_export_libraries(${PROJECT_NAME})
 
 if(AMENT_ENABLE_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -21,4 +25,10 @@ install(
 install(
   DIRECTORY include/
   DESTINATION include
+)
+install(
+  TARGETS ${PROJECT_NAME}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
 )
