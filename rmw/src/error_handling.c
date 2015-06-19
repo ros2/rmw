@@ -1,4 +1,4 @@
-// Copyright 2014 Open Source Robotics Foundation, Inc.
+// Copyright 2015 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,27 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_MIDDLEWARE_INTERFACE_ROS_MIDDLEWARE_INTERFACE_ERROR_HANDLING_H_
-#define ROS_MIDDLEWARE_INTERFACE_ROS_MIDDLEWARE_INTERFACE_ERROR_HANDLING_H_
+#include <string.h>
 
-#if __cplusplus
-extern "C"
-{
-#endif
+#include <rmw/error_handling.h>
 
-#include "macros.h"
-#include "visibility_control.h"
+RMW_THREAD_LOCAL char * __rmw_error_string = 0;
 
-RMW_PUBLIC
 void
-rmw_set_error_string(const char * error_string);
-
-RMW_PUBLIC
-const char *
-rmw_get_error_string();
-
-#if __cplusplus
+rmw_set_error_string(const char * error_string)
+{
+  __rmw_error_string = strdup(error_string);
 }
-#endif
 
-#endif  /* ROS_MIDDLEWARE_INTERFACE_ROS_MIDDLEWARE_INTERFACE_ERROR_HANDLING_H_ */
+const char *
+rmw_get_error_string()
+{
+  return __rmw_error_string;
+}
