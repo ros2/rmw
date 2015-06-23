@@ -68,7 +68,8 @@ rmw_create_subscription(
   const rmw_node_t * node,
   const rosidl_message_type_support_t * type_support,
   const char * topic_name,
-  size_t queue_size);
+  size_t queue_size,
+  bool ignore_local_publications);
 
 RMW_PUBLIC
 rmw_ret_t
