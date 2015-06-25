@@ -1,4 +1,4 @@
-// Copyright 2015 Open Source Robotics Foundation, Inc.
+// Copyright 2014 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,33 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <stdlib.h>
-#include <string.h>
+#ifndef RMW_RMW_IMPL_CONFIG_H_
+#define RMW_RMW_IMPL_CONFIG_H_
 
-#include <rmw/error_handling.h>
+#ifndef RMW_AVOID_MEMORY_ALLOCATION
+// Default to off.
+// TODO(wjwwood): document these configuration flags.
+#define RMW_AVOID_MEMORY_ALLOCATION 0
+#endif
 
-RMW_THREAD_LOCAL char * __rmw_error_string = 0;
+#ifndef RMW_REPORT_ERROR_HANDLING_ERRORS
+// Default reporting of error handling errors based on real-time settings.
+// Turn this off to avoid allocation of memory in error handling funcs.
+#define RMW_REPORT_ERROR_HANDLING_ERRORS 1
+#endif
 
-void
-rmw_set_error_string(const char * error_string)
-{
-  if (__rmw_error_string) {
-    free(__rmw_error_string);
-  }
-  __rmw_error_string = strdup(error_string);
-}
-
-const char *
-rmw_get_error_string()
-{
-  return __rmw_error_string;
-}
-
-const char *
-rmw_get_error_string_safe()
-{
-  if (!__rmw_error_string) {
-    return "error string not set";
-  }
-  return __rmw_error_string;
-}
+#endif  /* RMW_RMW_IMPL_CONFIG_H_ */

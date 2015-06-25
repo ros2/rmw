@@ -77,8 +77,7 @@ RMW_LOCAL
 rmw_subscription_t *
 rmw_subscription_allocate()
 {
-  // Could be overridden with custom (maybe static) subscription
-  // struct allocator
+  // Could be overridden with custom (maybe static) subscription struct allocator
   return (rmw_subscription_t *)rmw_allocate(sizeof(rmw_subscription_t));
 }
 

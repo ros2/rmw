@@ -31,6 +31,10 @@ RMW_PUBLIC
 const char *
 rmw_get_error_string();
 
+RMW_PUBLIC
+const char *
+rmw_get_error_string_safe();
+
 #if __cplusplus
 }
 #endif
