@@ -33,6 +33,7 @@ extern "C"
 #include <rosidl_generator_c/message_type_support.h>
 #include <rosidl_generator_c/service_type_support.h>
 
+#include "qos_profiles.h"
 #include "types.h"
 #include "visibility_control.h"
 
@@ -63,7 +64,7 @@ rmw_create_publisher(
   const rmw_node_t * node,
   const rosidl_message_type_support_t * type_support,
   const char * topic_name,
-  size_t queue_size);
+  const rmw_qos_profile_t & qos_policies = rmw_qos_profile_default);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -82,8 +83,8 @@ rmw_create_subscription(
   const rmw_node_t * node,
   const rosidl_message_type_support_t * type_support,
   const char * topic_name,
-  size_t queue_size,
-  bool ignore_local_publications);
+  const rmw_qos_profile_t & qos_policies = rmw_qos_profile_default,
+  bool ignore_local_publications = false);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
