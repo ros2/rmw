@@ -121,6 +121,13 @@ typedef struct RMW_PUBLIC_TYPE rmw_qos_profile_t
   enum rmw_qos_reliability_policy_t reliability;
 } rmw_qos_profile_t;
 
+typedef struct RMW_PUBLIC_TYPE rmw_topic_names_and_types_t
+{
+  size_t topic_count;
+  char ** topic_names;
+  char ** type_names;
+} rmw_topic_names_and_types_t;
+
 #if __cplusplus
 }
 #endif
