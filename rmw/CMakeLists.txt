@@ -4,8 +4,11 @@ project(rmw C)
 
 find_package(ament_cmake REQUIRED)
 
+include(cmake/configure_rmw_library.cmake)
+
 include_directories(include)
 add_library(${PROJECT_NAME} SHARED "src/error_handling.c")
+configure_rmw_library(${PROJECT_NAME})
 
 ament_export_dependencies(rosidl_generator_c)
 ament_export_include_directories(include)

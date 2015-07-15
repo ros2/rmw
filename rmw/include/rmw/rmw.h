@@ -56,7 +56,7 @@ rmw_create_publisher(
 
 RMW_PUBLIC
 rmw_ret_t
-rmw_destroy_publisher(rmw_publisher_t * publisher);
+rmw_destroy_publisher(rmw_node_t * node, rmw_publisher_t * publisher);
 
 RMW_PUBLIC
 rmw_ret_t
@@ -73,7 +73,7 @@ rmw_create_subscription(
 
 RMW_PUBLIC
 rmw_ret_t
-rmw_destroy_subscription(rmw_subscription_t * subscription);
+rmw_destroy_subscription(rmw_node_t * node, rmw_subscription_t * subscription);
 
 RMW_PUBLIC
 rmw_ret_t
