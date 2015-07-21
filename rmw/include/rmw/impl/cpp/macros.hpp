@@ -27,26 +27,26 @@
 #define RMW_TRY_PLACEMENT_NEW(Destination, BufferForNew, FailureAction, Type, ...) try { \
   Destination = new(BufferForNew) Type(__VA_ARGS__); \
 } catch(const std::exception & exception) { \
-  rmw_set_error_string(( \
+  RMW_SET_ERROR_MSG(( \
     std::string("caught C++ exception ") + rmw::impl::cpp::demangle(exception) + \
     " constructing " #Type ": " + exception.what() \
   ).c_str()); \
   FailureAction; \
 } catch(...) { \
-  rmw_set_error_string("caught unknown C++ exception constructing " #Type); \
+  RMW_SET_ERROR_MSG("caught unknown C++ exception constructing " #Type); \
   FailureAction; \
 }
 
 #define RMW_TRY_DESTRUCTOR(Statement, Type, FailureAction) try { \
   Statement; \
 } catch(const std::exception & exception) { \
-  rmw_set_error_string(( \
+  RMW_SET_ERROR_MSG(( \
     std::string("caught C++ exception in destructor of " #Type ": ") + \
     rmw::impl::cpp::demangle(exception) + ": " + exception.what() \
   ).c_str()); \
   FailureAction; \
 } catch(...) { \
-  rmw_set_error_string("caught unknown C++ exception in destructor of " #Type); \
+  RMW_SET_ERROR_MSG("caught unknown C++ exception in destructor of " #Type); \
   FailureAction; \
 }
 
@@ -73,7 +73,7 @@
       __msg, 1024, \
       #ElementName " implementation '%s'(%p) does not match rmw implementation '%s'(%p)", \
       ElementTypeID, ElementTypeID, ExpectedTypeID, ExpectedTypeID); \
-    rmw_set_error_string(__msg); \
+    RMW_SET_ERROR_MSG(__msg); \
     OnFailure; \
   } \
 }
@@ -89,7 +89,7 @@
       __msg, __bytes_that_would_have_been_written + 1, \
       #ElementName " implementation '%s'(%p) does not match rmw implementation '%s'(%p)", \
       ElementTypeID, ElementTypeID, ExpectedTypeID, ExpectedTypeID); \
-    rmw_set_error_string(__msg); \
+    RMW_SET_ERROR_MSG(__msg); \
     rmw_free(__msg); \
     OnFailure; \
   } \
