@@ -64,8 +64,7 @@ rmw_set_error_state(const char * error_string, const char * file, size_t line_nu
       "[rmw|error_handling.c:" RMW_STRINGIFY(__LINE__)
       "] failed to allocate memory for the error message in the error state struct\n");
 #endif
-    free(__rmw_error_state);
-    __rmw_error_state = NULL;
+    rmw_reset_error();  // This will free any allocations done so far.
     return;
   }
   // Cast the const away to set ->message initially.
@@ -81,14 +80,14 @@ rmw_get_error_state()
 }
 
 static void
-format_error_string(char * dst, const rmw_error_state_t * error_state)
+format_error_string()
 {
   size_t bytes_it_would_have_written = SNPRINTF(
     NULL, 0,
     __error_format_string,
-    error_state->message, error_state->file, error_state->line_number);
-  dst = (char *)rmw_allocate(bytes_it_would_have_written + 1);
-  if (!dst) {
+    __rmw_error_state->message, __rmw_error_state->file, __rmw_error_state->line_number);
+  __rmw_error_string = (char *)rmw_allocate(bytes_it_would_have_written + 1);
+  if (!__rmw_error_string) {
 #if RMW_REPORT_ERROR_HANDLING_ERRORS
     // rmw_allocate failed, but fwrite might work?
     SAFE_FWRITE_TO_STDERR(
@@ -98,18 +97,18 @@ format_error_string(char * dst, const rmw_error_state_t * error_state)
     return;
   }
   SNPRINTF(
-    dst, bytes_it_would_have_written + 1,
+    __rmw_error_string, bytes_it_would_have_written + 1,
     __error_format_string,
-    error_state->message, error_state->file, error_state->line_number);
+    __rmw_error_state->message, __rmw_error_state->file, __rmw_error_state->line_number);
   // The Windows version of snprintf does not null terminate automatically in all cases.
-  dst[bytes_it_would_have_written] = '\0';
+  __rmw_error_string[bytes_it_would_have_written] = '\0';
 }
 
 const char *
 rmw_get_error_string()
 {
   if (!__rmw_error_string) {
-    format_error_string(__rmw_error_string, __rmw_error_state);
+    format_error_string();
   }
   return __rmw_error_string;
 }
