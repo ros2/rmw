@@ -26,7 +26,8 @@ extern "C"
 #include "visibility_control.h"
 
 /// Struct which encapsulates the error state set by RMW_SET_ERROR_MSG().
-typedef struct rmw_error_state_t {
+typedef struct rmw_error_state_t
+{
   const char * message;
   const char * file;
   size_t line_number;
