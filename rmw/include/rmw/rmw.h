@@ -20,6 +20,12 @@ extern "C"
 {
 #endif
 
+#ifndef _WIN32
+#define RMW_WARN_UNUSED __attribute__((warn_unused_result))
+#else
+#define RMW_WARN_UNUSED _Check_return_
+#endif
+
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -31,22 +37,27 @@ extern "C"
 #include "visibility_control.h"
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 const char *
 rmw_get_implementation_identifier();
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_init();
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_node_t *
 rmw_create_node(const char * name);
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_node(rmw_node_t * node);
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_publisher_t *
 rmw_create_publisher(
   const rmw_node_t * node,
@@ -55,14 +66,17 @@ rmw_create_publisher(
   size_t queue_size);
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_publisher(rmw_node_t * node, rmw_publisher_t * publisher);
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_publish(const rmw_publisher_t * publisher, const void * ros_message);
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_subscription_t *
 rmw_create_subscription(
   const rmw_node_t * node,
@@ -72,14 +86,17 @@ rmw_create_subscription(
   bool ignore_local_publications);
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_subscription(rmw_node_t * node, rmw_subscription_t * subscription);
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_take(const rmw_subscription_t * subscription, void * ros_message, bool * taken);
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_client_t *
 rmw_create_client(
   const rmw_node_t * node,
@@ -87,10 +104,12 @@ rmw_create_client(
   const char * service_name);
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_client(rmw_client_t * client);
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_send_request(
   const rmw_client_t * client,
@@ -98,6 +117,7 @@ rmw_send_request(
   int64_t * sequence_id);
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_take_response(
   const rmw_client_t * client,
@@ -106,6 +126,7 @@ rmw_take_response(
   bool * taken);
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_service_t *
 rmw_create_service(
   const rmw_node_t * node,
@@ -113,10 +134,12 @@ rmw_create_service(
   const char * service_name);
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_service(rmw_service_t * service);
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_take_request(
   const rmw_service_t * service,
@@ -125,6 +148,7 @@ rmw_take_request(
   bool * taken);
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_send_response(
   const rmw_service_t * service,
@@ -132,18 +156,22 @@ rmw_send_response(
   void * ros_response);
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_guard_condition_t *
 rmw_create_guard_condition();
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_guard_condition(rmw_guard_condition_t * guard_condition);
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_trigger_guard_condition(const rmw_guard_condition_t * guard_condition);
 
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_wait(
   rmw_subscriptions_t * subscriptions,
