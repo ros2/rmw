@@ -35,8 +35,9 @@ namespace cpp
 
 template<typename T>
 std::string
-demangle(const T & object)
+demangle(const T & instance)
 {
+  (void)instance;
 // Cannot do demangling if on Windows or if we want to avoid memory allocation.
 #if !defined(_WIN32) || RMW_AVOID_MEMORY_ALLOCATION
   int status = 0;
