@@ -117,7 +117,7 @@ rmw_get_error_string()
 bool
 rmw_error_is_set()
 {
-  return __rmw_error_state == NULL;
+  return __rmw_error_state != NULL;
 }
 
 const char *
