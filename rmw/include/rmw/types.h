@@ -28,6 +28,7 @@ extern "C"
 typedef int rmw_ret_t;
 #define RMW_RET_OK 0
 #define RMW_RET_ERROR 1
+#define RMW_RET_TIMEOUT 2
 
 typedef struct RMW_PUBLIC_TYPE rmw_node_t
 {
@@ -94,6 +95,12 @@ typedef struct RMW_PUBLIC_TYPE rmw_request_id_t
   int8_t writer_guid[16];
   int64_t sequence_number;
 } rmw_request_id_t;
+
+typedef struct RMW_PUBLIC_TYPE rmw_time_t
+{
+  uint64_t sec;
+  uint64_t nsec;
+} rmw_time_t;
 
 #if __cplusplus
 }
