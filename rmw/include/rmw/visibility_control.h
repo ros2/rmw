@@ -36,6 +36,7 @@ extern "C"
   #else
     #define RMW_PUBLIC RMW_IMPORT
   #endif
+  #define RMW_PUBLIC_TYPE RMW_PUBLIC
   #define RMW_LOCAL
 #else
   #define RMW_EXPORT __attribute__ ((visibility("default")))
@@ -47,6 +48,7 @@ extern "C"
     #define RMW_PUBLIC
     #define RMW_LOCAL
   #endif
+  #define RMW_PUBLIC_TYPE
 #endif
 
 #if __cplusplus
