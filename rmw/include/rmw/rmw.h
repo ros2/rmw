@@ -49,7 +49,7 @@ rmw_init();
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_node_t *
-rmw_create_node(const char * name);
+rmw_create_node(const char * name, size_t domain_id);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
