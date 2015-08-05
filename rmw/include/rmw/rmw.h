@@ -178,7 +178,7 @@ rmw_wait(
   rmw_guard_conditions_t * guard_conditions,
   rmw_services_t * services,
   rmw_clients_t * clients,
-  bool non_blocking);
+  rmw_time_t * wait_timeout);
 
 #if __cplusplus
 }
