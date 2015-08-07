@@ -102,6 +102,25 @@ typedef struct RMW_PUBLIC_TYPE rmw_time_t
   uint64_t nsec;
 } rmw_time_t;
 
+enum RMW_PUBLIC_TYPE rmw_qos_reliability_policy_t
+{
+  RMW_QOS_POLICY_RELIABLE,
+  RMW_QOS_POLICY_BEST_EFFORT
+};
+
+enum RMW_PUBLIC_TYPE rmw_qos_history_policy_t
+{
+  RMW_QOS_POLICY_KEEP_LAST_HISTORY,
+  RMW_QOS_POLICY_KEEP_ALL_HISTORY
+};
+
+typedef struct RMW_PUBLIC_TYPE rmw_qos_profile_t
+{
+  enum rmw_qos_history_policy_t history;
+  size_t depth;
+  enum rmw_qos_reliability_policy_t reliability;
+} rmw_qos_profile_t;
+
 #if __cplusplus
 }
 #endif
