@@ -181,6 +181,35 @@ rmw_wait(
   rmw_clients_t * clients,
   rmw_time_t * wait_timeout);
 
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_get_topic_names_and_types(
+  const rmw_node_t * node,
+  rmw_topic_names_and_types_t * topic_names_and_types);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_destroy_topic_names_and_types(
+  rmw_topic_names_and_types_t * topic_names_and_types);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_count_publishers(
+  const rmw_node_t * node,
+  const char * topic_name,
+  size_t * count);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_count_subscribers(
+  const rmw_node_t * node,
+  const char * topic_name,
+  size_t * count);
+
 #if __cplusplus
 }
 #endif
