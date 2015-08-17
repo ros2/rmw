@@ -23,6 +23,10 @@
 
 #define SAFE_FWRITE_TO_STDERR(msg) fwrite(msg, sizeof(char), sizeof(msg), stderr)
 
+#ifdef __APPLE__
+#define strcpy_s(dest, destsz, src) strlcpy(dest, src, destsz)
+#endif
+
 #ifndef _WIN32
 #define SNPRINTF_S(buffer, sizeOfBuffer, count, ...) snprintf(buffer, sizeOfBuffer, __VA_ARGS__)
 #else
