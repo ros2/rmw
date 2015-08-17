@@ -24,9 +24,9 @@
 #define SAFE_FWRITE_TO_STDERR(msg) fwrite(msg, sizeof(char), sizeof(msg), stderr)
 
 #ifndef _WIN32
-#define SNPRINTF snprintf
+#define SNPRINTF_S(buffer, sizeOfBuffer, count, ...) snprintf(buffer, sizeOfBuffer, __VA_ARGS__)
 #else
-#define SNPRINTF _snprintf
+#define SNPRINTF_S _snprintf_s
 #endif
 
 RMW_THREAD_LOCAL rmw_error_state_t * __rmw_error_state = NULL;
@@ -56,7 +56,9 @@ rmw_set_error_state(const char * error_string, const char * file, size_t line_nu
 #endif
     return;
   }
-  __rmw_error_state->message = (char *)malloc(strlen(error_string));
+  size_t error_string_length = strlen(error_string);
+  // the memory must be one byte bigger to store the NULL character
+  __rmw_error_state->message = (char *)malloc(error_string_length + 1);
   if (!__rmw_error_state->message) {
 #if RMW_REPORT_ERROR_HANDLING_ERRORS
     // rmw_allocate failed, but fwrite might work?
@@ -68,7 +70,15 @@ rmw_set_error_state(const char * error_string, const char * file, size_t line_nu
     return;
   }
   // Cast the const away to set ->message initially.
-  strcpy((char *)__rmw_error_state->message, error_string);
+  auto retcode = strcpy_s(
+    (char *)__rmw_error_state->message, error_string_length + 1, error_string);
+  if (retcode) {
+#if RMW_REPORT_ERROR_HANDLING_ERRORS
+    SAFE_FWRITE_TO_STDERR(
+      "[rmw|error_handling.c:" RMW_STRINGIFY(__LINE__)
+      "] failed to copy error message in the error state struct\n");
+#endif
+  }
   __rmw_error_state->file = file;
   __rmw_error_state->line_number = line_number;
 }
@@ -82,8 +92,8 @@ rmw_get_error_state()
 static void
 format_error_string()
 {
-  size_t bytes_it_would_have_written = SNPRINTF(
-    NULL, 0,
+  size_t bytes_it_would_have_written = SNPRINTF_S(
+    NULL, 0, 1024,
     __error_format_string,
     __rmw_error_state->message, __rmw_error_state->file, __rmw_error_state->line_number);
   __rmw_error_string = (char *)rmw_allocate(bytes_it_would_have_written + 1);
@@ -96,8 +106,8 @@ format_error_string()
 #endif
     return;
   }
-  SNPRINTF(
-    __rmw_error_string, bytes_it_would_have_written + 1,
+  SNPRINTF_S(
+    __rmw_error_string, bytes_it_would_have_written + 1, bytes_it_would_have_written + 1,
     __error_format_string,
     __rmw_error_state->message, __rmw_error_state->file, __rmw_error_state->line_number);
   // The Windows version of snprintf does not null terminate automatically in all cases.
