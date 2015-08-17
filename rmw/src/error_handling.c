@@ -23,10 +23,6 @@
 
 #define SAFE_FWRITE_TO_STDERR(msg) fwrite(msg, sizeof(char), sizeof(msg), stderr)
 
-#ifdef __APPLE__
-#define strcpy_s(dest, destsz, src) strlcpy(dest, src, destsz)
-#endif
-
 #ifndef _WIN32
 #define SNPRINTF_S(buffer, sizeOfBuffer, count, ...) snprintf(buffer, sizeOfBuffer, __VA_ARGS__)
 #else
@@ -74,6 +70,9 @@ rmw_set_error_state(const char * error_string, const char * file, size_t line_nu
     return;
   }
   // Cast the const away to set ->message initially.
+#ifndef _WIN32
+  strcpy((char *)__rmw_error_state->message, error_string);
+#else
   auto retcode = strcpy_s(
     (char *)__rmw_error_state->message, error_string_length + 1, error_string);
   if (retcode) {
@@ -83,6 +82,7 @@ rmw_set_error_state(const char * error_string, const char * file, size_t line_nu
       "] failed to copy error message in the error state struct\n");
 #endif
   }
+#endif
   __rmw_error_state->file = file;
   __rmw_error_state->line_number = line_number;
 }
