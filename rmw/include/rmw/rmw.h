@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_MIDDLEWARE_INTERFACE_ROS_MIDDLEWARE_INTERFACE_RMW_H_
-#define ROS_MIDDLEWARE_INTERFACE_ROS_MIDDLEWARE_INTERFACE_RMW_H_
+#ifndef RMW_RMW_H_
+#define RMW_RMW_H
 
 #if __cplusplus
 extern "C"
@@ -214,4 +214,4 @@ rmw_count_subscribers(
 }
 #endif
 
-#endif  /* ROS_MIDDLEWARE_INTERFACE_ROS_MIDDLEWARE_INTERFACE_RMW_H_ */
+#endif  /* RMW_RMW_H_ */

@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_MIDDLEWARE_INTERFACE_ROS_MIDDLEWARE_INTERFACE_QOS_PROFILES_H_
-#define ROS_MIDDLEWARE_INTERFACE_ROS_MIDDLEWARE_INTERFACE_QOS_PROFILES_H_
+#ifndef RMW_RMW_QOS_PROFILES_H_
+#define RMW_RMW_QOS_PROFILES_H_
 
 #if __cplusplus
 extern "C"
@@ -61,4 +61,4 @@ const static rmw_qos_profile_t rmw_qos_profile_parameter_events =
 }
 #endif
 
-#endif  /* ROS_MIDDLEWARE_INTERFACE_ROS_MIDDLEWARE_INTERFACE_QOS_PROFILES_H_ */
+#endif  /* RMW_RMW_QOS_PROFILES_H_ */

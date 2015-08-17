@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_MIDDLEWARE_INTERFACE_ROS_MIDDLEWARE_INTERFACE_ERROR_HANDLING_H_
-#define ROS_MIDDLEWARE_INTERFACE_ROS_MIDDLEWARE_INTERFACE_ERROR_HANDLING_H_
+#ifndef RMW_RMW_ERROR_HANDLING_H_
+#define RMW_RMW_ERROR_HANDLING_H_
 
 #if __cplusplus
 extern "C"
@@ -112,4 +112,4 @@ rmw_reset_error();
 }
 #endif
 
-#endif  /* ROS_MIDDLEWARE_INTERFACE_ROS_MIDDLEWARE_INTERFACE_ERROR_HANDLING_H_ */
+#endif  /* RMW_RMW_ERROR_HANDLING_H_ */

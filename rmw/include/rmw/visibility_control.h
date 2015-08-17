@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_MIDDLEWARE_INTERFACE_ROS_MIDDLEWARE_INTERFACE_VISIBILITY_CONTROL_H_
-#define ROS_MIDDLEWARE_INTERFACE_ROS_MIDDLEWARE_INTERFACE_VISIBILITY_CONTROL_H_
+#ifndef RMW_RMW_VISIBILITY_CONTROL_H_
+#define RMW_RMW_VISIBILITY_CONTROL_H_
 
 #if __cplusplus
 extern "C"
@@ -55,4 +55,4 @@ extern "C"
 }
 #endif
 
-#endif  /* ROS_MIDDLEWARE_INTERFACE_ROS_MIDDLEWARE_INTERFACE_VISIBILITY_CONTROL_H_ */
+#endif  /* RMW_RMW_VISIBILITY_CONTROL_H_ */
