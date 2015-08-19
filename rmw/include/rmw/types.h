@@ -130,7 +130,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_topic_names_and_types_t
   char ** type_names;
 } rmw_topic_names_and_types_t;
 
-static const size_t RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT = -1;
+static const size_t RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT = 0;
 
 #if __cplusplus
 }
