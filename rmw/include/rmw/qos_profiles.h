@@ -57,6 +57,13 @@ const static rmw_qos_profile_t rmw_qos_profile_parameter_events =
   RMW_QOS_POLICY_RELIABLE
 };
 
+const static rmw_qos_profile_t rmw_qos_profile_system_default =
+{
+  RMW_QOS_POLICY_HISTORY_SYSTEM_DEFAULT,
+  RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT,
+  RMW_QOS_POLICY_RELIABILITY_SYSTEM_DEFAULT
+};
+
 #if __cplusplus
 }
 #endif

@@ -104,12 +104,14 @@ typedef struct RMW_PUBLIC_TYPE rmw_time_t
 
 enum RMW_PUBLIC_TYPE rmw_qos_reliability_policy_t
 {
+  RMW_QOS_POLICY_RELIABILITY_SYSTEM_DEFAULT,
   RMW_QOS_POLICY_RELIABLE,
   RMW_QOS_POLICY_BEST_EFFORT
 };
 
 enum RMW_PUBLIC_TYPE rmw_qos_history_policy_t
 {
+  RMW_QOS_POLICY_HISTORY_SYSTEM_DEFAULT,
   RMW_QOS_POLICY_KEEP_LAST_HISTORY,
   RMW_QOS_POLICY_KEEP_ALL_HISTORY
 };
@@ -127,6 +129,8 @@ typedef struct RMW_PUBLIC_TYPE rmw_topic_names_and_types_t
   char ** topic_names;
   char ** type_names;
 } rmw_topic_names_and_types_t;
+
+static const size_t RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT = 0;
 
 #if __cplusplus
 }
