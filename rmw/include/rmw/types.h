@@ -30,6 +30,10 @@ typedef int rmw_ret_t;
 #define RMW_RET_ERROR 1
 #define RMW_RET_TIMEOUT 2
 
+// 24 bytes is the most memory needed to represent the GID by any current
+// implementation. It may need to be increased in the future.
+#define RMW_GID_STORAGE_SIZE 24
+
 typedef struct RMW_PUBLIC_TYPE rmw_node_t
 {
   const char * implementation_identifier;
@@ -129,6 +133,18 @@ typedef struct RMW_PUBLIC_TYPE rmw_topic_names_and_types_t
   char ** topic_names;
   char ** type_names;
 } rmw_topic_names_and_types_t;
+
+typedef struct RMW_PUBLIC_TYPE rmw_gid_t
+{
+  const char * implementation_identifier;
+  uint8_t data[RMW_GID_STORAGE_SIZE];
+} rmw_gid_t;
+
+typedef struct RMW_PUBLIC_TYPE rmw_message_info_t
+{
+  // const rmw_time_t received_timestamp;
+  rmw_gid_t publisher_gid;
+} rmw_message_info_t;
 
 static const size_t RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT = 0;
 

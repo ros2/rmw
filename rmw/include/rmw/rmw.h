@@ -98,6 +98,15 @@ rmw_take(const rmw_subscription_t * subscription, void * ros_message, bool * tak
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
+rmw_ret_t
+rmw_take_with_info(
+  const rmw_subscription_t * subscription,
+  void * ros_message,
+  bool * taken,
+  rmw_message_info_t * message_info);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_client_t *
 rmw_create_client(
   const rmw_node_t * node,
@@ -209,6 +218,16 @@ rmw_count_subscribers(
   const rmw_node_t * node,
   const char * topic_name,
   size_t * count);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_get_gid_for_publisher(const rmw_publisher_t * publisher, rmw_gid_t * gid);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_compare_gids_equal(const rmw_gid_t * gid1, const rmw_gid_t * gid2, bool * result);
 
 #if __cplusplus
 }
