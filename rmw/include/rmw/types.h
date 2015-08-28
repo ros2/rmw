@@ -20,6 +20,7 @@ extern "C"
 {
 #endif
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
@@ -144,6 +145,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_t
 {
   // const rmw_time_t received_timestamp;
   rmw_gid_t publisher_gid;
+  bool from_intra_process;
 } rmw_message_info_t;
 
 static const size_t RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT = 0;
