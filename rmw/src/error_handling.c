@@ -23,12 +23,6 @@
 
 #define SAFE_FWRITE_TO_STDERR(msg) fwrite(msg, sizeof(char), sizeof(msg), stderr)
 
-#ifndef _WIN32
-#define SNPRINTF_S(buffer, sizeOfBuffer, count, ...) snprintf(buffer, sizeOfBuffer, __VA_ARGS__)
-#else
-#define SNPRINTF_S _snprintf_s
-#endif
-
 RMW_THREAD_LOCAL rmw_error_state_t * __rmw_error_state = NULL;
 RMW_THREAD_LOCAL char * __rmw_error_string = NULL;
 
@@ -96,8 +90,8 @@ rmw_get_error_state()
 static void
 format_error_string()
 {
-  size_t bytes_it_would_have_written = SNPRINTF_S(
-    NULL, 0, 1024,
+  size_t bytes_it_would_have_written = snprintf(
+    NULL, 0,
     __error_format_string,
     __rmw_error_state->message, __rmw_error_state->file, __rmw_error_state->line_number);
   __rmw_error_string = (char *)rmw_allocate(bytes_it_would_have_written + 1);
@@ -110,8 +104,8 @@ format_error_string()
 #endif
     return;
   }
-  SNPRINTF_S(
-    __rmw_error_string, bytes_it_would_have_written + 1, bytes_it_would_have_written + 1,
+  snprintf(
+    __rmw_error_string, bytes_it_would_have_written + 1,
     __error_format_string,
     __rmw_error_state->message, __rmw_error_state->file, __rmw_error_state->line_number);
   // The Windows version of snprintf does not null terminate automatically in all cases.
