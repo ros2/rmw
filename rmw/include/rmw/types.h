@@ -121,11 +121,18 @@ enum RMW_PUBLIC_TYPE rmw_qos_history_policy_t
   RMW_QOS_POLICY_KEEP_ALL_HISTORY
 };
 
+enum RMW_PUBLIC_TYPE rmw_qos_durability_policy_t
+{
+  RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT,
+  RMW_QOS_POLICY_TRANSIENT_LOCAL_DURABILITY
+};
+
 typedef struct RMW_PUBLIC_TYPE rmw_qos_profile_t
 {
   enum rmw_qos_history_policy_t history;
   size_t depth;
   enum rmw_qos_reliability_policy_t reliability;
+  enum rmw_qos_durability_policy_t durability;
 } rmw_qos_profile_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_topic_names_and_types_t
