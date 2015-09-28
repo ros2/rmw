@@ -22,6 +22,7 @@ extern "C"
 
 #include <stdlib.h>
 
+#include "string.h"
 #include "types.h"
 #include "visibility_control.h"
 
@@ -30,7 +31,11 @@ void *
 rmw_allocate(size_t size)
 {
   // Could be overridden with a general purpose allocator
-  return malloc(size);
+  void * ptr = malloc(size);
+  if (ptr) {
+    memset(ptr, 0, size);
+  }
+  return ptr;
 }
 
 RMW_LOCAL
