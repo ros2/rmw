@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_MIDDLEWARE_INTERFACE_ROS_MIDDLEWARE_INTERFACE_TYPES_H_
-#define ROS_MIDDLEWARE_INTERFACE_ROS_MIDDLEWARE_INTERFACE_TYPES_H_
+#ifndef RMW_RMW_TYPES_H_
+#define RMW_RMW_TYPES_H_
 
 #if __cplusplus
 extern "C"
@@ -162,4 +162,4 @@ static const size_t RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT = 0;
 }
 #endif
 
-#endif  /* ROS_MIDDLEWARE_INTERFACE_ROS_MIDDLEWARE_INTERFACE_TYPES_H_ */
+#endif  /* RMW_RMW_TYPES_H_ */

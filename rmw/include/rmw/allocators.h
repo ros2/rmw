@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_MIDDLEWARE_INTERFACE_ROS_MIDDLEWARE_INTERFACE_ALLOCATORS_H_
-#define ROS_MIDDLEWARE_INTERFACE_ROS_MIDDLEWARE_INTERFACE_ALLOCATORS_H_
+#ifndef RMW_RMW_ALLOCATORS_H_
+#define RMW_RMW_ALLOCATORS_H_
 
 #if __cplusplus
 extern "C"
@@ -147,4 +147,4 @@ rmw_service_free(rmw_service_t * service)
 }
 #endif
 
-#endif  /* ROS_MIDDLEWARE_INTERFACE_ROS_MIDDLEWARE_INTERFACE_ALLOCATORS_H_ */
+#endif  /* RMW_RMW_ALLOCATORS_H_ */

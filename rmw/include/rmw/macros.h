@@ -24,4 +24,4 @@
 #define RMW_STRINGIFY_IMPL(x) #x
 #define RMW_STRINGIFY(x) RMW_STRINGIFY_IMPL(x)
 
-#endif  // RMW_RMW_MACROS_H_
+#endif  /* RMW_RMW_MACROS_H_ */
