@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #ifndef RMW_RMW_H_
-#define RMW_RMW_H
+#define RMW_RMW_H_
 
 #if __cplusplus
 extern "C"
