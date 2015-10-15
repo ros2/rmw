@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW_RMW_ALLOCATORS_H_
-#define RMW_RMW_ALLOCATORS_H_
+#ifndef RMW__ALLOCATORS_H_
+#define RMW__ALLOCATORS_H_
 
 #if __cplusplus
 extern "C"
@@ -21,10 +21,10 @@ extern "C"
 #endif
 
 #include <stdlib.h>
+#include <string.h>
 
-#include "string.h"
-#include "types.h"
-#include "visibility_control.h"
+#include "rmw/types.h"
+#include "rmw/visibility_control.h"
 
 RMW_LOCAL
 void *
@@ -147,4 +147,4 @@ rmw_service_free(rmw_service_t * service)
 }
 #endif
 
-#endif  /* RMW_RMW_ALLOCATORS_H_ */
+#endif  // RMW__ALLOCATORS_H_

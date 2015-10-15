@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW_RMW_MACROS_H_
-#define RMW_RMW_MACROS_H_
+#ifndef RMW__MACROS_H_
+#define RMW__MACROS_H_
 
 #if defined _WIN32 || defined __CYGWIN__
   #define RMW_THREAD_LOCAL __declspec(thread)
@@ -24,4 +24,4 @@
 #define RMW_STRINGIFY_IMPL(x) #x
 #define RMW_STRINGIFY(x) RMW_STRINGIFY_IMPL(x)
 
-#endif  /* RMW_RMW_MACROS_H_ */
+#endif  // RMW__MACROS_H_

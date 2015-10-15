@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW_RMW_IMPL_CPP_DEMANGLE_HPP_
-#define RMW_RMW_IMPL_CPP_DEMANGLE_HPP_
+#ifndef RMW__IMPL__CPP__DEMANGLE_HPP_
+#define RMW__IMPL__CPP__DEMANGLE_HPP_
 
 #ifndef _WIN32
 // Includes for abi::__cxa_demangle.
@@ -24,7 +24,7 @@
 #include <iostream>
 #include <string>
 
-#include <rmw/impl/config.h>
+#include "rmw/impl/config.h"
 
 namespace rmw
 {
@@ -58,4 +58,4 @@ demangle(const T & instance)
 }  // namespace impl
 }  // namespace rmw
 
-#endif  // RMW_RMW_IMPL_CPP_DEMANGLE_HPP_
+#endif  // RMW__IMPL__CPP__DEMANGLE_HPP_
