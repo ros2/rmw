@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW_RMW_QOS_PROFILES_H_
-#define RMW_RMW_QOS_PROFILES_H_
+#ifndef RMW__QOS_PROFILES_H_
+#define RMW__QOS_PROFILES_H_
 
 #if __cplusplus
 extern "C"
 {
 #endif
 
-#include "types.h"
+#include "rmw/types.h"
 
-const static rmw_qos_profile_t rmw_qos_profile_sensor_data =
+static const rmw_qos_profile_t rmw_qos_profile_sensor_data =
 {
   RMW_QOS_POLICY_KEEP_LAST_HISTORY,
   5,
@@ -30,7 +30,7 @@ const static rmw_qos_profile_t rmw_qos_profile_sensor_data =
   RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT
 };
 
-const static rmw_qos_profile_t rmw_qos_profile_parameters =
+static const rmw_qos_profile_t rmw_qos_profile_parameters =
 {
   RMW_QOS_POLICY_KEEP_LAST_HISTORY,
   1000,
@@ -38,7 +38,7 @@ const static rmw_qos_profile_t rmw_qos_profile_parameters =
   RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT
 };
 
-const static rmw_qos_profile_t rmw_qos_profile_default =
+static const rmw_qos_profile_t rmw_qos_profile_default =
 {
   RMW_QOS_POLICY_KEEP_ALL_HISTORY,
   10,
@@ -46,7 +46,7 @@ const static rmw_qos_profile_t rmw_qos_profile_default =
   RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT
 };
 
-const static rmw_qos_profile_t rmw_qos_profile_services_default =
+static const rmw_qos_profile_t rmw_qos_profile_services_default =
 {
   RMW_QOS_POLICY_KEEP_LAST_HISTORY,
   10,
@@ -54,7 +54,7 @@ const static rmw_qos_profile_t rmw_qos_profile_services_default =
   RMW_QOS_POLICY_TRANSIENT_LOCAL_DURABILITY
 };
 
-const static rmw_qos_profile_t rmw_qos_profile_parameter_events =
+static const rmw_qos_profile_t rmw_qos_profile_parameter_events =
 {
   RMW_QOS_POLICY_KEEP_ALL_HISTORY,
   1000,
@@ -62,7 +62,7 @@ const static rmw_qos_profile_t rmw_qos_profile_parameter_events =
   RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT
 };
 
-const static rmw_qos_profile_t rmw_qos_profile_system_default =
+static const rmw_qos_profile_t rmw_qos_profile_system_default =
 {
   RMW_QOS_POLICY_HISTORY_SYSTEM_DEFAULT,
   RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT,
@@ -74,4 +74,4 @@ const static rmw_qos_profile_t rmw_qos_profile_system_default =
 }
 #endif
 
-#endif  /* RMW_RMW_QOS_PROFILES_H_ */
+#endif  // RMW__QOS_PROFILES_H_

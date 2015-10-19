@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW_RMW_TYPES_H_
-#define RMW_RMW_TYPES_H_
+#ifndef RMW__TYPES_H_
+#define RMW__TYPES_H_
 
 #if __cplusplus
 extern "C"
@@ -24,7 +24,7 @@ extern "C"
 #include <stddef.h>
 #include <stdint.h>
 
-#include "visibility_control.h"
+#include "rmw/visibility_control.h"
 
 typedef int rmw_ret_t;
 #define RMW_RET_OK 0
@@ -162,4 +162,4 @@ static const size_t RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT = 0;
 }
 #endif
 
-#endif  /* RMW_RMW_TYPES_H_ */
+#endif  // RMW__TYPES_H_

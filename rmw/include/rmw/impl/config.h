@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW_RMW_IMPL_CONFIG_H_
-#define RMW_RMW_IMPL_CONFIG_H_
+#ifndef RMW__IMPL__CONFIG_H_
+#define RMW__IMPL__CONFIG_H_
 
 #ifndef RMW_AVOID_MEMORY_ALLOCATION
 // Default to off.
@@ -27,4 +27,4 @@
 #define RMW_REPORT_ERROR_HANDLING_ERRORS 1
 #endif
 
-#endif  /* RMW_RMW_IMPL_CONFIG_H_ */
+#endif  // RMW__IMPL__CONFIG_H_

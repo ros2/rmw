@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW_RMW_H_
-#define RMW_RMW_H_
+#ifndef RMW__RMW_H_
+#define RMW__RMW_H_
 
 #if __cplusplus
 extern "C"
@@ -30,12 +30,12 @@ extern "C"
 #include <stddef.h>
 #include <stdint.h>
 
-#include <rosidl_generator_c/message_type_support.h>
-#include <rosidl_generator_c/service_type_support.h>
+#include "rosidl_generator_c/message_type_support.h"
+#include "rosidl_generator_c/service_type_support.h"
 
-#include "qos_profiles.h"
-#include "types.h"
-#include "visibility_control.h"
+#include "rmw/qos_profiles.h"
+#include "rmw/types.h"
+#include "rmw/visibility_control.h"
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -235,4 +235,4 @@ rmw_compare_gids_equal(const rmw_gid_t * gid1, const rmw_gid_t * gid2, bool * re
 }
 #endif
 
-#endif  /* RMW_RMW_H_ */
+#endif  // RMW__RMW_H_

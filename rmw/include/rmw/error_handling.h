@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW_RMW_ERROR_HANDLING_H_
-#define RMW_RMW_ERROR_HANDLING_H_
+#ifndef RMW__ERROR_HANDLING_H_
+#define RMW__ERROR_HANDLING_H_
 
 #if __cplusplus
 extern "C"
@@ -22,8 +22,8 @@ extern "C"
 
 #include <stddef.h>
 
-#include "macros.h"
-#include "visibility_control.h"
+#include "rmw/macros.h"
+#include "rmw/visibility_control.h"
 
 /// Struct which encapsulates the error state set by RMW_SET_ERROR_MSG().
 typedef struct rmw_error_state_t
@@ -112,4 +112,4 @@ rmw_reset_error();
 }
 #endif
 
-#endif  /* RMW_RMW_ERROR_HANDLING_H_ */
+#endif  // RMW__ERROR_HANDLING_H_

@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW_RMW_IMPL_CPP_MACROS_HPP_
-#define RMW_RMW_IMPL_CPP_MACROS_HPP_
+#ifndef RMW__IMPL__CPP__MACROS_HPP_
+#define RMW__IMPL__CPP__MACROS_HPP_
 
 #include <iostream>
 #include <sstream>
 #include <string>
 
-#include <rmw/error_handling.h>
-#include <rmw/impl/config.h>  // For RMW_AVOID_MEMORY_ALLOCATION
-#include <rmw/impl/cpp/demangle.hpp>  // For demangle.
+#include "rmw/error_handling.h"
+#include "rmw/impl/config.h"  // For RMW_AVOID_MEMORY_ALLOCATION
+#include "rmw/impl/cpp/demangle.hpp"  // For demangle.
 
 // *INDENT-OFF* (prevent uncrustify from using four space indention here)
 #define RMW_TRY_PLACEMENT_NEW(Destination, BufferForNew, FailureAction, Type, ...) try { \
@@ -84,7 +84,8 @@
       NULL, 0, \
       #ElementName " implementation '%s'(%p) does not match rmw implementation '%s'(%p)", \
       ElementTypeID, ElementTypeID, ExpectedTypeID, ExpectedTypeID); \
-    char * __msg = (char *)rmw_allocate(__bytes_that_would_have_been_written + 1); \
+    char * __msg = \
+      reinterpret_cast<char *>(rmw_allocate(__bytes_that_would_have_been_written + 1)); \
     snprintf( \
       __msg, __bytes_that_would_have_been_written + 1, \
       #ElementName " implementation '%s'(%p) does not match rmw implementation '%s'(%p)", \
@@ -97,4 +98,4 @@
 #endif  // RMW_AVOID_MEMORY_ALLOCATION
 // *INDENT-ON*
 
-#endif  // RMW_RMW_IMPL_CPP_MACROS_HPP_
+#endif  // RMW__IMPL__CPP__MACROS_HPP_
