@@ -65,7 +65,7 @@ rmw_set_error_state(const char * error_string, const char * file, size_t line_nu
   }
   // Cast the const away to set ->message initially.
 #ifndef _WIN32
-  strcpy((char *)__rmw_error_state->message, error_string);
+  snprintf((char *)__rmw_error_state->message, error_string_length + 1, "%s", error_string);
 #else
   auto retcode = strcpy_s(
     (char *)__rmw_error_state->message, error_string_length + 1, error_string);
