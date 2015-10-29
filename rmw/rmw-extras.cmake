@@ -27,8 +27,6 @@ if(WIN32)
   # If there are no middleware yet, then continue.
   # This happends when the first middleware implementation is built.
   if(${_len} EQUAL 0)
-    set(_rmw_implementations)
-    set(_len)
     return()
   endif()
   # Ensure only one middleware is available.
@@ -39,12 +37,10 @@ if(WIN32)
       "Only one rmw implementation per workspace is supported on Windows, but ${_len} were found."
     )
   endif()
-  set(_rmw_implementations)
-  set(_len)
   # Use get_default_rmw_implementation to export the default middleware as a transitive dependency.
-  get_default_rmw_implementation(middleware_implementation)
-  find_package(${middleware_implementation} REQUIRED)
-  list(APPEND rmw_DEFINITIONS ${${middleware_implementation}_DEFINITIONS})
-  list(APPEND rmw_INCLUDE_DIRS ${${middleware_implementation}_INCLUDE_DIRS})
-  list(APPEND rmw_LIBRARIES ${${middleware_implementation}_LIBRARIES})
+  get_default_rmw_implementation(_middleware_implementation)
+  find_package(${_middleware_implementation} REQUIRED)
+  list(APPEND rmw_DEFINITIONS ${${_middleware_implementation}_DEFINITIONS})
+  list(APPEND rmw_INCLUDE_DIRS ${${_middleware_implementation}_INCLUDE_DIRS})
+  list(APPEND rmw_LIBRARIES ${${_middleware_implementation}_LIBRARIES})
 endif()
