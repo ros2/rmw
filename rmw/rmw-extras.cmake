@@ -20,7 +20,6 @@ include("${rmw_DIR}/register_rmw_implementation.cmake")
 
 # TODO(wjwwood): we have to fix linking with unresolved symbols on Windows before removing this.
 if(WIN32)
-  find_package(ament_cmake REQUIRED)  # Without this find_package(rmw_implementation_cmake) fails.
   find_package(rmw_implementation_cmake REQUIRED)
   get_available_rmw_implementations(_rmw_implementations)
   list(LENGTH _rmw_implementations _len)
