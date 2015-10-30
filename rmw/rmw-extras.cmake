@@ -33,7 +33,7 @@ if(WIN32)
   # to build libraries and executables for more than one rmw implementation at a time.
   if(${_len} GREATER 1)
     message(FATAL_ERROR
-      "Only one rmw implementation per workspace is supported on Windows, but ${_len} were found."
+      "Only one rmw implementation per workspace is supported on Windows"
     )
   endif()
   # Use get_default_rmw_implementation to export the default middleware as a transitive dependency.
