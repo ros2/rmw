@@ -29,13 +29,23 @@ macro(get_default_rmw_implementation var)
   endif()
 
   # option()
-  if(NOT "${ROS_MIDDLEWARE_IMPLEMENTATION} " STREQUAL " ")
-    set(_middleware_implementation "${ROS_MIDDLEWARE_IMPLEMENTATION}")
-  elseif(NOT "$ENV{ROS_MIDDLEWARE_IMPLEMENTATION} " STREQUAL " ")
-    set(_middleware_implementation "$ENV{ROS_MIDDLEWARE_IMPLEMENTATION}")
-  else()
+  if("${ROS_MIDDLEWARE_IMPLEMENTATION} " STREQUAL " " AND
+    "$ENV{ROS_MIDDLEWARE_IMPLEMENTATION} " STREQUAL " "
+  )
     # TODO detemine "default" implementation based on the available ones
     list(GET _middleware_implementations 0 _middleware_implementation)
+  else()
+    if(NOT "${ROS_MIDDLEWARE_IMPLEMENTATION} " STREQUAL " ")
+      set(_middleware_implementation "${ROS_MIDDLEWARE_IMPLEMENTATION}")
+    else()
+      set(_middleware_implementation "$ENV{ROS_MIDDLEWARE_IMPLEMENTATION}")
+    endif()
+    # persist implementation decision in cache
+    # if it was not determined dynamically
+    set(
+      ROS_MIDDLEWARE_IMPLEMENTATION "${_middleware_implementation}"
+      CACHE STRING "Select ROS middleware implementation to link against" FORCE
+    )
   endif()
 
   # verify that the selection one is available
@@ -45,12 +55,6 @@ macro(get_default_rmw_implementation var)
     message(FATAL_ERROR "Could not find ROS middleware implementation '${_middleware_implementation}'. Choose one of the following: ${_middleware_implementations_string}")
   endif()
   find_package("${_middleware_implementation}" REQUIRED)
-
-  # persist implementation decision in cache
-  set(
-    ROS_MIDDLEWARE_IMPLEMENTATION "${_middleware_implementation}"
-    CACHE STRING "Select ROS middleware implementation to link against" FORCE
-  )
 
   set(${var} ${_middleware_implementation})
 endmacro()
