@@ -39,12 +39,15 @@ typedef struct RMW_PUBLIC_TYPE rmw_node_t
 {
   const char * implementation_identifier;
   void * data;
+  const char * name;
+  const size_t domain_id;
 } rmw_node_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_publisher_t
 {
   const char * implementation_identifier;
   void * data;
+  const char * topic_name;
 } rmw_publisher_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_subscription_t
