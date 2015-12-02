@@ -79,6 +79,14 @@ RMW_PUBLIC
 void
 rmw_service_free(rmw_service_t * service);
 
+RMW_PUBLIC
+rmw_waitset_t *
+rmw_waitset_allocate();
+
+RMW_PUBLIC
+void
+rmw_waitset_free(rmw_waitset_t * waitset);
+
 #if __cplusplus
 }
 #endif

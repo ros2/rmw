@@ -99,6 +99,13 @@ typedef struct RMW_PUBLIC_TYPE rmw_guard_conditions_t
   void ** guard_conditions;
 } rmw_guard_conditions_t;
 
+typedef struct RMW_PUBLIC_TYPE rmw_waitset_t
+{
+  const char * implementation_identifier;
+  rmw_guard_conditions_t * fixed_guard_conditions;
+  void * data;
+} rmw_waitset_t;
+
 typedef struct RMW_PUBLIC_TYPE rmw_request_id_t
 {
   int8_t writer_guid[16];

@@ -182,6 +182,29 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_trigger_guard_condition(const rmw_guard_condition_t * guard_condition);
 
+/// Create a waitset to store conditions that the middleware will block on.
+/**
+ * If max_conditions is 0, the waitset can store an unbounded number of conditions to wait on.
+ * If max_conditions is greater than 0, the number of conditions that can be attached to the
+ * waitset is bounded at max_conditions.
+ * \param[in] fixed_guard_conditions Guard conditions that are attached to the waitset immediately
+ * after initialization and are not removed from the waitset until rmw_destroy_waitset is called.
+ * For example, the guard condition for the CTRL-C signal handler is a "fixed condition".
+ * Must stay valid until rmw_destroy_waitset is called. The caller must keep ownership of the
+ * allocated guard conditions and deallocate them after rmw_destroy_waitset is called.
+ * \param[in] max_conditions The maximum number of conditions that can be attached to the waitset.
+ * \return A pointer to the created waitset, nullptr if an error occurred.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_waitset_t *
+rmw_create_waitset(rmw_guard_conditions_t * fixed_guard_conditions, size_t max_conditions);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_destroy_waitset(rmw_waitset_t * waitset);
+
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -190,6 +213,7 @@ rmw_wait(
   rmw_guard_conditions_t * guard_conditions,
   rmw_services_t * services,
   rmw_clients_t * clients,
+  rmw_waitset_t * waitset,
   const rmw_time_t * wait_timeout);
 
 RMW_PUBLIC
