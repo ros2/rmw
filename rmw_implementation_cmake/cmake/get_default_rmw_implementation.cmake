@@ -15,7 +15,7 @@
 #
 # Get the package name of the default ROS middleware implemenation.
 #
-# Either selcting it using the variable ROS_MIDDLEWARE_IMPLEMENTATION or
+# Either selecting it using the variable RMW_IMPLEMENTATION or
 # choosing a default from the available implementations.
 #
 # :param var: the output variable name containing the package name
@@ -29,21 +29,21 @@ macro(get_default_rmw_implementation var)
   endif()
 
   # option()
-  if("${ROS_MIDDLEWARE_IMPLEMENTATION} " STREQUAL " " AND
-    "$ENV{ROS_MIDDLEWARE_IMPLEMENTATION} " STREQUAL " "
+  if("${RMW_IMPLEMENTATION} " STREQUAL " " AND
+    "$ENV{RMW_IMPLEMENTATION} " STREQUAL " "
   )
     # TODO detemine "default" implementation based on the available ones
     list(GET _middleware_implementations 0 _middleware_implementation)
   else()
-    if(NOT "${ROS_MIDDLEWARE_IMPLEMENTATION} " STREQUAL " ")
-      set(_middleware_implementation "${ROS_MIDDLEWARE_IMPLEMENTATION}")
+    if(NOT "${RMW_IMPLEMENTATION} " STREQUAL " ")
+      set(_middleware_implementation "${RMW_IMPLEMENTATION}")
     else()
-      set(_middleware_implementation "$ENV{ROS_MIDDLEWARE_IMPLEMENTATION}")
+      set(_middleware_implementation "$ENV{RMW_IMPLEMENTATION}")
     endif()
     # persist implementation decision in cache
     # if it was not determined dynamically
     set(
-      ROS_MIDDLEWARE_IMPLEMENTATION "${_middleware_implementation}"
+      RMW_IMPLEMENTATION "${_middleware_implementation}"
       CACHE STRING "Select ROS middleware implementation to link against" FORCE
     )
   endif()
