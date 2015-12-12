@@ -160,7 +160,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_t
   bool from_intra_process;
 } rmw_message_info_t;
 
-static const size_t RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT = 0;
+enum {RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT = 0};
 
 #if __cplusplus
 }
