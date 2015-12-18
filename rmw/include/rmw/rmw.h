@@ -64,7 +64,7 @@ rmw_create_publisher(
   const rmw_node_t * node,
   const rosidl_message_type_support_t * type_support,
   const char * topic_name,
-  const rmw_qos_profile_t & qos_policies = rmw_qos_profile_default);
+  const rmw_qos_profile_t * qos_policies);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -83,8 +83,8 @@ rmw_create_subscription(
   const rmw_node_t * node,
   const rosidl_message_type_support_t * type_support,
   const char * topic_name,
-  const rmw_qos_profile_t & qos_policies = rmw_qos_profile_default,
-  bool ignore_local_publications = false);
+  const rmw_qos_profile_t * qos_policies,
+  bool ignore_local_publications);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -112,7 +112,7 @@ rmw_create_client(
   const rmw_node_t * node,
   const rosidl_service_type_support_t * type_support,
   const char * service_name,
-  const rmw_qos_profile_t & qos_policies = rmw_qos_profile_services_default);
+  const rmw_qos_profile_t * qos_policies);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -143,7 +143,7 @@ rmw_create_service(
   const rmw_node_t * node,
   const rosidl_service_type_support_t * type_support,
   const char * service_name,
-  const rmw_qos_profile_t & qos_policies = rmw_qos_profile_services_default);
+  const rmw_qos_profile_t * qos_policies);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -190,7 +190,7 @@ rmw_wait(
   rmw_guard_conditions_t * guard_conditions,
   rmw_services_t * services,
   rmw_clients_t * clients,
-  rmw_time_t * wait_timeout);
+  const rmw_time_t * wait_timeout);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED

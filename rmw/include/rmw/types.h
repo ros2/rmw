@@ -39,18 +39,22 @@ typedef struct RMW_PUBLIC_TYPE rmw_node_t
 {
   const char * implementation_identifier;
   void * data;
+  const char * name;
+  const size_t domain_id;
 } rmw_node_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_publisher_t
 {
   const char * implementation_identifier;
   void * data;
+  const char * topic_name;
 } rmw_publisher_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_subscription_t
 {
   const char * implementation_identifier;
   void * data;
+  const char * topic_name;
 } rmw_subscription_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_service_t
@@ -156,7 +160,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_t
   bool from_intra_process;
 } rmw_message_info_t;
 
-static const size_t RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT = 0;
+enum {RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT = 0};
 
 #if __cplusplus
 }
