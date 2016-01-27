@@ -45,7 +45,7 @@ rmw_get_implementation_identifier();
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_init();
+rmw_init(const char * qos_xml_filename);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
