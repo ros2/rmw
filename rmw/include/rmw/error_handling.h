@@ -65,7 +65,7 @@ rmw_set_error_state(const char * error_msg, const char * file, size_t line_numbe
 /// Return true if the error has been set and has not been reset since, otherwise false.
 RMW_PUBLIC
 bool
-rmw_error_is_set();
+rmw_error_is_set(void);
 
 /// Return a struct with the error message and the file and line number on which is was set.
 /**
@@ -78,7 +78,7 @@ rmw_error_is_set();
  */
 RMW_PUBLIC
 const rmw_error_state_t *
-rmw_get_error_state();
+rmw_get_error_state(void);
 
 /// Return the error message followed by ', at <file>:<line>' if set, else NULL.
 /**
@@ -89,7 +89,7 @@ rmw_get_error_state();
  */
 RMW_PUBLIC
 const char *
-rmw_get_error_string();
+rmw_get_error_string(void);
 
 /// Return the error message followed by ', at <file>:<line>' if set, else "error not set".
 /**
@@ -102,12 +102,12 @@ rmw_get_error_string();
  */
 RMW_PUBLIC
 const char *
-rmw_get_error_string_safe();
+rmw_get_error_string_safe(void);
 
 /// Resets the error state by clearing any previously set error state.
 RMW_PUBLIC
 void
-rmw_reset_error();
+rmw_reset_error(void);
 
 #if __cplusplus
 }
