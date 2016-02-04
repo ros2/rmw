@@ -40,12 +40,12 @@ extern "C"
 RMW_PUBLIC
 RMW_WARN_UNUSED
 const char *
-rmw_get_implementation_identifier();
+rmw_get_implementation_identifier(void);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_init();
+rmw_init(void);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -170,7 +170,7 @@ rmw_send_response(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_guard_condition_t *
-rmw_create_guard_condition();
+rmw_create_guard_condition(void);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED

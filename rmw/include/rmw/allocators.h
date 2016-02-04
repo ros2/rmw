@@ -33,7 +33,7 @@ rmw_free(void * pointer);
 
 RMW_PUBLIC
 rmw_node_t *
-rmw_node_allocate();
+rmw_node_allocate(void);
 
 RMW_PUBLIC
 void
@@ -41,7 +41,7 @@ rmw_node_free(rmw_node_t * node);
 
 RMW_PUBLIC
 rmw_publisher_t *
-rmw_publisher_allocate();
+rmw_publisher_allocate(void);
 
 RMW_PUBLIC
 void
@@ -49,7 +49,7 @@ rmw_publisher_free(rmw_publisher_t * publisher);
 
 RMW_PUBLIC
 rmw_subscription_t *
-rmw_subscription_allocate();
+rmw_subscription_allocate(void);
 
 RMW_PUBLIC
 void
@@ -57,7 +57,7 @@ rmw_subscription_free(rmw_subscription_t * subscription);
 
 RMW_PUBLIC
 rmw_guard_condition_t *
-rmw_guard_condition_allocate();
+rmw_guard_condition_allocate(void);
 
 RMW_PUBLIC
 void
@@ -65,7 +65,7 @@ rmw_guard_condition_free(rmw_guard_condition_t * guard_condition);
 
 RMW_PUBLIC
 rmw_client_t *
-rmw_client_allocate();
+rmw_client_allocate(void);
 
 RMW_PUBLIC
 void
@@ -73,7 +73,7 @@ rmw_client_free(rmw_client_t * client);
 
 RMW_PUBLIC
 rmw_service_t *
-rmw_service_allocate();
+rmw_service_allocate(void);
 
 RMW_PUBLIC
 void
@@ -81,7 +81,7 @@ rmw_service_free(rmw_service_t * service);
 
 RMW_PUBLIC
 rmw_waitset_t *
-rmw_waitset_allocate();
+rmw_waitset_allocate(void);
 
 RMW_PUBLIC
 void
