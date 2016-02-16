@@ -29,6 +29,12 @@ RMW_THREAD_LOCAL char * __rmw_error_string = NULL;
 
 static const char __error_format_string[] = "%s, at %s:%zu";
 
+bool
+__rmw_error_is_set(rmw_error_state_t * error_state);
+
+void
+__rmw_reset_error(rmw_error_state_t * error_state);
+
 void
 rmw_set_error_state(const char * error_string, const char * file, size_t line_number)
 {
@@ -123,9 +129,15 @@ rmw_get_error_string()
 }
 
 bool
+__rmw_error_is_set(rmw_error_state_t * error_state)
+{
+  return error_state != NULL;
+}
+
+bool
 rmw_error_is_set()
 {
-  return __rmw_error_state != NULL;
+  return __rmw_error_is_set(__rmw_error_state);
 }
 
 const char *
@@ -138,7 +150,7 @@ rmw_get_error_string_safe()
 }
 
 void
-rmw_reset_error()
+__rmw_reset_error(rmw_error_state_t * error_state)
 {
   if (__rmw_error_state) {
     if (__rmw_error_state->message) {
@@ -152,4 +164,10 @@ rmw_reset_error()
     rmw_free(__rmw_error_string);
   }
   __rmw_error_string = NULL;
+}
+
+void
+rmw_reset_error()
+{
+  return __rmw_reset_error(__rmw_error_state);
 }
