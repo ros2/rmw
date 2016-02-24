@@ -61,12 +61,14 @@ typedef struct RMW_PUBLIC_TYPE rmw_service_t
 {
   const char * implementation_identifier;
   void * data;
+  const char * service_name;
 } rmw_service_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_client_t
 {
   const char * implementation_identifier;
   void * data;
+  const char * service_name;
 } rmw_client_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_guard_condition_t
