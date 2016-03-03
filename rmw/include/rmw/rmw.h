@@ -255,6 +255,16 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_compare_gids_equal(const rmw_gid_t * gid1, const rmw_gid_t * gid2, bool * result);
 
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ros_meta_t *  
+rmw_get_node_names(void);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t 
+rmw_destroy_ros_meta(rmw_ros_meta_t * rosmeta);
+
 #if __cplusplus
 }
 #endif
