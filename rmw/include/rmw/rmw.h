@@ -336,6 +336,16 @@ rmw_service_server_is_available(
   const rmw_client_t * client,
   bool * is_available);
 
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ros_meta_t *  
+rmw_get_node_names(void);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t 
+rmw_destroy_ros_meta(rmw_ros_meta_t * rosmeta);
+
 #if __cplusplus
 }
 #endif
