@@ -187,11 +187,6 @@ rmw_trigger_guard_condition(const rmw_guard_condition_t * guard_condition);
  * If max_conditions is 0, the waitset can store an unbounded number of conditions to wait on.
  * If max_conditions is greater than 0, the number of conditions that can be attached to the
  * waitset is bounded at max_conditions.
- * \param[in] fixed_guard_conditions Guard conditions that are attached to the waitset immediately
- * after initialization and are not removed from the waitset until rmw_destroy_waitset is called.
- * For example, the guard condition for the CTRL-C signal handler is a "fixed condition".
- * Must stay valid until rmw_destroy_waitset is called. The caller must keep ownership of the
- * allocated guard conditions and deallocate them after rmw_destroy_waitset is called.
  * \param[in] max_conditions The maximum number of conditions that can be attached to the waitset.
  * \return A pointer to the created waitset, nullptr if an error occurred.
  */
@@ -205,6 +200,33 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_waitset(rmw_waitset_t * waitset);
 
+/**
+ * Add conditions to the wait set and wait until a response comes in, or until the timeout is
+ * reached.
+ * The arrays contain type-erased representations of waitable entities.
+ * This function casts the pointers to middleware-specific conditions and adds them to the
+ * waitset.
+ *
+ * The count variables in the arrays represents the number of valid pointers in the array.
+ * Null pointers are in the array considered invalid. If they are encountered, an error is
+ * returned.
+ *
+ * The array structs are allocated and deallocated outside of this function.
+ * They do not have any information about how much memory is allocated for the arrays.
+ *
+ * After the wait wakes up, the entries in each array that correspond to conditions that were
+ * not triggered are set to null.
+ * 
+ * \param subscriptions Array of subscriptions to wait on
+ * \param guard_conditions Array of guard conditions to wait on
+ * \param services Array of services to wait on
+ * \param clients Array of clients to wait on
+ * \param waitset Storage for the waitset
+ * \param wait_timeout If negative, block indefinitely or until a condition is ready.
+ * If zero,  check only for immediately available conditions and don't block.
+ * Else, this represents the maximum time to wait for a response from the waitset.
+ * \return RCL_RET_OK if success, RCL_RET_ERROR if error, RCL_RET_TIMEOUT if wait timed out.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
