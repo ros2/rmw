@@ -193,7 +193,7 @@ rmw_trigger_guard_condition(const rmw_guard_condition_t * guard_condition);
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_waitset_t *
-rmw_create_waitset(rmw_guard_conditions_t * fixed_guard_conditions, size_t max_conditions);
+rmw_create_waitset(size_t max_conditions);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
