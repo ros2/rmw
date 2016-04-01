@@ -77,24 +77,56 @@ typedef struct RMW_PUBLIC_TYPE rmw_guard_condition_t
   void * data;
 } rmw_guard_condition_t;
 
+/**
+ * An array of void * pointers representing type-erased middleware-specific subscriptions.
+ * The number of non-null entries may be smaller than the allocated size of the array.
+ * The number of subscriptions represented may be smaller than the allocated size of the array.
+ * The creator of this struct is responsible for allocating and deallocating the array.
+ * \var subscriber_count The number of subscribers represented by the array.
+ * \var subscribers Pointer to an array of void * pointers of subscriptions.
+ */
 typedef struct RMW_PUBLIC_TYPE rmw_subscriptions_t
 {
   size_t subscriber_count;
   void ** subscribers;
 } rmw_subscriptions_t;
 
+/**
+ * An array of void * pointers representing type-erased middleware-specific services.
+ * The number of non-null entries may be smaller than the allocated size of the array.
+ * The number of services represented may be smaller than the allocated size of the array.
+ * The creator of this struct is responsible for allocating and deallocating the array.
+ * \var service_count The number of services represented by the array.
+ * \var services Pointer to an array of void * pointers of services.
+ */
 typedef struct RMW_PUBLIC_TYPE rmw_services_t
 {
   size_t service_count;
   void ** services;
 } rmw_services_t;
 
+/**
+ * An array of void * pointers representing type-erased middleware-specific clients.
+ * The number of non-null entries may be smaller than the allocated size of the array.
+ * The number of clients represented may be smaller than the allocated size of the array.
+ * The creator of this struct is responsible for allocating and deallocating the array.
+ * \var client_count The number of clients represented by the array.
+ * \var clients Pointer to an array of void * pointers of clients.
+ */
 typedef struct RMW_PUBLIC_TYPE rmw_clients_t
 {
   size_t client_count;
   void ** clients;
 } rmw_clients_t;
 
+/**
+ * An array of void * pointers representing type-erased middleware-specific guard conditions.
+ * The number of non-null entries may be smaller than the allocated size of the array.
+ * The number of guard conditions represented may be smaller than the allocated size of the array.
+ * The creator of this struct is responsible for allocating and deallocating the array.
+ * \var guard_condition_count The number of guard conditions represented by the array.
+ * \var guard_conditions Pointer to an array of void * pointers of guard conditions.
+ */
 typedef struct RMW_PUBLIC_TYPE rmw_guard_conditions_t
 {
   size_t guard_condition_count;
