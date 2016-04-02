@@ -216,7 +216,7 @@ rmw_destroy_waitset(rmw_waitset_t * waitset);
  *
  * After the wait wakes up, the entries in each array that correspond to conditions that were
  * not triggered are set to null.
- * 
+ *
  * \param subscriptions Array of subscriptions to wait on
  * \param guard_conditions Array of guard conditions to wait on
  * \param services Array of services to wait on
