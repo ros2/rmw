@@ -13,7 +13,7 @@
 # limitations under the License.
 
 #
-# Get the type support package name(s) for specific ROS middleware implementation.
+# Get type support package name(s) for specific ROS middleware implementation.
 #
 # :param rmw_implementation: the package name of the ROS middleware
 #   implementation
