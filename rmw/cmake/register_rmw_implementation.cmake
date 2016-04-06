@@ -36,16 +36,17 @@ macro(register_rmw_implementation)
     "C;CPP"
     ${ARGN}
   )
-  if (_ARG_UNPARSED_ARGUMENTS)
+  if(_ARG_UNPARSED_ARGUMENTS)
     message(FATAL_ERROR
-      "register_rmw_implementation() called with unused arguments: ${_ARG_UNPARSED_ARGUMENTS}")
+      "register_rmw_implementation() called with unused arguments:\
+      ${_ARG_UNPARSED_ARGUMENTS}")
   endif()
-  if (_ARG_C)
+  if(_ARG_C)
     ament_index_register_resource("rmw_typesupport_c" CONTENT "${_ARG_C}")
     ament_index_register_resource("rmw_typesupport" CONTENT "${_ARG_C}")
   endif()
 
-  if (_ARG_CPP)
+  if(_ARG_CPP)
     ament_index_register_resource("rmw_typesupport_cpp" CONTENT "${_ARG_CPP}")
     ament_index_register_resource("rmw_typesupport" CONTENT "${_ARG_CPP}")
   endif()
