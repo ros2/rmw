@@ -31,14 +31,14 @@ macro(register_rmw_implementation)
   endif()
 
   cmake_parse_arguments(_ARG
-    "TRACE"
+    ""
     ""
     "C;CPP"
     ${ARGN}
   )
   if(_ARG_UNPARSED_ARGUMENTS)
     message(FATAL_ERROR
-      "register_rmw_implementation() called with unused arguments:\
+      "register_rmw_implementation() called with unused arguments:
       ${_ARG_UNPARSED_ARGUMENTS}")
   endif()
   if(_ARG_C)
