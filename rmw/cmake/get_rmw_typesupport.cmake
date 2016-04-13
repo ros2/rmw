@@ -26,14 +26,11 @@ macro(get_rmw_typesupport var rmw_implementation)
     message(FATAL_ERROR "get_rmw_typesupport() called with unused arguments: ${ARGN}")
   endif()
 
-  ament_index_get_resource(${c_typesupport} "rmw_typesupport")
-  ament_index_get_resource(${cpp_typesupport} "rmw_typesupport")
-  list(APPEND ${var} ${c_typesupport})
-  list(APPEND ${var} ${cpp_typesupport})
+  ament_index_get_resource(${var} "rmw_typesupport" ${rmw_implementation})
 endmacro()
 
 #
-# Get the C type support package name for a specific ROS middleware implementation.
+# Get the C type support package name(s) for a specific ROS middleware implementation.
 #
 # :param rmw_implementation: the package name of the ROS middleware
 #   implementation
@@ -50,7 +47,7 @@ macro(get_rmw_typesupport_c var rmw_implementation)
 endmacro()
 
 #
-# Get the C++ type support package name for a specific ROS middleware implementation.
+# Get the C++ type support package name(s) for a specific ROS middleware implementation.
 #
 # :param rmw_implementation: the package name of the ROS middleware
 #   implementation

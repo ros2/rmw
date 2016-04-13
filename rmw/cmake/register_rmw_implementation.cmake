@@ -25,6 +25,20 @@
 #
 # @public
 #
+function(ament_register_resource_append_if_found resource_type)
+  if("${ARGN} " STREQUAL " ")
+    message(FATAL_ERROR "register_rmw_implementation() called with no arguments!")
+  endif()
+  ament_index_has_resource(HAS_RESOURCE "${resource_type}" "${PROJECT_NAME}")
+  if(${HAS_RESOURCE})
+    # Get the entry and append it to a list
+    list_append_unique(rmw_typesupport ${CONTENT}})
+    ament_index_register_resource("${resource_type}" CONTENT "${ARGN}")
+  else()
+    ament_index_register_resource("${resource_type}" CONTENT "${ARGN}")
+  endif()
+endfunction()
+
 macro(register_rmw_implementation)
   if("${ARGN} " STREQUAL " ")
     message(FATAL_ERROR "register_rmw_implementation() called with no arguments!")
@@ -42,13 +56,13 @@ macro(register_rmw_implementation)
       ${_ARG_UNPARSED_ARGUMENTS}")
   endif()
   if(_ARG_C)
-    ament_index_register_resource("rmw_typesupport_c" CONTENT "${_ARG_C}")
-    ament_index_register_resource("rmw_typesupport" CONTENT "${_ARG_C}")
+    ament_register_resource_append_if_found("rmw_typesupport_c" "${_ARG_C}")
+    ament_register_resource_append_if_found("rmw_typesupport" "${_ARG_C}")
   endif()
 
   if(_ARG_CPP)
-    ament_index_register_resource("rmw_typesupport_cpp" CONTENT "${_ARG_CPP}")
-    ament_index_register_resource("rmw_typesupport" CONTENT "${_ARG_CPP}")
+    ament_register_resource_append_if_found("rmw_typesupport_cpp" "${_ARG_CPP}")
+    ament_register_resource_append_if_found("rmw_typesupport" "${_ARG_CPP}")
   endif()
 
 endmacro()
