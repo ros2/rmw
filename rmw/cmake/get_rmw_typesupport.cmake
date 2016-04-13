@@ -26,7 +26,10 @@ macro(get_rmw_typesupport var rmw_implementation)
     message(FATAL_ERROR "get_rmw_typesupport() called with unused arguments: ${ARGN}")
   endif()
 
-  ament_index_get_resource(${var} "rmw_typesupport" "${rmw_implementation}")
+  ament_index_get_resource(${c_typesupport} "rmw_typesupport")
+  ament_index_get_resource(${cpp_typesupport} "rmw_typesupport")
+  list(APPEND ${var} ${c_typesupport})
+  list(APPEND ${var} ${cpp_typesupport})
 endmacro()
 
 #

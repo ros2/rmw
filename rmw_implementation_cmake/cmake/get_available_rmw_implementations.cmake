@@ -19,7 +19,11 @@
 # :type var: list of strings
 #
 function(get_available_rmw_implementations var)
-  ament_index_get_resources(middleware_implementations "rmw_typesupport")
+  ament_index_get_resources(impl_with_c_typesupport "rmw_typesupport_c")
+  ament_index_get_resources(impl_with_cpp_typesupport "rmw_typesupport_cpp")
+  # Concatenate lists
+  list_append_unique(middleware_implementations ${impl_with_c_typesupport})
+  list_append_unique(${middleware_implementations} ${impl_with_cpp_typesupport})
   if(DEFINED middleware_implementations)
     list(SORT middleware_implementations)
   endif()
