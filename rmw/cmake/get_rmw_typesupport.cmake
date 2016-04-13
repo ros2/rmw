@@ -18,7 +18,7 @@
 # :param rmw_implementation: the package name of the ROS middleware
 #   implementation
 # :type rmw_implementation: string
-# :param language: Optional flag specifying the language of the type support to get.
+# :param language: Optional flag for the language of the type support to get.
 # If language is omitted, type supports for all packages are returned.
 # :type language: string
 #
