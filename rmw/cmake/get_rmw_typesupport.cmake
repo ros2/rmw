@@ -31,12 +31,12 @@ macro(get_rmw_typesupport var rmw_implementation)
     ""
     ${ARGN}
   )
-  if("${_ARG_LANGUAGE}" STREQUAL "C")
-    ament_index_get_resource(${var} "rmw_typesupport_c" ${rmw_implementation})
-  elseif("${_ARG_LANGUAGE}" STREQUAL "CPP")
-    ament_index_get_resource(${var} "rmw_typesupport_cpp" ${rmw_implementation})
-  else()
-    # This output will include type supports for all languages.
+  if("${_ARG_LANGUAGE}" STREQUAL "")
     ament_index_get_resource(${var} "rmw_typesupport" ${rmw_implementation})
+  else()
+    # This output will include type supports the specified language.
+    # The language string should not be case sensitive.
+    string(TOLOWER ${_ARG_LANGUAGE} language_key)
+    ament_index_get_resource(${var} "rmw_typesupport_${language_key}" ${rmw_implementation})
   endif()
 endmacro()

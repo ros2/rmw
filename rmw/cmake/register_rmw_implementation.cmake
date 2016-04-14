@@ -13,17 +13,10 @@
 # limitations under the License.
 
 #
-# Register the current package as a ROS middleware implementation.
-# register_rmw_implementation must be called with one or more arguments.
-# The arguments each must be specified with flags corresonding to their type
-# e.g. C specifies a C typesupport, CPP specifies a C++ typesupport.
+# Helper function to append items to an ament resource list, or create a new
+# entry for the resource if no entry exists.
 #
 # :param _ARG_C: Name of the C typesupport package for the rmw implementation.
-# :param _ARG_CPP: Name of the C++ typesupport package.
-# :type _ARG_C: string
-# :type _ARG_CPP: string
-#
-# @public
 #
 function(ament_register_resource_append_if_found resource_type)
   if("${ARGN} " STREQUAL " ")
@@ -39,30 +32,48 @@ function(ament_register_resource_append_if_found resource_type)
   endif()
 endfunction()
 
+#
+# Register the current package as a ROS middleware implementation.
+# register_rmw_implementation must be called with an even number of arguments,
+# greater than or equal to 2.
+# The arguments specify the type support packages for this rmw implementation.
+# The name of each type support package is preceded by a label for the language
+# of this type support package.
+# For example, a valid usage of this function would be
+# register_rmw_implementation(c rosidl_typesupport_introspection_c
+#                             cpp rosidl_typesupport_introspection_cpp)
+#
+# :param _ARG_LANGUAGE: Name of the language represented by this typesupport package
+# :param _ARG_CONTENT: Name of the typesupport package.
+#
+# @public
+#
 macro(register_rmw_implementation)
   if("${ARGN} " STREQUAL " ")
     message(FATAL_ERROR "register_rmw_implementation() called with no arguments!")
   endif()
 
-  cmake_parse_arguments(_ARG
-    ""
-    ""
-    "C;CPP"
-    ${ARGN}
-  )
-  if(_ARG_UNPARSED_ARGUMENTS)
-    message(FATAL_ERROR
-      "register_rmw_implementation() called with unused arguments:
-      ${_ARG_UNPARSED_ARGUMENTS}")
-  endif()
-  if(_ARG_C)
-    ament_register_resource_append_if_found("rmw_typesupport_c" "${_ARG_C}")
-    ament_register_resource_append_if_found("rmw_typesupport" "${_ARG_C}")
+  # Get the length of ARGN
+  #message(STATUS "Got ${ARGN}")
+  set(argn ${ARGN})
+  list(LENGTH argn num_args)
+  # Error if ARGN has an odd number of arguments
+  math(EXPR parity "${num_args} % 2")
+  if(NOT ${parity} EQUAL 0)
+    message(FATAL_ERROR "register_rmw_implementation() called with odd number of arguments!")
   endif()
 
-  if(_ARG_CPP)
-    ament_register_resource_append_if_found("rmw_typesupport_cpp" "${_ARG_CPP}")
-    ament_register_resource_append_if_found("rmw_typesupport" "${_ARG_CPP}")
-  endif()
+    math(EXPR num_args "${num_args}-1")
+  foreach(idx RANGE 0 ${num_args} 2)
+    list(GET argn ${idx} LABEL)
+    # The key should not be case sensitive
+    string(TOLOWER ${LABEL} language_label)
+    math(EXPR next_idx "${idx}+1")
+    list(GET argn ${next_idx} CONTENT)
+    ament_register_resource_append_if_found(
+      "rmw_typesupport_${language_label}"
+      "${CONTENT}")
+    ament_register_resource_append_if_found("rmw_typesupport" "${CONTENT}")
+  endforeach()
 
 endmacro()
