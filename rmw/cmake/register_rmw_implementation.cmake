@@ -41,7 +41,6 @@ function(register_rmw_implementation)
   set(all_typesupports "")
 
   foreach(arg ${ARGN})
-    string(TOLOWER ${arg} arg)
     # replace colon with semicolon to turn into a list
     string(REGEX REPLACE ":" ";" arg ${arg})
     list(LENGTH arg arg_length)
@@ -51,6 +50,7 @@ function(register_rmw_implementation)
     endif()
     list(GET arg 0 language_label)
     list(REMOVE_AT arg 0)
+    string(TOLOWER ${language_label} language_label)
     ament_index_register_resource(
       "rmw_typesupport_${language_label}" CONTENT "${arg}"
     )
