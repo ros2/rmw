@@ -13,67 +13,47 @@
 # limitations under the License.
 
 #
-# Helper function to append items to an ament resource list, or create a new
-# entry for the resource if no entry exists.
-#
-# :param _ARG_C: Name of the C typesupport package for the rmw implementation.
-#
-function(ament_register_resource_append_if_found resource_type)
-  if("${ARGN} " STREQUAL " ")
-    message(FATAL_ERROR "register_rmw_implementation() called with no arguments!")
-  endif()
-  ament_index_has_resource(HAS_RESOURCE "${resource_type}" "${PROJECT_NAME}")
-  if(${HAS_RESOURCE})
-    # Get the entry and append it to a list
-    list_append_unique(rmw_typesupport ${CONTENT}})
-    ament_index_register_resource("${resource_type}" CONTENT "${ARGN}")
-  else()
-    ament_index_register_resource("${resource_type}" CONTENT "${ARGN}")
-  endif()
-endfunction()
-
-#
 # Register the current package as a ROS middleware implementation.
-# register_rmw_implementation must be called with an even number of arguments,
-# greater than or equal to 2.
-# The arguments specify the type support packages for this rmw implementation.
-# The name of each type support package is preceded by a label for the language
-# of this type support package.
-# For example, a valid usage of this function would be
-# register_rmw_implementation(c rosidl_typesupport_introspection_c
-#                             cpp rosidl_typesupport_introspection_cpp)
+# Takes as input a list of <language:typesupport> pairs where language is the
+# language of the typesupport package and typesupport is the name of the
+# package.
 #
-# :param _ARG_LANGUAGE: Name of the language represented by this typesupport package
-# :param _ARG_CONTENT: Name of the typesupport package.
+# For example, a valid usage of this function would be
+# register_rmw_implementation("c:rosidl_typesupport_introspection_c"
+#                             "cpp:rosidl_typesupport_introspection_cpp")
+# If there were multiple valid typesupports for one language in a package,
+# they would be separated by colons, e.g.
+# register_rmw_implementation(
+#   "cpp:rosidl_typesupport_a_cpp:rosidl_typesupport_b_cpp")
+# If there are multiple inputs with the same language flag (first entry) the
+# later inputs will overwrite the older ones.
 #
 # @public
 #
-macro(register_rmw_implementation)
-  if("${ARGN} " STREQUAL " ")
+# String replace colon with semicolon to create list out of the pairs
+function(register_rmw_implementation)
+  if("${ARGN}" STREQUAL "")
     message(FATAL_ERROR "register_rmw_implementation() called with no arguments!")
   endif()
 
   # Get the length of ARGN
-  #message(STATUS "Got ${ARGN}")
   set(argn ${ARGN})
-  list(LENGTH argn num_args)
-  # Error if ARGN has an odd number of arguments
-  math(EXPR parity "${num_args} % 2")
-  if(NOT ${parity} EQUAL 0)
-    message(FATAL_ERROR "register_rmw_implementation() called with odd number of arguments!")
-  endif()
+  set(all_typesupports "")
 
-    math(EXPR num_args "${num_args}-1")
-  foreach(idx RANGE 0 ${num_args} 2)
-    list(GET argn ${idx} LABEL)
-    # The key should not be case sensitive
-    string(TOLOWER ${LABEL} language_label)
-    math(EXPR next_idx "${idx}+1")
-    list(GET argn ${next_idx} CONTENT)
-    ament_register_resource_append_if_found(
-      "rmw_typesupport_${language_label}"
-      "${CONTENT}")
-    ament_register_resource_append_if_found("rmw_typesupport" "${CONTENT}")
+  foreach(input ${argn})
+    string(TOLOWER ${input} input)
+    # replace colon with semicolon to turn into a list
+    string(REGEX REPLACE ":/;" input ${input})
+    list(LENGTH ${input} input_length)
+    if(${input_length})
+    endif()
+    list(GET ${input} 0 language_label)
+    list(REMOVE_AT ${input} 0)
+    ament_index_register_resource(
+      "rmw_typesupport_${language_label}" "${input}"
+    )
+    list_append_unique(${all_typesupports} ${input})
   endforeach()
 
-endmacro()
+  ament_index_register_resource("rmw_typesupport" "${all_typesupports}")
+endfunction()
