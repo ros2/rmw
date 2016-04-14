@@ -14,11 +14,8 @@
 
 #
 # Register the current package as a ROS middleware implementation.
-# Takes as input a list of <language:typesupport> pairs where language is the
-# language of the typesupport package and typesupport is the name of the
-# package.
 #
-# For example, a valid usage of this function would be
+# A valid usage of this function is
 # register_rmw_implementation("c:rosidl_typesupport_introspection_c"
 #                             "cpp:rosidl_typesupport_introspection_cpp")
 # If there were multiple valid typesupports for one language in a package,
@@ -27,6 +24,10 @@
 #   "cpp:rosidl_typesupport_a_cpp:rosidl_typesupport_b_cpp")
 # If there are multiple inputs with the same language flag (first entry) the
 # later inputs will overwrite the older ones.
+# :param ARGN: a list of <language:typesupport> tuples where language is the
+# language of the typesupport package and typesupport is the name of the
+# package.
+# :type ARGN: a list of strings
 #
 # @public
 #
@@ -37,25 +38,23 @@ function(register_rmw_implementation)
   endif()
 
   # Get the length of ARGN
-  set(argn ${ARGN})
   set(all_typesupports "")
 
-  foreach(input ${argn})
-    string(TOLOWER ${input} input)
+  foreach(arg ${ARGN})
+    string(TOLOWER ${arg} arg)
     # replace colon with semicolon to turn into a list
-    string(REGEX REPLACE ":" ";" input ${input})
-    list(LENGTH input input_length)
-    if(${input_length} LESS 1)
+    string(REGEX REPLACE ":" ";" arg ${arg})
+    list(LENGTH arg arg_length)
+    if(${arg_length} LESS 1)
       message(FATAL_ERROR
         "register_rmw_implementation() called with invalid input")
     endif()
-    list(GET input 0 language_label)
-    list(REMOVE_AT input 0)
-    message(STATUS "Adding resource ${language_label}:${input}")
+    list(GET arg 0 language_label)
+    list(REMOVE_AT arg 0)
     ament_index_register_resource(
-      "rmw_typesupport_${language_label}" CONTENT "${input}"
+      "rmw_typesupport_${language_label}" CONTENT "${arg}"
     )
-    list_append_unique(${all_typesupports} ${input})
+    list_append_unique(all_typesupports ${arg})
   endforeach()
 
   ament_index_register_resource("rmw_typesupport" CONTENT "${all_typesupports}")
