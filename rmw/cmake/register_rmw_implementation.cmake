@@ -47,7 +47,7 @@ function(register_rmw_implementation)
     list(LENGTH input input_length)
     if(${input_length} LESS 1)
       message(FATAL_ERROR
-        "register_rmw_implementation() received incorrect language, typesupport tuple!")
+        "register_rmw_implementation() called with invalid input")
     endif()
     list(GET input 0 language_label)
     list(REMOVE_AT input 0)
