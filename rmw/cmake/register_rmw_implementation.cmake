@@ -31,7 +31,6 @@
 #
 # @public
 #
-# String replace colon with semicolon to create list out of the pairs
 function(register_rmw_implementation)
   if("${ARGN}" STREQUAL "")
     message(FATAL_ERROR "register_rmw_implementation() called with no arguments!")
