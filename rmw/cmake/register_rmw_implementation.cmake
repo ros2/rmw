@@ -43,17 +43,20 @@ function(register_rmw_implementation)
   foreach(input ${argn})
     string(TOLOWER ${input} input)
     # replace colon with semicolon to turn into a list
-    string(REGEX REPLACE ":/;" input ${input})
-    list(LENGTH ${input} input_length)
-    if(${input_length})
+    string(REGEX REPLACE ":" ";" input ${input})
+    list(LENGTH input input_length)
+    if(${input_length} LESS 1)
+      message(FATAL_ERROR
+        "register_rmw_implementation() received incorrect language, typesupport tuple!")
     endif()
-    list(GET ${input} 0 language_label)
-    list(REMOVE_AT ${input} 0)
+    list(GET input 0 language_label)
+    list(REMOVE_AT input 0)
+    message(STATUS "Adding resource ${language_label}:${input}")
     ament_index_register_resource(
-      "rmw_typesupport_${language_label}" "${input}"
+      "rmw_typesupport_${language_label}" CONTENT "${input}"
     )
     list_append_unique(${all_typesupports} ${input})
   endforeach()
 
-  ament_index_register_resource("rmw_typesupport" "${all_typesupports}")
+  ament_index_register_resource("rmw_typesupport" CONTENT "${all_typesupports}")
 endfunction()
