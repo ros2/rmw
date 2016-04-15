@@ -23,7 +23,7 @@
 # register_rmw_implementation(
 #   "cpp:rosidl_typesupport_a_cpp:rosidl_typesupport_b_cpp")
 # If there are multiple inputs with the same language flag (first entry) the
-# later inputs will overwrite the older ones.
+# function will error.
 # :param ARGN: a list of <language:typesupport> tuples where language is the
 # language of the typesupport package and typesupport is the name of the
 # package.
