@@ -38,6 +38,7 @@ function(register_rmw_implementation)
 
   # Get the length of ARGN
   set(all_typesupports "")
+  set(language_labels "")
 
   foreach(arg ${ARGN})
     # replace colon with semicolon to turn into a list
@@ -50,6 +51,15 @@ function(register_rmw_implementation)
     list(GET arg 0 language_label)
     list(REMOVE_AT arg 0)
     string(TOLOWER "${language_label}" language_label)
+    # Cache the existing languages labels found (so that we don't have to
+    # check the ament index twice every loop) and error if we've already
+    # encountered the language
+    list(FIND language_labels ${language_label} label_found)
+    if(NOT ${label_found} EQUAL -1)
+      message(FATAL_ERROR
+        "register_rmw_implementation() got duplicate input ${language_label}")
+    endif()
+    list(APPEND language_labels ${language_label})
     ament_index_register_resource(
       "rmw_typesupport_${language_label}" CONTENT "${arg}"
     )
