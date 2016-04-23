@@ -46,7 +46,7 @@ function(register_rmw_implementation)
     list(LENGTH arg arg_length)
     if(${arg_length} LESS 1)
       message(FATAL_ERROR
-        "register_rmw_implementation() called with invalid input: ${arg}")
+        "register_rmw_implementation() called with invalid input: '${arg}'")
     endif()
     list(GET arg 0 language_label)
     list(REMOVE_AT arg 0)
@@ -54,12 +54,12 @@ function(register_rmw_implementation)
     # Cache the existing languages labels found (so that we don't have to
     # check the ament index twice every loop) and error if we've already
     # encountered the language
-    list(FIND language_labels ${language_label} label_found)
+    list(FIND language_labels "${language_label}" label_found)
     if(NOT ${label_found} EQUAL -1)
       message(FATAL_ERROR
-        "register_rmw_implementation() got duplicate input ${language_label}")
+        "register_rmw_implementation() got language '${language_label}' multiple times")
     endif()
-    list(APPEND language_labels ${language_label})
+    list(APPEND language_labels "${language_label}")
     ament_index_register_resource(
       "rmw_typesupport_${language_label}" CONTENT "${arg}"
     )
