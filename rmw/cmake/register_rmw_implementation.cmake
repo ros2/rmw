@@ -46,7 +46,7 @@ function(register_rmw_implementation)
     list(LENGTH arg arg_length)
     if(${arg_length} LESS 1)
       message(FATAL_ERROR
-        "register_rmw_implementation() called with invalid input: '${arg}'")
+        "register_rmw_implementation() called with invalid input: ${ARGN}")
     endif()
     list(GET arg 0 language_label)
     list(REMOVE_AT arg 0)
