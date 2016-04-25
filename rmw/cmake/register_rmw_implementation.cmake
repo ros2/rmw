@@ -32,11 +32,6 @@
 # @public
 #
 function(register_rmw_implementation)
-  if("${ARGN}" STREQUAL "")
-    message(FATAL_ERROR "register_rmw_implementation() called with no arguments!")
-  endif()
-
-  # Get the length of ARGN
   set(all_typesupports "")
   set(language_labels "")
 
