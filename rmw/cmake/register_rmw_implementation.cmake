@@ -40,13 +40,13 @@ function(register_rmw_implementation)
   set(all_typesupports "")
   set(language_labels "")
 
-  foreach(arg ${ARGN})
+  foreach(arg_raw ${ARGN})
     # replace colon with semicolon to turn into a list
-    string(REGEX REPLACE ":" ";" arg "${arg}")
+    string(REGEX REPLACE ":" ";" arg "${arg_raw}")
     list(LENGTH arg arg_length)
     if(${arg_length} LESS 1)
       message(FATAL_ERROR
-        "register_rmw_implementation() called with invalid input: ${ARGN}")
+        "register_rmw_implementation() called with invalid input: ${arg_raw}")
     endif()
     list(GET arg 0 language_label)
     list(REMOVE_AT arg 0)
