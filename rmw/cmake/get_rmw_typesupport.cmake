@@ -20,7 +20,7 @@
 # :param rmw_implementation: the package name of the RMW implementation
 # :type rmw_implementation: string
 # :param LANGUAGE: Optional flag for the language of the type support to get.
-#   If language is omitted, type supports for all packages are returned.
+#   If language is omitted, type supports for all languages are returned.
 # :type LANGUAGE: string
 #
 # @public
