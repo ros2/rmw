@@ -52,7 +52,8 @@ function(register_rmw_implementation)
     list(FIND language_labels "${language_label}" label_found)
     if(NOT ${label_found} EQUAL -1)
       message(FATAL_ERROR
-        "register_rmw_implementation() got language '${language_label}' multiple times")
+        "register_rmw_implementation() got language '${language_label}'"
+        " multiple times")
     endif()
     list(APPEND language_labels "${language_label}")
     ament_index_register_resource(
