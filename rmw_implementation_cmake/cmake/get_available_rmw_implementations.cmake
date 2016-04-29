@@ -19,7 +19,7 @@
 # :type var: list of strings
 #
 function(get_available_rmw_implementations var)
-  ament_index_get_resources(middleware_implementations "rmw_implementation")
+  ament_index_get_resources(middleware_implementations "rmw_typesupport")
   if(DEFINED middleware_implementations)
     list(SORT middleware_implementations)
   endif()
