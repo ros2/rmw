@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <algorithm>
 #include <string>
 
 #include "gmock/gmock.h"
@@ -22,18 +21,18 @@
 int
 count_substrings(const std::string & str, const std::string & substr)
 {
-    if (substr.length() == 0) {
-      return 0;
-    }
-    int count = 0;
-    for (
-      size_t offset = str.find(substr);
-      offset != std::string::npos;
-      offset = str.find(substr, offset + substr.length()))
-    {
-        ++count;
-    }
-    return count;
+  if (substr.length() == 0) {
+    return 0;
+  }
+  int count = 0;
+  for (
+    size_t offset = str.find(substr);
+    offset != std::string::npos;
+    offset = str.find(substr, offset + substr.length()))
+  {
+    ++count;
+  }
+  return count;
 }
 
 TEST(test_error_handling, nominal) {
@@ -84,7 +83,7 @@ TEST(test_error_handling, recursive) {
   RMW_SET_ERROR_MSG(rmw_get_error_string_safe());
   std::string err_msg(rmw_get_error_string_safe());
   int count = count_substrings(err_msg, ", at");
-  EXPECT_EQ(2, count)
-    << "Expected ', at' in the error string twice but got it '" << count << "': " << err_msg;
+  EXPECT_EQ(2, count) <<
+    "Expected ', at' in the error string twice but got it '" << count << "': " << err_msg;
   rmw_reset_error();
 }
