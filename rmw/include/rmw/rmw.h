@@ -225,7 +225,7 @@ rmw_destroy_waitset(rmw_waitset_t * waitset);
  * \param wait_timeout If negative, block indefinitely or until a condition is ready.
  * If zero,  check only for immediately available conditions and don't block.
  * Else, this represents the maximum time to wait for a response from the waitset.
- * \return RCL_RET_OK if success, RCL_RET_ERROR if error, RCL_RET_TIMEOUT if wait timed out.
+ * \return RMW_RET_OK if success, RMW_RET_ERROR if error, RMW_RET_TIMEOUT if wait timed out.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
