@@ -33,7 +33,10 @@ bool
 __rmw_error_is_set(rmw_error_state_t * error_state);
 
 void
-__rmw_reset_error(rmw_error_state_t * error_state);
+__rmw_reset_error_string(char ** error_string_ptr);
+
+void
+__rmw_reset_error(rmw_error_state_t ** error_state_ptr_ptr);
 
 void
 rmw_set_error_state(const char * error_string, const char * file, size_t line_number)
@@ -91,8 +94,9 @@ rmw_set_error_state(const char * error_string, const char * file, size_t line_nu
         old_error_string);
     }
 #endif
-    __rmw_reset_error(old_error_state);
+    __rmw_reset_error(&old_error_state);
   }
+  __rmw_reset_error_string(&__rmw_error_string);
 }
 
 const rmw_error_state_t *
@@ -104,6 +108,9 @@ rmw_get_error_state()
 static void
 format_error_string()
 {
+  if (!__rmw_error_is_set(__rmw_error_state)) {
+    return;
+  }
   size_t bytes_it_would_have_written = snprintf(
     NULL, 0,
     __error_format_string,
@@ -157,24 +164,36 @@ rmw_get_error_string_safe()
 }
 
 void
-__rmw_reset_error(rmw_error_state_t * error_state)
+__rmw_reset_error_string(char ** error_string_ptr)
 {
-  if (__rmw_error_state) {
-    if (__rmw_error_state->message) {
-      // Cast const away to delete previously allocated memory.
-      rmw_free((char *)__rmw_error_state->message);
+  char * error_string = *error_string_ptr;
+  if (error_string) {
+    if (error_string) {
+      rmw_free(error_string);
     }
-    rmw_free(__rmw_error_state);
   }
-  __rmw_error_state = NULL;
-  if (__rmw_error_string) {
-    rmw_free(__rmw_error_string);
+  *error_string_ptr = NULL;
+}
+
+void
+__rmw_reset_error(rmw_error_state_t ** error_state_ptr_ptr)
+{
+  rmw_error_state_t * error_state_ptr = *error_state_ptr_ptr;
+  if (error_state_ptr_ptr) {
+    if (error_state_ptr) {
+      if (error_state_ptr->message) {
+        // Cast const away to delete previously allocated memory.
+        rmw_free((char *)error_state_ptr->message);
+      }
+      rmw_free(error_state_ptr);
+    }
   }
-  __rmw_error_string = NULL;
+  *error_state_ptr_ptr = NULL;
 }
 
 void
 rmw_reset_error()
 {
-  __rmw_reset_error(__rmw_error_state);
+  __rmw_reset_error_string(&__rmw_error_string);
+  __rmw_reset_error(&__rmw_error_state);
 }
