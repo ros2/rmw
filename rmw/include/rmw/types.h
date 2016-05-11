@@ -201,6 +201,18 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_t
   bool from_intra_process;
 } rmw_message_info_t;
 
+typedef struct RMW_PUBLIC_TYPE rmw_string_t
+{
+  char * data;
+} rmw_string_t;
+
+typedef struct RMW_PUBLIC_TYPE rmw_ros_meta_t
+{
+  rmw_string_t* node_names;      // ROS node names
+  rmw_gid_t* ids;                // DDS participant ids
+  int count;
+} rmw_ros_meta_t;
+
 enum {RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT = 0};
 
 #if __cplusplus
