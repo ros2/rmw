@@ -57,6 +57,33 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_node(rmw_node_t * node);
 
+/// Return a guard condition which is triggered when the ROS graph changes.
+/* The handle returned is a pointer to an internally held rmw guard condition.
+ * This function can fail, and therefore return NULL, if:
+ *   - node is NULL
+ *   - node is invalid
+ *
+ * The returned handle is made invalid if the node is destroyed or if
+ * rmw_shutdown() is called.
+ *
+ * The guard condition will be triggered anytime a change to the ROS graph occurs.
+ * A ROS graph change includes things like (but not limited to) a new publisher
+ * advertises, a new subscription is created, a new service becomes available,
+ * a subscription is canceled, etc.
+ *
+ * This function does not manipulate heap memory.
+ * This function is thread-safe.
+ * This function is lock-free.
+ *
+ * \param[in] node pointer to the rmw node
+ * \return rmw guard condition handle if successful, otherwise NULL
+ *
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+const rmw_guard_condition_t *
+rmw_node_get_graph_guard_condition(const rmw_node_t * node);
+
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_publisher_t *
@@ -276,6 +303,38 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_compare_gids_equal(const rmw_gid_t * gid1, const rmw_gid_t * gid2, bool * result);
+
+/// Check if a service server is available for the given service client.
+/* This function will return true for is_available if there is a service server
+ * available for the given client.
+ *
+ * The node parameter must not be NULL, and must point to a valid node.
+ *
+ * The client parameter must not be NULL, and must point to a valid client.
+ *
+ * The given client and node must match, i.e. the client must have been created
+ * using the given node.
+ *
+ * The is_available parameter must not be NULL, and must point to a bool variable.
+ * The result of the check will be stored in the is_available parameter.
+ *
+ * This function does manipulate heap memory.
+ * This function is not thread-safe.
+ * This function is lock-free.
+ *
+ * \param[in] node the handle to the node being used to query the ROS graph
+ * \param[in] client the handle to the service client being queried
+ * \param[out] is_available set to true if there is a service server available, else false
+ * \return RMW_RET_OK if node the check was made successfully, or
+ *         RCL_RET_ERROR if an unspecified error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_service_server_is_available(
+  const rmw_node_t * node,
+  const rmw_client_t * client,
+  bool * is_available);
 
 #if __cplusplus
 }
