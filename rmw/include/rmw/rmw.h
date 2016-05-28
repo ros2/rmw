@@ -66,7 +66,7 @@ rmw_destroy_node(rmw_node_t * node);
  * The returned handle is made invalid if the node is destroyed or if
  * rmw_shutdown() is called.
  *
- * The guard condition will be triggered anytime change to the ROS graph occurs.
+ * The guard condition will be triggered anytime a change to the ROS graph occurs.
  * A ROS graph change includes things like (but not limited to) a new publisher
  * advertises, a new subscription is created, a new service becomes available,
  * a subscription is canceled, etc.
@@ -315,7 +315,7 @@ rmw_compare_gids_equal(const rmw_gid_t * gid1, const rmw_gid_t * gid2, bool * re
  * The given client and node must match, i.e. the client must have been created
  * using the given node.
  *
- * The is_available parameter must not be NULL, and must point a bool variable.
+ * The is_available parameter must not be NULL, and must point to a bool variable.
  * The result of the check will be stored in the is_available parameter.
  *
  * This function does manipulate heap memory.
