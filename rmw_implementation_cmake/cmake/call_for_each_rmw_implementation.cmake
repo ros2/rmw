@@ -31,7 +31,7 @@
 # :type GENERATE_DEFAULT: option
 #
 macro(call_for_each_rmw_implementation macro_name)
-  if("${macro_name} " STREQUAL " ")
+  if(macro_name STREQUAL "")
     message(FATAL_ERROR
       "call_for_each_rmw_implementation() called without a 'macro_name'")
   endif()
