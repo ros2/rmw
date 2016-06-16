@@ -24,18 +24,18 @@
 macro(get_default_rmw_implementation var)
   get_available_rmw_implementations(_middleware_implementations)
 
-  if("${_middleware_implementations} " STREQUAL " ")
+  if(_middleware_implementations STREQUAL "")
     message(FATAL_ERROR "Could not find any ROS middleware implementation.")
   endif()
 
   # option()
-  if("${RMW_IMPLEMENTATION} " STREQUAL " " AND
-    "$ENV{RMW_IMPLEMENTATION} " STREQUAL " "
+  if("${RMW_IMPLEMENTATION}" STREQUAL "" AND
+    "$ENV{RMW_IMPLEMENTATION}" STREQUAL ""
   )
     # TODO detemine "default" implementation based on the available ones
     list(GET _middleware_implementations 0 _middleware_implementation)
   else()
-    if(NOT "${RMW_IMPLEMENTATION} " STREQUAL " ")
+    if(NOT "${RMW_IMPLEMENTATION}" STREQUAL "")
       set(_middleware_implementation "${RMW_IMPLEMENTATION}")
     else()
       set(_middleware_implementation "$ENV{RMW_IMPLEMENTATION}")
