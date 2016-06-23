@@ -42,7 +42,7 @@ macro(configure_rmw_library library_target)
     # (this is already the default on Windows)
     set_target_properties(${library_target}
       PROPERTIES
-        COMPILE_FLAGS "-fvisibility=hidden -fvisibility-inlines-hidden -std=c++11"
+        COMPILE_FLAGS "-fvisibility=hidden -fvisibility-inlines-hidden"
     )
   endif()
   if(WIN32)
