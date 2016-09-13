@@ -24,8 +24,14 @@
 
 #define SAFE_FWRITE_TO_STDERR(msg) fwrite(msg, sizeof(char), sizeof(msg), stderr)
 
+#ifdef RMW_THREAD_LOCAL_PTHREAD
+#include <pthread.h>
+pthread_key_t __rmw_error_state_key;
+pthread_key_t __rmw_error_string_key;
+#else
 RMW_THREAD_LOCAL rmw_error_state_t * __rmw_error_state = NULL;
 RMW_THREAD_LOCAL char * __rmw_error_string = NULL;
+#endif
 
 static const char __error_format_string[] = "%s, at %s:%zu";
 
@@ -41,6 +47,10 @@ __rmw_reset_error(rmw_error_state_t ** error_state_ptr_ptr);
 void
 rmw_set_error_state(const char * error_string, const char * file, size_t line_number)
 {
+#ifdef RMW_THREAD_LOCAL_PTHREAD
+  rmw_error_state_t * __rmw_error_state = (rmw_error_state_t *)pthread_getspecific(__rmw_error_state_key);
+  char * __rmw_error_string = (char *)pthread_getspecific(__rmw_error_string_key);
+#endif
   rmw_error_state_t * old_error_state = __rmw_error_state;
 #if RMW_REPORT_ERROR_HANDLING_ERRORS
   const char * old_error_string = rmw_get_error_string_safe();
@@ -55,6 +65,10 @@ rmw_set_error_state(const char * error_string, const char * file, size_t line_nu
 #endif
     return;
   }
+
+#ifdef RMW_THREAD_LOCAL_PTHREAD
+  pthread_setspecific(__rmw_error_state_key, __rmw_error_state);
+#endif
   size_t error_string_length = strlen(error_string);
   // the memory must be one byte bigger to store the NULL character
   __rmw_error_state->message = (char *)malloc(error_string_length + 1);
@@ -102,12 +116,20 @@ rmw_set_error_state(const char * error_string, const char * file, size_t line_nu
 const rmw_error_state_t *
 rmw_get_error_state()
 {
+#ifdef RMW_THREAD_LOCAL_PTHREAD
+  return (rmw_error_state_t *)pthread_getspecific(__rmw_error_state_key);
+#else
   return __rmw_error_state;
+#endif
 }
 
 static void
 format_error_string()
 {
+#ifdef RMW_THREAD_LOCAL_PTHREAD
+  rmw_error_state_t * __rmw_error_state = (rmw_error_state_t *)pthread_getspecific(__rmw_error_state_key);
+  char * __rmw_error_string = (char *)pthread_getspecific(__rmw_error_string_key);
+#endif
   if (!__rmw_error_is_set(__rmw_error_state)) {
     return;
   }
@@ -116,6 +138,9 @@ format_error_string()
     __error_format_string,
     __rmw_error_state->message, __rmw_error_state->file, __rmw_error_state->line_number);
   __rmw_error_string = (char *)rmw_allocate(bytes_it_would_have_written + 1);
+#ifdef RMW_THREAD_LOCAL_PTHREAD
+  pthread_setspecific(__rmw_error_string_key, __rmw_error_string);
+#endif
   if (!__rmw_error_string) {
 #if RMW_REPORT_ERROR_HANDLING_ERRORS
     // rmw_allocate failed, but fwrite might work?
@@ -136,6 +161,9 @@ format_error_string()
 const char *
 rmw_get_error_string()
 {
+#ifdef RMW_THREAD_LOCAL_PTHREAD
+  char * __rmw_error_string = (char *)pthread_getspecific(__rmw_error_string_key);
+#endif
   if (!__rmw_error_string) {
     format_error_string();
   }
@@ -151,6 +179,9 @@ __rmw_error_is_set(rmw_error_state_t * error_state)
 bool
 rmw_error_is_set()
 {
+#ifdef RMW_THREAD_LOCAL_PTHREAD
+  rmw_error_state_t * __rmw_error_state = (rmw_error_state_t *)pthread_getspecific(__rmw_error_state_key);
+#endif
   return __rmw_error_is_set(__rmw_error_state);
 }
 
@@ -194,6 +225,10 @@ __rmw_reset_error(rmw_error_state_t ** error_state_ptr_ptr)
 void
 rmw_reset_error()
 {
+#ifdef RMW_THREAD_LOCAL_PTHREAD
+  rmw_error_state_t * __rmw_error_state = (rmw_error_state_t *)pthread_getspecific(__rmw_error_state_key);
+  char * __rmw_error_string = (char *)pthread_getspecific(__rmw_error_string_key);
+#endif
   __rmw_reset_error_string(&__rmw_error_string);
   __rmw_reset_error(&__rmw_error_state);
 }

@@ -17,8 +17,21 @@
 
 #if defined _WIN32 || defined __CYGWIN__
   #define RMW_THREAD_LOCAL __declspec(thread)
+#elif defined __APPLE__
+  #include <Availability.h>
+  #if defined(__IPHONE_OS_VERSION_MIN_REQUIRED)
+    // iOS 10 added support for thread local storage
+    #if __IPHONE_OS_VERSION_MAX_ALLOWED < 100000
+      #define RMW_THREAD_LOCAL_PTHREAD 1
+      #define RMW_THREAD_LOCAL
+    #endif
+  #endif
+
+  #ifndef RMW_THREAD_LOCAL_PTHREAD
+    #define RMW_THREAD_LOCAL _Thread_local
+  #endif
 #else
-  #define RMW_THREAD_LOCAL __thread
+  #define RMW_THREAD_LOCAL _Thread_local
 #endif
 
 #define RMW_STRINGIFY_IMPL(x) #x

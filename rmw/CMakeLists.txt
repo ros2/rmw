@@ -29,6 +29,10 @@ ament_export_dependencies(rosidl_generator_c)
 ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})
 
+if(IOS AND IOS_SDK_VERSION LESS 10.0)
+  ament_export_libraries(pthread)
+endif()
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
