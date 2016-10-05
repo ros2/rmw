@@ -2,12 +2,12 @@ cmake_minimum_required(VERSION 3.5)
 
 project(rmw C)
 
-find_package(ament_cmake REQUIRED)
+find_package(ament_cmake_ros REQUIRED)
 
 include(cmake/configure_rmw_library.cmake)
 
 include_directories(include)
-add_library(${PROJECT_NAME} SHARED
+add_library(${PROJECT_NAME}
   "src/allocators.c"
   "src/error_handling.c"
   "src/validate_topic_name.c"
