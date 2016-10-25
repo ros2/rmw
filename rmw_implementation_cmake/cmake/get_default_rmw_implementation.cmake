@@ -32,8 +32,15 @@ macro(get_default_rmw_implementation var)
   if("${RMW_IMPLEMENTATION}" STREQUAL "" AND
     "$ENV{RMW_IMPLEMENTATION}" STREQUAL ""
   )
-    # TODO detemine "default" implementation based on the available ones
-    list(GET _middleware_implementations 0 _middleware_implementation)
+    # prefer FastRTPS, otherwise first in alphabetical order
+    # the same logic is implemented in
+    # rclpy.impl.rmw_implementation_tools.import_rmw_implementation()
+    list(FIND _middleware_implementations "rmw_fastrtps_cpp" _index)
+    if(NOT _index EQUAL -1)
+      list(GET _middleware_implementations ${_index} _middleware_implementation)
+    else()
+      list(GET _middleware_implementations 0 _middleware_implementation)
+    endif()
   else()
     if(NOT "${RMW_IMPLEMENTATION}" STREQUAL "")
       set(_middleware_implementation "${RMW_IMPLEMENTATION}")
