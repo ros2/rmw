@@ -22,21 +22,22 @@
 
 //  Test that a rmw_topic_names_and_types_t struct is zero initialized
 rmw_ret_t
-rmw_check_zero_rmw_topic_names_and_types(rmw_topic_names_and_types_t * tnat)
+rmw_check_zero_rmw_topic_names_and_types(
+  rmw_topic_names_and_types_t * topic_names_and_types)
 {
-  if (!tnat) {
+  if (!topic_names_and_types) {
     RMW_SET_ERROR_MSG("null topics_names_and_types");
     return RMW_RET_ERROR;
   }
-  if (tnat->topic_count != 0) {
+  if (topic_names_and_types->topic_count != 0) {
     RMW_SET_ERROR_MSG("topic count is not zero");
     return RMW_RET_ERROR;
   }
-  if (tnat->topic_names) {
+  if (topic_names_and_types->topic_names) {
     RMW_SET_ERROR_MSG("topic names is not null");
     return RMW_RET_ERROR;
   }
-  if (tnat->type_names) {
+  if (topic_names_and_types->type_names) {
     RMW_SET_ERROR_MSG("type names is not null");
     return RMW_RET_ERROR;
   }
