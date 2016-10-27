@@ -24,4 +24,10 @@
 #define RMW_STRINGIFY_IMPL(x) #x
 #define RMW_STRINGIFY(x) RMW_STRINGIFY_IMPL(x)
 
+#ifndef _WIN32
+#define RMW_WARN_UNUSED __attribute__((warn_unused_result))
+#else
+#define RMW_WARN_UNUSED _Check_return_
+#endif
+
 #endif  // RMW__MACROS_H_

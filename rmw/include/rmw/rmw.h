@@ -20,12 +20,6 @@ extern "C"
 {
 #endif
 
-#ifndef _WIN32
-#define RMW_WARN_UNUSED __attribute__((warn_unused_result))
-#else
-#define RMW_WARN_UNUSED _Check_return_
-#endif
-
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
