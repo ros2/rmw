@@ -27,6 +27,7 @@ extern "C"
 #include "rosidl_generator_c/message_type_support_struct.h"
 #include "rosidl_generator_c/service_type_support.h"
 
+#include "rmw/macros.h"
 #include "rmw/qos_profiles.h"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
