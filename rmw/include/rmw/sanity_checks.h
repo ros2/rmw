@@ -25,6 +25,7 @@ extern "C"
 
 ///  Check that a rmw_topic_names_and_types_t struct is zero initialized
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_check_zero_rmw_topic_names_and_types(rmw_topic_names_and_types_t * tnat);
 
