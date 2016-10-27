@@ -20,6 +20,7 @@ extern "C"
 {
 #endif
 
+#include "rmw/macros.h"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
 
