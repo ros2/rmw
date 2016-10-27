@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "rmw/allocators.h"
+
 #include <stdlib.h>
 #include <string.h>
 
-#include "rmw/allocators.h"
 #include "rmw/types.h"
 
 void *
