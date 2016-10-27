@@ -24,19 +24,19 @@
 rmw_ret_t
 rmw_check_zero_rmw_topic_names_and_types(rmw_topic_names_and_types_t * tnat)
 {
-  if(!tnat) {
+  if (!tnat) {
     RMW_SET_ERROR_MSG("null topics_names_and_types");
     return RMW_RET_ERROR;
   }
-  if(tnat->topic_count != 0) {
+  if (tnat->topic_count != 0) {
     RMW_SET_ERROR_MSG("topic count is not zero");
     return RMW_RET_ERROR;
   }
-  if(tnat->topic_names) {
+  if (tnat->topic_names) {
     RMW_SET_ERROR_MSG("topic names is not null");
     return RMW_RET_ERROR;
   }
-  if(tnat->type_names) {
+  if (tnat->type_names) {
     RMW_SET_ERROR_MSG("type names is not null");
     return RMW_RET_ERROR;
   }
