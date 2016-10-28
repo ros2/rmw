@@ -20,13 +20,12 @@
 #include "rmw/error_handling.h"
 #include "rmw/types.h"
 
-//  Test that a rmw_topic_names_and_types_t struct is zero initialized
 rmw_ret_t
 rmw_check_zero_rmw_topic_names_and_types(
   rmw_topic_names_and_types_t * topic_names_and_types)
 {
   if (!topic_names_and_types) {
-    RMW_SET_ERROR_MSG("null topics_names_and_types");
+    RMW_SET_ERROR_MSG("topic_names_and_types is null");
     return RMW_RET_ERROR;
   }
   if (topic_names_and_types->topic_count != 0) {
