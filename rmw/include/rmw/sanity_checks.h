@@ -1,4 +1,4 @@
-// Copyright 2015 Open Source Robotics Foundation, Inc.
+// Copyright 2016 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,22 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__MACROS_H_
-#define RMW__MACROS_H_
+#ifndef RMW__SANITY_CHECKS_H_
+#define RMW__SANITY_CHECKS_H_
 
-#if defined _WIN32 || defined __CYGWIN__
-  #define RMW_THREAD_LOCAL __declspec(thread)
-#else
-  #define RMW_THREAD_LOCAL __thread
+#if __cplusplus
+extern "C"
+{
 #endif
 
-#define RMW_STRINGIFY_IMPL(x) #x
-#define RMW_STRINGIFY(x) RMW_STRINGIFY_IMPL(x)
+#include "rmw/macros.h"
+#include "rmw/types.h"
+#include "rmw/visibility_control.h"
 
-#ifndef _WIN32
-#define RMW_WARN_UNUSED __attribute__((warn_unused_result))
-#else
-#define RMW_WARN_UNUSED _Check_return_
+/// Check that a rmw_topic_names_and_types_t struct is zero initialized
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_check_zero_rmw_topic_names_and_types(rmw_topic_names_and_types_t * tnat);
+
+#if __cplusplus
+}
 #endif
 
-#endif  // RMW__MACROS_H_
+#endif  // RMW__SANITY_CHECKS_H_

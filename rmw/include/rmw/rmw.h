@@ -20,12 +20,6 @@ extern "C"
 {
 #endif
 
-#ifndef _WIN32
-#define RMW_WARN_UNUSED __attribute__((warn_unused_result))
-#else
-#define RMW_WARN_UNUSED _Check_return_
-#endif
-
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -33,6 +27,7 @@ extern "C"
 #include "rosidl_generator_c/message_type_support_struct.h"
 #include "rosidl_generator_c/service_type_support.h"
 
+#include "rmw/macros.h"
 #include "rmw/qos_profiles.h"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
