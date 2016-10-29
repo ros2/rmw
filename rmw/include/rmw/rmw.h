@@ -139,7 +139,7 @@ rmw_create_client(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_destroy_client(rmw_client_t * client);
+rmw_destroy_client(rmw_node_t * node, rmw_client_t * client);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -170,7 +170,7 @@ rmw_create_service(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_destroy_service(rmw_service_t * service);
+rmw_destroy_service(rmw_node_t * node, rmw_service_t * service);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
