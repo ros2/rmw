@@ -40,7 +40,7 @@ static const rmw_qos_profile_t rmw_qos_profile_parameters =
 
 static const rmw_qos_profile_t rmw_qos_profile_default =
 {
-  RMW_QOS_POLICY_KEEP_ALL_HISTORY,
+  RMW_QOS_POLICY_KEEP_LAST_HISTORY,
   10,
   RMW_QOS_POLICY_RELIABLE,
   RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT
