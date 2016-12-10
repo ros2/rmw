@@ -27,7 +27,7 @@ static const rmw_qos_profile_t rmw_qos_profile_sensor_data =
   RMW_QOS_POLICY_KEEP_LAST_HISTORY,
   5,
   RMW_QOS_POLICY_BEST_EFFORT,
-  RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT
+  RMW_QOS_POLICY_VOLATILE_DURABILITY
 };
 
 static const rmw_qos_profile_t rmw_qos_profile_parameters =
@@ -35,7 +35,7 @@ static const rmw_qos_profile_t rmw_qos_profile_parameters =
   RMW_QOS_POLICY_KEEP_LAST_HISTORY,
   1000,
   RMW_QOS_POLICY_RELIABLE,
-  RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT
+  RMW_QOS_POLICY_VOLATILE_DURABILITY
 };
 
 static const rmw_qos_profile_t rmw_qos_profile_default =
@@ -43,7 +43,7 @@ static const rmw_qos_profile_t rmw_qos_profile_default =
   RMW_QOS_POLICY_KEEP_LAST_HISTORY,
   10,
   RMW_QOS_POLICY_RELIABLE,
-  RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT
+  RMW_QOS_POLICY_VOLATILE_DURABILITY
 };
 
 static const rmw_qos_profile_t rmw_qos_profile_services_default =
@@ -59,7 +59,7 @@ static const rmw_qos_profile_t rmw_qos_profile_parameter_events =
   RMW_QOS_POLICY_KEEP_ALL_HISTORY,
   1000,
   RMW_QOS_POLICY_RELIABLE,
-  RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT
+  RMW_QOS_POLICY_VOLATILE_DURABILITY
 };
 
 static const rmw_qos_profile_t rmw_qos_profile_system_default =
