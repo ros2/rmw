@@ -51,7 +51,7 @@ static const rmw_qos_profile_t rmw_qos_profile_services_default =
   RMW_QOS_POLICY_HISTORY_KEEP_LAST,
   10,
   RMW_QOS_POLICY_RELIABILITY_RELIABLE,
-  RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL
+  RMW_QOS_POLICY_DURABILITY_VOLATILE
 };
 
 static const rmw_qos_profile_t rmw_qos_profile_parameter_events =
