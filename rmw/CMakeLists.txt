@@ -10,7 +10,9 @@ include_directories(include)
 add_library(${PROJECT_NAME} SHARED
   "src/allocators.c"
   "src/error_handling.c"
-  "src/sanity_checks.c")
+  "src/impl/getenv.c"
+  "src/sanity_checks.c"
+)
 configure_rmw_library(${PROJECT_NAME})
 
 ament_export_dependencies(rosidl_generator_c)
