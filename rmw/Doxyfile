@@ -2,7 +2,7 @@
 
 PROJECT_NAME           = "rmw"
 PROJECT_NUMBER         = beta1
-PROJECT_BRIEF          = "C API providing a middleware abstraction layer on which ROS is built on top."
+PROJECT_BRIEF          = "C API providing a middleware abstraction layer which is used to implement the rest of ROS."
 
 INPUT                  = ./include
 RECURSIVE              = YES

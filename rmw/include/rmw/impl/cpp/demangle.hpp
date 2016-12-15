@@ -33,6 +33,7 @@ namespace impl
 namespace cpp
 {
 
+/// Return the demangle name of the instance of type T.
 template<typename T>
 std::string
 demangle(const T & instance)
