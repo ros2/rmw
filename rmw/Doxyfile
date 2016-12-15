@@ -1,0 +1,17 @@
+# All settings not listed here will use the Doxygen default values.
+
+PROJECT_NAME           = "rmw"
+PROJECT_NUMBER         = beta1
+PROJECT_BRIEF          = "C API providing a middleware abstraction layer on which ROS is built on top."
+
+INPUT                  = ./include
+RECURSIVE              = YES
+OUTPUT_DIRECTORY       = doc_output
+
+EXTRACT_ALL            = YES
+SORT_MEMBER_DOCS       = NO
+
+GENERATE_LATEX         = NO
+
+TAGFILES += "../../../../doxygen_tag_files/cppreference-doxygen-web.tag.xml=http://en.cppreference.com/w/"
+GENERATE_TAGFILE = "../../../../doxygen_tag_files/rmw.tag"
