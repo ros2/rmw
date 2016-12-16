@@ -13,6 +13,12 @@ SORT_MEMBER_DOCS       = NO
 
 GENERATE_LATEX         = NO
 
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = YES
+EXPAND_ONLY_PREDEF     = YES
+PREDEFINED             += RMW_PUBLIC=
+PREDEFINED             += RMW_WARN_UNUSED=
+
 # Tag files that do not exist will produce a warning and cross-project linking will not work.
 TAGFILES += "../../../../doxygen_tag_files/cppreference-doxygen-web.tag.xml=http://en.cppreference.com/w/"
 # Uncomment to generate tag files for cross-project linking.
