@@ -95,7 +95,10 @@ rmw_create_node(const char * name, const char * namespace_, size_t domain_id);
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_node_t *
-rmw_create_secure_node(const char * name, size_t domain_id, char ** security_files_paths);
+rmw_create_secure_node(
+  const char * name,
+  size_t domain_id,
+  const char * security_root_path);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
