@@ -192,6 +192,12 @@ typedef struct RMW_PUBLIC_TYPE rmw_topic_names_and_types_t
   char ** type_names;
 } rmw_topic_names_and_types_t;
 
+typedef struct RMW_PUBLIC_TYPE rmw_node_names_t
+{
+  size_t node_count;
+  char ** names;
+} rmw_node_names_t;
+
 typedef struct RMW_PUBLIC_TYPE rmw_gid_t
 {
   const char * implementation_identifier;

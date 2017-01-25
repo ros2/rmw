@@ -42,3 +42,22 @@ rmw_check_zero_rmw_topic_names_and_types(
   }
   return RMW_RET_OK;
 }
+
+rmw_ret_t
+rmw_check_zero_rmw_node_names(
+  rmw_node_names_t * node_names)
+{
+  if (!node_names) {
+    RMW_SET_ERROR_MSG("node_names_t is null");
+    return RMW_RET_ERROR;
+  }
+  if (node_names->node_count != 0) {
+    RMW_SET_ERROR_MSG("node count is not zero");
+    return RMW_RET_ERROR;
+  }
+  if (node_names->names) {
+    RMW_SET_ERROR_MSG("node names is not null");
+    return RMW_RET_ERROR;
+  }
+  return RMW_RET_OK;
+}

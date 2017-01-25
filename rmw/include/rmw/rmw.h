@@ -334,6 +334,19 @@ rmw_destroy_topic_names_and_types(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
+rmw_get_node_names(
+  const rmw_node_t * node,
+  rmw_node_names_t * node_names);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_destroy_node_names(
+  rmw_node_names_t * node_names);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
 rmw_count_publishers(
   const rmw_node_t * node,
   const char * topic_name,
