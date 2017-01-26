@@ -34,7 +34,7 @@ rmw_check_zero_rmw_topic_names_and_types(rmw_topic_names_and_types_t * tnat);
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_check_zero_rmw_node_names(rmw_node_names_t * node_names);
+rmw_check_zero_rmw_string_array(rmw_string_array_t * array);
 
 #if __cplusplus
 }

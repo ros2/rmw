@@ -336,13 +336,13 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_get_node_names(
   const rmw_node_t * node,
-  rmw_node_names_t * node_names);
+  rmw_string_array_t * node_names);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_node_names(
-  rmw_node_names_t * node_names);
+  rmw_string_array_t * node_names);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
