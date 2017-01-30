@@ -1,4 +1,4 @@
-// Copyright 2014 Open Source Robotics Foundation, Inc.
+// Copyright 2014-2017 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -191,6 +191,12 @@ typedef struct RMW_PUBLIC_TYPE rmw_topic_names_and_types_t
   char ** topic_names;
   char ** type_names;
 } rmw_topic_names_and_types_t;
+
+typedef struct RMW_PUBLIC_TYPE rmw_string_array_t
+{
+  size_t size;
+  char ** data;
+} rmw_string_array_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_gid_t
 {

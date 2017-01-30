@@ -1,4 +1,4 @@
-// Copyright 2014 Open Source Robotics Foundation, Inc.
+// Copyright 2014-2017 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -330,6 +330,19 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_topic_names_and_types(
   rmw_topic_names_and_types_t * topic_names_and_types);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_get_node_names(
+  const rmw_node_t * node,
+  rmw_string_array_t * node_names);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_destroy_node_names(
+  rmw_string_array_t * node_names);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED

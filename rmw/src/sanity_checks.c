@@ -1,4 +1,4 @@
-// Copyright 2016 Open Source Robotics Foundation, Inc.
+// Copyright 2016-2017 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -38,6 +38,25 @@ rmw_check_zero_rmw_topic_names_and_types(
   }
   if (topic_names_and_types->type_names) {
     RMW_SET_ERROR_MSG("type names is not null");
+    return RMW_RET_ERROR;
+  }
+  return RMW_RET_OK;
+}
+
+rmw_ret_t
+rmw_check_zero_rmw_string_array(
+  rmw_string_array_t * array)
+{
+  if (!array) {
+    RMW_SET_ERROR_MSG("array is null");
+    return RMW_RET_ERROR;
+  }
+  if (array->size != 0) {
+    RMW_SET_ERROR_MSG("array size is not zero");
+    return RMW_RET_ERROR;
+  }
+  if (array->data) {
+    RMW_SET_ERROR_MSG("array data is not null");
     return RMW_RET_ERROR;
   }
   return RMW_RET_OK;
