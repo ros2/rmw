@@ -66,13 +66,26 @@
 }
 
 #if RMW_AVOID_MEMORY_ALLOCATION
+#define PRINT_TYPE_SUPPORT_MISMATCH() #ElementName \
+  " implementation '%s'(%p) does not match type support implementation '%s'(%p)", \
+  ElementTypeID, ElementTypeID, ExpectedTypeID, ExpectedTypeID
+
+#define PRINT_RMW_IMPL_MISMATCH() #ElementName \
+  " implementation '%s'(%p) does not match rmw implementation '%s'(%p)", \
+  ElementTypeID, ElementTypeID, ExpectedTypeID, ExpectedTypeID
+
 #define RMW_CHECK_TYPE_IDENTIFIERS_MATCH(ElementName, ElementTypeID, ExpectedTypeID, OnFailure) { \
   if (ElementTypeID != ExpectedTypeID) { \
     char __msg[1024]; \
-    snprintf( \
-      __msg, 1024, \
-      #ElementName " implementation '%s'(%p) does not match rmw implementation '%s'(%p)", \
-      ElementTypeID, ElementTypeID, ExpectedTypeID, ExpectedTypeID); \
+    if(!strcmp(#ElementName, "type support")) { \
+      snprintf( \
+        __msg, 1024, \
+        PRINT_TYPE_SUPPORT_MISMATCH()); \
+    } else { \
+      snprintf( \
+        __msg, 1024, \
+        PRINT_RMW_IMPL_MISMATCH()); \
+    } \
     RMW_SET_ERROR_MSG(__msg); \
     OnFailure; \
   } \
@@ -80,16 +93,27 @@
 #else  // RMW_AVOID_MEMORY_ALLOCATION
 #define RMW_CHECK_TYPE_IDENTIFIERS_MATCH(ElementName, ElementTypeID, ExpectedTypeID, OnFailure) { \
   if (ElementTypeID != ExpectedTypeID) { \
-    size_t __bytes_that_would_have_been_written = snprintf( \
-      NULL, 0, \
-      #ElementName " implementation '%s'(%p) does not match rmw implementation '%s'(%p)", \
-      ElementTypeID, ElementTypeID, ExpectedTypeID, ExpectedTypeID); \
+    size_t __bytes_that_would_have_been_written; \
+    if(!strcmp(#ElementName, "type support")) { \
+      __bytes_that_would_have_been_written = snprintf( \
+        NULL, 0, \
+        PRINT_TYPE_SUPPORT_MISMATCH()); \
+    } else { \
+      __bytes_that_would_have_been_written = snprintf( \
+        NULL, 0, \
+        PRINT_RMW_IMPL_MISMATCH()); \
+    } \
     char * __msg = \
       reinterpret_cast<char *>(rmw_allocate(__bytes_that_would_have_been_written + 1)); \
-    snprintf( \
-      __msg, __bytes_that_would_have_been_written + 1, \
-      #ElementName " implementation '%s'(%p) does not match rmw implementation '%s'(%p)", \
-      ElementTypeID, ElementTypeID, ExpectedTypeID, ExpectedTypeID); \
+    if(!strcmp(#ElementName, "type support")) { \
+      snprintf( \
+        __msg, __bytes_that_would_have_been_written + 1, \
+        PRINT_TYPE_SUPPORT_MISMATCH()); \
+    } else{ \
+      snprintf( \
+        __msg, __bytes_that_would_have_been_written + 1, \
+        PRINT_RMW_IMPL_MISMATCH()); \
+    } \
     RMW_SET_ERROR_MSG(__msg); \
     rmw_free(__msg); \
     OnFailure; \
