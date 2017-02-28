@@ -72,7 +72,8 @@
     snprintf( \
       __msg, 1024, \
       #ElementName " implementation '%s'(%p) does not match rmw implementation '%s'(%p)", \
-      ElementTypeID, ElementTypeID, ExpectedTypeID, ExpectedTypeID); \
+      ElementTypeID, reinterpret_cast<const void *>(ElementTypeID), \
+      ExpectedTypeID, reinterpret_cast<const void *>(ExpectedTypeID)); \
     RMW_SET_ERROR_MSG(__msg); \
     OnFailure; \
   } \
@@ -83,13 +84,15 @@
     size_t __bytes_that_would_have_been_written = snprintf( \
       NULL, 0, \
       #ElementName " implementation '%s'(%p) does not match rmw implementation '%s'(%p)", \
-      ElementTypeID, ElementTypeID, ExpectedTypeID, ExpectedTypeID); \
+      ElementTypeID, reinterpret_cast<const void *>(ElementTypeID), \
+      ExpectedTypeID, reinterpret_cast<const void *>(ExpectedTypeID)); \
     char * __msg = \
       reinterpret_cast<char *>(rmw_allocate(__bytes_that_would_have_been_written + 1)); \
     snprintf( \
       __msg, __bytes_that_would_have_been_written + 1, \
       #ElementName " implementation '%s'(%p) does not match rmw implementation '%s'(%p)", \
-      ElementTypeID, ElementTypeID, ExpectedTypeID, ExpectedTypeID); \
+      ElementTypeID, reinterpret_cast<const void *>(ElementTypeID), \
+      ExpectedTypeID, reinterpret_cast<const void *>(ExpectedTypeID)); \
     RMW_SET_ERROR_MSG(__msg); \
     rmw_free(__msg); \
     OnFailure; \
