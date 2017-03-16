@@ -31,6 +31,11 @@ typedef int rmw_ret_t;
 #define RMW_RET_ERROR 1
 #define RMW_RET_TIMEOUT 2
 
+/// Failed to allocate memory return code.
+#define RMW_RET_BAD_ALLOC 10
+/// Invalid argument return code.
+#define RMW_RET_INVALID_ARGUMENT 11
+
 // 24 bytes is the most memory needed to represent the GID by any current
 // implementation. It may need to be increased in the future.
 #define RMW_GID_STORAGE_SIZE 24
