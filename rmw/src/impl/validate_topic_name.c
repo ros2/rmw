@@ -91,9 +91,9 @@ rmw_impl_validate_topic_name(
     }
   }
   // check if the topic name is too long last, since it might be a soft invalidation
-  if (topic_name_length > RMW_IMPL_MAX_TOPIC_NAME_LEGNTH) {
+  if (topic_name_length > RMW_IMPL_MAX_TOPIC_NAME_LENGTH) {
     *validation_result = RMW_IMPL_INVALID_TOPIC_TOO_LONG;
-    *invalid_index = RMW_IMPL_MAX_TOPIC_NAME_LEGNTH - 1;
+    *invalid_index = RMW_IMPL_MAX_TOPIC_NAME_LENGTH - 1;
     return RMW_RET_OK;
   }
   // everything was ok, set result to valid topic, avoid setting invalid_index, and return
@@ -120,7 +120,7 @@ rmw_impl_validation_result_string(int validation_result)
     case RMW_IMPL_INVALID_TOPIC_NAME_TOKEN_STARTS_WITH_NUMBER:
       return "topic name must not have a token that starts with a number";
     case RMW_IMPL_INVALID_TOPIC_TOO_LONG:
-      return "topic length should not exceed '" RMW_STRINGIFY(RMW_IMPL_MAX_TOPIC_NAME_LEGNTH) "'";
+      return "topic length should not exceed '" RMW_STRINGIFY(RMW_IMPL_MAX_TOPIC_NAME_LENGTH) "'";
     default:
       return NULL;
   }

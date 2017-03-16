@@ -160,7 +160,7 @@ TEST(test_impl_validate_topic_name, topic_too_long) {
   rmw_ret_t ret;
 
   // Ensure the length is not the first error
-  std::string invalid_and_long_topic(RMW_IMPL_MAX_TOPIC_NAME_LEGNTH, 'a');
+  std::string invalid_and_long_topic(RMW_IMPL_MAX_TOPIC_NAME_LENGTH, 'a');
   ret = rmw_impl_validate_topic_name(
     invalid_and_long_topic.c_str(), &validation_result, &invalid_index);
   ASSERT_EQ(RMW_RET_OK, ret);
@@ -172,7 +172,7 @@ TEST(test_impl_validate_topic_name, topic_too_long) {
     valid_but_long_topic.c_str(), &validation_result, &invalid_index);
   ASSERT_EQ(RMW_RET_OK, ret);
   EXPECT_EQ(RMW_IMPL_INVALID_TOPIC_TOO_LONG, validation_result);
-  EXPECT_EQ(RMW_IMPL_MAX_TOPIC_NAME_LEGNTH - 1, invalid_index);
+  EXPECT_EQ(RMW_IMPL_MAX_TOPIC_NAME_LENGTH - 1, invalid_index);
 
   ASSERT_NE((char *)NULL, rmw_impl_validation_result_string(validation_result));
 }
