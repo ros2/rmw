@@ -16,7 +16,7 @@
 
 #include "gmock/gmock.h"
 
-#include "../../src/impl/isalnum_no_locale.h"
+#include "../src/isalnum_no_locale.h"
 
 TEST(test_isalnum_no_locale, valid_characters_ok) {
   std::string valid("0123456789" "ABCDEFGHIJKLMNOPQRSTUVWXYZ" "abcdefghijklmnopqrstuvwxyz");

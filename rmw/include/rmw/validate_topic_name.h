@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__IMPL__VALIDATE_TOPIC_NAME_H_
-#define RMW__IMPL__VALIDATE_TOPIC_NAME_H_
+#ifndef RMW__VALIDATE_TOPIC_NAME_H_
+#define RMW__VALIDATE_TOPIC_NAME_H_
 
 #if __cplusplus
 extern "C"
@@ -23,16 +23,16 @@ extern "C"
 #include "rmw/macros.h"
 #include "rmw/types.h"
 
-#define RMW_IMPL_VALID_TOPIC 0
-#define RMW_IMPL_INVALID_TOPIC_IS_EMPTY_STRING 1
-#define RMW_IMPL_INVALID_TOPIC_NOT_ABSOLUTE 2
-#define RMW_IMPL_INVALID_TOPIC_ENDS_WITH_FORWARD_SLASH 3
-#define RMW_IMPL_INVALID_TOPIC_CONTAINS_UNALLOWED_CHARACTERS 4
-#define RMW_IMPL_INVALID_TOPIC_CONTAINS_REPEATED_FORWARD_SLASH 5
-#define RMW_IMPL_INVALID_TOPIC_NAME_TOKEN_STARTS_WITH_NUMBER 6
-#define RMW_IMPL_INVALID_TOPIC_TOO_LONG 7
+#define RMW_VALID_TOPIC 0
+#define RMW_INVALID_TOPIC_IS_EMPTY_STRING 1
+#define RMW_INVALID_TOPIC_NOT_ABSOLUTE 2
+#define RMW_INVALID_TOPIC_ENDS_WITH_FORWARD_SLASH 3
+#define RMW_INVALID_TOPIC_CONTAINS_UNALLOWED_CHARACTERS 4
+#define RMW_INVALID_TOPIC_CONTAINS_REPEATED_FORWARD_SLASH 5
+#define RMW_INVALID_TOPIC_NAME_TOKEN_STARTS_WITH_NUMBER 6
+#define RMW_INVALID_TOPIC_TOO_LONG 7
 
-#define RMW_IMPL_MAX_TOPIC_NAME_LENGTH 255 /* impl constraint */ - 8 /* reserved for prefixes */
+#define RMW_MAX_TOPIC_NAME_LENGTH 255 /* impl constraint */ - 8 /* reserved for prefixes */
 
 /// Determine if a given fully qualified topic name is valid.
 /** Validity of a FQN for topic is determined based on rules defined here:
@@ -56,19 +56,19 @@ extern "C"
  * The int which validation_result points to will have a one of a few possible
  * results values (defined with macros) stored into it:
  *
- * - RMW_IMPL_VALID_TOPIC
- * - RMW_IMPL_INVALID_TOPIC_IS_EMPTY_STRING
- * - RMW_IMPL_INVALID_TOPIC_NOT_ABSOLUTE
- * - RMW_IMPL_INVALID_TOPIC_ENDS_WITH_FORWARD_SLASH
- * - RMW_IMPL_INVALID_TOPIC_CONTAINS_UNALLOWED_CHARACTERS
- * - RMW_IMPL_INVALID_TOPIC_CONTAINS_REPEATED_FORWARD_SLASH
- * - RMW_IMPL_INVALID_TOPIC_NAME_TOKEN_STARTS_WITH_NUMBER
- * - RMW_IMPL_INVALID_TOPIC_TOO_LONG
+ * - RMW_VALID_TOPIC
+ * - RMW_INVALID_TOPIC_IS_EMPTY_STRING
+ * - RMW_INVALID_TOPIC_NOT_ABSOLUTE
+ * - RMW_INVALID_TOPIC_ENDS_WITH_FORWARD_SLASH
+ * - RMW_INVALID_TOPIC_CONTAINS_UNALLOWED_CHARACTERS
+ * - RMW_INVALID_TOPIC_CONTAINS_REPEATED_FORWARD_SLASH
+ * - RMW_INVALID_TOPIC_NAME_TOKEN_STARTS_WITH_NUMBER
+ * - RMW_INVALID_TOPIC_TOO_LONG
  *
  * The result value can be converted to a description with the
- * rmw_impl_validation_result_string() function.
+ * rmw_validation_result_string() function.
  *
- * The `RMW_IMPL_INVALID_TOPIC_TOO_LONG` is guaranteed to be checked last, such
+ * The `RMW_INVALID_TOPIC_TOO_LONG` is guaranteed to be checked last, such
  * that if you get that result, then you can assume all other checks succeeded.
  * This is done so that the length limit can be treated as a warning rather
  * than an error if desired.
@@ -83,7 +83,7 @@ extern "C"
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_impl_validate_topic_name(
+rmw_validate_topic_name(
   const char * topic_name,
   int * validation_result,
   size_t * invalid_index);
@@ -92,10 +92,10 @@ rmw_impl_validate_topic_name(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 const char *
-rmw_impl_validation_result_string(int validation_result);
+rmw_validation_result_string(int validation_result);
 
 #if __cplusplus
 }
 #endif
 
-#endif  // RMW__IMPL__VALIDATE_TOPIC_NAME_H_
+#endif  // RMW__VALIDATE_TOPIC_NAME_H_
