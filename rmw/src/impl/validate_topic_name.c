@@ -17,6 +17,8 @@
 #include <ctype.h>
 #include <string.h>
 
+#include "./isalnum_no_locale.h"
+
 rmw_ret_t
 rmw_impl_validate_topic_name(
   const char * topic_name,
@@ -52,9 +54,8 @@ rmw_impl_validate_topic_name(
   }
   // check for unallowed characters
   for (size_t i = 0; i < topic_name_length; ++i) {
-    // TODO(wjwwood): isalnum is affected by the locale, need to see if this is an issue for us
-    if (isalnum(topic_name[i]) != 0) {
-      // if it is an alpha numeric character, i.e. [0-9,a-z,A-Z], continue
+    if (isalnum_no_locale(topic_name[i])) {
+      // if it is an alpha numeric character, i.e. [0-9|A-Z|a-z], continue
       continue;
     } else if (topic_name[i] == '_') {
       // if it is an underscore, continue

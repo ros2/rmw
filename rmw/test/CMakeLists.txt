@@ -17,6 +17,21 @@ if(TARGET test_error_handling)
   endif()
 endif()
 
+ament_add_gmock(test_impl_isalnum_no_locale
+  impl/test_isalnum_no_locale.cpp
+  # Append the directory of librmw so it is found at test time.
+  APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+)
+if(TARGET test_impl_isalnum_no_locale)
+  target_link_libraries(test_impl_isalnum_no_locale ${PROJECT_NAME})
+  if(UNIX AND NOT APPLE)
+    target_link_libraries(test_impl_isalnum_no_locale pthread)
+  endif()
+  if(NOT WIN32)
+    set_target_properties(test_impl_isalnum_no_locale PROPERTIES COMPILE_FLAGS "-std=c++14")
+  endif()
+endif()
+
 ament_add_gmock(test_impl_validate_topic_name
   impl/test_validate_topic_name.cpp
   # Append the directory of librmw so it is found at test time.
