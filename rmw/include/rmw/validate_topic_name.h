@@ -23,16 +23,16 @@ extern "C"
 #include "rmw/macros.h"
 #include "rmw/types.h"
 
-#define RMW_VALID_TOPIC 0
-#define RMW_INVALID_TOPIC_IS_EMPTY_STRING 1
-#define RMW_INVALID_TOPIC_NOT_ABSOLUTE 2
-#define RMW_INVALID_TOPIC_ENDS_WITH_FORWARD_SLASH 3
-#define RMW_INVALID_TOPIC_CONTAINS_UNALLOWED_CHARACTERS 4
-#define RMW_INVALID_TOPIC_CONTAINS_REPEATED_FORWARD_SLASH 5
-#define RMW_INVALID_TOPIC_NAME_TOKEN_STARTS_WITH_NUMBER 6
-#define RMW_INVALID_TOPIC_TOO_LONG 7
+#define RMW_TOPIC_VALID 0
+#define RMW_TOPIC_INVALID_IS_EMPTY_STRING 1
+#define RMW_TOPIC_INVALID_NOT_ABSOLUTE 2
+#define RMW_TOPIC_INVALID_ENDS_WITH_FORWARD_SLASH 3
+#define RMW_TOPIC_INVALID_CONTAINS_UNALLOWED_CHARACTERS 4
+#define RMW_TOPIC_INVALID_CONTAINS_REPEATED_FORWARD_SLASH 5
+#define RMW_TOPIC_INVALID_NAME_TOKEN_STARTS_WITH_NUMBER 6
+#define RMW_TOPIC_INVALID_TOO_LONG 7
 
-#define RMW_MAX_TOPIC_NAME_LENGTH 255 /* impl constraint */ - 8 /* reserved for prefixes */
+#define RMW_TOPIC_MAX_NAME_LENGTH 255 /* impl constraint */ - 8 /* reserved for prefixes */
 
 /// Determine if a given fully qualified topic name is valid.
 /** Validity of a FQN for topic is determined based on rules defined here:
@@ -57,18 +57,18 @@ extern "C"
  * results values (defined with macros) stored into it:
  *
  * - RMW_VALID_TOPIC
- * - RMW_INVALID_TOPIC_IS_EMPTY_STRING
- * - RMW_INVALID_TOPIC_NOT_ABSOLUTE
- * - RMW_INVALID_TOPIC_ENDS_WITH_FORWARD_SLASH
- * - RMW_INVALID_TOPIC_CONTAINS_UNALLOWED_CHARACTERS
- * - RMW_INVALID_TOPIC_CONTAINS_REPEATED_FORWARD_SLASH
- * - RMW_INVALID_TOPIC_NAME_TOKEN_STARTS_WITH_NUMBER
- * - RMW_INVALID_TOPIC_TOO_LONG
+ * - RMW_TOPIC_INVALID_IS_EMPTY_STRING
+ * - RMW_TOPIC_INVALID_NOT_ABSOLUTE
+ * - RMW_TOPIC_INVALID_ENDS_WITH_FORWARD_SLASH
+ * - RMW_TOPIC_INVALID_CONTAINS_UNALLOWED_CHARACTERS
+ * - RMW_TOPIC_INVALID_CONTAINS_REPEATED_FORWARD_SLASH
+ * - RMW_TOPIC_INVALID_NAME_TOKEN_STARTS_WITH_NUMBER
+ * - RMW_TOPIC_INVALID_TOO_LONG
  *
  * The result value can be converted to a description with the
  * rmw_validation_result_string() function.
  *
- * The `RMW_INVALID_TOPIC_TOO_LONG` is guaranteed to be checked last, such
+ * The `RMW_TOPIC_INVALID_TOO_LONG` is guaranteed to be checked last, such
  * that if you get that result, then you can assume all other checks succeeded.
  * This is done so that the length limit can be treated as a warning rather
  * than an error if desired.
