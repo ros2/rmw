@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef IMPL__ISALNUM_NO_LOCALE_H_
-#define IMPL__ISALNUM_NO_LOCALE_H_
+#ifndef ISALNUM_NO_LOCALE_H_
+#define ISALNUM_NO_LOCALE_H_
 
 #if __cplusplus
 extern "C"
@@ -44,4 +44,4 @@ isalnum_no_locale(char c)
 }
 #endif
 
-#endif  // IMPL__ISALNUM_NO_LOCALE_H_
+#endif  // ISALNUM_NO_LOCALE_H_
