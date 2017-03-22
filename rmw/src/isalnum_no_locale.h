@@ -21,7 +21,7 @@ extern "C"
 #endif
 
 /// Custom isalnum which is not affected by locale.
-inline
+static inline
 bool
 isalnum_no_locale(char c)
 {
