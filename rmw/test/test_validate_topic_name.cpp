@@ -160,7 +160,7 @@ TEST(test_validate_topic_name, topic_too_long) {
   rmw_ret_t ret;
 
   // Ensure the length is not the first error
-  std::string invalid_and_long_topic(RMW_TOPIC_MAX_NAME_LENGTH, 'a');
+  std::string invalid_and_long_topic(RMW_TOPIC_MAX_NAME_LENGTH + 1, 'a');
   ret = rmw_validate_topic_name(
     invalid_and_long_topic.c_str(), &validation_result, &invalid_index);
   ASSERT_EQ(RMW_RET_OK, ret);
