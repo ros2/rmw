@@ -66,7 +66,7 @@ extern "C"
  * - RMW_TOPIC_INVALID_TOO_LONG
  *
  * The result value can be converted to a description with the
- * rmw_validation_result_string() function.
+ * rmw_topic_validation_result_string() function.
  *
  * The `RMW_TOPIC_INVALID_TOO_LONG` is guaranteed to be checked last, such
  * that if you get that result, then you can assume all other checks succeeded.
@@ -92,7 +92,7 @@ rmw_validate_topic_name(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 const char *
-rmw_validation_result_string(int validation_result);
+rmw_topic_validation_result_string(int validation_result);
 
 #if __cplusplus
 }
