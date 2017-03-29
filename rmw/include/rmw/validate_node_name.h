@@ -37,7 +37,7 @@ extern "C"
  *
  * - must not be an empty string
  * - must only contain alphanumeric characters and underscores (a-z|A-Z|0-9|_)
- * - must not start with an number
+ * - must start with an alphabetical character
  *
  * If either the node name C string or validation_result pointer are null, then
  * `RMW_RET_INVALID_ARGUMENT` will be returned.
