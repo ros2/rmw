@@ -45,7 +45,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_node_t
   const char * implementation_identifier;
   void * data;
   const char * name;
-  const char * name_space;
+  const char * namespace_;
   const size_t domain_id;
 } rmw_node_t;
 
