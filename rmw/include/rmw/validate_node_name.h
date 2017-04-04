@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__VALIDATE_TOPIC_NAME_H_
-#define RMW__VALIDATE_TOPIC_NAME_H_
+#ifndef RMW__VALIDATE_NODE_NAME_H_
+#define RMW__VALIDATE_NODE_NAME_H_
 
 #if __cplusplus
 extern "C"
@@ -23,57 +23,51 @@ extern "C"
 #include "rmw/macros.h"
 #include "rmw/types.h"
 
-#define RMW_TOPIC_VALID 0
-#define RMW_TOPIC_INVALID_IS_EMPTY_STRING 1
-#define RMW_TOPIC_INVALID_NOT_ABSOLUTE 2
-#define RMW_TOPIC_INVALID_ENDS_WITH_FORWARD_SLASH 3
-#define RMW_TOPIC_INVALID_CONTAINS_UNALLOWED_CHARACTERS 4
-#define RMW_TOPIC_INVALID_CONTAINS_REPEATED_FORWARD_SLASH 5
-#define RMW_TOPIC_INVALID_NAME_TOKEN_STARTS_WITH_NUMBER 6
-#define RMW_TOPIC_INVALID_TOO_LONG 7
+#define RMW_NODE_NAME_VALID 0
+#define RMW_NODE_NAME_INVALID_IS_EMPTY_STRING 1
+#define RMW_NODE_NAME_INVALID_CONTAINS_UNALLOWED_CHARACTERS 2
+#define RMW_NODE_NAME_INVALID_STARTS_WITH_NUMBER 3
+#define RMW_NODE_NAME_INVALID_TOO_LONG 4
 
-#define RMW_TOPIC_MAX_NAME_LENGTH 255 /* impl constraint */ - 8 /* reserved for prefixes */
+#define RMW_NODE_NAME_MAX_NAME_LENGTH 255 /* arbitrary constraint */
 
-/// Determine if a given fully qualified topic name is valid.
-/** Validity of a FQN for topic is determined based on rules defined here:
+/// Determine if a node name is valid.
+/**
+ * Node names must follow these rules:
  *
- *   http://design.ros2.org/articles/topic_and_service_names.html
+ * - must not be an empty string
+ * - must only contain alphanumeric characters and underscores (a-z|A-Z|0-9|_)
+ * - must not start with an number
  *
- * Note that this function expects any URL suffixes as described in the above
- * document to have already been removed.
- *
- * If either the C string or validation_result pointer are null, then
+ * If either the node name C string or validation_result pointer are null, then
  * `RMW_RET_INVALID_ARGUMENT` will be returned.
- * The topic_name should be a valid, null-terminated C string.
+ * The node_name should be a valid, null-terminated C string.
  * The validation_result int pointer should point to valid memory so a result
  * can be stored in it as an output variable.
  * The invalid_index size_t pointer should point to valid memory so in the
  * event of a validation error, the location in the input string can be stored
  * therein.
  *
- * The invalid_index will not be assigned a value if the topic is valid.
+ * The invalid_index will not be assigned a value if the node name is valid.
  *
  * The int which validation_result points to will have a one of a few possible
  * results values (defined with macros) stored into it:
  *
- * - RMW_VALID_TOPIC
- * - RMW_TOPIC_INVALID_IS_EMPTY_STRING
- * - RMW_TOPIC_INVALID_NOT_ABSOLUTE
- * - RMW_TOPIC_INVALID_ENDS_WITH_FORWARD_SLASH
- * - RMW_TOPIC_INVALID_CONTAINS_UNALLOWED_CHARACTERS
- * - RMW_TOPIC_INVALID_CONTAINS_REPEATED_FORWARD_SLASH
- * - RMW_TOPIC_INVALID_NAME_TOKEN_STARTS_WITH_NUMBER
- * - RMW_TOPIC_INVALID_TOO_LONG
+ * - RMW_NODE_NAME_VALID
+ * - RMW_NODE_NAME_INVALID_IS_EMPTY_STRING
+ * - RMW_NODE_NAME_INVALID_CONTAINS_UNALLOWED_CHARACTERS
+ * - RMW_NODE_NAME_INVALID_STARTS_WITH_NUMBER
+ * - RMW_NODE_NAME_INVALID_TOO_LONG
  *
  * The result value can be converted to a description with the
- * rmw_topic_validation_result_string() function.
+ * rmw_node_name_validation_result_string() function.
  *
- * The `RMW_TOPIC_INVALID_TOO_LONG` is guaranteed to be checked last, such
+ * The `RMW_NODE_NAME_INVALID_TOO_LONG` is guaranteed to be checked last, such
  * that if you get that result, then you can assume all other checks succeeded.
  * This is done so that the length limit can be treated as a warning rather
  * than an error if desired.
  *
- * \param[in] topic_name topic name to be validated
+ * \param[in] node_name node name to be validated
  * \param[out] validation_result int in which the result of the check is stored
  * \param[out] invalid_index size_t index of the input string where an error occurred
  * \returns `RMW_RET_OK` on successfully running the check, or
@@ -83,19 +77,19 @@ extern "C"
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_validate_topic_name(
-  const char * topic_name,
+rmw_validate_node_name(
+  const char * node_name,
   int * validation_result,
   size_t * invalid_index);
 
-/// Return a validation result description, or NULL if unknown or RMW_TOPIC_VALID.
+/// Return a validation result description, or NULL if unknown or RMW_NODE_NAME_VALID.
 RMW_PUBLIC
 RMW_WARN_UNUSED
 const char *
-rmw_topic_validation_result_string(int validation_result);
+rmw_node_name_validation_result_string(int validation_result);
 
 #if __cplusplus
 }
 #endif
 
-#endif  // RMW__VALIDATE_TOPIC_NAME_H_
+#endif  // RMW__VALIDATE_NODE_NAME_H_
