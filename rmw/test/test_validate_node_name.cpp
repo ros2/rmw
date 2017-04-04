@@ -43,7 +43,7 @@ TEST(test_validate_node_name, valid_node_name) {
   ASSERT_EQ(RMW_RET_OK, ret);
   ASSERT_EQ(RMW_NODE_NAME_VALID, validation_result);
 
-  ASSERT_NE((char *)NULL, rmw_node_name_validation_result_string(validation_result));
+  ASSERT_EQ((char *)NULL, rmw_node_name_validation_result_string(validation_result));
 }
 
 TEST(test_validate_node_name, empty_node_name) {

@@ -82,7 +82,7 @@ rmw_validate_node_name(
   int * validation_result,
   size_t * invalid_index);
 
-/// Return a string to describe the validation result, or NULL if unknown.
+/// Return a validation result description, or NULL if unknown or RMW_NODE_NAME_VALID.
 RMW_PUBLIC
 RMW_WARN_UNUSED
 const char *
