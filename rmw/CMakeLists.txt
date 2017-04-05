@@ -1,19 +1,28 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(rmw C)
+project(rmw)
+
+if(NOT WIN32)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+endif()
 
 find_package(ament_cmake REQUIRED)
 
 include(cmake/configure_rmw_library.cmake)
 
 include_directories(include)
-add_library(${PROJECT_NAME} SHARED
+
+set(rmw_sources
   "src/allocators.c"
   "src/error_handling.c"
   "src/validate_node_name.c"
   "src/validate_topic_name.c"
   "src/sanity_checks.c")
-configure_rmw_library(${PROJECT_NAME})
+set_source_files_properties(
+  ${rmw_sources}
+  PROPERTIES LANGUAGE "C")
+add_library(${PROJECT_NAME} SHARED ${rmw_sources})
+configure_rmw_library(${PROJECT_NAME} LANGUAGE "C")
 
 ament_export_dependencies(rosidl_generator_c)
 ament_export_include_directories(include)
