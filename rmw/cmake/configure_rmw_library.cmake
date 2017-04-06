@@ -33,18 +33,52 @@
 # being set on Windows, and the -fvisibility* flags being passed to gcc and
 # clang.
 #
+# :param library_target: the library target
+# :type library_target: string
+# :param LANGUAGE: Optional flag for the language of the library.
+#   Allowed values are "C" and "CXX". The default is "CXX".
+# :type LANGUAGE: string
+#
 # @public
 #
 macro(configure_rmw_library library_target)
-  # Set the visibility to hidden by default if possible
-  if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    # Set the visibility of symbols to hidden by default for gcc and clang
-    # (this is already the default on Windows)
-    set_target_properties(${library_target}
-      PROPERTIES
-        COMPILE_FLAGS "-fvisibility=hidden -fvisibility-inlines-hidden"
-    )
+  cmake_parse_arguments(_ARG "" "LANGUAGE" "" ${ARGN})
+  if(_ARG_UNPARSED_ARGUMENTS)
+    message(FATAL_ERROR "configure_rmw_library() called with unused "
+    "arguments: ${_ARG_UNPARSED_ARGUMENTS}")
   endif()
+
+  if(NOT _ARG_LANGUAGE)
+    set(_ARG_LANGUAGE "CXX")
+  endif()
+
+  if(_ARG_LANGUAGE STREQUAL "C")
+    # Set the visibility to hidden by default if possible
+    if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR CMAKE_C_COMPILER_ID MATCHES "Clang")
+      # Set the visibility of symbols to hidden by default for gcc and clang
+      # (this is already the default on Windows)
+      set_target_properties(${library_target}
+        PROPERTIES
+        COMPILE_FLAGS "-fvisibility=hidden"
+      )
+    endif()
+
+  elseif(_ARG_LANGUAGE STREQUAL "CXX")
+    # Set the visibility to hidden by default if possible
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+      # Set the visibility of symbols to hidden by default for gcc and clang
+      # (this is already the default on Windows)
+      set_target_properties(${library_target}
+        PROPERTIES
+        COMPILE_FLAGS "-fvisibility=hidden -fvisibility-inlines-hidden"
+      )
+    endif()
+
+  else()
+    message(FATAL_ERROR "configure_rmw_library() called with unsupported "
+      "LANGUAGE: '${_ARG_LANGUAGE}'")
+  endif()
+
   if(WIN32)
     # Causes the visibility macros to use dllexport rather than dllimport
     # which is appropriate when building the dll but not consuming it.

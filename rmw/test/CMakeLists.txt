@@ -1,5 +1,3 @@
-enable_language(CXX)
-
 find_package(ament_cmake_gmock REQUIRED)
 
 ament_add_gmock(test_error_handling
@@ -9,12 +7,6 @@ ament_add_gmock(test_error_handling
 )
 if(TARGET test_error_handling)
   target_link_libraries(test_error_handling ${PROJECT_NAME})
-  if(UNIX AND NOT APPLE)
-    target_link_libraries(test_error_handling pthread)
-  endif()
-  if(NOT WIN32)
-    set_target_properties(test_error_handling PROPERTIES COMPILE_FLAGS "-std=c++14")
-  endif()
 endif()
 
 ament_add_gmock(test_isalnum_no_locale
@@ -24,12 +16,6 @@ ament_add_gmock(test_isalnum_no_locale
 )
 if(TARGET test_isalnum_no_locale)
   target_link_libraries(test_isalnum_no_locale ${PROJECT_NAME})
-  if(UNIX AND NOT APPLE)
-    target_link_libraries(test_isalnum_no_locale pthread)
-  endif()
-  if(NOT WIN32)
-    set_target_properties(test_isalnum_no_locale PROPERTIES COMPILE_FLAGS "-std=c++14")
-  endif()
 endif()
 
 ament_add_gmock(test_validate_topic_name
@@ -39,12 +25,6 @@ ament_add_gmock(test_validate_topic_name
 )
 if(TARGET test_validate_topic_name)
   target_link_libraries(test_validate_topic_name ${PROJECT_NAME})
-  if(UNIX AND NOT APPLE)
-    target_link_libraries(test_validate_topic_name pthread)
-  endif()
-  if(NOT WIN32)
-    set_target_properties(test_validate_topic_name PROPERTIES COMPILE_FLAGS "-std=c++14")
-  endif()
 endif()
 
 ament_add_gmock(test_validate_node_name
@@ -54,10 +34,4 @@ ament_add_gmock(test_validate_node_name
 )
 if(TARGET test_validate_node_name)
   target_link_libraries(test_validate_node_name ${PROJECT_NAME})
-  if(UNIX AND NOT APPLE)
-    target_link_libraries(test_validate_node_name pthread)
-  endif()
-  if(NOT WIN32)
-    set_target_properties(test_validate_node_name PROPERTIES COMPILE_FLAGS "-std=c++14")
-  endif()
 endif()
