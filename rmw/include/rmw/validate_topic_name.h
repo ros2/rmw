@@ -56,7 +56,7 @@ extern "C"
  * The int which validation_result points to will have a one of a few possible
  * results values (defined with macros) stored into it:
  *
- * - RMW_VALID_TOPIC
+ * - RMW_TOPIC_VALID
  * - RMW_TOPIC_INVALID_IS_EMPTY_STRING
  * - RMW_TOPIC_INVALID_NOT_ABSOLUTE
  * - RMW_TOPIC_INVALID_ENDS_WITH_FORWARD_SLASH
