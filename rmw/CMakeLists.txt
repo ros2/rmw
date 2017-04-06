@@ -10,6 +10,7 @@ include_directories(include)
 add_library(${PROJECT_NAME} SHARED
   "src/allocators.c"
   "src/error_handling.c"
+  "src/validate_namespace.c"
   "src/validate_node_name.c"
   "src/validate_topic_name.c"
   "src/sanity_checks.c")
