@@ -15,12 +15,19 @@
 #include "rmw/validate_namespace.h"
 
 #include <ctype.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "rmw/error_handling.h"
 #include "rmw/validate_topic_name.h"
 
 #include "./isalnum_no_locale.h"
+
+#ifndef _WIN32
+  #define LOCAL_SNPRINTF snprintf
+#else
+  #define LOCAL_SNPRINTF _snprintf
+#endif
 
 rmw_ret_t
 rmw_validate_namespace(
@@ -73,9 +80,16 @@ rmw_validate_namespace(
         *validation_result = RMW_NAMESPACE_INVALID_NAME_TOKEN_STARTS_WITH_NUMBER;
         break;
       default:
-        RMW_SET_ERROR_MSG(
-          "rmw_validate_namespace(): unknown rmw_validate_topic_name() validation result"
-        );
+        {
+          char default_err_msg[256];
+          // explicitly not taking return value which is number of bytes written
+          LOCAL_SNPRINTF(
+            default_err_msg, sizeof(default_err_msg),
+            "rmw_validate_namespace(): unknown rmw_validate_topic_name() validation result '%d'",
+            *validation_result
+          );
+          RMW_SET_ERROR_MSG(default_err_msg);
+        }
         return RMW_RET_ERROR;
     }
     if (invalid_index) {
