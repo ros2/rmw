@@ -25,8 +25,6 @@ TEST(test_validate_namespace, invalid_parameters) {
   ASSERT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
   ret = rmw_validate_namespace("/test", nullptr, &invalid_index);
   ASSERT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
-  ret = rmw_validate_namespace("/test", &validation_result, nullptr);
-  ASSERT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
 }
 
 TEST(test_validate_namespace, valid_namespace) {
@@ -48,6 +46,12 @@ TEST(test_validate_namespace, valid_namespace) {
   ASSERT_EQ(RMW_RET_OK, ret);
   ASSERT_EQ(RMW_NAMESPACE_VALID, validation_result);
 
+  // with invalid_index as NULL
+  validation_result = -1;
+  ret = rmw_validate_namespace("/with_one/heirarchy", &validation_result, nullptr);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  ASSERT_EQ(RMW_NAMESPACE_VALID, validation_result);
+
   ASSERT_EQ((char *)NULL, rmw_topic_validation_result_string(validation_result));
 }
 
@@ -57,6 +61,12 @@ TEST(test_validate_namespace, empty_namespace) {
   rmw_ret_t ret;
 
   ret = rmw_validate_namespace("", &validation_result, &invalid_index);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  ASSERT_EQ(RMW_NAMESPACE_INVALID_IS_EMPTY_STRING, validation_result);
+  ASSERT_EQ(0ul, invalid_index);
+
+  // with invalid_index as NULL
+  ret = rmw_validate_namespace("", &validation_result, nullptr);
   ASSERT_EQ(RMW_RET_OK, ret);
   ASSERT_EQ(RMW_NAMESPACE_INVALID_IS_EMPTY_STRING, validation_result);
   ASSERT_EQ(0ul, invalid_index);
@@ -79,6 +89,12 @@ TEST(test_validate_namespace, not_absolute) {
   ASSERT_EQ(RMW_NAMESPACE_INVALID_NOT_ABSOLUTE, validation_result);
   ASSERT_EQ(0ul, invalid_index);
 
+  // with invalid_index as NULL
+  ret = rmw_validate_namespace("not/absolute", &validation_result, nullptr);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  ASSERT_EQ(RMW_NAMESPACE_INVALID_NOT_ABSOLUTE, validation_result);
+  ASSERT_EQ(0ul, invalid_index);
+
   ASSERT_NE((char *)NULL, rmw_topic_validation_result_string(validation_result));
 }
 
@@ -88,6 +104,12 @@ TEST(test_validate_namespace, ends_with_forward_slash) {
   rmw_ret_t ret;
 
   ret = rmw_validate_namespace("/ends/with/", &validation_result, &invalid_index);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  ASSERT_EQ(RMW_NAMESPACE_INVALID_ENDS_WITH_FORWARD_SLASH, validation_result);
+  ASSERT_EQ(10ul, invalid_index);
+
+  // with invalid_index as NULL
+  ret = rmw_validate_namespace("/ends/with/", &validation_result, nullptr);
   ASSERT_EQ(RMW_RET_OK, ret);
   ASSERT_EQ(RMW_NAMESPACE_INVALID_ENDS_WITH_FORWARD_SLASH, validation_result);
   ASSERT_EQ(10ul, invalid_index);
@@ -120,6 +142,12 @@ TEST(test_validate_namespace, unallowed_characters) {
   ASSERT_EQ(RMW_NAMESPACE_INVALID_CONTAINS_UNALLOWED_CHARACTERS, validation_result);
   ASSERT_EQ(5ul, invalid_index);
 
+  // with invalid_index as NULL
+  ret = rmw_validate_namespace("/with spaces", &validation_result, nullptr);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  ASSERT_EQ(RMW_NAMESPACE_INVALID_CONTAINS_UNALLOWED_CHARACTERS, validation_result);
+  ASSERT_EQ(5ul, invalid_index);
+
   ASSERT_NE((char *)NULL, rmw_topic_validation_result_string(validation_result));
 }
 
@@ -129,6 +157,12 @@ TEST(test_validate_namespace, repeated_forward_slashes) {
   rmw_ret_t ret;
 
   ret = rmw_validate_namespace("/repeated//slashes", &validation_result, &invalid_index);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  ASSERT_EQ(RMW_NAMESPACE_INVALID_CONTAINS_REPEATED_FORWARD_SLASH, validation_result);
+  ASSERT_EQ(10ul, invalid_index);
+
+  // with invalid_index as NULL
+  ret = rmw_validate_namespace("/repeated//slashes", &validation_result, nullptr);
   ASSERT_EQ(RMW_RET_OK, ret);
   ASSERT_EQ(RMW_NAMESPACE_INVALID_CONTAINS_REPEATED_FORWARD_SLASH, validation_result);
   ASSERT_EQ(10ul, invalid_index);
@@ -151,6 +185,12 @@ TEST(test_validate_namespace, starts_with_number) {
   ASSERT_EQ(RMW_NAMESPACE_INVALID_NAME_TOKEN_STARTS_WITH_NUMBER, validation_result);
   ASSERT_EQ(8ul, invalid_index);
 
+  // with invalid_index as NULL
+  ret = rmw_validate_namespace("/starts/42with/number", &validation_result, nullptr);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  ASSERT_EQ(RMW_NAMESPACE_INVALID_NAME_TOKEN_STARTS_WITH_NUMBER, validation_result);
+  ASSERT_EQ(8ul, invalid_index);
+
   ASSERT_NE((char *)NULL, rmw_topic_validation_result_string(validation_result));
 }
 
@@ -167,9 +207,23 @@ TEST(test_validate_namespace, topic_too_long) {
   ASSERT_EQ(RMW_NAMESPACE_INVALID_NOT_ABSOLUTE, validation_result);
   ASSERT_EQ(0ul, invalid_index);
 
+  // with invalid_index as NULL
+  ret = rmw_validate_namespace(
+    invalid_and_long_topic.c_str(), &validation_result, nullptr);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  ASSERT_EQ(RMW_NAMESPACE_INVALID_NOT_ABSOLUTE, validation_result);
+  ASSERT_EQ(0ul, invalid_index);
+
   std::string valid_but_long_topic = "/" + invalid_and_long_topic;
   ret = rmw_validate_namespace(
     valid_but_long_topic.c_str(), &validation_result, &invalid_index);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  EXPECT_EQ(RMW_NAMESPACE_INVALID_TOO_LONG, validation_result);
+  EXPECT_EQ(RMW_NAMESPACE_MAX_LENGTH - 1, invalid_index);
+
+  // with invalid_index as NULL
+  ret = rmw_validate_namespace(
+    valid_but_long_topic.c_str(), &validation_result, nullptr);
   ASSERT_EQ(RMW_RET_OK, ret);
   EXPECT_EQ(RMW_NAMESPACE_INVALID_TOO_LONG, validation_result);
   EXPECT_EQ(RMW_NAMESPACE_MAX_LENGTH - 1, invalid_index);

@@ -31,13 +31,12 @@ rmw_validate_node_name(
   if (!validation_result) {
     return RMW_RET_INVALID_ARGUMENT;
   }
-  if (!invalid_index) {
-    return RMW_RET_INVALID_ARGUMENT;
-  }
   size_t node_name_length = strlen(node_name);
   if (node_name_length == 0) {
     *validation_result = RMW_NODE_NAME_INVALID_IS_EMPTY_STRING;
-    *invalid_index = 0;
+    if (invalid_index) {
+      *invalid_index = 0;
+    }
     return RMW_RET_OK;
   }
   // check for unallowed characters
@@ -51,20 +50,26 @@ rmw_validate_node_name(
     } else {
       // if it is none of these, then it is an unallowed character in a node name
       *validation_result = RMW_NODE_NAME_INVALID_CONTAINS_UNALLOWED_CHARACTERS;
-      *invalid_index = i;
+      if (invalid_index) {
+        *invalid_index = i;
+      }
       return RMW_RET_OK;
     }
   }
   if (isdigit(node_name[0]) != 0) {
     // this is the case where the name starts with a number, i.e. [0-9]
     *validation_result = RMW_NODE_NAME_INVALID_STARTS_WITH_NUMBER;
-    *invalid_index = 0;
+    if (invalid_index) {
+      *invalid_index = 0;
+    }
     return RMW_RET_OK;
   }
   // check if the node name is too long last, since it might be a soft invalidation
   if (node_name_length > RMW_NODE_NAME_MAX_NAME_LENGTH) {
     *validation_result = RMW_NODE_NAME_INVALID_TOO_LONG;
-    *invalid_index = RMW_NODE_NAME_MAX_NAME_LENGTH - 1;
+    if (invalid_index) {
+      *invalid_index = RMW_NODE_NAME_MAX_NAME_LENGTH - 1;
+    }
     return RMW_RET_OK;
   }
   // everything was ok, set result to valid node name, avoid setting invalid_index, and return

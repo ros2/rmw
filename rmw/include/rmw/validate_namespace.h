@@ -49,9 +49,10 @@ extern "C"
  * The namespace_ should be a valid, null-terminated C string.
  * The validation_result int pointer should point to valid memory so a result
  * can be stored in it as an output variable.
- * The invalid_index size_t pointer should point to valid memory so in the
- * event of a validation error, the location in the input string can be stored
- * therein.
+ * The invalid_index size_t pointer should either point NULL or to valid memory
+ * so in the event of a validation error, the location in the input string can
+ * be stored therein.
+ * If NULL is passed in for invalid_index, it will be not be set.
  *
  * The invalid_index will not be assigned a value if the namespace is valid.
  *

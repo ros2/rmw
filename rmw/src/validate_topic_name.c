@@ -31,25 +31,28 @@ rmw_validate_topic_name(
   if (!validation_result) {
     return RMW_RET_INVALID_ARGUMENT;
   }
-  if (!invalid_index) {
-    return RMW_RET_INVALID_ARGUMENT;
-  }
   size_t topic_name_length = strlen(topic_name);
   if (topic_name_length == 0) {
     *validation_result = RMW_TOPIC_INVALID_IS_EMPTY_STRING;
-    *invalid_index = 0;
+    if (invalid_index) {
+      *invalid_index = 0;
+    }
     return RMW_RET_OK;
   }
   if (topic_name[0] != '/') {
     *validation_result = RMW_TOPIC_INVALID_NOT_ABSOLUTE;
-    *invalid_index = 0;
+    if (invalid_index) {
+      *invalid_index = 0;
+    }
     return RMW_RET_OK;
   }
   // note topic_name_length is >= 1 at this point
   if (topic_name[topic_name_length - 1] == '/') {
     // catches both "/foo/" and "/"
     *validation_result = RMW_TOPIC_INVALID_ENDS_WITH_FORWARD_SLASH;
-    *invalid_index = topic_name_length - 1;
+    if (invalid_index) {
+      *invalid_index = topic_name_length - 1;
+    }
     return RMW_RET_OK;
   }
   // check for unallowed characters
@@ -66,7 +69,9 @@ rmw_validate_topic_name(
     } else {
       // if it is none of these, then it is an unallowed character in a FQN topic name
       *validation_result = RMW_TOPIC_INVALID_CONTAINS_UNALLOWED_CHARACTERS;
-      *invalid_index = i;
+      if (invalid_index) {
+        *invalid_index = i;
+      }
       return RMW_RET_OK;
     }
   }
@@ -80,13 +85,17 @@ rmw_validate_topic_name(
     if (topic_name[i] == '/') {
       if (topic_name[i + 1] == '/') {
         *validation_result = RMW_TOPIC_INVALID_CONTAINS_REPEATED_FORWARD_SLASH;
-        *invalid_index = i + 1;
+        if (invalid_index) {
+          *invalid_index = i + 1;
+        }
         return RMW_RET_OK;
       }
       if (isdigit(topic_name[i + 1]) != 0) {
         // this is the case where a '/' if followed by a number, i.e. [0-9]
         *validation_result = RMW_TOPIC_INVALID_NAME_TOKEN_STARTS_WITH_NUMBER;
-        *invalid_index = i + 1;
+        if (invalid_index) {
+          *invalid_index = i + 1;
+        }
         return RMW_RET_OK;
       }
     }
@@ -94,7 +103,9 @@ rmw_validate_topic_name(
   // check if the topic name is too long last, since it might be a soft invalidation
   if (topic_name_length > RMW_TOPIC_MAX_NAME_LENGTH) {
     *validation_result = RMW_TOPIC_INVALID_TOO_LONG;
-    *invalid_index = RMW_TOPIC_MAX_NAME_LENGTH - 1;
+    if (invalid_index) {
+      *invalid_index = RMW_TOPIC_MAX_NAME_LENGTH - 1;
+    }
     return RMW_RET_OK;
   }
   // everything was ok, set result to valid topic, avoid setting invalid_index, and return

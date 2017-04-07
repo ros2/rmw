@@ -34,9 +34,6 @@ rmw_validate_namespace(
   if (!validation_result) {
     return RMW_RET_INVALID_ARGUMENT;
   }
-  if (!invalid_index) {
-    return RMW_RET_INVALID_ARGUMENT;
-  }
 
   size_t namespace_length = strlen(namespace_);
   // Special case for root namepsace
@@ -81,14 +78,18 @@ rmw_validate_namespace(
         );
         return RMW_RET_ERROR;
     }
-    *invalid_index = t_invalid_index;
+    if (invalid_index) {
+      *invalid_index = t_invalid_index;
+    }
     return RMW_RET_OK;
   }
 
   // check if the namespace is too long last, since it might be a soft invalidation
   if (namespace_length > RMW_NAMESPACE_MAX_LENGTH) {
     *validation_result = RMW_NAMESPACE_INVALID_TOO_LONG;
-    *invalid_index = RMW_NAMESPACE_MAX_LENGTH - 1;
+    if (invalid_index) {
+      *invalid_index = RMW_NAMESPACE_MAX_LENGTH - 1;
+    }
     return RMW_RET_OK;
   }
 
