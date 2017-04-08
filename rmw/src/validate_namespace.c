@@ -26,7 +26,8 @@
 #ifndef _WIN32
   #define LOCAL_SNPRINTF snprintf
 #else
-  #define LOCAL_SNPRINTF _snprintf
+  #define LOCAL_SNPRINTF(buffer, buffer_size, format, ...) \
+    _snprintf_s(buffer, buffer_size, _TRUNCATE, format, __VA_ARGS__)
 #endif
 
 rmw_ret_t
