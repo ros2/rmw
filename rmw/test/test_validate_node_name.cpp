@@ -25,8 +25,6 @@ TEST(test_validate_node_name, invalid_parameters) {
   ASSERT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
   ret = rmw_validate_node_name("test", nullptr, &invalid_index);
   ASSERT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
-  ret = rmw_validate_node_name("test", &validation_result, nullptr);
-  ASSERT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
 }
 
 TEST(test_validate_node_name, valid_node_name) {
@@ -43,6 +41,12 @@ TEST(test_validate_node_name, valid_node_name) {
   ASSERT_EQ(RMW_RET_OK, ret);
   ASSERT_EQ(RMW_NODE_NAME_VALID, validation_result);
 
+  // with invalid_index as NULL
+  validation_result = -1;
+  ret = rmw_validate_node_name("node_name", &validation_result, nullptr);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  ASSERT_EQ(RMW_NODE_NAME_VALID, validation_result);
+
   ASSERT_EQ((char *)NULL, rmw_node_name_validation_result_string(validation_result));
 }
 
@@ -52,6 +56,12 @@ TEST(test_validate_node_name, empty_node_name) {
   rmw_ret_t ret;
 
   ret = rmw_validate_node_name("", &validation_result, &invalid_index);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  ASSERT_EQ(RMW_NODE_NAME_INVALID_IS_EMPTY_STRING, validation_result);
+  ASSERT_EQ(0ul, invalid_index);
+
+  // with invalid_index as NULL
+  ret = rmw_validate_node_name("", &validation_result, nullptr);
   ASSERT_EQ(RMW_RET_OK, ret);
   ASSERT_EQ(RMW_NODE_NAME_INVALID_IS_EMPTY_STRING, validation_result);
   ASSERT_EQ(0ul, invalid_index);
@@ -89,6 +99,12 @@ TEST(test_validate_node_name, unallowed_characters) {
   ASSERT_EQ(RMW_NODE_NAME_INVALID_CONTAINS_UNALLOWED_CHARACTERS, validation_result);
   ASSERT_EQ(4ul, invalid_index);
 
+  // with invalid_index as NULL
+  ret = rmw_validate_node_name("with.periods", &validation_result, nullptr);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  ASSERT_EQ(RMW_NODE_NAME_INVALID_CONTAINS_UNALLOWED_CHARACTERS, validation_result);
+  ASSERT_EQ(4ul, invalid_index);
+
   ASSERT_NE((char *)NULL, rmw_node_name_validation_result_string(validation_result));
 }
 
@@ -98,6 +114,12 @@ TEST(test_validate_node_name, starts_with_number) {
   rmw_ret_t ret;
 
   ret = rmw_validate_node_name("42node", &validation_result, &invalid_index);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  ASSERT_EQ(RMW_NODE_NAME_INVALID_STARTS_WITH_NUMBER, validation_result);
+  ASSERT_EQ(0ul, invalid_index);
+
+  // with invalid_index as NULL
+  ret = rmw_validate_node_name("42node", &validation_result, nullptr);
   ASSERT_EQ(RMW_RET_OK, ret);
   ASSERT_EQ(RMW_NODE_NAME_INVALID_STARTS_WITH_NUMBER, validation_result);
   ASSERT_EQ(0ul, invalid_index);
@@ -118,10 +140,24 @@ TEST(test_validate_node_name, node_name_too_long) {
   ASSERT_EQ(RMW_NODE_NAME_INVALID_STARTS_WITH_NUMBER, validation_result);
   ASSERT_EQ(0ul, invalid_index);
 
+  // with invalid_index as NULL
+  ret = rmw_validate_node_name(
+    invalid_and_long_node_name.c_str(), &validation_result, nullptr);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  ASSERT_EQ(RMW_NODE_NAME_INVALID_STARTS_WITH_NUMBER, validation_result);
+  ASSERT_EQ(0ul, invalid_index);
+
   // Ensure length check works when there are no other issues
   std::string valid_but_long_node_name(RMW_NODE_NAME_MAX_NAME_LENGTH + 1, 'a');
   ret = rmw_validate_node_name(
     valid_but_long_node_name.c_str(), &validation_result, &invalid_index);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  EXPECT_EQ(RMW_NODE_NAME_INVALID_TOO_LONG, validation_result);
+  EXPECT_EQ(RMW_NODE_NAME_MAX_NAME_LENGTH - 1, invalid_index);
+
+  // with invalid_index as NULL
+  ret = rmw_validate_node_name(
+    valid_but_long_node_name.c_str(), &validation_result, nullptr);
   ASSERT_EQ(RMW_RET_OK, ret);
   EXPECT_EQ(RMW_NODE_NAME_INVALID_TOO_LONG, validation_result);
   EXPECT_EQ(RMW_NODE_NAME_MAX_NAME_LENGTH - 1, invalid_index);

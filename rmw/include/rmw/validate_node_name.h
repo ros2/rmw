@@ -37,16 +37,17 @@ extern "C"
  *
  * - must not be an empty string
  * - must only contain alphanumeric characters and underscores (a-z|A-Z|0-9|_)
- * - must not start with an number
+ * - must not start with a number
  *
  * If either the node name C string or validation_result pointer are null, then
  * `RMW_RET_INVALID_ARGUMENT` will be returned.
  * The node_name should be a valid, null-terminated C string.
  * The validation_result int pointer should point to valid memory so a result
  * can be stored in it as an output variable.
- * The invalid_index size_t pointer should point to valid memory so in the
- * event of a validation error, the location in the input string can be stored
- * therein.
+ * The invalid_index size_t pointer should either point NULL or to valid memory
+ * so in the event of a validation error, the location in the input string can
+ * be stored therein.
+ * If NULL is passed in for invalid_index, it will be not be set.
  *
  * The invalid_index will not be assigned a value if the node name is valid.
  *

@@ -25,8 +25,6 @@ TEST(test_validate_topic_name, invalid_parameters) {
   ASSERT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
   ret = rmw_validate_topic_name("test", nullptr, &invalid_index);
   ASSERT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
-  ret = rmw_validate_topic_name("test", &validation_result, nullptr);
-  ASSERT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
 }
 
 TEST(test_validate_topic_name, valid_topic) {
@@ -43,6 +41,12 @@ TEST(test_validate_topic_name, valid_topic) {
   ASSERT_EQ(RMW_RET_OK, ret);
   ASSERT_EQ(RMW_TOPIC_VALID, validation_result);
 
+  // with invalid_index as NULL
+  validation_result = -1;
+  ret = rmw_validate_topic_name("/with_one/namespace", &validation_result, nullptr);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  ASSERT_EQ(RMW_TOPIC_VALID, validation_result);
+
   ASSERT_EQ((char *)NULL, rmw_topic_validation_result_string(validation_result));
 }
 
@@ -52,6 +56,12 @@ TEST(test_validate_topic_name, empty_topic_name) {
   rmw_ret_t ret;
 
   ret = rmw_validate_topic_name("", &validation_result, &invalid_index);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  ASSERT_EQ(RMW_TOPIC_INVALID_IS_EMPTY_STRING, validation_result);
+  ASSERT_EQ(0ul, invalid_index);
+
+  // with invalid_index as NULL
+  ret = rmw_validate_topic_name("", &validation_result, nullptr);
   ASSERT_EQ(RMW_RET_OK, ret);
   ASSERT_EQ(RMW_TOPIC_INVALID_IS_EMPTY_STRING, validation_result);
   ASSERT_EQ(0ul, invalid_index);
@@ -74,6 +84,12 @@ TEST(test_validate_topic_name, not_absolute) {
   ASSERT_EQ(RMW_TOPIC_INVALID_NOT_ABSOLUTE, validation_result);
   ASSERT_EQ(0ul, invalid_index);
 
+  // with invalid_index as NULL
+  ret = rmw_validate_topic_name("not/absolute", &validation_result, nullptr);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  ASSERT_EQ(RMW_TOPIC_INVALID_NOT_ABSOLUTE, validation_result);
+  ASSERT_EQ(0ul, invalid_index);
+
   ASSERT_NE((char *)NULL, rmw_topic_validation_result_string(validation_result));
 }
 
@@ -88,6 +104,12 @@ TEST(test_validate_topic_name, ends_with_forward_slash) {
   ASSERT_EQ(10ul, invalid_index);
 
   ret = rmw_validate_topic_name("/", &validation_result, &invalid_index);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  ASSERT_EQ(RMW_TOPIC_INVALID_ENDS_WITH_FORWARD_SLASH, validation_result);
+  ASSERT_EQ(0ul, invalid_index);
+
+  // with invalid_index as NULL
+  ret = rmw_validate_topic_name("/", &validation_result, nullptr);
   ASSERT_EQ(RMW_RET_OK, ret);
   ASSERT_EQ(RMW_TOPIC_INVALID_ENDS_WITH_FORWARD_SLASH, validation_result);
   ASSERT_EQ(0ul, invalid_index);
@@ -120,6 +142,12 @@ TEST(test_validate_topic_name, unallowed_characters) {
   ASSERT_EQ(RMW_TOPIC_INVALID_CONTAINS_UNALLOWED_CHARACTERS, validation_result);
   ASSERT_EQ(5ul, invalid_index);
 
+  // with invalid_index as NULL
+  ret = rmw_validate_topic_name("/with spaces", &validation_result, nullptr);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  ASSERT_EQ(RMW_TOPIC_INVALID_CONTAINS_UNALLOWED_CHARACTERS, validation_result);
+  ASSERT_EQ(5ul, invalid_index);
+
   ASSERT_NE((char *)NULL, rmw_topic_validation_result_string(validation_result));
 }
 
@@ -129,6 +157,12 @@ TEST(test_validate_topic_name, repeated_forward_slashes) {
   rmw_ret_t ret;
 
   ret = rmw_validate_topic_name("/repeated//slashes", &validation_result, &invalid_index);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  ASSERT_EQ(RMW_TOPIC_INVALID_CONTAINS_REPEATED_FORWARD_SLASH, validation_result);
+  ASSERT_EQ(10ul, invalid_index);
+
+  // with invalid_index as NULL
+  ret = rmw_validate_topic_name("/repeated//slashes", &validation_result, nullptr);
   ASSERT_EQ(RMW_RET_OK, ret);
   ASSERT_EQ(RMW_TOPIC_INVALID_CONTAINS_REPEATED_FORWARD_SLASH, validation_result);
   ASSERT_EQ(10ul, invalid_index);
@@ -151,6 +185,12 @@ TEST(test_validate_topic_name, starts_with_number) {
   ASSERT_EQ(RMW_TOPIC_INVALID_NAME_TOKEN_STARTS_WITH_NUMBER, validation_result);
   ASSERT_EQ(8ul, invalid_index);
 
+  // with invalid_index as NULL
+  ret = rmw_validate_topic_name("/starts/42with/number", &validation_result, nullptr);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  ASSERT_EQ(RMW_TOPIC_INVALID_NAME_TOKEN_STARTS_WITH_NUMBER, validation_result);
+  ASSERT_EQ(8ul, invalid_index);
+
   ASSERT_NE((char *)NULL, rmw_topic_validation_result_string(validation_result));
 }
 
@@ -167,9 +207,23 @@ TEST(test_validate_topic_name, topic_too_long) {
   ASSERT_EQ(RMW_TOPIC_INVALID_NOT_ABSOLUTE, validation_result);
   ASSERT_EQ(0ul, invalid_index);
 
+  // with invalid_index as NULL
+  ret = rmw_validate_topic_name(
+    invalid_and_long_topic.c_str(), &validation_result, nullptr);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  ASSERT_EQ(RMW_TOPIC_INVALID_NOT_ABSOLUTE, validation_result);
+  ASSERT_EQ(0ul, invalid_index);
+
   std::string valid_but_long_topic = "/" + invalid_and_long_topic;
   ret = rmw_validate_topic_name(
     valid_but_long_topic.c_str(), &validation_result, &invalid_index);
+  ASSERT_EQ(RMW_RET_OK, ret);
+  EXPECT_EQ(RMW_TOPIC_INVALID_TOO_LONG, validation_result);
+  EXPECT_EQ(RMW_TOPIC_MAX_NAME_LENGTH - 1, invalid_index);
+
+  // with invalid_index as NULL
+  ret = rmw_validate_topic_name(
+    valid_but_long_topic.c_str(), &validation_result, nullptr);
   ASSERT_EQ(RMW_RET_OK, ret);
   EXPECT_EQ(RMW_TOPIC_INVALID_TOO_LONG, validation_result);
   EXPECT_EQ(RMW_TOPIC_MAX_NAME_LENGTH - 1, invalid_index);
