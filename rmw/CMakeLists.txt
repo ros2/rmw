@@ -22,7 +22,7 @@ set(rmw_sources
 set_source_files_properties(
   ${rmw_sources}
   PROPERTIES LANGUAGE "C")
-add_library(${PROJECT_NAME} SHARED ${rmw_sources})
+add_library(${PROJECT_NAME} ${rmw_sources})
 configure_rmw_library(${PROJECT_NAME} LANGUAGE "C")
 
 ament_export_dependencies(rosidl_generator_c)
