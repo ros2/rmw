@@ -48,7 +48,8 @@ void
 rmw_set_error_state(const char * error_string, const char * file, size_t line_number)
 {
 #ifdef RMW_THREAD_LOCAL_PTHREAD
-  rmw_error_state_t * __rmw_error_state = (rmw_error_state_t *)pthread_getspecific(__rmw_error_state_key);
+  rmw_error_state_t * __rmw_error_state =
+    (rmw_error_state_t *)pthread_getspecific(__rmw_error_state_key);
   char * __rmw_error_string = (char *)pthread_getspecific(__rmw_error_string_key);
 #endif
   rmw_error_state_t * old_error_state = __rmw_error_state;
@@ -127,7 +128,8 @@ static void
 format_error_string()
 {
 #ifdef RMW_THREAD_LOCAL_PTHREAD
-  rmw_error_state_t * __rmw_error_state = (rmw_error_state_t *)pthread_getspecific(__rmw_error_state_key);
+  rmw_error_state_t * __rmw_error_state =
+    (rmw_error_state_t *)pthread_getspecific(__rmw_error_state_key);
   char * __rmw_error_string = (char *)pthread_getspecific(__rmw_error_string_key);
 #endif
   if (!__rmw_error_is_set(__rmw_error_state)) {
@@ -180,7 +182,8 @@ bool
 rmw_error_is_set()
 {
 #ifdef RMW_THREAD_LOCAL_PTHREAD
-  rmw_error_state_t * __rmw_error_state = (rmw_error_state_t *)pthread_getspecific(__rmw_error_state_key);
+  rmw_error_state_t * __rmw_error_state =
+    (rmw_error_state_t *)pthread_getspecific(__rmw_error_state_key);
 #endif
   return __rmw_error_is_set(__rmw_error_state);
 }
@@ -226,7 +229,8 @@ void
 rmw_reset_error()
 {
 #ifdef RMW_THREAD_LOCAL_PTHREAD
-  rmw_error_state_t * __rmw_error_state = (rmw_error_state_t *)pthread_getspecific(__rmw_error_state_key);
+  rmw_error_state_t * __rmw_error_state =
+    (rmw_error_state_t *)pthread_getspecific(__rmw_error_state_key);
   char * __rmw_error_string = (char *)pthread_getspecific(__rmw_error_string_key);
 #endif
   __rmw_reset_error_string(&__rmw_error_string);
