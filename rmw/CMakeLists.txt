@@ -29,8 +29,9 @@ ament_target_dependencies(${PROJECT_NAME}
   "c_utilities")
 configure_rmw_library(${PROJECT_NAME} LANGUAGE "C")
 
-ament_export_dependencies(c_utilities)
-ament_export_dependencies(rosidl_generator_c)
+ament_export_dependencies(
+  c_utilities
+  rosidl_generator_c)
 ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})
 
