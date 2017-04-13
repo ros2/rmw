@@ -23,32 +23,18 @@ extern "C"
 #include <stdbool.h>
 #include <stddef.h>
 
-#include "rmw/macros.h"
 #include "rmw/visibility_control.h"
+#include "c_utilities/error_handling.h"
 
-/// Struct which encapsulates the error state set by RMW_SET_ERROR_MSG().
-typedef struct rmw_error_state_t
-{
-  const char * message;
-  const char * file;
-  size_t line_number;
-} rmw_error_state_t;
+typedef utilities_error_state_t rmw_error_state_t;
 
-/// Set the error message, as well as the file and line on which it occurred.
+// TODO(wjwwood): replace this completely with utilities_set_error_state()
+//                once the rmw APIs take an allocator that can be passed
+//                by the rmw implementations on to the error functions
+/// Set the error state, implicitly uses utilities_get_default_allocator().
 /**
- * This is not meant to be used directly, but instead via the
- * RMW_SET_ERROR_MSG(msg) macro.
- *
- * The error_msg parameter is copied into the internal error storage and must
- * be null terminated.
- * The file parameter is not copied, but instead is assumed to be a global as
- * it should be set to the __FILE__ preprocessor literal when used with the
- * RMW_SET_ERROR_MSG() macro.
- * It should also be null terminated.
- *
- * \param error_msg The error message to set.
- * \param file The path to the file in which the error occurred.
- * \param line_number The line number on which the error occurred.
+ * \see utilities_get_default_allocator()
+ * \see utilities_set_error_state()
  */
 RMW_PUBLIC
 void
@@ -56,62 +42,19 @@ rmw_set_error_state(const char * error_msg, const char * file, size_t line_numbe
 
 /// Set the error message, as well as append the current file and line number.
 /**
- * If an error message was previously set, and rmw_reset_error() was not called
- * afterwards, and this library was built with RMW_REPORT_ERROR_HANDLING_ERRORS
- * turned on, then the previously set error message will be printed to stderr.
- * Error state storage is thread local and so all error related functions are
- * also thread local.
- *
- * \param msg The error message to be set.
+ * \see UTILITIES_SET_ERROR_MSG
  */
 #define RMW_SET_ERROR_MSG(msg) rmw_set_error_state(msg, __FILE__, __LINE__);
 
-/// Return `true` if the error is set, otherwise `false`.
-RMW_PUBLIC
-bool
-rmw_error_is_set(void);
+#define rmw_error_is_set utilities_error_is_set
 
-/// Return an rmw_error_state_t which was set with rmw_set_error_state().
-/**
- * The returned pointer will be NULL if no error has been set in this thread.
- *
- * The returned pointer is valid until RMW_SET_ERROR_MSG, rmw_set_error_state,
- * or rmw_reset_error are called in the same thread.
- *
- * \return A pointer to the current error state struct.
- */
-RMW_PUBLIC
-const rmw_error_state_t *
-rmw_get_error_state(void);
+#define rmw_get_error_state utilities_get_error_state
 
-/// Return the error message followed by `, at <file>:<line>`, or `NULL`.
-/**
- * The returned pointer is valid until RMW_SET_ERROR_MSG(),
- * rmw_set_error_state(), or rmw_reset_error() are called from the same thread.
- *
- * \return The current formatted error string, or NULL if not set.
- */
-RMW_PUBLIC
-const char *
-rmw_get_error_string(void);
+#define rmw_get_error_string utilities_get_error_string
 
-/// Return the error message followed by `, at <file>:<line>` if set, else "error not set".
-/**
- * This function is guaranteed to return a valid c-string.
- *
- * The returned pointer is valid until RMW_SET_ERROR_MSG, rmw_set_error_state, or rmw_reset_error
- * are called in the same thread.
- *
- * \return The current error string, with file and line number, or "error not set" if not set.
- */
-RMW_PUBLIC
-const char *
-rmw_get_error_string_safe(void);
+#define rmw_get_error_string_safe utilities_get_error_string_safe
 
-/// Resets the error state by clearing any previously set error state.
-RMW_PUBLIC
-void
-rmw_reset_error(void);
+#define rmw_reset_error utilities_reset_error
 
 #if __cplusplus
 }
