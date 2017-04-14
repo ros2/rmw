@@ -8,6 +8,8 @@ endif()
 
 find_package(ament_cmake_ros REQUIRED)
 
+find_package(c_utilities REQUIRED)
+
 include(cmake/configure_rmw_library.cmake)
 
 include_directories(include)
@@ -18,14 +20,19 @@ set(rmw_sources
   "src/validate_namespace.c"
   "src/validate_node_name.c"
   "src/validate_topic_name.c"
-  "src/sanity_checks.c")
-set_source_files_properties(
-  ${rmw_sources}
-  PROPERTIES LANGUAGE "C")
+  "src/sanity_checks.c"
+)
+set_source_files_properties(${rmw_sources} PROPERTIES LANGUAGE "C")
 add_library(${PROJECT_NAME} ${rmw_sources})
+ament_target_dependencies(${PROJECT_NAME}
+  "c_utilities"
+)
 configure_rmw_library(${PROJECT_NAME} LANGUAGE "C")
 
-ament_export_dependencies(rosidl_generator_c)
+ament_export_dependencies(
+  c_utilities
+  rosidl_generator_c
+)
 ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})
 

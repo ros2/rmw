@@ -20,6 +20,8 @@ extern "C"
 {
 #endif
 
+#include "c_utilities/types.h"
+
 #include "rmw/macros.h"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
@@ -34,7 +36,7 @@ rmw_check_zero_rmw_topic_names_and_types(rmw_topic_names_and_types_t * tnat);
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_check_zero_rmw_string_array(rmw_string_array_t * array);
+rmw_check_zero_rmw_string_array(utilities_string_array_t * array);
 
 #if __cplusplus
 }

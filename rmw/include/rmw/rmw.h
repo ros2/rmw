@@ -67,6 +67,8 @@ extern "C"
 #include <stddef.h>
 #include <stdint.h>
 
+#include "c_utilities/types.h"
+
 #include "rosidl_generator_c/message_type_support_struct.h"
 #include "rosidl_generator_c/service_type_support.h"
 
@@ -336,13 +338,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_get_node_names(
   const rmw_node_t * node,
-  rmw_string_array_t * node_names);
-
-RMW_PUBLIC
-RMW_WARN_UNUSED
-rmw_ret_t
-rmw_destroy_node_names(
-  rmw_string_array_t * node_names);
+  utilities_string_array_t * node_names);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
