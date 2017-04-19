@@ -21,10 +21,4 @@
 #define RMW_AVOID_MEMORY_ALLOCATION 0
 #endif
 
-#ifndef RMW_REPORT_ERROR_HANDLING_ERRORS
-// Default reporting of error handling errors based on real-time settings.
-// Turn this off to avoid allocation of memory in error handling funcs.
-#define RMW_REPORT_ERROR_HANDLING_ERRORS 1
-#endif
-
 #endif  // RMW__IMPL__CONFIG_H_
