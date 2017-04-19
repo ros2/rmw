@@ -23,8 +23,9 @@ extern "C"
 #include <stdbool.h>
 #include <stddef.h>
 
+#include <c_utilities/error_handling.h>
+
 #include "rmw/visibility_control.h"
-#include "c_utilities/error_handling.h"
 
 typedef utilities_error_state_t rmw_error_state_t;
 
