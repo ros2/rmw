@@ -23,19 +23,19 @@ extern "C"
 #include <stdbool.h>
 #include <stddef.h>
 
-#include <c_utilities/error_handling.h>
+#include <rcutils/error_handling.h>
 
 #include "rmw/visibility_control.h"
 
-typedef utilities_error_state_t rmw_error_state_t;
+typedef rcutils_error_state_t rmw_error_state_t;
 
-// TODO(wjwwood): replace this completely with utilities_set_error_state()
+// TODO(wjwwood): replace this completely with rcutils_set_error_state()
 //                once the rmw APIs take an allocator that can be passed
 //                by the rmw implementations on to the error functions
-/// Set the error state, implicitly uses utilities_get_default_allocator().
+/// Set the error state, implicitly uses rcutils_get_default_allocator().
 /**
- * \see utilities_get_default_allocator()
- * \see utilities_set_error_state()
+ * \see rcutils_get_default_allocator()
+ * \see rcutils_set_error_state()
  */
 RMW_PUBLIC
 void
@@ -43,19 +43,19 @@ rmw_set_error_state(const char * error_msg, const char * file, size_t line_numbe
 
 /// Set the error message, as well as append the current file and line number.
 /**
- * \see UTILITIES_SET_ERROR_MSG
+ * \see RCUTILS_SET_ERROR_MSG
  */
 #define RMW_SET_ERROR_MSG(msg) rmw_set_error_state(msg, __FILE__, __LINE__);
 
-#define rmw_error_is_set utilities_error_is_set
+#define rmw_error_is_set rcutils_error_is_set
 
-#define rmw_get_error_state utilities_get_error_state
+#define rmw_get_error_state rcutils_get_error_state
 
-#define rmw_get_error_string utilities_get_error_string
+#define rmw_get_error_string rcutils_get_error_string
 
-#define rmw_get_error_string_safe utilities_get_error_string_safe
+#define rmw_get_error_string_safe rcutils_get_error_string_safe
 
-#define rmw_reset_error utilities_reset_error
+#define rmw_reset_error rcutils_reset_error
 
 #if __cplusplus
 }

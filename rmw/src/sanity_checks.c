@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "c_utilities/types.h"
+#include "rcutils/types.h"
 
 #include "rmw/error_handling.h"
 #include "rmw/types.h"
@@ -47,7 +47,7 @@ rmw_check_zero_rmw_topic_names_and_types(
 
 rmw_ret_t
 rmw_check_zero_rmw_string_array(
-  utilities_string_array_t * array)
+  rcutils_string_array_t * array)
 {
   if (!array) {
     RMW_SET_ERROR_MSG("array is null");
