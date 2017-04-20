@@ -10,9 +10,9 @@
 
   <buildtool_depend>ament_cmake_ros</buildtool_depend>
 
-  <build_depend>c_utilities</build_depend>
+  <build_depend>rcutils</build_depend>
 
-  <build_export_depend>c_utilities</build_export_depend>
+  <build_export_depend>rcutils</build_export_depend>
   <!-- This is required for the definition of the rosidl typesupport types -->
   <build_export_depend>rosidl_generator_c</build_export_depend>
 

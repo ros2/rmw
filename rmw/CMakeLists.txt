@@ -8,7 +8,7 @@ endif()
 
 find_package(ament_cmake_ros REQUIRED)
 
-find_package(c_utilities REQUIRED)
+find_package(rcutils REQUIRED)
 
 include(cmake/configure_rmw_library.cmake)
 
@@ -25,12 +25,12 @@ set(rmw_sources
 set_source_files_properties(${rmw_sources} PROPERTIES LANGUAGE "C")
 add_library(${PROJECT_NAME} ${rmw_sources})
 ament_target_dependencies(${PROJECT_NAME}
-  "c_utilities"
+  "rcutils"
 )
 configure_rmw_library(${PROJECT_NAME} LANGUAGE "C")
 
 ament_export_dependencies(
-  c_utilities
+  rcutils
   rosidl_generator_c
 )
 ament_export_include_directories(include)

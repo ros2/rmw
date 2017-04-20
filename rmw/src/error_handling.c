@@ -17,5 +17,5 @@
 void
 rmw_set_error_state(const char * error_msg, const char * file, size_t line_number)
 {
-  utilities_set_error_state(error_msg, file, line_number, utilities_get_default_allocator());
+  rcutils_set_error_state(error_msg, file, line_number, rcutils_get_default_allocator());
 }
