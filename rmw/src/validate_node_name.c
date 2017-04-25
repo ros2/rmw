@@ -17,7 +17,7 @@
 #include <ctype.h>
 #include <string.h>
 
-#include "./isalnum_no_locale.h"
+#include "rcutils/isalnum_no_locale.h"
 
 rmw_ret_t
 rmw_validate_node_name(
@@ -41,7 +41,7 @@ rmw_validate_node_name(
   }
   // check for unallowed characters
   for (size_t i = 0; i < node_name_length; ++i) {
-    if (isalnum_no_locale(node_name[i])) {
+    if (rcutils_isalnum_no_locale(node_name[i])) {
       // if it is an alpha numeric character, i.e. [0-9|A-Z|a-z], continue
       continue;
     } else if (node_name[i] == '_') {

@@ -21,8 +21,6 @@
 #include "rmw/error_handling.h"
 #include "rmw/validate_topic_name.h"
 
-#include "./isalnum_no_locale.h"
-
 #ifndef _WIN32
   #define LOCAL_SNPRINTF snprintf
 #else
