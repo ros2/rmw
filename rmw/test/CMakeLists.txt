@@ -1,14 +1,12 @@
 find_package(ament_cmake_gmock REQUIRED)
 
-  test_isalnum_no_locale.cpp
 ament_add_gmock(test_validate_full_topic_name
+  test_validate_full_topic_name.cpp
   # Append the directory of librmw so it is found at test time.
   APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
 )
-ament_add_gmock(test_validate_topic_name
-  test_validate_topic_name.cpp
-if(TARGET test_validate_topic_name)
-  target_link_libraries(test_validate_topic_name ${PROJECT_NAME})
+if(TARGET test_validate_full_topic_name)
+  target_link_libraries(test_validate_full_topic_name ${PROJECT_NAME})
 endif()
 
 ament_add_gmock(test_validate_node_name

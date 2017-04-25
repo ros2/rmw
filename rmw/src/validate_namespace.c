@@ -19,7 +19,7 @@
 #include <string.h>
 
 #include "rmw/error_handling.h"
-#include "rmw/validate_topic_name.h"
+#include "rmw/validate_full_topic_name.h"
 
 #ifndef _WIN32
   #define LOCAL_SNPRINTF snprintf
@@ -52,7 +52,7 @@ rmw_validate_namespace(
   // All other cases should pass the validate topic name test.
   int t_validation_result;
   size_t t_invalid_index;
-  rmw_ret_t ret = rmw_validate_topic_name(namespace_, &t_validation_result, &t_invalid_index);
+  rmw_ret_t ret = rmw_validate_full_topic_name(namespace_, &t_validation_result, &t_invalid_index);
   if (ret != RMW_RET_OK) {
     // error already set
     return ret;
@@ -84,7 +84,7 @@ rmw_validate_namespace(
           // explicitly not taking return value which is number of bytes written
           LOCAL_SNPRINTF(
             default_err_msg, sizeof(default_err_msg),
-            "rmw_validate_namespace(): unknown rmw_validate_topic_name() validation result '%d'",
+            "rmw_validate_namespace(): unknown rmw_validate_full_topic_name() result '%d'",
             *validation_result
           );
           RMW_SET_ERROR_MSG(default_err_msg);
