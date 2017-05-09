@@ -22,7 +22,7 @@ extern "C"
 
 #include "rmw/macros.h"
 #include "rmw/types.h"
-#include "rmw/validate_topic_name.h"
+#include "rmw/validate_full_topic_name.h"
 
 #define RMW_NAMESPACE_VALID 0
 #define RMW_NAMESPACE_INVALID_IS_EMPTY_STRING 1

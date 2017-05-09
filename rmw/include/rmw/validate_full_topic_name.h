@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__VALIDATE_TOPIC_NAME_H_
-#define RMW__VALIDATE_TOPIC_NAME_H_
+#ifndef RMW__VALIDATE_FULL_TOPIC_NAME_H_
+#define RMW__VALIDATE_FULL_TOPIC_NAME_H_
 
 #if __cplusplus
 extern "C"
@@ -67,7 +67,7 @@ extern "C"
  * - RMW_TOPIC_INVALID_TOO_LONG
  *
  * The result value can be converted to a description with the
- * rmw_topic_validation_result_string() function.
+ * rmw_full_topic_name_validation_result_string() function.
  *
  * The `RMW_TOPIC_INVALID_TOO_LONG` is guaranteed to be checked last, such
  * that if you get that result, then you can assume all other checks succeeded.
@@ -84,7 +84,7 @@ extern "C"
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_validate_topic_name(
+rmw_validate_full_topic_name(
   const char * topic_name,
   int * validation_result,
   size_t * invalid_index);
@@ -93,10 +93,10 @@ rmw_validate_topic_name(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 const char *
-rmw_topic_validation_result_string(int validation_result);
+rmw_full_topic_name_validation_result_string(int validation_result);
 
 #if __cplusplus
 }
 #endif
 
-#endif  // RMW__VALIDATE_TOPIC_NAME_H_
+#endif  // RMW__VALIDATE_FULL_TOPIC_NAME_H_

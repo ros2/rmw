@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <rmw/validate_topic_name.h>
+#include <rmw/validate_full_topic_name.h>
 
 #include <ctype.h>
 #include <string.h>
 
-#include "./isalnum_no_locale.h"
+#include "rcutils/isalnum_no_locale.h"
 
 rmw_ret_t
-rmw_validate_topic_name(
+rmw_validate_full_topic_name(
   const char * topic_name,
   int * validation_result,
   size_t * invalid_index)
@@ -57,7 +57,7 @@ rmw_validate_topic_name(
   }
   // check for unallowed characters
   for (size_t i = 0; i < topic_name_length; ++i) {
-    if (isalnum_no_locale(topic_name[i])) {
+    if (rcutils_isalnum_no_locale(topic_name[i])) {
       // if it is an alpha numeric character, i.e. [0-9|A-Z|a-z], continue
       continue;
     } else if (topic_name[i] == '_') {
@@ -114,7 +114,7 @@ rmw_validate_topic_name(
 }
 
 const char *
-rmw_topic_validation_result_string(int validation_result)
+rmw_full_topic_name_validation_result_string(int validation_result)
 {
   switch (validation_result) {
     case RMW_TOPIC_VALID:
