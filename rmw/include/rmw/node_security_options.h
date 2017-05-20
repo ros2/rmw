@@ -34,4 +34,4 @@ rmw_get_default_node_security_options();
 }
 #endif
 
-#endif  // RMW__VALIDATE_NAMESPACE_H_
+#endif  // RMW__NODE_SECURITY_OPTIONS_H_
