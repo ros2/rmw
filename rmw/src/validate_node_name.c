@@ -40,7 +40,8 @@ rmw_validate_node_name(
     return RMW_RET_OK;
   }
   // check for unallowed characters
-  for (size_t i = 0; i < node_name_length; ++i) {
+  size_t i;
+  for (i = 0; i < node_name_length; ++i) {
     if (rcutils_isalnum_no_locale(node_name[i])) {
       // if it is an alpha numeric character, i.e. [0-9|A-Z|a-z], continue
       continue;
