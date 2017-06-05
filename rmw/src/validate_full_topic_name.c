@@ -56,7 +56,8 @@ rmw_validate_full_topic_name(
     return RMW_RET_OK;
   }
   // check for unallowed characters
-  for (size_t i = 0; i < topic_name_length; ++i) {
+  size_t i;
+  for (i = 0; i < topic_name_length; ++i) {
     if (rcutils_isalnum_no_locale(topic_name[i])) {
       // if it is an alpha numeric character, i.e. [0-9|A-Z|a-z], continue
       continue;
@@ -76,7 +77,7 @@ rmw_validate_full_topic_name(
     }
   }
   // check for double '/' and tokens that start with a number
-  for (size_t i = 0; i < topic_name_length; ++i) {
+  for (i = 0; i < topic_name_length; ++i) {
     if (i == topic_name_length - 1) {
       // if this is the last character, then nothing to check
       continue;
