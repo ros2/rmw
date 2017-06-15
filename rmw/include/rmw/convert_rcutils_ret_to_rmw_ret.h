@@ -15,6 +15,11 @@
 #ifndef RMW__CONVERT_RCUTILS_RET_TO_RMW_RET_H_
 #define RMW__CONVERT_RCUTILS_RET_TO_RMW_RET_H_
 
+#if __cplusplus
+extern "C"
+{
+#endif
+
 #include "rcutils/types.h"
 #include "rmw/macros.h"
 #include "rmw/types.h"
@@ -24,5 +29,9 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret_t rcutils_ret);
+
+#if __cplusplus
+}  // extern "C"
+#endif
 
 #endif  // RMW__CONVERT_RCUTILS_RET_TO_RMW_RET_H_
