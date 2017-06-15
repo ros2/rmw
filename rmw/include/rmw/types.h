@@ -162,6 +162,18 @@ typedef struct RMW_PUBLIC_TYPE rmw_time_t
   uint64_t nsec;
 } rmw_time_t;
 
+enum RMW_PUBLIC_TYPE rmw_security_enforcement_policy_t
+{
+  RMW_SECURITY_ENFORCEMENT_PERMISSIVE,
+  RMW_SECURITY_ENFORCEMENT_ENFORCE,
+};
+
+typedef struct RMW_PUBLIC_TYPE rmw_node_security_options_t
+{
+  enum rmw_security_enforcement_policy_t enforce_security;
+  const char * security_root_path;
+} rmw_node_security_options_t;
+
 enum RMW_PUBLIC_TYPE rmw_qos_reliability_policy_t
 {
   RMW_QOS_POLICY_RELIABILITY_SYSTEM_DEFAULT,

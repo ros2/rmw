@@ -18,6 +18,7 @@ set(rmw_sources
   "src/allocators.c"
   "src/error_handling.c"
   "src/sanity_checks.c"
+  "src/node_security_options.c"
   "src/validate_full_topic_name.c"
   "src/validate_namespace.c"
   "src/validate_node_name.c"
