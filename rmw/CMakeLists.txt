@@ -17,6 +17,7 @@ include_directories(include)
 set(rmw_sources
   "src/allocators.c"
   "src/error_handling.c"
+  "src/names_and_types.c"
   "src/sanity_checks.c"
   "src/node_security_options.c"
   "src/validate_full_topic_name.c"
