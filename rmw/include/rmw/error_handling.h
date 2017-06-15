@@ -51,6 +51,9 @@ rmw_set_error_state(const char * error_msg, const char * file, size_t line_numbe
  */
 #define RMW_SET_ERROR_MSG(msg) rmw_set_error_state(msg, __FILE__, __LINE__);
 
+#define RMW_SET_ERROR_MSG_ALLOC(msg, allocator) \
+  rcutils_set_error_state(msg, __FILE__, __LINE__, allocator);
+
 #define rmw_error_is_set rcutils_error_is_set
 
 #define rmw_get_error_state rcutils_get_error_state

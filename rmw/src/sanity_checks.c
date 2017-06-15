@@ -23,29 +23,6 @@
 #include "rmw/types.h"
 
 rmw_ret_t
-rmw_check_zero_rmw_topic_names_and_types(
-  rmw_topic_names_and_types_t * topic_names_and_types)
-{
-  if (!topic_names_and_types) {
-    RMW_SET_ERROR_MSG("topic_names_and_types is null");
-    return RMW_RET_ERROR;
-  }
-  if (topic_names_and_types->topic_count != 0) {
-    RMW_SET_ERROR_MSG("topic count is not zero");
-    return RMW_RET_ERROR;
-  }
-  if (topic_names_and_types->topic_names) {
-    RMW_SET_ERROR_MSG("topic names is not null");
-    return RMW_RET_ERROR;
-  }
-  if (topic_names_and_types->type_names) {
-    RMW_SET_ERROR_MSG("type names is not null");
-    return RMW_RET_ERROR;
-  }
-  return RMW_RET_OK;
-}
-
-rmw_ret_t
 rmw_check_zero_rmw_string_array(
   rcutils_string_array_t * array)
 {
