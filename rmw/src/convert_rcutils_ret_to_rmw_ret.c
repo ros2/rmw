@@ -12,17 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__CONVERT_RCUTILS_RET_TO_RMW_RET_H_
-#define RMW__CONVERT_RCUTILS_RET_TO_RMW_RET_H_
+#include "rmw/convert_rcutils_ret_to_rmw_ret.h"
 
-#include "rcutils/types.h"
-#include "rmw/macros.h"
-#include "rmw/types.h"
-#include "rmw/visibility_control.h"
-
-RMW_PUBLIC
-RMW_WARN_UNUSED
 rmw_ret_t
-rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret_t rcutils_ret);
-
-#endif  // RMW__CONVERT_RCUTILS_RET_TO_RMW_RET_H_
+rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret_t rcutils_ret)
+{
+  switch (rcutils_ret) {
+    case RCUTILS_RET_OK:
+      return RMW_RET_OK;
+    case RCUTILS_RET_INVALID_ARGUMENT:
+      return RMW_RET_INVALID_ARGUMENT;
+    case RCUTILS_RET_BAD_ALLOC:
+      return RMW_RET_BAD_ALLOC;
+    case RCUTILS_RET_ERROR:
+      return RMW_RET_ERROR;
+    default:
+      return RMW_RET_ERROR;
+  }
+}
