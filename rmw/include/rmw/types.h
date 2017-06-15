@@ -162,6 +162,18 @@ typedef struct RMW_PUBLIC_TYPE rmw_time_t
   uint64_t nsec;
 } rmw_time_t;
 
+enum RMW_PUBLIC_TYPE rmw_security_enforcement_policy_t
+{
+  RMW_SECURITY_ENFORCEMENT_PERMISSIVE,
+  RMW_SECURITY_ENFORCEMENT_ENFORCE,
+};
+
+typedef struct RMW_PUBLIC_TYPE rmw_node_security_options_t
+{
+  enum rmw_security_enforcement_policy_t enforce_security;
+  const char * security_root_path;
+} rmw_node_security_options_t;
+
 enum RMW_PUBLIC_TYPE rmw_qos_reliability_policy_t
 {
   RMW_QOS_POLICY_RELIABILITY_SYSTEM_DEFAULT,
@@ -189,6 +201,17 @@ typedef struct RMW_PUBLIC_TYPE rmw_qos_profile_t
   size_t depth;
   enum rmw_qos_reliability_policy_t reliability;
   enum rmw_qos_durability_policy_t durability;
+  /// If true, any ROS specific namespacing conventions will be circumvented.
+  /**
+   * In the case of DDS and topics, for example, this means the typical
+   * ROS specific prefix of `rt` would not be applied as described here:
+   *
+   *   http://design.ros2.org/articles/topic_and_service_names.html#ros-specific-namespace-prefix
+   *
+   * This might be useful when trying to directly connect a native DDS topic
+   * with a ROS 2 topic.
+   */
+  bool avoid_ros_namespace_conventions;
 } rmw_qos_profile_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_topic_names_and_types_t

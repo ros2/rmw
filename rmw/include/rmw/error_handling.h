@@ -29,6 +29,10 @@ extern "C"
 
 typedef rcutils_error_state_t rmw_error_state_t;
 
+#define rmw_error_state_copy rcutils_error_state_copy
+
+#define rmw_error_state_fini rcutils_error_state_fini
+
 // TODO(wjwwood): replace this completely with rcutils_set_error_state()
 //                once the rmw APIs take an allocator that can be passed
 //                by the rmw implementations on to the error functions

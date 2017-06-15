@@ -12,22 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <string>
+#ifndef RMW__NODE_SECURITY_OPTIONS_H_
+#define RMW__NODE_SECURITY_OPTIONS_H_
 
-#include "gmock/gmock.h"
+#if __cplusplus
+extern "C"
+{
+#endif
 
-#include "../src/isalnum_no_locale.h"
+#include "rmw/types.h"
 
-TEST(test_isalnum_no_locale, valid_characters_ok) {
-  std::string valid("0123456789" "ABCDEFGHIJKLMNOPQRSTUVWXYZ" "abcdefghijklmnopqrstuvwxyz");
-  for (auto & c : valid) {
-    ASSERT_TRUE(isalnum_no_locale(c));
-  }
+RMW_PUBLIC
+rmw_node_security_options_t
+rmw_get_zero_initialized_node_security_options();
+
+RMW_PUBLIC
+rmw_node_security_options_t
+rmw_get_default_node_security_options();
+
+#if __cplusplus
 }
+#endif
 
-TEST(test_isalnum_no_locale, invalid_characters_fail) {
-  std::string invalid("/" /*0-9*/ ":;<=>?@" /*A-Z*/ "[\\]^_`" /*a-z*/);
-  for (auto & c : invalid) {
-    ASSERT_FALSE(isalnum_no_locale(c));
-  }
-}
+#endif  // RMW__NODE_SECURITY_OPTIONS_H_

@@ -12,36 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ISALNUM_NO_LOCALE_H_
-#define ISALNUM_NO_LOCALE_H_
+#include "rmw/node_security_options.h"
 
-#if __cplusplus
-extern "C"
+rmw_node_security_options_t
+rmw_get_zero_initialized_node_security_options()
 {
-#endif
-
-/// Custom isalnum which is not affected by locale.
-static inline
-bool
-isalnum_no_locale(char c)
-{
-  // if in '0', ..., '9', then ok
-  if (c >= 0x30 /*0*/ && c <= 0x39 /*9*/) {
-    return true;
-  }
-  // if in 'A', ..., 'Z', then ok
-  if (c >= 0x41 /*A*/ && c <= 0x5a /*Z*/) {
-    return true;
-  }
-  // if in 'a', ..., 'z', then ok
-  if (c >= 0x61 /*a*/ && c <= 0x7a /*z*/) {
-    return true;
-  }
-  return false;
+  static rmw_node_security_options_t null_security_options = {0};
+  return null_security_options;
 }
 
-#if __cplusplus
+rmw_node_security_options_t
+rmw_get_default_node_security_options()
+{
+  static rmw_node_security_options_t default_options;
+  default_options.enforce_security = RMW_SECURITY_ENFORCEMENT_PERMISSIVE;
+  default_options.security_root_path = NULL;
+  return default_options;
 }
-#endif
-
-#endif  // ISALNUM_NO_LOCALE_H_
