@@ -31,6 +31,15 @@ static const rmw_qos_profile_t rmw_qos_profile_sensor_data =
   false
 };
 
+static const rmw_qos_profile_t rmw_qos_profile_durable =
+{
+  RMW_QOS_POLICY_HISTORY_KEEP_LAST,
+  2,
+  RMW_QOS_POLICY_RELIABILITY_RELIABLE,
+  RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL,
+  false
+};
+
 static const rmw_qos_profile_t rmw_qos_profile_parameters =
 {
   RMW_QOS_POLICY_HISTORY_KEEP_LAST,
