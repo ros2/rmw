@@ -1,4 +1,4 @@
-// Copyright 2016-2017 Open Source Robotics Foundation, Inc.
+// Copyright 2017 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,28 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__SANITY_CHECKS_H_
-#define RMW__SANITY_CHECKS_H_
+#include "rmw/convert_rcutils_ret_to_rmw_ret.h"
 
-#if __cplusplus
-extern "C"
-{
-#endif
-
-#include "rcutils/types.h"
-
-#include "rmw/macros.h"
-#include "rmw/types.h"
-#include "rmw/visibility_control.h"
-
-/// Check that a rmw_node_names_t struct is zero initialized.
-RMW_PUBLIC
-RMW_WARN_UNUSED
 rmw_ret_t
-rmw_check_zero_rmw_string_array(rcutils_string_array_t * array);
-
-#if __cplusplus
+rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret_t rcutils_ret)
+{
+  switch (rcutils_ret) {
+    case RCUTILS_RET_OK:
+      return RMW_RET_OK;
+    case RCUTILS_RET_INVALID_ARGUMENT:
+      return RMW_RET_INVALID_ARGUMENT;
+    case RCUTILS_RET_BAD_ALLOC:
+      return RMW_RET_BAD_ALLOC;
+    case RCUTILS_RET_ERROR:
+      return RMW_RET_ERROR;
+    default:
+      return RMW_RET_ERROR;
+  }
 }
-#endif
-
-#endif  // RMW__SANITY_CHECKS_H_
