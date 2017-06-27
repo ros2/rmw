@@ -28,6 +28,17 @@
  * - Service Server
  *   - rmw/rmw.h
  *
+ * There are some common utility functions in combination with "Topics" or "Services":
+ * - A function to validate a fully qualified topic or service name
+ *   - rmw_validate_full_topic_name()
+ *   - rmw/validate_full_topic_name.h
+ * - A function to validate a node's namespace
+ *   - rmw_validate_namespace()
+ *   - rmw/validate_namespace.h
+ * - A function to validate a node's name
+ *   - rmw_validate_node_name()
+ *   - rmw/validate_node_name.h
+ *
  * It also has some machinery that is necessary to wait on and act on these concepts:
  *
  * - Initialization and shutdown management (global for now)
@@ -36,6 +47,13 @@
  *   - rmw/rmw.h
  * - Guard conditions for waking up wait sets asynchronously
  *   - rmw/rmw.h
+ * - Introspection of the ROS graph
+ *   - rmw_names_and_types_t
+ *   - rmw_get_topic_names_and_types()
+ *   - rmw_get_service_names_and_types()
+ *   - rmw/names_and_types.h
+ *   - rmw/get_topic_names_and_types.h
+ *   - rmw/get_service_names_and_types.h
  *
  * Further still there are some useful abstractions and utilities:
  *
