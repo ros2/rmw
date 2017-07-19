@@ -19,6 +19,7 @@
 #include <sstream>
 #include <string>
 
+#include "rmw/allocators.h"
 #include "rmw/error_handling.h"
 #include "rmw/impl/config.h"  // For RMW_AVOID_MEMORY_ALLOCATION
 #include "rmw/impl/cpp/demangle.hpp"  // For demangle.
