@@ -18,15 +18,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <rcutils/snprintf.h>
+
 #include "rmw/error_handling.h"
 #include "rmw/validate_full_topic_name.h"
-
-#ifndef _WIN32
-  #define LOCAL_SNPRINTF snprintf
-#else
-  #define LOCAL_SNPRINTF(buffer, buffer_size, format, ...) \
-  _snprintf_s(buffer, buffer_size, _TRUNCATE, format, __VA_ARGS__)
-#endif
 
 rmw_ret_t
 rmw_validate_namespace(
@@ -82,7 +77,7 @@ rmw_validate_namespace(
         {
           char default_err_msg[256];
           // explicitly not taking return value which is number of bytes written
-          LOCAL_SNPRINTF(
+          rcutils_snprintf(
             default_err_msg, sizeof(default_err_msg),
             "rmw_validate_namespace(): unknown rmw_validate_full_topic_name() result '%d'",
             *validation_result
