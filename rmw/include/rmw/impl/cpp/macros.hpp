@@ -19,7 +19,7 @@
 #include <sstream>
 #include <string>
 
-#include <rcutils/snprintf.h>
+#include "rcutils/snprintf.h"
 
 #include "rmw/allocators.h"
 #include "rmw/error_handling.h"
