@@ -19,6 +19,8 @@
 #include <sstream>
 #include <string>
 
+#include "rcutils/snprintf.h"
+
 #include "rmw/allocators.h"
 #include "rmw/error_handling.h"
 #include "rmw/impl/config.h"  // For RMW_AVOID_MEMORY_ALLOCATION
@@ -70,7 +72,7 @@
 #define RMW_CHECK_TYPE_IDENTIFIERS_MATCH(ElementName, ElementTypeID, ExpectedTypeID, OnFailure) { \
   if (ElementTypeID != ExpectedTypeID) { \
     char __msg[1024]; \
-    snprintf( \
+    rcutils_snprintf( \
       __msg, 1024, \
       #ElementName " implementation '%s'(%p) does not match rmw implementation '%s'(%p)", \
       ElementTypeID, reinterpret_cast<const void *>(ElementTypeID), \
@@ -82,14 +84,14 @@
 #else  // RMW_AVOID_MEMORY_ALLOCATION
 #define RMW_CHECK_TYPE_IDENTIFIERS_MATCH(ElementName, ElementTypeID, ExpectedTypeID, OnFailure) { \
   if (ElementTypeID != ExpectedTypeID) { \
-    size_t __bytes_that_would_have_been_written = snprintf( \
+    size_t __bytes_that_would_have_been_written = rcutils_snprintf( \
       NULL, 0, \
       #ElementName " implementation '%s'(%p) does not match rmw implementation '%s'(%p)", \
       ElementTypeID, reinterpret_cast<const void *>(ElementTypeID), \
       ExpectedTypeID, reinterpret_cast<const void *>(ExpectedTypeID)); \
     char * __msg = \
       reinterpret_cast<char *>(rmw_allocate(__bytes_that_would_have_been_written + 1)); \
-    snprintf( \
+    rcutils_snprintf( \
       __msg, __bytes_that_would_have_been_written + 1, \
       #ElementName " implementation '%s'(%p) does not match rmw implementation '%s'(%p)", \
       ElementTypeID, reinterpret_cast<const void *>(ElementTypeID), \
