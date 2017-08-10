@@ -17,7 +17,7 @@
 rmw_node_security_options_t
 rmw_get_zero_initialized_node_security_options()
 {
-  static rmw_node_security_options_t null_security_options = {0};
+  static rmw_node_security_options_t null_security_options = {0, NULL};
   return null_security_options;
 }
 
