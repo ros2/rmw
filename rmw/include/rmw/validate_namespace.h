@@ -34,7 +34,7 @@ extern "C"
 #define RMW_NAMESPACE_INVALID_TOO_LONG 7
 
 // An additional 2 characters are reserved for the shortest possible topic, e.g. '/X'.
-#define RMW_NAMESPACE_MAX_LENGTH (RMW_TOPIC_MAX_NAME_LENGTH - 2)
+#define RMW_NAMESPACE_MAX_LENGTH (RMW_TOPIC_MAX_NAME_LENGTH - 2U)
 
 /// Determine if a given namespace is valid.
 /** Validity of a namespace is based on rules for a topic defined here:
