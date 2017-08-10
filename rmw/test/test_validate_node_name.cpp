@@ -153,14 +153,14 @@ TEST(test_validate_node_name, node_name_too_long) {
     valid_but_long_node_name.c_str(), &validation_result, &invalid_index);
   ASSERT_EQ(RMW_RET_OK, ret);
   EXPECT_EQ(RMW_NODE_NAME_INVALID_TOO_LONG, validation_result);
-  EXPECT_EQ(RMW_NODE_NAME_MAX_NAME_LENGTH - 1, invalid_index);
+  EXPECT_EQ(RMW_NODE_NAME_MAX_NAME_LENGTH - 1U, invalid_index);
 
   // with invalid_index as NULL
   ret = rmw_validate_node_name(
     valid_but_long_node_name.c_str(), &validation_result, nullptr);
   ASSERT_EQ(RMW_RET_OK, ret);
   EXPECT_EQ(RMW_NODE_NAME_INVALID_TOO_LONG, validation_result);
-  EXPECT_EQ(RMW_NODE_NAME_MAX_NAME_LENGTH - 1, invalid_index);
+  EXPECT_EQ(RMW_NODE_NAME_MAX_NAME_LENGTH - 1U, invalid_index);
 
   ASSERT_NE((char *)NULL, rmw_node_name_validation_result_string(validation_result));
 }

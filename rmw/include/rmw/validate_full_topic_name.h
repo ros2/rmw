@@ -32,7 +32,7 @@ extern "C"
 #define RMW_TOPIC_INVALID_NAME_TOKEN_STARTS_WITH_NUMBER 6
 #define RMW_TOPIC_INVALID_TOO_LONG 7
 
-#define RMW_TOPIC_MAX_NAME_LENGTH 255 /* impl constraint */ - 8 /* reserved for prefixes */
+#define RMW_TOPIC_MAX_NAME_LENGTH 255U /* impl constraint */ - 8U /* reserved for prefixes */
 
 /// Determine if a given fully qualified topic name is valid.
 /** Validity of a FQN for topic is determined based on rules defined here:

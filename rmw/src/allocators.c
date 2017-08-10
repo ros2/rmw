@@ -33,7 +33,7 @@ rmw_allocate(size_t size)
 void
 rmw_free(void * pointer)
 {
-  // Should have a corresponding overide with rmw_allocate
+  // Should have a corresponding override with rmw_allocate
   free(pointer);
 }
 
