@@ -229,6 +229,13 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_t
 
 enum {RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT = 0};
 
+enum RMW_PUBLIC_TYPE rmw_log_level_t
+{
+  RMW_LOG_LEVEL_ERROR,
+  RMW_LOG_LEVEL_WARNING,
+  RMW_LOG_LEVEL_INFO,
+};
+
 #if __cplusplus
 }
 #endif
