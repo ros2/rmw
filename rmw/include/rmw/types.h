@@ -25,6 +25,8 @@ extern "C"
 #include <stdint.h>
 
 #include "rmw/visibility_control.h"
+// map rcutils specific log levels to rmw speicfic type
+#include <rcutils/logging.h>
 
 typedef int rmw_ret_t;
 #define RMW_RET_OK 0
@@ -229,11 +231,16 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_t
 
 enum {RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT = 0};
 
+// Creating a map of rcutil log level types to
+// rmw specific types. Check with dds available types
+// before using these.
 enum RMW_PUBLIC_TYPE rmw_log_level_t
 {
-  RMW_LOG_LEVEL_ERROR,
-  RMW_LOG_LEVEL_WARNING,
-  RMW_LOG_LEVEL_INFO,
+  RMW_LOG_SEVERITY_DEBUG = RCUTILS_LOG_SEVERITY_DEBUG,
+  RMW_LOG_SEVERITY_INFO  = RCUTILS_LOG_SEVERITY_INFO,
+  RMW_LOG_SEVERITY_WARN  = RCUTILS_LOG_SEVERITY_WARN,
+  RMW_LOG_SEVERITY_ERROR = RCUTILS_LOG_SEVERITY_ERROR,
+  RMW_LOG_SEVERITY_FATAL = RCUTILS_LOG_SEVERITY_FATAL
 };
 
 #if __cplusplus
