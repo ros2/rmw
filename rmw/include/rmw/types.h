@@ -233,7 +233,7 @@ enum {RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT = 0};
 
 // Type mapping of rcutil log severity types to
 // rmw specific types.
-enum RMW_PUBLIC_TYPE rmw_log_level_t
+enum RMW_PUBLIC_TYPE rmw_log_severity_t
 {
   RMW_LOG_SEVERITY_DEBUG = RCUTILS_LOG_SEVERITY_DEBUG,
   RMW_LOG_SEVERITY_INFO = RCUTILS_LOG_SEVERITY_INFO,
