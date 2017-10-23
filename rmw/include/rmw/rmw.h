@@ -173,6 +173,11 @@ rmw_publish(const rmw_publisher_t * publisher, const void * ros_message);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
+rmw_ret_t
+rmw_publish_raw(const rmw_publisher_t * publisher, const rmw_message_raw_t * raw_message);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_subscription_t *
 rmw_create_subscription(
   const rmw_node_t * node,
