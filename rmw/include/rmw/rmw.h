@@ -207,6 +207,23 @@ rmw_take_with_info(
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
+rmw_ret_t
+rmw_take_raw(
+  const rmw_subscription_t * subscription,
+  rmw_message_raw_t * raw_message,
+  bool * taken);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_take_raw_with_info(
+  const rmw_subscription_t * subscription,
+  rmw_message_raw_t * raw_message,
+  bool * taken,
+  rmw_message_info_t * message_info);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_client_t *
 rmw_create_client(
   const rmw_node_t * node,

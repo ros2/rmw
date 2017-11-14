@@ -232,7 +232,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_raw_t
 {
   // already serialized message data
   char * buffer;
-  size_t buffer_length;
+  unsigned int buffer_length;
 } rmw_message_raw_t;
 
 enum {RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT = 0};
