@@ -79,9 +79,7 @@ rmw_validate_namespace(
           // explicitly not taking return value which is number of bytes written
           rcutils_snprintf(
             default_err_msg, sizeof(default_err_msg),
-            "rmw_validate_namespace(): unknown rmw_validate_full_topic_name() result '%d'",
-            *validation_result
-          );
+            "rmw_validate_namespace(): unknown rmw_validate_full_topic_name() result");
           RMW_SET_ERROR_MSG(default_err_msg);
         }
         return RMW_RET_ERROR;
