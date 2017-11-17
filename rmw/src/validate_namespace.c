@@ -80,8 +80,7 @@ rmw_validate_namespace(
           rcutils_snprintf(
             default_err_msg, sizeof(default_err_msg),
             "rmw_validate_namespace(): unknown rmw_validate_full_topic_name() result '%d'",
-            *validation_result
-          );
+            t_validation_result);
           RMW_SET_ERROR_MSG(default_err_msg);
         }
         return RMW_RET_ERROR;
