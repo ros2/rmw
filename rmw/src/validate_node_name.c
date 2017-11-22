@@ -82,7 +82,7 @@ rmw_node_name_validation_result_string(int validation_result)
 {
   switch (validation_result) {
     case RMW_NODE_NAME_VALID:
-      return NULL;
+      return "valid node name";
     case RMW_NODE_NAME_INVALID_IS_EMPTY_STRING:
       return "node name must not be empty";
     case RMW_NODE_NAME_INVALID_CONTAINS_UNALLOWED_CHARACTERS:

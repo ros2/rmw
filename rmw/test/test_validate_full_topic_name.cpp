@@ -47,7 +47,8 @@ TEST(test_validate_topic_name, valid_topic) {
   ASSERT_EQ(RMW_RET_OK, ret);
   ASSERT_EQ(RMW_TOPIC_VALID, validation_result);
 
-  ASSERT_EQ((char *)NULL, rmw_full_topic_name_validation_result_string(validation_result));
+  ret = strcmp("valid topic name", rmw_full_topic_name_validation_result_string(validation_result));
+  ASSERT_EQ(0, ret);
 }
 
 TEST(test_validate_topic_name, empty_topic_name) {

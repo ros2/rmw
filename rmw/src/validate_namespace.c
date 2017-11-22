@@ -110,7 +110,7 @@ rmw_namespace_validation_result_string(int validation_result)
 {
   switch (validation_result) {
     case RMW_NAMESPACE_VALID:
-      return NULL;
+      return "valid namespace";
     case RMW_NAMESPACE_INVALID_IS_EMPTY_STRING:
       return "namespace must not be empty";
     case RMW_NAMESPACE_INVALID_NOT_ABSOLUTE:
