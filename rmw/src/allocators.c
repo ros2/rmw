@@ -122,16 +122,16 @@ rmw_service_free(rmw_service_t * service)
   rmw_free(service);
 }
 
-rmw_waitset_t *
-rmw_waitset_allocate()
+rmw_wait_set_t *
+rmw_wait_set_allocate()
 {
   // Could be overridden with custom (maybe static) client struct allocator
-  return (rmw_waitset_t *)rmw_allocate(sizeof(rmw_waitset_t));
+  return (rmw_wait_set_t *)rmw_allocate(sizeof(rmw_wait_set_t));
 }
 
 void
-rmw_waitset_free(rmw_waitset_t * waitset)
+rmw_wait_set_free(rmw_wait_set_t * wait_set)
 {
-  // Should have matching overide with rmw_waitset_allocate
-  rmw_free(waitset);
+  // Should have matching overide with rmw_wait_set_allocate
+  rmw_free(wait_set);
 }
