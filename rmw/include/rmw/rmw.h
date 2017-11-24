@@ -277,15 +277,15 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_trigger_guard_condition(const rmw_guard_condition_t * guard_condition);
 
-/// Create a wait_set to store conditions that the middleware will block on.
+/// Create a wait set to store conditions that the middleware will block on.
 /**
- * If `max_conditions` is `0`, the wait_set can store an unbounded number of
+ * If `max_conditions` is `0`, the wait set can store an unbounded number of
  * conditions to wait on.
  * If `max_conditions` is greater than `0`, the number of conditions that can
- * be attached to the wait_set is bounded at `max_conditions`.
+ * be attached to the wait set is bounded at `max_conditions`.
  * \param[in] max_conditions
- *   The maximum number of conditions that can be attached to the wait_set.
- * \return A pointer to the created wait_set, `NULL` if an error occurred.
+ *   The maximum number of conditions that can be attached to the wait set.
+ * \return A pointer to the created wait set, `NULL` if an error occurred.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -303,7 +303,7 @@ rmw_destroy_wait_set(rmw_wait_set_t * wait_set);
  * the timeout is reached.
  * The arrays contain type-erased representations of waitable entities.
  * This function casts the pointers to middleware-specific conditions and adds
- * them to the wait_set.
+ * them to the wait set.
  *
  * The count variables in the arrays represents the number of valid pointers
  * in the array.
@@ -321,12 +321,12 @@ rmw_destroy_wait_set(rmw_wait_set_t * wait_set);
  * \param guard_conditions Array of guard conditions to wait on
  * \param services Array of services to wait on
  * \param clients Array of clients to wait on
- * \param wait_set Storage for the wait_set
+ * \param wait_set Storage for the wait set
  * \param wait_timeout
  *   If negative, block indefinitely or until a condition is ready.
  *   If zero, check only for immediately available conditions and don't block.
  *   Else, this represents the maximum time to wait for a response from the
- *   wait_set.
+ *   wait set.
  * \return `RMW_RET_OK` if success, or
  * \return `RMW_RET_ERROR` if error, or
  * \return `RMW_RET_TIMEOUT` if wait timed out.
