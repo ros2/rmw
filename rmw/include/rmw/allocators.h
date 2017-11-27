@@ -80,12 +80,12 @@ void
 rmw_service_free(rmw_service_t * service);
 
 RMW_PUBLIC
-rmw_waitset_t *
-rmw_waitset_allocate(void);
+rmw_wait_set_t *
+rmw_wait_set_allocate(void);
 
 RMW_PUBLIC
 void
-rmw_waitset_free(rmw_waitset_t * waitset);
+rmw_wait_set_free(rmw_wait_set_t * wait_set);
 
 #if __cplusplus
 }
