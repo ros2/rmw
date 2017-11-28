@@ -126,6 +126,6 @@ rmw_namespace_validation_result_string(int validation_result)
     case RMW_NAMESPACE_INVALID_TOO_LONG:
       return "namespace should not exceed '" RMW_STRINGIFY(RMW_NAMESPACE_MAX_NAME_LENGTH) "'";
     default:
-      return NULL;
+      return "undefined namespace type";
   }
 }

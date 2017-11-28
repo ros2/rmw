@@ -134,6 +134,6 @@ rmw_full_topic_name_validation_result_string(int validation_result)
     case RMW_TOPIC_INVALID_TOO_LONG:
       return "topic length should not exceed '" RMW_STRINGIFY(RMW_TOPIC_MAX_NAME_LENGTH) "'";
     default:
-      return NULL;
+      return "undefined topic name type";
   }
 }
