@@ -52,8 +52,7 @@ TEST(test_validate_namespace, valid_namespace) {
   ASSERT_EQ(RMW_RET_OK, ret);
   ASSERT_EQ(RMW_NAMESPACE_VALID, validation_result);
 
-  ret = strcmp("valid namespace", rmw_namespace_validation_result_string(validation_result));
-  ASSERT_EQ(0, ret);
+  ASSERT_EQ((char *)nullptr, rmw_namespace_validation_result_string(validation_result));
 }
 
 TEST(test_validate_namespace, empty_namespace) {
@@ -72,10 +71,7 @@ TEST(test_validate_namespace, empty_namespace) {
   ASSERT_EQ(RMW_NAMESPACE_INVALID_IS_EMPTY_STRING, validation_result);
   ASSERT_EQ(0ul, invalid_index);
 
-  ret =
-    strcmp("namespace must not be empty",
-      rmw_namespace_validation_result_string(validation_result));
-  ASSERT_EQ(0, ret);
+  ASSERT_NE((char *)nullptr, rmw_namespace_validation_result_string(validation_result));
 }
 
 TEST(test_validate_namespace, not_absolute) {
@@ -99,9 +95,7 @@ TEST(test_validate_namespace, not_absolute) {
   ASSERT_EQ(RMW_NAMESPACE_INVALID_NOT_ABSOLUTE, validation_result);
   ASSERT_EQ(0ul, invalid_index);
 
-  ret = strcmp("namespace must be absolute, it must lead with a '/'",
-      rmw_namespace_validation_result_string(validation_result));
-  ASSERT_EQ(0, ret);
+  ASSERT_NE((char *)nullptr, rmw_namespace_validation_result_string(validation_result));
 }
 
 TEST(test_validate_namespace, ends_with_forward_slash) {
@@ -120,9 +114,7 @@ TEST(test_validate_namespace, ends_with_forward_slash) {
   ASSERT_EQ(RMW_NAMESPACE_INVALID_ENDS_WITH_FORWARD_SLASH, validation_result);
   ASSERT_EQ(10ul, invalid_index);
 
-  ret = strcmp("namespace must not end with a '/', unless only a '/'",
-      rmw_namespace_validation_result_string(validation_result));
-  ASSERT_EQ(0, ret);
+  ASSERT_NE((char *)nullptr, rmw_namespace_validation_result_string(validation_result));
 }
 
 TEST(test_validate_namespace, unallowed_characters) {
@@ -156,9 +148,7 @@ TEST(test_validate_namespace, unallowed_characters) {
   ASSERT_EQ(RMW_NAMESPACE_INVALID_CONTAINS_UNALLOWED_CHARACTERS, validation_result);
   ASSERT_EQ(5ul, invalid_index);
 
-  ret = strcmp("namespace must not contain characters other than alphanumerics, '_', or '/'",
-      rmw_namespace_validation_result_string(validation_result));
-  ASSERT_EQ(0, ret);
+  ASSERT_NE((char *)nullptr, rmw_namespace_validation_result_string(validation_result));
 }
 
 TEST(test_validate_namespace, repeated_forward_slashes) {
@@ -177,10 +167,7 @@ TEST(test_validate_namespace, repeated_forward_slashes) {
   ASSERT_EQ(RMW_NAMESPACE_INVALID_CONTAINS_REPEATED_FORWARD_SLASH, validation_result);
   ASSERT_EQ(10ul, invalid_index);
 
-  ret =
-    strcmp("namespace must not contain repeated '/'", rmw_namespace_validation_result_string(
-        validation_result));
-  ASSERT_EQ(0, ret);
+  ASSERT_NE((char *)nullptr, rmw_namespace_validation_result_string(validation_result));
 }
 
 TEST(test_validate_namespace, starts_with_number) {
@@ -204,9 +191,7 @@ TEST(test_validate_namespace, starts_with_number) {
   ASSERT_EQ(RMW_NAMESPACE_INVALID_NAME_TOKEN_STARTS_WITH_NUMBER, validation_result);
   ASSERT_EQ(8ul, invalid_index);
 
-  ret = strcmp("namespace must not have a token that starts with a number",
-      rmw_namespace_validation_result_string(validation_result));
-  ASSERT_EQ(0, ret);
+  ASSERT_NE((char *)nullptr, rmw_namespace_validation_result_string(validation_result));
 }
 
 TEST(test_validate_namespace, topic_too_long) {
@@ -243,8 +228,5 @@ TEST(test_validate_namespace, topic_too_long) {
   EXPECT_EQ(RMW_NAMESPACE_INVALID_TOO_LONG, validation_result);
   EXPECT_EQ(RMW_NAMESPACE_MAX_LENGTH - 1, invalid_index);
 
-  const char * result_string = "namespace should not exceed '" RMW_STRINGIFY(
-    RMW_NAMESPACE_MAX_NAME_LENGTH) "'";
-  ret = strcmp(result_string, rmw_namespace_validation_result_string(validation_result));
-  ASSERT_EQ(0, ret);
+  ASSERT_NE((char *)nullptr, rmw_namespace_validation_result_string(validation_result));
 }

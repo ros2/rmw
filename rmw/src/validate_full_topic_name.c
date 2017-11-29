@@ -118,7 +118,7 @@ rmw_full_topic_name_validation_result_string(int validation_result)
 {
   switch (validation_result) {
     case RMW_TOPIC_VALID:
-      return "valid topic name";
+      return NULL;
     case RMW_TOPIC_INVALID_IS_EMPTY_STRING:
       return "topic name must not be empty";
     case RMW_TOPIC_INVALID_NOT_ABSOLUTE:
