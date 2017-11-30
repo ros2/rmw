@@ -93,6 +93,6 @@ rmw_node_name_validation_result_string(int validation_result)
       return
         "node name length should not exceed '" RMW_STRINGIFY(RMW_NODE_NAME_MAX_NAME_LENGTH) "'";
     default:
-      return "undefined node name type";
+      return "unknown result code for rmw node name validation";
   }
 }
