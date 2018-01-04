@@ -48,7 +48,6 @@ typedef struct RMW_PUBLIC_TYPE rmw_node_t
   void * data;
   const char * name;
   const char * namespace_;
-  const size_t domain_id;
 } rmw_node_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_publisher_t
@@ -145,12 +144,12 @@ typedef struct RMW_PUBLIC_TYPE rmw_guard_conditions_t
   void ** guard_conditions;
 } rmw_guard_conditions_t;
 
-typedef struct RMW_PUBLIC_TYPE rmw_waitset_t
+typedef struct RMW_PUBLIC_TYPE rmw_wait_set_t
 {
   const char * implementation_identifier;
   rmw_guard_conditions_t * guard_conditions;
   void * data;
-} rmw_waitset_t;
+} rmw_wait_set_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_request_id_t
 {

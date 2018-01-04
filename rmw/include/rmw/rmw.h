@@ -88,7 +88,7 @@ extern "C"
 #include "rcutils/types.h"
 
 #include "rosidl_generator_c/message_type_support_struct.h"
-#include "rosidl_generator_c/service_type_support.h"
+#include "rosidl_generator_c/service_type_support_struct.h"
 
 #include "rmw/macros.h"
 #include "rmw/qos_profiles.h"
@@ -277,25 +277,25 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_trigger_guard_condition(const rmw_guard_condition_t * guard_condition);
 
-/// Create a waitset to store conditions that the middleware will block on.
+/// Create a wait set to store conditions that the middleware will block on.
 /**
- * If `max_conditions` is `0`, the waitset can store an unbounded number of
+ * If `max_conditions` is `0`, the wait set can store an unbounded number of
  * conditions to wait on.
  * If `max_conditions` is greater than `0`, the number of conditions that can
- * be attached to the waitset is bounded at `max_conditions`.
+ * be attached to the wait set is bounded at `max_conditions`.
  * \param[in] max_conditions
- *   The maximum number of conditions that can be attached to the waitset.
- * \return A pointer to the created waitset, `NULL` if an error occurred.
+ *   The maximum number of conditions that can be attached to the wait set.
+ * \return A pointer to the created wait set, `NULL` if an error occurred.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
-rmw_waitset_t *
-rmw_create_waitset(size_t max_conditions);
+rmw_wait_set_t *
+rmw_create_wait_set(size_t max_conditions);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_destroy_waitset(rmw_waitset_t * waitset);
+rmw_destroy_wait_set(rmw_wait_set_t * wait_set);
 
 /// Waits on sets of different waitable entities and returns when one is ready.
 /**
@@ -303,7 +303,7 @@ rmw_destroy_waitset(rmw_waitset_t * waitset);
  * the timeout is reached.
  * The arrays contain type-erased representations of waitable entities.
  * This function casts the pointers to middleware-specific conditions and adds
- * them to the waitset.
+ * them to the wait set.
  *
  * The count variables in the arrays represents the number of valid pointers
  * in the array.
@@ -321,12 +321,12 @@ rmw_destroy_waitset(rmw_waitset_t * waitset);
  * \param guard_conditions Array of guard conditions to wait on
  * \param services Array of services to wait on
  * \param clients Array of clients to wait on
- * \param waitset Storage for the waitset
+ * \param wait_set Storage for the wait set
  * \param wait_timeout
  *   If negative, block indefinitely or until a condition is ready.
  *   If zero, check only for immediately available conditions and don't block.
  *   Else, this represents the maximum time to wait for a response from the
- *   waitset.
+ *   wait set.
  * \return `RMW_RET_OK` if success, or
  * \return `RMW_RET_ERROR` if error, or
  * \return `RMW_RET_TIMEOUT` if wait timed out.
@@ -339,7 +339,7 @@ rmw_wait(
   rmw_guard_conditions_t * guard_conditions,
   rmw_services_t * services,
   rmw_clients_t * clients,
-  rmw_waitset_t * waitset,
+  rmw_wait_set_t * wait_set,
   const rmw_time_t * wait_timeout);
 
 RMW_PUBLIC
