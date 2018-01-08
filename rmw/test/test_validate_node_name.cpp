@@ -47,7 +47,7 @@ TEST(test_validate_node_name, valid_node_name) {
   ASSERT_EQ(RMW_RET_OK, ret);
   ASSERT_EQ(RMW_NODE_NAME_VALID, validation_result);
 
-  ASSERT_EQ((char *)NULL, rmw_node_name_validation_result_string(validation_result));
+  ASSERT_EQ((char *)nullptr, rmw_node_name_validation_result_string(validation_result));
 }
 
 TEST(test_validate_node_name, empty_node_name) {
@@ -66,7 +66,7 @@ TEST(test_validate_node_name, empty_node_name) {
   ASSERT_EQ(RMW_NODE_NAME_INVALID_IS_EMPTY_STRING, validation_result);
   ASSERT_EQ(0ul, invalid_index);
 
-  ASSERT_NE((char *)NULL, rmw_node_name_validation_result_string(validation_result));
+  ASSERT_NE((char *)nullptr, rmw_node_name_validation_result_string(validation_result));
 }
 
 TEST(test_validate_node_name, unallowed_characters) {
@@ -105,7 +105,7 @@ TEST(test_validate_node_name, unallowed_characters) {
   ASSERT_EQ(RMW_NODE_NAME_INVALID_CONTAINS_UNALLOWED_CHARACTERS, validation_result);
   ASSERT_EQ(4ul, invalid_index);
 
-  ASSERT_NE((char *)NULL, rmw_node_name_validation_result_string(validation_result));
+  ASSERT_NE((char *)nullptr, rmw_node_name_validation_result_string(validation_result));
 }
 
 TEST(test_validate_node_name, starts_with_number) {
@@ -124,7 +124,7 @@ TEST(test_validate_node_name, starts_with_number) {
   ASSERT_EQ(RMW_NODE_NAME_INVALID_STARTS_WITH_NUMBER, validation_result);
   ASSERT_EQ(0ul, invalid_index);
 
-  ASSERT_NE((char *)NULL, rmw_node_name_validation_result_string(validation_result));
+  ASSERT_NE((char *)nullptr, rmw_node_name_validation_result_string(validation_result));
 }
 
 TEST(test_validate_node_name, node_name_too_long) {
@@ -162,5 +162,5 @@ TEST(test_validate_node_name, node_name_too_long) {
   EXPECT_EQ(RMW_NODE_NAME_INVALID_TOO_LONG, validation_result);
   EXPECT_EQ(RMW_NODE_NAME_MAX_NAME_LENGTH - 1U, invalid_index);
 
-  ASSERT_NE((char *)NULL, rmw_node_name_validation_result_string(validation_result));
+  ASSERT_NE((char *)nullptr, rmw_node_name_validation_result_string(validation_result));
 }

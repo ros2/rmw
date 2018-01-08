@@ -47,7 +47,7 @@ TEST(test_validate_topic_name, valid_topic) {
   ASSERT_EQ(RMW_RET_OK, ret);
   ASSERT_EQ(RMW_TOPIC_VALID, validation_result);
 
-  ASSERT_EQ((char *)NULL, rmw_full_topic_name_validation_result_string(validation_result));
+  ASSERT_EQ((char *)nullptr, rmw_full_topic_name_validation_result_string(validation_result));
 }
 
 TEST(test_validate_topic_name, empty_topic_name) {
@@ -66,7 +66,7 @@ TEST(test_validate_topic_name, empty_topic_name) {
   ASSERT_EQ(RMW_TOPIC_INVALID_IS_EMPTY_STRING, validation_result);
   ASSERT_EQ(0ul, invalid_index);
 
-  ASSERT_NE((char *)NULL, rmw_full_topic_name_validation_result_string(validation_result));
+  ASSERT_NE((char *)nullptr, rmw_full_topic_name_validation_result_string(validation_result));
 }
 
 TEST(test_validate_topic_name, not_absolute) {
@@ -90,7 +90,7 @@ TEST(test_validate_topic_name, not_absolute) {
   ASSERT_EQ(RMW_TOPIC_INVALID_NOT_ABSOLUTE, validation_result);
   ASSERT_EQ(0ul, invalid_index);
 
-  ASSERT_NE((char *)NULL, rmw_full_topic_name_validation_result_string(validation_result));
+  ASSERT_NE((char *)nullptr, rmw_full_topic_name_validation_result_string(validation_result));
 }
 
 TEST(test_validate_topic_name, ends_with_forward_slash) {
@@ -114,7 +114,7 @@ TEST(test_validate_topic_name, ends_with_forward_slash) {
   ASSERT_EQ(RMW_TOPIC_INVALID_ENDS_WITH_FORWARD_SLASH, validation_result);
   ASSERT_EQ(0ul, invalid_index);
 
-  ASSERT_NE((char *)NULL, rmw_full_topic_name_validation_result_string(validation_result));
+  ASSERT_NE((char *)nullptr, rmw_full_topic_name_validation_result_string(validation_result));
 }
 
 TEST(test_validate_topic_name, unallowed_characters) {
@@ -148,7 +148,7 @@ TEST(test_validate_topic_name, unallowed_characters) {
   ASSERT_EQ(RMW_TOPIC_INVALID_CONTAINS_UNALLOWED_CHARACTERS, validation_result);
   ASSERT_EQ(5ul, invalid_index);
 
-  ASSERT_NE((char *)NULL, rmw_full_topic_name_validation_result_string(validation_result));
+  ASSERT_NE((char *)nullptr, rmw_full_topic_name_validation_result_string(validation_result));
 }
 
 TEST(test_validate_topic_name, repeated_forward_slashes) {
@@ -167,7 +167,7 @@ TEST(test_validate_topic_name, repeated_forward_slashes) {
   ASSERT_EQ(RMW_TOPIC_INVALID_CONTAINS_REPEATED_FORWARD_SLASH, validation_result);
   ASSERT_EQ(10ul, invalid_index);
 
-  ASSERT_NE((char *)NULL, rmw_full_topic_name_validation_result_string(validation_result));
+  ASSERT_NE((char *)nullptr, rmw_full_topic_name_validation_result_string(validation_result));
 }
 
 TEST(test_validate_topic_name, starts_with_number) {
@@ -191,7 +191,7 @@ TEST(test_validate_topic_name, starts_with_number) {
   ASSERT_EQ(RMW_TOPIC_INVALID_NAME_TOKEN_STARTS_WITH_NUMBER, validation_result);
   ASSERT_EQ(8ul, invalid_index);
 
-  ASSERT_NE((char *)NULL, rmw_full_topic_name_validation_result_string(validation_result));
+  ASSERT_NE((char *)nullptr, rmw_full_topic_name_validation_result_string(validation_result));
 }
 
 TEST(test_validate_topic_name, topic_too_long) {
@@ -228,5 +228,5 @@ TEST(test_validate_topic_name, topic_too_long) {
   EXPECT_EQ(RMW_TOPIC_INVALID_TOO_LONG, validation_result);
   EXPECT_EQ(RMW_TOPIC_MAX_NAME_LENGTH - 1, invalid_index);
 
-  ASSERT_NE((char *)NULL, rmw_full_topic_name_validation_result_string(validation_result));
+  ASSERT_NE((char *)nullptr, rmw_full_topic_name_validation_result_string(validation_result));
 }
