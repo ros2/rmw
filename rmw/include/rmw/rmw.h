@@ -410,6 +410,11 @@ rmw_service_server_is_available(
   const rmw_client_t * client,
   bool * is_available);
 
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_set_log_severity(rmw_log_severity_t severity);
+
 #if __cplusplus
 }
 #endif
