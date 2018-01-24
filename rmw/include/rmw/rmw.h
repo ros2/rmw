@@ -323,7 +323,7 @@ rmw_destroy_wait_set(rmw_wait_set_t * wait_set);
  * \param clients Array of clients to wait on
  * \param wait_set Storage for the wait set
  * \param wait_timeout
- *   If negative, block indefinitely or until a condition is ready.
+ *   If NULL, block until a condition is ready
  *   If zero, check only for immediately available conditions and don't block.
  *   Else, this represents the maximum time to wait for a response from the
  *   wait set.
