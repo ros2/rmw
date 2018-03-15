@@ -28,10 +28,23 @@ rmw_validate_full_topic_name(
   if (!topic_name) {
     return RMW_RET_INVALID_ARGUMENT;
   }
+  return rmw_validate_full_topic_name_with_size(
+    topic_name, strlen(topic_name), validation_result, invalid_index);
+}
+
+rmw_ret_t
+rmw_validate_full_topic_name_with_size(
+  const char * topic_name,
+  size_t topic_name_length,
+  int * validation_result,
+  size_t * invalid_index)
+{
+  if (!topic_name) {
+    return RMW_RET_INVALID_ARGUMENT;
+  }
   if (!validation_result) {
     return RMW_RET_INVALID_ARGUMENT;
   }
-  size_t topic_name_length = strlen(topic_name);
   if (topic_name_length == 0) {
     *validation_result = RMW_TOPIC_INVALID_IS_EMPTY_STRING;
     if (invalid_index) {

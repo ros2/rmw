@@ -32,11 +32,24 @@ rmw_validate_namespace(
   if (!namespace_) {
     return RMW_RET_INVALID_ARGUMENT;
   }
+  return rmw_validate_namespace_with_size(
+    namespace_, strlen(namespace_), validation_result, invalid_index);
+}
+
+rmw_ret_t
+rmw_validate_namespace_with_size(
+  const char * namespace_,
+  size_t namespace_length,
+  int * validation_result,
+  size_t * invalid_index)
+{
+  if (!namespace_) {
+    return RMW_RET_INVALID_ARGUMENT;
+  }
   if (!validation_result) {
     return RMW_RET_INVALID_ARGUMENT;
   }
 
-  size_t namespace_length = strlen(namespace_);
   // Special case for root namepsace
   if (namespace_length == 1 && namespace_[0] == '/') {
     // Ok to return here, it is valid and will not exceed RMW_NAMESPACE_MAX_LENGTH.

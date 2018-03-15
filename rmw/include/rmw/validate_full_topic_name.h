@@ -89,6 +89,22 @@ rmw_validate_full_topic_name(
   int * validation_result,
   size_t * invalid_index);
 
+/// Deterimine if a given topic name is valid.
+/**
+ * This is an overload with an extra parameter for the length of topic_name.
+ * \param[in] topic_name_length The number of characters in topic_name.
+ *
+ * \sa rmw_validate_full_topic_name(const char *, int *, size_t *)
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_validate_full_topic_name_with_size(
+  const char * topic_name,
+  size_t topic_name_length,
+  int * validation_result,
+  size_t * invalid_index);
+
 /// Return a validation result description, or NULL if unknown or RMW_TOPIC_VALID.
 RMW_PUBLIC
 RMW_WARN_UNUSED
