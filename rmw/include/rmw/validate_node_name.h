@@ -83,6 +83,22 @@ rmw_validate_node_name(
   int * validation_result,
   size_t * invalid_index);
 
+/// Deterimine if a given node name is valid.
+/**
+ * This is an overload with an extra parameter for the length of node_name.
+ * \param[in] node_name_length The number of characters in node_name.
+ *
+ * \sa rmw_validate_node_name(const char *, int *, size_t *)
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_validate_node_name_with_size(
+  const char * node_name,
+  size_t node_name_length,
+  int * validation_result,
+  size_t * invalid_index);
+
 /// Return a validation result description, or NULL if unknown or RMW_NODE_NAME_VALID.
 RMW_PUBLIC
 RMW_WARN_UNUSED
