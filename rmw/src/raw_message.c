@@ -90,6 +90,10 @@ rmw_raw_message_resize(rmw_message_raw_t * msg, unsigned int new_size)
   }
 
   char * new_buffer = allocator->allocate(new_size * sizeof(char), allocator->state);
+  if (!new_buffer) {
+    RMW_SET_ERROR_MSG("failed to allocate memory for resizing raw message");
+    return RMW_RET_ERROR;
+  }
   if (new_size < msg->buffer_capacity) {
     memcpy(new_buffer, msg->buffer, new_size);
   } else {  // new_size > msg->buffer_capacity

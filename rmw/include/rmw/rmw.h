@@ -176,6 +176,40 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_publish_raw(const rmw_publisher_t * publisher, const rmw_message_raw_t * raw_message);
 
+/// serialize a ros message
+/**
+ * A typed ros message can be serialized into a bytestream.
+ * The serialization format is depending on the underlying middleware.
+ * \return rmw_ret_t indicate whether the serialization was successful.
+ * \param ros_message the original typed ros message
+ * \param type_support the typesupport for the typed ros message
+ * \param raw_message the serialized message holding the bytestream
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_serialize(
+    const void * ros_message,
+    const rosidl_message_type_support_t * type_support,
+    rmw_message_raw_t * raw_message);
+
+/// deserialize a ros message
+/**
+ * A serialized message can be deserialized into a typed ros message.
+ * The serialization format is dependending on the underlying middleware.
+ * \return rmw_ret_t indicate whether the deserialization was successful.
+ * \param raw_message the serialized message holding the bytestream
+ * \param type_support the typesupport for the typed ros message
+ * \param ros_message the output of the deserialization results into the ros message.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_deserialize(
+    const rmw_message_raw_t * raw_message,
+    const rosidl_message_type_support_t * type_support,
+    void * ros_message);
+
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_subscription_t *
