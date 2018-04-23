@@ -15,7 +15,7 @@
 #ifndef RMW__GET_SERVICE_NAMES_AND_TYPES_H_
 #define RMW__GET_SERVICE_NAMES_AND_TYPES_H_
 
-#if __cplusplus
+#ifdef __cplusplus
 extern "C"
 {
 #endif
@@ -55,7 +55,7 @@ rmw_get_service_names_and_types(
   rcutils_allocator_t * allocator,
   rmw_names_and_types_t * service_names_and_types);
 
-#if __cplusplus
+#ifdef __cplusplus
 }
 #endif
 

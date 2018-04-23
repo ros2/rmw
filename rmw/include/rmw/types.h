@@ -15,7 +15,7 @@
 #ifndef RMW__TYPES_H_
 #define RMW__TYPES_H_
 
-#if __cplusplus
+#ifdef __cplusplus
 extern "C"
 {
 #endif
@@ -241,7 +241,7 @@ typedef enum RWM_PUBLIC_TYPE
   RMW_LOG_SEVERITY_FATAL = RCUTILS_LOG_SEVERITY_FATAL
 } rmw_log_severity_t;
 
-#if __cplusplus
+#ifdef __cplusplus
 }
 #endif
 
