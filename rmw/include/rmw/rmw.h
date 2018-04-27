@@ -189,9 +189,9 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_serialize(
-    const void * ros_message,
-    const rosidl_message_type_support_t * type_support,
-    rmw_message_raw_t * raw_message);
+  const void * ros_message,
+  const rosidl_message_type_support_t * type_support,
+  rmw_message_raw_t * raw_message);
 
 /// deserialize a ros message
 /**
@@ -206,9 +206,9 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_deserialize(
-    const rmw_message_raw_t * raw_message,
-    const rosidl_message_type_support_t * type_support,
-    void * ros_message);
+  const rmw_message_raw_t * raw_message,
+  const rosidl_message_type_support_t * type_support,
+  void * ros_message);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED

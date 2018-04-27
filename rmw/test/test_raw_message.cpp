@@ -35,7 +35,7 @@ TEST(test_raw_message, resize) {
   auto allocator = rcutils_get_default_allocator();
   rmw_initialize_raw_message(&raw_msg, 5, &allocator);
 
-  strcpy(raw_msg.buffer, "1234\0");
+  memcpy(raw_msg.buffer, "1234\0", 5);
   raw_msg.buffer_length = 5;
   EXPECT_STREQ("1234\0", raw_msg.buffer);
 
@@ -44,7 +44,7 @@ TEST(test_raw_message, resize) {
   EXPECT_EQ(11u, raw_msg.buffer_capacity);
   EXPECT_EQ(5u, raw_msg.buffer_length);
 
-  strcpy(raw_msg.buffer, "0987654321\0");
+  memcpy(raw_msg.buffer, "0987654321\0", 11);
   raw_msg.buffer_length = 11;
   EXPECT_STREQ("0987654321\0", raw_msg.buffer);
 
