@@ -15,7 +15,7 @@
 #ifndef RMW__ERROR_HANDLING_H_
 #define RMW__ERROR_HANDLING_H_
 
-#if __cplusplus
+#ifdef __cplusplus
 extern "C"
 {
 #endif
@@ -64,7 +64,7 @@ rmw_set_error_state(const char * error_msg, const char * file, size_t line_numbe
 
 #define rmw_reset_error rcutils_reset_error
 
-#if __cplusplus
+#ifdef __cplusplus
 }
 #endif
 

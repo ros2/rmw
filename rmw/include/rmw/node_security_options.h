@@ -15,7 +15,7 @@
 #ifndef RMW__NODE_SECURITY_OPTIONS_H_
 #define RMW__NODE_SECURITY_OPTIONS_H_
 
-#if __cplusplus
+#ifdef __cplusplus
 extern "C"
 {
 #endif
@@ -30,7 +30,7 @@ RMW_PUBLIC
 rmw_node_security_options_t
 rmw_get_default_node_security_options();
 
-#if __cplusplus
+#ifdef __cplusplus
 }
 #endif
 

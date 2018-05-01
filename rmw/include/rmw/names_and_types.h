@@ -15,7 +15,7 @@
 #ifndef RMW__NAMES_AND_TYPES_H_
 #define RMW__NAMES_AND_TYPES_H_
 
-#if __cplusplus
+#ifdef __cplusplus
 extern "C"
 {
 #endif
@@ -92,7 +92,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_names_and_types_fini(rmw_names_and_types_t * names_and_types);
 
-#if __cplusplus
+#ifdef __cplusplus
 }
 #endif
 

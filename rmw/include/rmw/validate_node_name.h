@@ -15,7 +15,7 @@
 #ifndef RMW__VALIDATE_NODE_NAME_H_
 #define RMW__VALIDATE_NODE_NAME_H_
 
-#if __cplusplus
+#ifdef __cplusplus
 extern "C"
 {
 #endif
@@ -105,7 +105,7 @@ RMW_WARN_UNUSED
 const char *
 rmw_node_name_validation_result_string(int validation_result);
 
-#if __cplusplus
+#ifdef __cplusplus
 }
 #endif
 

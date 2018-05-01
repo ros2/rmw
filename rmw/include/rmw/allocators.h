@@ -15,7 +15,7 @@
 #ifndef RMW__ALLOCATORS_H_
 #define RMW__ALLOCATORS_H_
 
-#if __cplusplus
+#ifdef __cplusplus
 extern "C"
 {
 #endif
@@ -87,7 +87,7 @@ RMW_PUBLIC
 void
 rmw_wait_set_free(rmw_wait_set_t * wait_set);
 
-#if __cplusplus
+#ifdef __cplusplus
 }
 #endif
 

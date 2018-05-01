@@ -15,7 +15,7 @@
 #ifndef RMW__CONVERT_RCUTILS_RET_TO_RMW_RET_H_
 #define RMW__CONVERT_RCUTILS_RET_TO_RMW_RET_H_
 
-#if __cplusplus
+#ifdef __cplusplus
 extern "C"
 {
 #endif
@@ -30,7 +30,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret_t rcutils_ret);
 
-#if __cplusplus
+#ifdef __cplusplus
 }  // extern "C"
 #endif
 

@@ -15,7 +15,7 @@
 #ifndef RMW__SANITY_CHECKS_H_
 #define RMW__SANITY_CHECKS_H_
 
-#if __cplusplus
+#ifdef __cplusplus
 extern "C"
 {
 #endif
@@ -32,7 +32,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_check_zero_rmw_string_array(rcutils_string_array_t * array);
 
-#if __cplusplus
+#ifdef __cplusplus
 }
 #endif
 

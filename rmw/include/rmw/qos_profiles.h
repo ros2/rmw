@@ -15,7 +15,7 @@
 #ifndef RMW__QOS_PROFILES_H_
 #define RMW__QOS_PROFILES_H_
 
-#if __cplusplus
+#ifdef __cplusplus
 extern "C"
 {
 #endif
@@ -76,7 +76,7 @@ static const rmw_qos_profile_t rmw_qos_profile_system_default =
   false
 };
 
-#if __cplusplus
+#ifdef __cplusplus
 }
 #endif
 

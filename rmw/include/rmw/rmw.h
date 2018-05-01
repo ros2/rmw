@@ -76,7 +76,7 @@
 #ifndef RMW__RMW_H_
 #define RMW__RMW_H_
 
-#if __cplusplus
+#ifdef __cplusplus
 extern "C"
 {
 #endif
@@ -415,7 +415,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_set_log_severity(rmw_log_severity_t severity);
 
-#if __cplusplus
+#ifdef __cplusplus
 }
 #endif
 

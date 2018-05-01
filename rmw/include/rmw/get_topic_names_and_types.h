@@ -15,7 +15,7 @@
 #ifndef RMW__GET_TOPIC_NAMES_AND_TYPES_H_
 #define RMW__GET_TOPIC_NAMES_AND_TYPES_H_
 
-#if __cplusplus
+#ifdef __cplusplus
 extern "C"
 {
 #endif
@@ -80,7 +80,7 @@ rmw_get_topic_names_and_types(
   bool no_demangle,
   rmw_names_and_types_t * topic_names_and_types);
 
-#if __cplusplus
+#ifdef __cplusplus
 }
 #endif
 
