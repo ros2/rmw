@@ -20,7 +20,6 @@
 #include <string>
 
 #include "rcutils/snprintf.h"
-#include "rcutils/strncpy.h"
 
 #include "rmw/allocators.h"
 #include "rmw/error_handling.h"
@@ -84,9 +83,9 @@
         ElementTypeID, reinterpret_cast<const void *>(ElementTypeID), \
         ExpectedTypeID, reinterpret_cast<const void *>(ExpectedTypeID)); \
       if (ret < 0) { \
-        static const char * error_msg = \
+        static const char error_msg[] = \
           "RMW_CHECK_TYPE_IDENTIFIERS_MATCH(): rcutils_snprintf() failed"; \
-        rcutils_strncpy(__msg, sizeof(__msg), error_msg, sizeof(error_msg)); \
+        memmove(__msg, error_msg, sizeof(error_msg)); \
       } \
       RMW_SET_ERROR_MSG(__msg); \
       OnFailure; \
