@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "rcutils/error_handling.h"
+
 #include "rmw/error_handling.h"
 #include "rmw/raw_message.h"
 
@@ -35,13 +37,27 @@ rmw_initialize_raw_message(
   unsigned int buffer_capacity,
   const rcutils_allocator_t * allocator)
 {
-  msg->buffer = (char *)allocator->allocate(buffer_capacity * sizeof(char), allocator->state);
-  if (!msg->buffer) {
+  rcutils_allocator_t error_msg_allocator = rcutils_get_default_allocator();
+  RCUTILS_CHECK_FOR_NULL_WITH_MSG(
+    msg, "raw message pointer is null", return RMW_RET_ERROR, error_msg_allocator);
+
+  if (!rcutils_allocator_is_valid(allocator)) {
+    RMW_SET_ERROR_MSG("raw message has no valid allocator");
     return RMW_RET_ERROR;
   }
+
   msg->buffer_length = 0;
   msg->buffer_capacity = buffer_capacity;
   msg->allocator = *allocator;
+
+  if (buffer_capacity > 0u) {
+    msg->buffer = (char *)allocator->allocate(buffer_capacity * sizeof(char), allocator->state);
+    RCUTILS_CHECK_FOR_NULL_WITH_MSG(
+      msg->buffer,
+      "failed to allocate memory for raw message",
+      return RMW_RET_BAD_ALLOC,
+      *allocator);
+  }
 
   return RMW_RET_OK;
 }
@@ -50,10 +66,9 @@ RMW_PUBLIC
 rmw_ret_t
 rmw_raw_message_fini(rmw_message_raw_t * msg)
 {
-  if (!msg) {
-    RMW_SET_ERROR_MSG("raw message pointer is null");
-    return RMW_RET_ERROR;
-  }
+  rcutils_allocator_t error_msg_allocator = rcutils_get_default_allocator();
+  RCUTILS_CHECK_FOR_NULL_WITH_MSG(
+    msg, "raw message pointer is null", return RMW_RET_ERROR, error_msg_allocator);
 
   rcutils_allocator_t * allocator = &msg->allocator;
   if (!rcutils_allocator_is_valid(allocator)) {
@@ -73,10 +88,9 @@ RMW_PUBLIC
 rmw_ret_t
 rmw_raw_message_resize(rmw_message_raw_t * msg, unsigned int new_size)
 {
-  if (!msg) {
-    RMW_SET_ERROR_MSG("raw message pointer is null");
-    return RMW_RET_ERROR;
-  }
+  rcutils_allocator_t error_msg_allocator = rcutils_get_default_allocator();
+  RCUTILS_CHECK_FOR_NULL_WITH_MSG(
+    msg, "raw message pointer is null", return RMW_RET_ERROR, error_msg_allocator);
 
   rcutils_allocator_t * allocator = &msg->allocator;
   if (!rcutils_allocator_is_valid(allocator)) {
@@ -89,18 +103,13 @@ rmw_raw_message_resize(rmw_message_raw_t * msg, unsigned int new_size)
     return RMW_RET_OK;
   }
 
-  char * new_buffer = allocator->allocate(new_size * sizeof(char), allocator->state);
-  if (!new_buffer) {
-    RMW_SET_ERROR_MSG("failed to allocate memory for resizing raw message");
-    return RMW_RET_ERROR;
-  }
-  if (new_size < msg->buffer_capacity) {
-    memcpy(new_buffer, msg->buffer, new_size);
-  } else {  // new_size > msg->buffer_capacity
-    memcpy(new_buffer, msg->buffer, msg->buffer_capacity);
-  }
-  allocator->deallocate(msg->buffer, allocator->state);
-  msg->buffer = new_buffer;
+  msg->buffer = allocator->reallocate(msg->buffer, new_size * sizeof(char), allocator->state);
+  RCUTILS_CHECK_FOR_NULL_WITH_MSG(
+    msg->buffer,
+    "failed to reallocate memory for raw message",
+    return RMW_RET_BAD_ALLOC,
+    *allocator);
+
   msg->buffer_capacity = new_size;
   if (new_size < msg->buffer_length) {
     msg->buffer_length = new_size;
