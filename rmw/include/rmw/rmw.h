@@ -171,6 +171,17 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_publish(const rmw_publisher_t * publisher, const void * ros_message);
 
+/// publish an already serialized message
+/**
+ * An already serialized message can be sent. The publisher has to be registered with
+ * the correct message type and can thus send serialized data corresponding to it type.
+ * This function allows to send the serialized bytestream directly over the wire without
+ * having the need to serialize the message.
+ * A ROS message can be serialized manually via the rmw_serialize function.
+ * \return rmw_ret_t indicate whether the publish was successful.
+ * \param publisher the publisher object registered to send the message
+ * \param raw_message the serialized message holding the bytestream
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -239,6 +250,19 @@ rmw_take_with_info(
   bool * taken,
   rmw_message_info_t * message_info);
 
+/// Receive a message in a serialized form
+/**
+ * The message is taken in its serialized form. In contrast to rmw_take, the message
+ * is not deserialized in its ROS type but rather returned as a bytestream.
+ * The subscriber has to be registered for a specific type. But instead of receiving
+ * the message as its corresponding message type, it is taken as a bytestream.
+ * If needed, this bytestream can then be deserialized in a ROS message with a call to
+ * rmw_deserialize.
+ * \return rmw_ret_t indicate whether the message was correctly received
+ * \param subscription subscription object registered for a specific message type.
+ * \param raw_message the message container holding the serialized bytestream
+ * \param taken boolean flag indicating if the message was taken correctly
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -247,6 +271,13 @@ rmw_take_raw(
   rmw_message_raw_t * raw_message,
   bool * taken);
 
+/// Receive a message in a serialized form plus its subscription info
+/**
+ * The same function call as rmw_take, with additional connection information, such as GUID.
+ * \param subscription subscription object registered for a specific message type.
+ * \param raw_message the message container holding the serialized bytestream
+ * \param taken boolean flag indicating if the message was taken correctly
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
