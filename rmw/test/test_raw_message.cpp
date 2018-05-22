@@ -22,7 +22,7 @@ TEST(test_raw_message, default_initialization) {
   auto raw_msg = rmw_get_zero_initialized_raw_message();
 
   auto allocator = rcutils_get_default_allocator();
-  EXPECT_EQ(RMW_RET_OK, rmw_initialize_raw_message(&raw_msg, 0, &allocator));
+  EXPECT_EQ(RMW_RET_OK, rmw_raw_message_init(&raw_msg, 0, &allocator));
   EXPECT_EQ(0u, raw_msg.buffer_capacity);
   EXPECT_EQ(RMW_RET_OK, rmw_raw_message_fini(&raw_msg));
   EXPECT_EQ(0u, raw_msg.buffer_capacity);
@@ -32,7 +32,7 @@ TEST(test_raw_message, default_initialization) {
 TEST(test_raw_message, resize) {
   auto raw_msg = rmw_get_zero_initialized_raw_message();
   auto allocator = rcutils_get_default_allocator();
-  auto ret = rmw_initialize_raw_message(&raw_msg, 5, &allocator);
+  auto ret = rmw_raw_message_init(&raw_msg, 5, &allocator);
   ASSERT_EQ(RMW_RET_OK, ret);
 
   memcpy(raw_msg.buffer, "1234\0", 5);

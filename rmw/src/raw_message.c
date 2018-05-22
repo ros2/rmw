@@ -32,7 +32,7 @@ rmw_get_zero_initialized_raw_message(void)
 
 RMW_PUBLIC
 rmw_ret_t
-rmw_initialize_raw_message(
+rmw_raw_message_init(
   rmw_message_raw_t * msg,
   unsigned int buffer_capacity,
   const rcutils_allocator_t * allocator)
