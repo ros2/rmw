@@ -95,7 +95,7 @@
 #define RMW_CHECK_TYPE_IDENTIFIERS_MATCH(ElementName, ElementTypeID, ExpectedTypeID, OnFailure) \
   { \
     if (ElementTypeID != ExpectedTypeID) { \
-      size_t __bytes_that_would_have_been_written = rcutils_snprintf( \
+      int __bytes_that_would_have_been_written = rcutils_snprintf( \
         NULL, 0, \
         #ElementName " implementation '%s'(%p) does not match rmw implementation '%s'(%p)", \
         ElementTypeID, reinterpret_cast<const void *>(ElementTypeID), \
