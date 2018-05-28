@@ -119,7 +119,7 @@
           if (ret < 0) { \
             RMW_SET_ERROR_MSG( \
               "RMW_CHECK_TYPE_IDENTIFIERS_MATCH(): rcutils_snprintf() failed"); \
-          } else if (NULL != __msg) { \
+          } else { \
             RMW_SET_ERROR_MSG(__msg); \
           } \
         } \
