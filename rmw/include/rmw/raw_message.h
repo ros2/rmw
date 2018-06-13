@@ -22,6 +22,7 @@ extern "C"
 
 #include "rcutils/allocator.h"
 
+#include "rmw/macros.h"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
 
@@ -30,6 +31,7 @@ extern "C"
  * \return rmw_message_raw_t a zero initialized raw message struct
  */
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_message_raw_t
 rmw_get_zero_initialized_raw_message(void);
 
@@ -45,6 +47,7 @@ rmw_get_zero_initialized_raw_message(void);
  * \param allocator the allocator to use for the memory allocation.
  */
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_raw_message_init(
   rmw_message_raw_t * msg,
@@ -60,6 +63,7 @@ rmw_raw_message_init(
  * \param msg pointer to the raw message to be cleaned up
  */
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_raw_message_fini(rmw_message_raw_t * msg);
 
@@ -75,6 +79,7 @@ rmw_raw_message_fini(rmw_message_raw_t * msg);
  * \param new_size the new size of the internal buffer
  */
 RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_raw_message_resize(rmw_message_raw_t * msg, unsigned int new_size);
 

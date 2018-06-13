@@ -17,7 +17,6 @@
 #include "rmw/error_handling.h"
 #include "rmw/raw_message.h"
 
-RMW_PUBLIC
 rmw_message_raw_t
 rmw_get_zero_initialized_raw_message(void)
 {
@@ -30,7 +29,6 @@ rmw_get_zero_initialized_raw_message(void)
   return raw_message;
 }
 
-RMW_PUBLIC
 rmw_ret_t
 rmw_raw_message_init(
   rmw_message_raw_t * msg,
@@ -62,7 +60,6 @@ rmw_raw_message_init(
   return RMW_RET_OK;
 }
 
-RMW_PUBLIC
 rmw_ret_t
 rmw_raw_message_fini(rmw_message_raw_t * msg)
 {
@@ -84,7 +81,6 @@ rmw_raw_message_fini(rmw_message_raw_t * msg)
   return RMW_RET_OK;
 }
 
-RMW_PUBLIC
 rmw_ret_t
 rmw_raw_message_resize(rmw_message_raw_t * msg, unsigned int new_size)
 {
@@ -103,7 +99,7 @@ rmw_raw_message_resize(rmw_message_raw_t * msg, unsigned int new_size)
     return RMW_RET_OK;
   }
 
-  msg->buffer = allocator->reallocate(msg->buffer, new_size * sizeof(char), allocator->state);
+  msg->buffer = rcutils_reallocf(msg->buffer, new_size * sizeof(char), allocator);
   RCUTILS_CHECK_FOR_NULL_WITH_MSG(
     msg->buffer,
     "failed to reallocate memory for raw message",
