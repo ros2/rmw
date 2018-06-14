@@ -283,14 +283,15 @@ rmw_take_with_info(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_take_serialized(
+rmw_take_serialized_message(
   const rmw_subscription_t * subscription,
   rmw_serialized_message_t * serialized_message,
   bool * taken);
 
 /// Take a message without deserializing it and with its additional message information.
 /**
- * The same as rmw_take_raw(), except it also includes the rmw_message_info_t.
+ * The same as rmw_take_serialized_message(), except it also includes the
+ * rmw_message_info_t.
  *
  * \param subscription subscription object to take from
  * \param serialized_message the destination in which to store the serialized message
