@@ -15,32 +15,32 @@
 #include "rcutils/error_handling.h"
 
 #include "rmw/error_handling.h"
-#include "rmw/raw_message.h"
+#include "rmw/serialized_message.h"
 
-rmw_message_raw_t
-rmw_get_zero_initialized_raw_message(void)
+rmw_serialized_message_t
+rmw_get_zero_initialized_serialized_message(void)
 {
-  static rmw_message_raw_t raw_message = {
+  static rmw_serialized_message_t serialized_message = {
     .buffer = NULL,
     .buffer_length = 0u,
     .buffer_capacity = 0u
   };
-  raw_message.allocator = rcutils_get_zero_initialized_allocator();
-  return raw_message;
+  serialized_message.allocator = rcutils_get_zero_initialized_allocator();
+  return serialized_message;
 }
 
 rmw_ret_t
-rmw_raw_message_init(
-  rmw_message_raw_t * msg,
+rmw_serialized_message_init(
+  rmw_serialized_message_t * msg,
   unsigned int buffer_capacity,
   const rcutils_allocator_t * allocator)
 {
   rcutils_allocator_t error_msg_allocator = rcutils_get_default_allocator();
   RCUTILS_CHECK_FOR_NULL_WITH_MSG(
-    msg, "raw message pointer is null", return RMW_RET_ERROR, error_msg_allocator);
+    msg, "serialized message pointer is null", return RMW_RET_ERROR, error_msg_allocator);
 
   if (!rcutils_allocator_is_valid(allocator)) {
-    RMW_SET_ERROR_MSG("raw message has no valid allocator");
+    RMW_SET_ERROR_MSG("serialized message has no valid allocator");
     return RMW_RET_ERROR;
   }
 
@@ -52,7 +52,7 @@ rmw_raw_message_init(
     msg->buffer = (char *)allocator->allocate(buffer_capacity * sizeof(char), allocator->state);
     RCUTILS_CHECK_FOR_NULL_WITH_MSG(
       msg->buffer,
-      "failed to allocate memory for raw message",
+      "failed to allocate memory for serialized message",
       return RMW_RET_BAD_ALLOC,
       *allocator);
   }
@@ -61,15 +61,15 @@ rmw_raw_message_init(
 }
 
 rmw_ret_t
-rmw_raw_message_fini(rmw_message_raw_t * msg)
+rmw_serialized_message_fini(rmw_serialized_message_t * msg)
 {
   rcutils_allocator_t error_msg_allocator = rcutils_get_default_allocator();
   RCUTILS_CHECK_FOR_NULL_WITH_MSG(
-    msg, "raw message pointer is null", return RMW_RET_ERROR, error_msg_allocator);
+    msg, "serialized message pointer is null", return RMW_RET_ERROR, error_msg_allocator);
 
   rcutils_allocator_t * allocator = &msg->allocator;
   if (!rcutils_allocator_is_valid(allocator)) {
-    RMW_SET_ERROR_MSG("raw message has no valid allocator");
+    RMW_SET_ERROR_MSG("serialized message has no valid allocator");
     return RMW_RET_ERROR;
   }
 
@@ -82,15 +82,15 @@ rmw_raw_message_fini(rmw_message_raw_t * msg)
 }
 
 rmw_ret_t
-rmw_raw_message_resize(rmw_message_raw_t * msg, unsigned int new_size)
+rmw_serialized_message_resize(rmw_serialized_message_t * msg, unsigned int new_size)
 {
   rcutils_allocator_t error_msg_allocator = rcutils_get_default_allocator();
   RCUTILS_CHECK_FOR_NULL_WITH_MSG(
-    msg, "raw message pointer is null", return RMW_RET_ERROR, error_msg_allocator);
+    msg, "serialized message pointer is null", return RMW_RET_ERROR, error_msg_allocator);
 
   rcutils_allocator_t * allocator = &msg->allocator;
   if (!rcutils_allocator_is_valid(allocator)) {
-    RMW_SET_ERROR_MSG("raw message has no valid allocator");
+    RMW_SET_ERROR_MSG("serialized message has no valid allocator");
     return RMW_RET_ERROR;
   }
 
@@ -102,7 +102,7 @@ rmw_raw_message_resize(rmw_message_raw_t * msg, unsigned int new_size)
   msg->buffer = rcutils_reallocf(msg->buffer, new_size * sizeof(char), allocator);
   RCUTILS_CHECK_FOR_NULL_WITH_MSG(
     msg->buffer,
-    "failed to reallocate memory for raw message",
+    "failed to reallocate memory for serialized message",
     return RMW_RET_BAD_ALLOC,
     *allocator);
 

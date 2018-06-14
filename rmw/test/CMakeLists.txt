@@ -1,12 +1,12 @@
 find_package(ament_cmake_gmock REQUIRED)
 
-ament_add_gmock(test_raw_message
-  test_raw_message.cpp
+ament_add_gmock(test_serialized_message
+  test_serialized_message.cpp
   # Append the directory of librmw so it is found at test time.
   APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
 )
-if(TARGET test_raw_message)
-  target_link_libraries(test_raw_message ${PROJECT_NAME})
+if(TARGET test_serialized_message)
+  target_link_libraries(test_serialized_message ${PROJECT_NAME})
 endif()
 
 ament_add_gmock(test_validate_full_topic_name

@@ -180,12 +180,13 @@ rmw_publish(const rmw_publisher_t * publisher, const void * ros_message);
  * A ROS message can be serialized manually via the rmw_serialize function.
  * \return rmw_ret_t indicate whether the publish was successful.
  * \param publisher the publisher object registered to send the message
- * \param raw_message the serialized message holding the bytestream
+ * \param serialized_message the serialized message holding the bytestream
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_publish_raw(const rmw_publisher_t * publisher, const rmw_message_raw_t * raw_message);
+rmw_publish_serialized_message(
+  const rmw_publisher_t * publisher, const rmw_serialized_message_t * serialized_message);
 
 /// serialize a ros message
 /**
@@ -194,7 +195,7 @@ rmw_publish_raw(const rmw_publisher_t * publisher, const rmw_message_raw_t * raw
  * \return rmw_ret_t indicate whether the serialization was successful.
  * \param ros_message the original typed ros message
  * \param type_support the typesupport for the typed ros message
- * \param raw_message the serialized message holding the bytestream
+ * \param serialized_message the serialized message holding the bytestream
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -202,14 +203,14 @@ rmw_ret_t
 rmw_serialize(
   const void * ros_message,
   const rosidl_message_type_support_t * type_support,
-  rmw_message_raw_t * raw_message);
+  rmw_serialized_message_t * serialized_message);
 
 /// deserialize a ros message
 /**
  * A serialized message can be deserialized into a typed ros message.
  * The serialization format is dependending on the underlying middleware.
  * \return rmw_ret_t indicate whether the deserialization was successful.
- * \param raw_message the serialized message holding the bytestream
+ * \param serialized_message the serialized message holding the bytestream
  * \param type_support the typesupport for the typed ros message
  * \param ros_message the output of the deserialization results into the ros message.
  */
@@ -217,7 +218,7 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_deserialize(
-  const rmw_message_raw_t * raw_message,
+  const rmw_serialized_message_t * serialized_message,
   const rosidl_message_type_support_t * type_support,
   void * ros_message);
 
@@ -260,30 +261,30 @@ rmw_take_with_info(
  * rmw_deserialize.
  * \return rmw_ret_t indicate whether the message was correctly received
  * \param subscription subscription object registered for a specific message type.
- * \param raw_message the message container holding the serialized bytestream
+ * \param serialized_message the message container holding the serialized bytestream
  * \param taken boolean flag indicating if the message was taken correctly
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_take_raw(
+rmw_take_serialized(
   const rmw_subscription_t * subscription,
-  rmw_message_raw_t * raw_message,
+  rmw_serialized_message_t * serialized_message,
   bool * taken);
 
 /// Receive a message in a serialized form plus its subscription info
 /**
  * The same function call as rmw_take, with additional connection information, such as GUID.
  * \param subscription subscription object registered for a specific message type.
- * \param raw_message the message container holding the serialized bytestream
+ * \param serialized_message the message container holding the serialized bytestream
  * \param taken boolean flag indicating if the message was taken correctly
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_take_raw_with_info(
+rmw_take_serialized_message_with_info(
   const rmw_subscription_t * subscription,
-  rmw_message_raw_t * raw_message,
+  rmw_serialized_message_t * serialized_message,
   bool * taken,
   rmw_message_info_t * message_info);
 

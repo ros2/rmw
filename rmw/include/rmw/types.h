@@ -222,14 +222,14 @@ typedef struct RMW_PUBLIC_TYPE rmw_gid_t
   uint8_t data[RMW_GID_STORAGE_SIZE];
 } rmw_gid_t;
 
-typedef struct RMW_PUBLIC_TYPE rmw_message_raw_t
+typedef struct RMW_PUBLIC_TYPE rmw_serialized_message_t
 {
   // serialized message data
   char * buffer;
   unsigned int buffer_length;
   unsigned int buffer_capacity;
   rcutils_allocator_t allocator;
-} rmw_message_raw_t;
+} rmw_serialized_message_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_message_info_t
 {
