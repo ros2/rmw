@@ -53,7 +53,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_serialized_message_init(
   rmw_serialized_message_t * msg,
-  unsigned int buffer_capacity,
+  size_t buffer_capacity,
   const rcutils_allocator_t * allocator);
 
 /// Finalize a serialized message struct.
@@ -92,7 +92,7 @@ rmw_serialized_message_fini(rmw_serialized_message_t * msg);
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_serialized_message_resize(rmw_serialized_message_t * msg, unsigned int new_size);
+rmw_serialized_message_resize(rmw_serialized_message_t * msg, size_t new_size);
 
 #if __cplusplus
 }
