@@ -32,7 +32,7 @@ rmw_get_zero_initialized_serialized_message(void)
 rmw_ret_t
 rmw_serialized_message_init(
   rmw_serialized_message_t * msg,
-  unsigned int buffer_capacity,
+  size_t buffer_capacity,
   const rcutils_allocator_t * allocator)
 {
   rcutils_allocator_t error_msg_allocator = rcutils_get_default_allocator();
@@ -82,7 +82,7 @@ rmw_serialized_message_fini(rmw_serialized_message_t * msg)
 }
 
 rmw_ret_t
-rmw_serialized_message_resize(rmw_serialized_message_t * msg, unsigned int new_size)
+rmw_serialized_message_resize(rmw_serialized_message_t * msg, size_t new_size)
 {
   rcutils_allocator_t error_msg_allocator = rcutils_get_default_allocator();
   RCUTILS_CHECK_FOR_NULL_WITH_MSG(

@@ -226,8 +226,8 @@ typedef struct RMW_PUBLIC_TYPE rmw_serialized_message_t
 {
   // serialized message data
   char * buffer;
-  unsigned int buffer_length;
-  unsigned int buffer_capacity;
+  size_t buffer_length;
+  size_t buffer_capacity;
   rcutils_allocator_t allocator;
 } rmw_serialized_message_t;
 
