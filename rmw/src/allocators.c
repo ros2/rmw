@@ -17,13 +17,16 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <rcutils/allocator.h>
+
 #include "rmw/types.h"
 
 void *
 rmw_allocate(size_t size)
 {
   // Could be overridden with a general purpose allocator
-  void * ptr = malloc(size);
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
+  void * ptr = allocator.allocate(size, allocator.state);
   if (ptr) {
     memset(ptr, 0, size);
   }
@@ -34,7 +37,8 @@ void
 rmw_free(void * pointer)
 {
   // Should have a corresponding override with rmw_allocate
-  free(pointer);
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
+  allocator.deallocate(pointer, allocator.state);
 }
 
 rmw_node_t *
