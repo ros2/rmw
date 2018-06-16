@@ -26,6 +26,7 @@ extern "C"
 
 // map rcutils specific log levels to rmw speicfic type
 #include <rcutils/logging.h>
+
 #include "rmw/visibility_control.h"
 
 typedef int rmw_ret_t;
@@ -220,6 +221,15 @@ typedef struct RMW_PUBLIC_TYPE rmw_gid_t
   const char * implementation_identifier;
   uint8_t data[RMW_GID_STORAGE_SIZE];
 } rmw_gid_t;
+
+typedef struct RMW_PUBLIC_TYPE rmw_serialized_message_t
+{
+  // serialized message data
+  char * buffer;
+  size_t buffer_length;
+  size_t buffer_capacity;
+  rcutils_allocator_t allocator;
+} rmw_serialized_message_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_message_info_t
 {
