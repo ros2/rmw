@@ -100,6 +100,22 @@ RMW_WARN_UNUSED
 const char *
 rmw_get_implementation_identifier(void);
 
+/// Get the unique encoding identifier for this middleware.
+/**
+ * The unique encoding identifier states in which encoding the
+ * serialized data has to be interpreted.
+ * One middleware can only have one encoding.
+ * In contrast to the implementation identifier, the encoding identifier can be
+ * equal between multiple RMW implementations. This means, that the same binary
+ * messages can be deserialized by RMW implementations with the same encoding ID.
+ * See also rmw_serialize, rmw_deserialize
+ * \return encoding identifier
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+const char *
+rmw_get_encoding_identifier(void);
+
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
