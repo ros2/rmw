@@ -108,7 +108,8 @@ rmw_get_implementation_identifier(void);
  * In contrast to the implementation identifier, the encoding identifier can be
  * equal between multiple RMW implementations. This means, that the same binary
  * messages can be deserialized by RMW implementations with the same encoding ID.
- * See also rmw_serialize, rmw_deserialize
+ * \sa rmw_serialize
+ * \sa rmw_deserialize
  * \return encoding identifier
  */
 RMW_PUBLIC
