@@ -104,9 +104,10 @@ rmw_get_implementation_identifier(void);
 /**
  * Return the format in which binary data is serialized.
  * One middleware can only have one encoding.
- * In contrast to the implementation identifier, the serialization format can be
- * equal between multiple RMW implementations. This means, that the same binary
- * messages can be deserialized by RMW implementations with the same format.
+ * In contrast to the implementation identifier, the serialization format can be equal between
+ * multiple RMW implementations.
+ * This means, that the same binary messages can be deserialized by RMW implementations with the
+ * same format.
  * \sa rmw_serialize
  * \sa rmw_deserialize
  * \return serialization format
