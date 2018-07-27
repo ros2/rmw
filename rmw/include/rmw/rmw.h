@@ -100,6 +100,23 @@ RMW_WARN_UNUSED
 const char *
 rmw_get_implementation_identifier(void);
 
+/// Get the unique serialization format for this middleware.
+/**
+ * Return the format in which binary data is serialized.
+ * One middleware can only have one encoding.
+ * In contrast to the implementation identifier, the serialization format can be equal between
+ * multiple RMW implementations.
+ * This means, that the same binary messages can be deserialized by RMW implementations with the
+ * same format.
+ * \sa rmw_serialize
+ * \sa rmw_deserialize
+ * \return serialization format
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+const char *
+rmw_get_serialization_format(void);
+
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
