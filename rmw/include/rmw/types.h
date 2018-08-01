@@ -240,7 +240,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_t
 
 enum {RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT = 0};
 
-// Type mapping of rcutil log severity types to
+// Type mapping of rcutils log severity types to
 // rmw specific types.
 typedef enum RWM_PUBLIC_TYPE
 {
