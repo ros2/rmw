@@ -22,7 +22,7 @@ extern "C"
 
 #include "rcutils/types/serialized_message.h"
 
-// aliases for rcutils_serilialized_message_t
+// aliases for rcutils_serialized_message_t
 typedef rcutils_serialized_message_t rmw_serialized_message_t;
 #define rmw_get_zero_initialized_serialized_message rcutils_get_zero_initialized_serialized_message
 #define rmw_serialized_message_init rcutils_serialized_message_init
