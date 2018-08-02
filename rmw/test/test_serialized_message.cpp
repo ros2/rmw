@@ -16,7 +16,7 @@
 
 #include "rcutils/allocator.h"
 
-#include "rmw/serialized_message.h"
+#include "rmw/types.h"
 
 TEST(test_serialized_message, default_initialization) {
   auto serialized_msg = rmw_get_zero_initialized_serialized_message();
