@@ -22,9 +22,9 @@ extern "C"
 
 #include "rcutils/types/char_array.h"
 
-// aliases for rcutils_serialized_message_t
+// aliases for rcutils_char_array_t
 /*
- * as for now this is a simple aliasing from a serialized message to a char array.
+ * For now this is a simple aliasing from a serialized message to a char array.
  * However, in future developments this serialized message can become something
  * more complex and is therefore aliased.
  */
