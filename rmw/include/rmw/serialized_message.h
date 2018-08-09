@@ -20,14 +20,19 @@ extern "C"
 {
 #endif
 
-#include "rcutils/types/serialized_message.h"
+#include "rcutils/types/char_array.h"
 
-// aliases for rcutils_serialized_message_t
-typedef rcutils_serialized_message_t rmw_serialized_message_t;
-#define rmw_get_zero_initialized_serialized_message rcutils_get_zero_initialized_serialized_message
-#define rmw_serialized_message_init rcutils_serialized_message_init
-#define rmw_serialized_message_fini rcutils_serialized_message_fini
-#define rmw_serialized_message_resize rcutils_serialized_message_resize
+// aliases for rcutils_char_array_t
+/*
+ * For now this is a simple aliasing from a serialized message to a char array.
+ * However, in future developments this serialized message can become something
+ * more complex and is therefore aliased.
+ */
+typedef rcutils_char_array_t rmw_serialized_message_t;
+#define rmw_get_zero_initialized_serialized_message rcutils_get_zero_initialized_char_array
+#define rmw_serialized_message_init rcutils_char_array_init
+#define rmw_serialized_message_fini rcutils_char_array_fini
+#define rmw_serialized_message_resize rcutils_char_array_resize
 
 #if __cplusplus
 }
