@@ -474,7 +474,8 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_get_node_names(
   const rmw_node_t * node,
-  rcutils_string_array_t * node_names);
+  rcutils_string_array_t * node_names,
+  rcutils_string_array_t * node_namespaces);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
