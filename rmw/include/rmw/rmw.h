@@ -472,9 +472,11 @@ rmw_wait(
 /// Return a list of node name and namespaces discovered via a node.
 /**
  * This function will return a list of node names and a list of node namespaces
- * that are discovered via the middleware. The two lists represent pairs of
- * namespace and names for each discovered node.  The lists will be the same
- * length and the same position will refer to the same node across lists.
+ * that are discovered via the middleware.
+ * The two lists represent pairs of namespace and name for each discovered
+ * node.
+ * The lists will be the same length and the same position will refer to the
+ * same node across lists.
  *
  * The node parameter must not be `NULL`, and must point to a valid node.
  *
