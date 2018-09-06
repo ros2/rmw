@@ -469,12 +469,40 @@ rmw_wait(
   rmw_wait_set_t * wait_set,
   const rmw_time_t * wait_timeout);
 
+/// Return a list of node name and namespaces discovered via a node.
+/**
+ * This function will return a list of node names and a list of node namespaces
+ * that are discovered via the middleware.
+ * The two lists represent pairs of namespace and name for each discovered
+ * node.
+ * The lists will be the same length and the same position will refer to the
+ * same node across lists.
+ *
+ * The node parameter must not be `NULL`, and must point to a valid node.
+ *
+ * The node_names parameter must not be `NULL`, and must point to a valid
+ * string array.
+ *
+ * The node_namespaces parameter must not be `NULL`, and must point to a
+ * valid string array.
+ *
+ * This function does manipulate heap memory.
+ * This function is not thread-safe.
+ * This function is lock-free.
+ *
+ * \param[in] node the handle to the node being used to query the ROS graph
+ * \param[out] node_names a list of discovered node names
+ * \param[out] node_namespaces a list of discovered node namespaces
+ * \return `RMW_RET_OK` if node the query was made successfully, or
+ * \return `RMW_RET_ERROR` if an unspecified error occurs.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_get_node_names(
   const rmw_node_t * node,
-  rcutils_string_array_t * node_names);
+  rcutils_string_array_t * node_names,
+  rcutils_string_array_t * node_namespaces);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
