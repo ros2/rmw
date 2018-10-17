@@ -28,6 +28,7 @@ static const rmw_qos_profile_t rmw_qos_profile_sensor_data =
   5,
   RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT,
   RMW_QOS_POLICY_DURABILITY_VOLATILE,
+  false,
   false
 };
 
@@ -37,6 +38,7 @@ static const rmw_qos_profile_t rmw_qos_profile_parameters =
   1000,
   RMW_QOS_POLICY_RELIABILITY_RELIABLE,
   RMW_QOS_POLICY_DURABILITY_VOLATILE,
+  false,
   false
 };
 
@@ -46,6 +48,7 @@ static const rmw_qos_profile_t rmw_qos_profile_default =
   10,
   RMW_QOS_POLICY_RELIABILITY_RELIABLE,
   RMW_QOS_POLICY_DURABILITY_VOLATILE,
+  false,
   false
 };
 
@@ -55,6 +58,7 @@ static const rmw_qos_profile_t rmw_qos_profile_services_default =
   10,
   RMW_QOS_POLICY_RELIABILITY_RELIABLE,
   RMW_QOS_POLICY_DURABILITY_VOLATILE,
+  false,
   false
 };
 
@@ -64,6 +68,7 @@ static const rmw_qos_profile_t rmw_qos_profile_parameter_events =
   1000,
   RMW_QOS_POLICY_RELIABILITY_RELIABLE,
   RMW_QOS_POLICY_DURABILITY_VOLATILE,
+  false,
   false
 };
 
@@ -73,7 +78,18 @@ static const rmw_qos_profile_t rmw_qos_profile_system_default =
   RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT,
   RMW_QOS_POLICY_RELIABILITY_SYSTEM_DEFAULT,
   RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT,
+  false,
   false
+};
+
+static const rmw_qos_profile_t rmw_qos_profile_user_xml =
+{
+  RMW_QOS_POLICY_HISTORY_SYSTEM_DEFAULT,
+  10,
+  RMW_QOS_POLICY_RELIABILITY_SYSTEM_DEFAULT,
+  RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT,
+  false,
+  true
 };
 
 #ifdef __cplusplus

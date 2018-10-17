@@ -215,6 +215,9 @@ typedef struct RMW_PUBLIC_TYPE rmw_qos_profile_t
    * with a ROS 2 topic.
    */
   bool avoid_ros_namespace_conventions;
+  /// If true, all the configuration must be set in the XML config files and the configuration
+  /// set in code won't be applied.
+  bool config_only_from_xml;  
 } rmw_qos_profile_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_gid_t
