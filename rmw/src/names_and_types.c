@@ -60,12 +60,12 @@ rmw_names_and_types_init(
     return RMW_RET_INVALID_ARGUMENT;
   }
   if (!names_and_types) {
-    RMW_SET_ERROR_MSG_ALLOC("names_and_types is null", *allocator)
+    RMW_SET_ERROR_MSG("names_and_types is null")
     return RMW_RET_INVALID_ARGUMENT;
   }
   rcutils_ret_t rcutils_ret = rcutils_string_array_init(&names_and_types->names, size, allocator);
   if (rcutils_ret != RCUTILS_RET_OK) {
-    RMW_SET_ERROR_MSG(rcutils_get_error_string_safe())
+    RMW_SET_ERROR_MSG(rcutils_get_error_string().str)
     return rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret);
   }
   names_and_types->types =
@@ -73,9 +73,9 @@ rmw_names_and_types_init(
   if (!names_and_types->types) {
     rcutils_ret = rcutils_string_array_fini(&names_and_types->names);
     if (rcutils_ret != RCUTILS_RET_OK) {
-      RCUTILS_LOG_ERROR("error while reporting error: %s", rcutils_get_error_string_safe());
+      RCUTILS_LOG_ERROR("error while reporting error: %s", rcutils_get_error_string().str);
     }
-    RMW_SET_ERROR_MSG_ALLOC("failed to allocate memory for types", *allocator)
+    RMW_SET_ERROR_MSG("failed to allocate memory for types")
     return RMW_RET_BAD_ALLOC;
   }
   return RMW_RET_OK;
@@ -101,7 +101,7 @@ rmw_names_and_types_fini(rmw_names_and_types_t * names_and_types)
     }
     rcutils_ret = rcutils_string_array_fini(&names_and_types->types[i]);
     if (rcutils_ret != RCUTILS_RET_OK) {
-      RMW_SET_ERROR_MSG(rcutils_get_error_string_safe())
+      RMW_SET_ERROR_MSG(rcutils_get_error_string().str)
       return rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret);
     }
   }
@@ -115,7 +115,7 @@ rmw_names_and_types_fini(rmw_names_and_types_t * names_and_types)
   // Cleanup names string array
   rcutils_ret = rcutils_string_array_fini(&names_and_types->names);
   if (rcutils_ret != RCUTILS_RET_OK) {
-    RMW_SET_ERROR_MSG(rcutils_get_error_string_safe())
+    RMW_SET_ERROR_MSG(rcutils_get_error_string().str)
     return rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret);
   }
   return RMW_RET_OK;
