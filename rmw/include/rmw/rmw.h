@@ -50,6 +50,9 @@
  * - Introspection of the ROS graph
  *   - rmw_names_and_types_t
  *   - rmw_get_topic_names_and_types()
+ *   - rmw_get_publisher_names_and_types_by_node()
+ *   - rmw_get_subscriber_names_and_types_by_node()
+ *   - rmw_get_service_names_and_types_by_node()
  *   - rmw_get_service_names_and_types()
  *   - rmw/names_and_types.h
  *   - rmw/get_topic_names_and_types.h
