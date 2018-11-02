@@ -20,47 +20,34 @@ extern "C"
 {
 #endif
 
-#include <stdbool.h>
-#include <stddef.h>
-
 #include <rcutils/error_handling.h>
 
-#include "rmw/visibility_control.h"
-
+typedef rcutils_error_string_t rmw_error_string_t;
 typedef rcutils_error_state_t rmw_error_state_t;
 
-#define rmw_error_state_copy rcutils_error_state_copy
+#define RMW_SAFE_FWRITE_TO_STDERR RCUTILS_SAFE_FWRITE_TO_STDERR
 
-#define rmw_error_state_fini rcutils_error_state_fini
+#define rmw_initialize_error_handling_thread_local_storage \
+  rcutils_initialize_error_handling_thread_local_storage
 
-// TODO(wjwwood): replace this completely with rcutils_set_error_state()
-//                once the rmw APIs take an allocator that can be passed
-//                by the rmw implementations on to the error functions
-/// Set the error state, implicitly uses rcutils_get_default_allocator().
-/**
- * \see rcutils_get_default_allocator()
- * \see rcutils_set_error_state()
- */
-RMW_PUBLIC
-void
-rmw_set_error_state(const char * error_msg, const char * file, size_t line_number);
+#define rmw_set_error_state rcutils_set_error_state
 
-/// Set the error message, as well as append the current file and line number.
-/**
- * \see RCUTILS_SET_ERROR_MSG
- */
-#define RMW_SET_ERROR_MSG(msg) rmw_set_error_state(msg, __FILE__, __LINE__);
+#define RMW_CHECK_ARGUMENT_FOR_NULL(argument, error_return_type) \
+  RCUTILS_CHECK_ARGUMENT_FOR_NULL(argument, error_return_type)
 
-#define RMW_SET_ERROR_MSG_ALLOC(msg, allocator) \
-  rcutils_set_error_state(msg, __FILE__, __LINE__, allocator);
+#define RMW_CHECK_FOR_NULL_WITH_MSG(value, msg, error_statement) \
+  RCUTILS_CHECK_FOR_NULL_WITH_MSG(value, msg, error_statement)
+
+#define RMW_SET_ERROR_MSG(msg) RCUTILS_SET_ERROR_MSG(msg)
+
+#define RMW_SET_ERROR_MSG_WITH_FORMAT_STRING(format_string, ...) \
+  RCUTILS_SET_ERROR_MSG_WITH_FORMAT_STRING(format_string, __VA_ARGS__)
 
 #define rmw_error_is_set rcutils_error_is_set
 
 #define rmw_get_error_state rcutils_get_error_state
 
 #define rmw_get_error_string rcutils_get_error_string
-
-#define rmw_get_error_string_safe rcutils_get_error_string_safe
 
 #define rmw_reset_error rcutils_reset_error
 
