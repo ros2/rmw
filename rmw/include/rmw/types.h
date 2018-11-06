@@ -44,12 +44,16 @@ typedef int rmw_ret_t;
 // implementation. It may need to be increased in the future.
 #define RMW_GID_STORAGE_SIZE 24
 
+// forward declaration to avoid circular dependency
+typedef struct rmw_init_context_t rmw_init_context_t;
+
 typedef struct RMW_PUBLIC_TYPE rmw_node_t
 {
   const char * implementation_identifier;
   void * data;
   const char * name;
   const char * namespace_;
+  rmw_init_context_t * init_context;
 } rmw_node_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_publisher_t
@@ -84,9 +88,10 @@ typedef struct RMW_PUBLIC_TYPE rmw_guard_condition_t
 {
   const char * implementation_identifier;
   void * data;
+  rmw_init_context_t * init_context;
 } rmw_guard_condition_t;
 
-/// Array of subsciber handles.
+/// Array of subscriber handles.
 /**
  * An array of void * pointers representing type-erased middleware-specific subscriptions.
  * The number of non-null entries may be smaller than the allocated size of the array.
