@@ -39,6 +39,8 @@ typedef int rmw_ret_t;
 #define RMW_RET_BAD_ALLOC 10
 /// Invalid argument return code.
 #define RMW_RET_INVALID_ARGUMENT 11
+/// Incorrect rmw implementation.
+#define RMW_RET_INCORRECT_RMW_IMPLEMENTATION 12
 
 // 24 bytes is the most memory needed to represent the GID by any current
 // implementation. It may need to be increased in the future.
