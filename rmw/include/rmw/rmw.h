@@ -124,12 +124,12 @@ rmw_get_serialization_format(void);
 /// Create a node and return a handle to that node.
 /**
  * This function can fail, and therefore return `NULL`, if:
- *   - init_context, name, namespace_, or security_options is `NULL`
- *   - init_context, security_options is invalid
+ *   - context, name, namespace_, or security_options is `NULL`
+ *   - context, security_options is invalid
  *   - memory allocation fails during node creation
  *   - an unspecified error occurs
  *
- * The init_context must be non-null and valid, i.e. it has been initialized
+ * The context must be non-null and valid, i.e. it has been initialized
  * by `rmw_init()` and has not been finalized by `rmw_shutdown()`.
  *
  * The name and namespace_ should be valid node name and namespace,
@@ -153,7 +153,7 @@ rmw_get_serialization_format(void);
  *
  * This should be defined by the rmw implementation.
  *
- * \param[in] init_context init context that this node should be associated with
+ * \param[in] context init context that this node should be associated with
  * \param[in] name the node name
  * \param[in] namespace_ the node namespace
  * \param[in] domain_id the id of the domain that the node should join
@@ -164,7 +164,7 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_node_t *
 rmw_create_node(
-  rmw_init_context_t * init_context,
+  rmw_context_t * context,
   const char * name,
   const char * namespace_,
   size_t domain_id,
@@ -474,12 +474,12 @@ rmw_send_response(
 /// Create a guard condition and return a handle to that guard condition.
 /**
  * This function can fail, and therefore return `NULL`, if:
- *   - init_context is `NULL`
- *   - init_context is invalid
+ *   - context is `NULL`
+ *   - context is invalid
  *   - memory allocation fails during guard condition creation
  *   - an unspecified error occurs
  *
- * The init_context must be non-null and valid, i.e. it has been initialized
+ * The context must be non-null and valid, i.e. it has been initialized
  * by `rmw_init()` and has not been finalized by `rmw_shutdown()`.
  *
  * <hr>
@@ -493,13 +493,13 @@ rmw_send_response(
  *
  * This should be defined by the rmw implementation.
  *
- * \param[in] init_context init context that this node should be associated with
+ * \param[in] context init context that this node should be associated with
  * \return rmw guard condition handle or `NULL` if there was an error
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_guard_condition_t *
-rmw_create_guard_condition(rmw_init_context_t * init_context);
+rmw_create_guard_condition(rmw_context_t * context);
 
 
 /// Finalize a given guard condition handle, reclaim the resources, and deallocate the handle.

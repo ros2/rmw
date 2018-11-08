@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__RMW_H_
-#define RMW__RMW_H_
+#ifndef RMW__INIT_H_
+#define RMW__INIT_H_
 
 #ifdef __cplusplus
 extern "C"
@@ -23,7 +23,7 @@ extern "C"
 #include <stdint.h>
 
 #include "rmw/macros.h"
-#include "rmw/types.h"
+#include "rmw/ret_types.h"
 #include "rmw/visibility_control.h"
 
 /// Implementation defined options structure used during rmw_init().
@@ -44,6 +44,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_init_options_t {
   /// Implementation identifier, used to ensure two different implementations are not being mixed.
   const char * implementation_identifier;
   /// Implementation defined init options.
+  /** May be NULL if there are no implementation defined options. */
   rmw_init_options_impl_t * impl;
 } rmw_init_options_t;
 
@@ -60,23 +61,24 @@ rmw_get_default_init_options(void);
 /**
  * This should be defined by the rmw implementation.
  */
-typedef struct rmw_init_context_impl_t rmw_init_context_impl_t;
+typedef struct rmw_context_impl_t rmw_context_impl_t;
 
 /// Initialization context structure which is used to store init specific information.
-typedef struct RMW_PUBLIC_TYPE rmw_init_context_t {
+typedef struct RMW_PUBLIC_TYPE rmw_context_t {
   /// Locally (process local) unique ID that represents this init/shutdown cycle.
   uint64_t instance_id;
   /// Implementation identifier, used to ensure two different implementations are not being mixed.
   const char * implementation_identifier;
   /// Implementation defined init context information.
-  rmw_init_context_impl_t * impl;
-} rmw_init_context_t;
+  /** May be NULL if there is no implementation defined context information. */
+  rmw_context_impl_t * impl;
+} rmw_context_t;
 
 /// Return a zero initialized init context structure.
 RMW_PUBLIC
 RMW_WARN_UNUSED
-rmw_init_context_t
-rmw_get_zero_initialized_init_context(void);
+rmw_context_t
+rmw_get_zero_initialized_context(void);
 
 /// Initialize the middleware with the given options, and yielding an init context.
 /**
@@ -106,7 +108,7 @@ rmw_get_zero_initialized_init_context(void);
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_init(const rmw_init_options_t * options, rmw_init_context_t * context);
+rmw_init(const rmw_init_options_t * options, rmw_context_t * context);
 
 /// Shutdown the middleware for a given init context.
 /**
@@ -133,10 +135,10 @@ rmw_init(const rmw_init_options_t * options, rmw_init_context_t * context);
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_shutdown(rmw_init_context_t * context);
+rmw_shutdown(rmw_context_t * context);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  // RMW__RMW_H_
+#endif  // RMW__INIT_H_

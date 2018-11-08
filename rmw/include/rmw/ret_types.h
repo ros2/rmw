@@ -1,4 +1,4 @@
-// Copyright 2018 Open Source Robotics Foundation, Inc.
+// Copyright 2014-2018 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,24 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <stddef.h>
-
-#include "rmw/init.h"
+#ifndef RMW__RET_TYPES_H_
+#define RMW__RET_TYPES_H_
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-rmw_context_t
-rmw_get_zero_initialized_context(void)
-{
-  return (const rmw_context_t) {
-    .instance_id = 0,
-    .impl = NULL
-  };
-}
+#include <stdint.h>
+
+typedef int32_t rmw_ret_t;
+#define RMW_RET_OK 0
+#define RMW_RET_ERROR 1
+#define RMW_RET_TIMEOUT 2
+
+/// Failed to allocate memory return code.
+#define RMW_RET_BAD_ALLOC 10
+/// Invalid argument return code.
+#define RMW_RET_INVALID_ARGUMENT 11
+/// Incorrect rmw implementation.
+#define RMW_RET_INCORRECT_RMW_IMPLEMENTATION 12
 
 #ifdef __cplusplus
 }
 #endif
+
+#endif  // RMW__RET_TYPES_H_
