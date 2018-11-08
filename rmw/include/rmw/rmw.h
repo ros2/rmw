@@ -188,6 +188,23 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_publish(const rmw_publisher_t * publisher, const void * ros_message);
 
+/// Retrieve the number of matched subscriptions to a publisher
+/**
+ * Query the underlying middleware to determine how many subscriptions are
+ * matched to a given publisher.
+ *
+ * \param publisher the publisher object to inspect
+ * \param subscription_count the number of subscriptions matched
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_count_matched_subscriptions(
+  const rmw_publisher_t * publisher,
+  size_t * subscription_count);
+
 /// Publish an already serialized message.
 /**
  * The publisher must already be registered with the correct message type
@@ -266,6 +283,23 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_subscription(rmw_node_t * node, rmw_subscription_t * subscription);
+
+/// Retrieve the number of matched publishers to a subscription
+/**
+ * Query the underlying middleware to determine how many publishers are
+ * matched to a given subscription.
+ *
+ * \param subscription the publisher object to inspect
+ * \param publisher_count the number of subscriptions matched
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_count_matched_publishers(
+  const rmw_subscription_t * subscription,
+  size_t * publisher_count);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
