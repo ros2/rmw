@@ -14,19 +14,20 @@
 
 #include <stddef.h>
 
-#include "rmw/init.h"
+#include "rmw/init_options.h"
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-rmw_context_t
-rmw_get_zero_initialized_context(void)
+rmw_init_options_t
+rmw_get_zero_initialized_init_options(void)
 {
-  return (const rmw_context_t) {
+  return (const rmw_init_options_t) {
            .instance_id = 0,
-           .impl = NULL
+           .implementation_identifier = NULL,
+           .impl = NULL,
   };  // NOLINT(readability/braces): false positive
 }
 

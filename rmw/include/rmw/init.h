@@ -22,40 +22,10 @@ extern "C"
 
 #include <stdint.h>
 
+#include "rmw/init_options.h"
 #include "rmw/macros.h"
 #include "rmw/ret_types.h"
 #include "rmw/visibility_control.h"
-
-/// Implementation defined options structure used during rmw_init().
-/**
- * This should be defined by the rmw implementation.
- */
-typedef struct rmw_init_options_impl_t rmw_init_options_impl_t;
-
-/// Options structure used during rmw_init().
-typedef struct RMW_PUBLIC_TYPE rmw_init_options_t {
-  /// Locally (process local) unique ID that represents this init/shutdown cycle.
-  /**
-   * This should be set by the caller of `rmw_init()` to a number that is
-   * unique within this process.
-   * It is designed to be used with `rcl_init()` and `rcl_get_instance_id()`.
-   */
-  uint64_t instance_id;
-  /// Implementation identifier, used to ensure two different implementations are not being mixed.
-  const char * implementation_identifier;
-  /// Implementation defined init options.
-  /** May be NULL if there are no implementation defined options. */
-  rmw_init_options_impl_t * impl;
-} rmw_init_options_t;
-
-/// Return the default init options.
-/**
- * This should be defined by the rmw implementation.
- */
-RMW_PUBLIC
-RMW_WARN_UNUSED
-rmw_init_options_t
-rmw_get_default_init_options(void);
 
 /// Implementation defined context structure returned by rmw_init().
 /**
@@ -64,27 +34,28 @@ rmw_get_default_init_options(void);
 typedef struct rmw_context_impl_t rmw_context_impl_t;
 
 /// Initialization context structure which is used to store init specific information.
-typedef struct RMW_PUBLIC_TYPE rmw_context_t {
+typedef struct RMW_PUBLIC_TYPE rmw_context_t
+{
   /// Locally (process local) unique ID that represents this init/shutdown cycle.
   uint64_t instance_id;
   /// Implementation identifier, used to ensure two different implementations are not being mixed.
   const char * implementation_identifier;
-  /// Implementation defined init context information.
+  /// Implementation defined context information.
   /** May be NULL if there is no implementation defined context information. */
   rmw_context_impl_t * impl;
 } rmw_context_t;
 
-/// Return a zero initialized init context structure.
+/// Return a zero initialized context structure.
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_context_t
 rmw_get_zero_initialized_context(void);
 
-/// Initialize the middleware with the given options, and yielding an init context.
+/// Initialize the middleware with the given options, and yielding an context.
 /**
- * The given init context must be zero initialized, and is filled with
+ * The given context must be zero initialized, and is filled with
  * middleware specific data upon success of this function.
- * The init context is used when initializing some entities like nodes and
+ * The context is used when initializing some entities like nodes and
  * guard conditions, and is also required to properly call rmw_shutdown().
  *
  * <hr>
@@ -110,9 +81,9 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_init(const rmw_init_options_t * options, rmw_context_t * context);
 
-/// Shutdown the middleware for a given init context.
+/// Shutdown the middleware for a given context.
 /**
- * The given init context must be a valid context which has been initialized
+ * The given context must be a valid context which has been initialized
  * with rmw_init().
  *
  * <hr>
