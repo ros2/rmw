@@ -73,7 +73,7 @@
  *   - rmw/visibility_control.h
  * - Utility function to demangle a type to a human readable string (C++ specific):
  *   - rmw/impl/cpp/demangle.hpp
- */
+*/
 
 #ifndef RMW__RMW_H_
 #define RMW__RMW_H_
@@ -90,6 +90,7 @@ extern "C"
 #include "rcutils/types.h"
 
 #include "rosidl_generator_c/message_type_support_struct.h"
+#include "rosidl_generator_c/message_bounds_struct.h"
 #include "rosidl_generator_c/service_type_support_struct.h"
 
 #include "rmw/init.h"
@@ -216,6 +217,14 @@ rmw_node_get_graph_guard_condition(const rmw_node_t * node);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
+rmw_ret_t
+rmw_init_publisher_allocation(
+  const rosidl_message_type_support_t * type_support,
+  const rosidl_message_bounds_t * message_bounds,
+  rmw_publisher_allocation_t * allocation);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_publisher_t *
 rmw_create_publisher(
   const rmw_node_t * node,
@@ -296,6 +305,14 @@ rmw_ret_t
 rmw_publish_serialized_message(
   const rmw_publisher_t * publisher, const rmw_serialized_message_t * serialized_message);
 
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_get_serialized_message_size(
+  const rosidl_message_bounds_t * message_bounds,
+  const rosidl_message_type_support_t * type_support,
+  size_t * size);
+
 /// Serialize a ROS message into a rmw_serialized_message_t.
 /**
  * The ROS message is serialized into a byte stream contained within the
@@ -340,6 +357,14 @@ rmw_deserialize(
   const rmw_serialized_message_t * serialized_message,
   const rosidl_message_type_support_t * type_support,
   void * ros_message);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_init_subscription_allocation(
+  const rosidl_message_type_support_t * type_support,
+  const rosidl_message_bounds_t * message_bounds,
+  rmw_subscription_allocation_t * allocation);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
