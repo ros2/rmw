@@ -63,8 +63,8 @@ TEST(test_serialized_message, resize) {
   EXPECT_EQ(3u, serialized_msg.buffer_capacity);
   EXPECT_EQ(3u, serialized_msg.buffer_length);
   EXPECT_EQ(0xFF, serialized_msg.buffer[0]);
-  EXPECT_EQ(0xFF - 1, serialized_msg.buffer[0]);
-  EXPECT_EQ(0xFF - 2, serialized_msg.buffer[1]);
+  EXPECT_EQ(0xFF - 1, serialized_msg.buffer[1]);
+  EXPECT_EQ(0xFF - 2, serialized_msg.buffer[2]);
   // the other fields are garbage.
 
   // cleanup only 3 fields
