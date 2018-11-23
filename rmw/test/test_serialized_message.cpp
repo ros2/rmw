@@ -50,7 +50,7 @@ TEST(test_serialized_message, resize) {
   EXPECT_EQ(5u, serialized_msg.buffer_length);
 
   for (size_t i = 0; i < 11; ++i) {
-    uint8_t c = 0xFF - i;
+    uint8_t c = 0xFF - static_cast<uint8_t>(i);
     memcpy(serialized_msg.buffer + i, &c, 1);
   }
   serialized_msg.buffer_length = 11;
