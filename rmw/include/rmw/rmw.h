@@ -290,8 +290,8 @@ rmw_destroy_subscription(rmw_node_t * node, rmw_subscription_t * subscription);
  * Query the underlying middleware to determine how many publishers are
  * matched to a given subscription.
  *
- * \param subscription the publisher object to inspect
- * \param publisher_count the number of subscriptions matched
+ * \param subscription the subscription object to inspect
+ * \param publisher_count the number of publishers matched
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if either argument is null, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
