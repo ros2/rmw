@@ -35,26 +35,36 @@ TEST(test_serialized_message, resize) {
   auto ret = rmw_serialized_message_init(&serialized_msg, 5, &allocator);
   ASSERT_EQ(RMW_RET_OK, ret);
 
-  memcpy(serialized_msg.buffer, "1234\0", 5);
+  for (size_t i = 0; i < 5; ++i) {
+    uint8_t c = 1u << i;
+    memcpy(serialized_msg.buffer + i, &c, 1);
+  }
   serialized_msg.buffer_length = 5;
-  EXPECT_STREQ("1234\0", serialized_msg.buffer);
+  for (size_t i = 0; i < serialized_msg.buffer_length; ++i) {
+    EXPECT_EQ(1u << i, serialized_msg.buffer[i]);
+  }
 
   ret = rmw_serialized_message_resize(&serialized_msg, 11);
   ASSERT_EQ(RMW_RET_OK, ret);
   EXPECT_EQ(11u, serialized_msg.buffer_capacity);
   EXPECT_EQ(5u, serialized_msg.buffer_length);
 
-  memcpy(serialized_msg.buffer, "0987654321\0", 11);
+  for (size_t i = 0; i < 11; ++i) {
+    uint8_t c = 0xFF - static_cast<uint8_t>(i);
+    memcpy(serialized_msg.buffer + i, &c, 1);
+  }
   serialized_msg.buffer_length = 11;
-  EXPECT_STREQ("0987654321\0", serialized_msg.buffer);
+  for (size_t i = 0; i < 11; ++i) {
+    EXPECT_EQ(0xFF - i, serialized_msg.buffer[i]);
+  }
 
   ret = rmw_serialized_message_resize(&serialized_msg, 3);
   ASSERT_EQ(RMW_RET_OK, ret);
   EXPECT_EQ(3u, serialized_msg.buffer_capacity);
   EXPECT_EQ(3u, serialized_msg.buffer_length);
-  EXPECT_EQ('0', serialized_msg.buffer[0]);
-  EXPECT_EQ('9', serialized_msg.buffer[1]);
-  EXPECT_EQ('8', serialized_msg.buffer[2]);
+  EXPECT_EQ(0xFF, serialized_msg.buffer[0]);
+  EXPECT_EQ(0xFF - 1, serialized_msg.buffer[1]);
+  EXPECT_EQ(0xFF - 2, serialized_msg.buffer[2]);
   // the other fields are garbage.
 
   // cleanup only 3 fields
