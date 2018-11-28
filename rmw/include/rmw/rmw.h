@@ -188,13 +188,13 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_publish(const rmw_publisher_t * publisher, const void * ros_message);
 
-/// Retrieve the number of matched subscriptions to a publisher
+/// Retrieve the number of matched subscriptions to a publisher.
 /**
  * Query the underlying middleware to determine how many subscriptions are
  * matched to a given publisher.
  *
- * \param publisher the publisher object to inspect
- * \param subscription_count the number of subscriptions matched
+ * \param[in] publisher the publisher object to inspect
+ * \param[out] subscription_count the number of subscriptions matched
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if either argument is null, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
@@ -285,13 +285,13 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_subscription(rmw_node_t * node, rmw_subscription_t * subscription);
 
-/// Retrieve the number of matched publishers to a subscription
+/// Retrieve the number of matched publishers to a subscription.
 /**
  * Query the underlying middleware to determine how many publishers are
  * matched to a given subscription.
  *
- * \param subscription the subscription object to inspect
- * \param publisher_count the number of publishers matched
+ * \param[in] subscription the subscription object to inspect
+ * \param[out] publisher_count the number of publishers matched
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if either argument is null, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
