@@ -17,6 +17,8 @@
  * `rmw` defines an interface of middleware primitives that are used by the higher level ROS API's.
  * It consists of these main components:
  *
+ * - Initialization and Shutdown:
+ *   - rmw/init.h
  * - Nodes
  *   - rmw/rmw.h
  * - Publisher
@@ -90,6 +92,7 @@ extern "C"
 #include "rosidl_generator_c/message_type_support_struct.h"
 #include "rosidl_generator_c/service_type_support_struct.h"
 
+#include "rmw/init.h"
 #include "rmw/macros.h"
 #include "rmw/qos_profiles.h"
 #include "rmw/types.h"
@@ -117,20 +120,63 @@ RMW_WARN_UNUSED
 const char *
 rmw_get_serialization_format(void);
 
-RMW_PUBLIC
-RMW_WARN_UNUSED
-rmw_ret_t
-rmw_init(void);
-
+// TODO(wjwwood): refactor this API to return a return code when updated to use an allocator
+/// Create a node and return a handle to that node.
+/**
+ * This function can fail, and therefore return `NULL`, if:
+ *   - context, name, namespace_, or security_options is `NULL`
+ *   - context, security_options is invalid
+ *   - memory allocation fails during node creation
+ *   - an unspecified error occurs
+ *
+ * The context must be non-null and valid, i.e. it has been initialized
+ * by `rmw_init()` and has not been finalized by `rmw_shutdown()`.
+ *
+ * The name and namespace_ should be valid node name and namespace,
+ * and this should be asserted by the caller (e.g. `rcl`).
+ *
+ * The domain ID should be used to physically separate nodes at the
+ * communication graph level by the middleware.
+ * For RTPS/DDS this maps naturally to their concept of domain id.
+ *
+ * The security options should always be non-null and encapsulate the
+ * essential security configurations for the node and its entities.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Yes
+ * Thread-Safe        | No
+ * Uses Atomics       | No [1]
+ * Lock-Free          | No [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
+ *
+ * This should be defined by the rmw implementation.
+ *
+ * \param[in] context init context that this node should be associated with
+ * \param[in] name the node name
+ * \param[in] namespace_ the node namespace
+ * \param[in] domain_id the id of the domain that the node should join
+ * \param[in] security_options the security configurations for the node
+ * \return rmw node handle or `NULL` if there was an error
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_node_t *
 rmw_create_node(
+  rmw_context_t * context,
   const char * name,
   const char * namespace_,
   size_t domain_id,
   const rmw_node_security_options_t * security_options);
 
+/// Finalize a given node handle, reclaim the resources, and deallocate the node handle.
+/**
+ * \param node the node handle to be destroyed
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if node is null, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -162,7 +208,6 @@ rmw_destroy_node(rmw_node_t * node);
  *
  * \param[in] node pointer to the rmw node
  * \return rmw guard condition handle if successful, otherwise `NULL`
- *
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -425,11 +470,45 @@ rmw_send_response(
   rmw_request_id_t * request_header,
   void * ros_response);
 
+// TODO(wjwwood): refactor this API to return a return code when updated to use an allocator
+/// Create a guard condition and return a handle to that guard condition.
+/**
+ * This function can fail, and therefore return `NULL`, if:
+ *   - context is `NULL`
+ *   - context is invalid
+ *   - memory allocation fails during guard condition creation
+ *   - an unspecified error occurs
+ *
+ * The context must be non-null and valid, i.e. it has been initialized
+ * by `rmw_init()` and has not been finalized by `rmw_shutdown()`.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Yes
+ * Thread-Safe        | No
+ * Uses Atomics       | No [1]
+ * Lock-Free          | No [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
+ *
+ * This should be defined by the rmw implementation.
+ *
+ * \param[in] context init context that this node should be associated with
+ * \return rmw guard condition handle or `NULL` if there was an error
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_guard_condition_t *
-rmw_create_guard_condition(void);
+rmw_create_guard_condition(rmw_context_t * context);
 
+
+/// Finalize a given guard condition handle, reclaim the resources, and deallocate the handle.
+/**
+ * \param guard_condition the guard condition handle to be destroyed
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if guard_condition is null, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t

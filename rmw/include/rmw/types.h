@@ -27,18 +27,10 @@ extern "C"
 // map rcutils specific log levels to rmw speicfic type
 #include <rcutils/logging.h>
 
+#include "rmw/init.h"
+#include "rmw/ret_types.h"
 #include "rmw/serialized_message.h"
 #include "rmw/visibility_control.h"
-
-typedef int rmw_ret_t;
-#define RMW_RET_OK 0
-#define RMW_RET_ERROR 1
-#define RMW_RET_TIMEOUT 2
-
-/// Failed to allocate memory return code.
-#define RMW_RET_BAD_ALLOC 10
-/// Invalid argument return code.
-#define RMW_RET_INVALID_ARGUMENT 11
 
 // 24 bytes is the most memory needed to represent the GID by any current
 // implementation. It may need to be increased in the future.
@@ -50,6 +42,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_node_t
   void * data;
   const char * name;
   const char * namespace_;
+  rmw_context_t * context;
 } rmw_node_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_publisher_t
@@ -84,9 +77,10 @@ typedef struct RMW_PUBLIC_TYPE rmw_guard_condition_t
 {
   const char * implementation_identifier;
   void * data;
+  rmw_context_t * context;
 } rmw_guard_condition_t;
 
-/// Array of subsciber handles.
+/// Array of subscriber handles.
 /**
  * An array of void * pointers representing type-erased middleware-specific subscriptions.
  * The number of non-null entries may be smaller than the allocated size of the array.
