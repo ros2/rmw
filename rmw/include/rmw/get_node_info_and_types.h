@@ -55,12 +55,12 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_get_subscriber_names_and_types_by_node(
-        const rmw_node_t * node,
-        rcutils_allocator_t * allocator,
-        const char * node_name,
-        const char * node_namespace,
-        bool demangle,
-        rmw_names_and_types_t * topics_names_and_types);
+  const rmw_node_t * node,
+  rcutils_allocator_t * allocator,
+  const char * node_name,
+  const char * node_namespace,
+  bool demangle,
+  rmw_names_and_types_t * topics_names_and_types);
 
 /// Return a list of published topic names and their types.
 /**
@@ -91,12 +91,12 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_get_publisher_names_and_types_by_node(
-        const rmw_node_t * node,
-        rcutils_allocator_t * allocator,
-        const char * node_name,
-        const char * node_namespace,
-        bool demangle,
-        rmw_names_and_types_t * topic_names_and_types);
+  const rmw_node_t * node,
+  rcutils_allocator_t * allocator,
+  const char * node_name,
+  const char * node_namespace,
+  bool demangle,
+  rmw_names_and_types_t * topic_names_and_types);
 
 /// Return a list of service topic names and their types.
 /**
@@ -126,11 +126,11 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_get_service_names_and_types_by_node(
-        const rmw_node_t * node,
-        rcutils_allocator_t * allocator,
-        const char * node_name,
-        const char * node_namespace,
-        rmw_names_and_types_t * service_names_and_types);
+  const rmw_node_t * node,
+  rcutils_allocator_t * allocator,
+  const char * node_name,
+  const char * node_namespace,
+  rmw_names_and_types_t * service_names_and_types);
 
 #ifdef __cplusplus
 }
