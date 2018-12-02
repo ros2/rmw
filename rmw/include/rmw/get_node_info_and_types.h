@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW_GET_NODE_INFO_AND_TYPES_H
-#define RMW_GET_NODE_INFO_AND_TYPES_H
+#ifndef RMW__GET_NODE_INFO_AND_TYPES_H_
+#define RMW__GET_NODE_INFO_AND_TYPES_H_
 
 #ifdef __cplusplus
 extern "C"
@@ -134,4 +134,4 @@ rmw_get_service_names_and_types_by_node(
 #ifdef __cplusplus
 }
 #endif
-#endif //RMW_GET_NODE_INFO_AND_TYPES_H
+#endif  // RMW__GET_NODE_INFO_AND_TYPES_H_
