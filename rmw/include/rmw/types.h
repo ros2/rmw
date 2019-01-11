@@ -192,9 +192,11 @@ enum RMW_PUBLIC_TYPE rmw_qos_durability_policy_t
   RMW_QOS_POLICY_DURABILITY_VOLATILE
 };
 
+/// ROS MiddleWare quality of service profile.
 typedef struct RMW_PUBLIC_TYPE rmw_qos_profile_t
 {
   enum rmw_qos_history_policy_t history;
+  /// Size of the message queue.
   size_t depth;
   enum rmw_qos_reliability_policy_t reliability;
   enum rmw_qos_durability_policy_t durability;
