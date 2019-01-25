@@ -108,6 +108,33 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_shutdown(rmw_context_t * context);
 
+/// Finalize a context.
+/**
+ * The context to be finalized must have been previously initialized with
+ * `rmw_init()`, and then later invalidated with `rmw_shutdown()`.
+ * If context is `NULL`, then `RMW_RET_INVALID_ARGUMENT` is returned.
+ * If context is zero-initialized, then `RMW_RET_INVALID_ARGUMENT` is returned.
+ * If context is initialized and valid (`rmw_shutdown()` was not called on it),
+ * then `RMW_RET_INVALID_ARGUMENT` is returned.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Yes
+ * Thread-Safe        | No
+ * Uses Atomics       | Yes
+ * Lock-Free          | Yes [1]
+ * <i>[1] if `atomic_is_lock_free()` returns true for `atomic_uint_least64_t`</i>
+ *
+ * \return `RMW_RET_OK` if the shutdown was completed successfully, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if any arguments are invalid, or
+ * \return `RMW_RET_ERROR` if an unspecified error occur.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_context_fini(rmw_context_t * context);
+
 #ifdef __cplusplus
 }
 #endif

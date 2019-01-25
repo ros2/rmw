@@ -521,10 +521,18 @@ rmw_trigger_guard_condition(const rmw_guard_condition_t * guard_condition);
 
 /// Create a wait set to store conditions that the middleware will block on.
 /**
+ * This function can fail, and therefore return `NULL`, if:
+ *   - context is `NULL`
+ *   - context is invalid
+ *   - memory allocation fails during wait set creation
+ *   - an unspecified error occurs
+ *
  * If `max_conditions` is `0`, the wait set can store an unbounded number of
  * conditions to wait on.
  * If `max_conditions` is greater than `0`, the number of conditions that can
  * be attached to the wait set is bounded at `max_conditions`.
+ *
+ * \param[in] context init context that this node should be associated with
  * \param[in] max_conditions
  *   The maximum number of conditions that can be attached to the wait set.
  * \return A pointer to the created wait set, `NULL` if an error occurred.
@@ -532,7 +540,7 @@ rmw_trigger_guard_condition(const rmw_guard_condition_t * guard_condition);
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_wait_set_t *
-rmw_create_wait_set(size_t max_conditions);
+rmw_create_wait_set(rmw_context_t * context, size_t max_conditions);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
