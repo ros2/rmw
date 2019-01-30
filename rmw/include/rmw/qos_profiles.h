@@ -60,7 +60,7 @@ static const rmw_qos_profile_t rmw_qos_profile_services_default =
 
 static const rmw_qos_profile_t rmw_qos_profile_parameter_events =
 {
-  RMW_QOS_POLICY_HISTORY_KEEP_ALL,
+  RMW_QOS_POLICY_HISTORY_KEEP_LAST,
   1000,
   RMW_QOS_POLICY_RELIABILITY_RELIABLE,
   RMW_QOS_POLICY_DURABILITY_VOLATILE,
