@@ -225,6 +225,12 @@ rmw_init_publisher_allocation(
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
+rmw_ret_t
+rmw_fini_publisher_allocation(
+  rmw_publisher_allocation_t * allocation);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_publisher_t *
 rmw_create_publisher(
   const rmw_node_t * node,
@@ -240,7 +246,8 @@ rmw_destroy_publisher(rmw_node_t * node, rmw_publisher_t * publisher);
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_publish(const rmw_publisher_t * publisher, const void * ros_message);
+rmw_publish(const rmw_publisher_t * publisher, const void * ros_message,
+  rmw_publisher_allocation_t * allocation);
 
 /// Retrieve the number of matched subscriptions to a publisher.
 /**
@@ -368,6 +375,12 @@ rmw_init_subscription_allocation(
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
+rmw_ret_t
+rmw_fini_publisher_allocation(
+  rmw_publisher_allocation_t * allocation);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_subscription_t *
 rmw_create_subscription(
   const rmw_node_t * node,
@@ -402,7 +415,8 @@ rmw_subscription_count_matched_publishers(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_take(const rmw_subscription_t * subscription, void * ros_message, bool * taken);
+rmw_take(const rmw_subscription_t * subscription, void * ros_message, bool * taken,
+   rmw_subscription_allocation_t * allocation);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -411,7 +425,8 @@ rmw_take_with_info(
   const rmw_subscription_t * subscription,
   void * ros_message,
   bool * taken,
-  rmw_message_info_t * message_info);
+  rmw_message_info_t * message_info,
+  rmw_subscription_allocation_t * allocation);
 
 /// Take a message without deserializing it.
 /**
