@@ -73,6 +73,12 @@ typedef struct RMW_PUBLIC_TYPE rmw_client_t
   const char * service_name;
 } rmw_client_t;
 
+typedef struct RMW_PUBLIC_TYPE rmw_event_t
+{
+  const char * implementation_identifier;
+  void * data;
+} rmw_event_t;
+
 typedef struct RMW_PUBLIC_TYPE rmw_guard_condition_t
 {
   const char * implementation_identifier;
@@ -124,6 +130,15 @@ typedef struct RMW_PUBLIC_TYPE rmw_clients_t
   /// Pointer to an array of void * pointers of clients.
   void ** clients;
 } rmw_clients_t;
+
+
+typedef struct RMW_PUBLIC_TYPE rmw_events_t
+{
+  /// The number of clients represented by the array.
+  size_t event_count;
+  /// Pointer to an array of void * pointers of clients.
+  void ** events;
+} rmw_events_t;
 
 /// Array of guard condition handles.
 /**
@@ -192,14 +207,40 @@ enum RMW_PUBLIC_TYPE rmw_qos_durability_policy_t
   RMW_QOS_POLICY_DURABILITY_VOLATILE
 };
 
+enum RMW_PUBLIC_TYPE rmw_qos_deadline_policy_t
+{
+  RMW_QOS_POLICY_DEADLINE_SYSTEM_DEFAULT,
+  RMW_QOS_POLICY_DEADLINE_TRANSIENT_LOCAL,
+  RMW_QOS_POLICY_DEADLINE_VOLATILE
+};
+
+enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_t
+{
+  RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT,
+  RMW_QOS_POLICY_LIVELINESS_TRANSIENT_LOCAL,
+  RMW_QOS_POLICY_LIVELINESS_VOLATILE
+};
+
+enum RMW_PUBLIC_TYPE rmw_qos_lifespan_policy_t
+{
+  RMW_QOS_POLICY_LIFESPAN_SYSTEM_DEFAULT,
+  RMW_QOS_POLICY_LIFESPAN_TRANSIENT_LOCAL,
+  RMW_QOS_POLICY_LIFESPAN_VOLATILE
+};
+
 /// ROS MiddleWare quality of service profile.
 typedef struct RMW_PUBLIC_TYPE rmw_qos_profile_t
 {
   enum rmw_qos_history_policy_t history;
   /// Size of the message queue.
   size_t depth;
+
   enum rmw_qos_reliability_policy_t reliability;
   enum rmw_qos_durability_policy_t durability;
+  enum rmw_qos_deadline_policy_t deadline;
+  enum rmw_qos_liveliness_policy_t liveliness;
+  enum rmw_qos_lifespan_policy_t lifespan;
+
   /// If true, any ROS specific namespacing conventions will be circumvented.
   /**
    * In the case of DDS and topics, for example, this means the typical
