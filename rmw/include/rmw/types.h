@@ -134,9 +134,9 @@ typedef struct RMW_PUBLIC_TYPE rmw_clients_t
 
 typedef struct RMW_PUBLIC_TYPE rmw_events_t
 {
-  /// The number of clients represented by the array.
+  /// The number of events represented by the array.
   size_t event_count;
-  /// Pointer to an array of void * pointers of clients.
+  /// Pointer to an array of void * pointers of events.
   void ** events;
 } rmw_events_t;
 

@@ -126,6 +126,20 @@ rmw_service_free(rmw_service_t * service)
   rmw_free(service);
 }
 
+rmw_event_t *
+rmw_event_allocate()
+{
+  // Could be overridden with custom (maybe static) event struct allocator
+  return (rmw_event_t *)rmw_allocate(sizeof(rmw_event_t));
+}
+
+void
+rmw_event_free(rmw_event_t * event)
+{
+  // Should have matching overide with rmw_event_allocate
+  rmw_free(event);
+}
+
 rmw_wait_set_t *
 rmw_wait_set_allocate()
 {
