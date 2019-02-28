@@ -225,6 +225,11 @@ rmw_create_publisher(
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
+rmw_event_t *
+rmw_create_publisher_event(const rmw_publisher_t * publisher);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_publisher(rmw_node_t * node, rmw_publisher_t * publisher);
 
@@ -327,6 +332,11 @@ rmw_create_subscription(
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
+rmw_event_t *
+rmw_create_subscription_event(const rmw_subscription_t * subscription);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_subscription(rmw_node_t * node, rmw_subscription_t * subscription);
 
@@ -419,6 +429,11 @@ rmw_create_client(
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
+rmw_event_t *
+rmw_create_client_event(const rmw_client_t * client);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_client(rmw_node_t * node, rmw_client_t * client);
 
@@ -450,6 +465,11 @@ rmw_create_service(
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
+rmw_event_t *
+rmw_create_service_event(const rmw_service_t * service);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_service(rmw_node_t * node, rmw_service_t * service);
 
@@ -469,6 +489,13 @@ rmw_send_response(
   const rmw_service_t * service,
   rmw_request_id_t * request_header,
   void * ros_response);
+
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_destroy_event(rmw_event_t * event);
+
 
 // TODO(wjwwood): refactor this API to return a return code when updated to use an allocator
 /// Create a guard condition and return a handle to that guard condition.
