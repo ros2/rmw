@@ -376,8 +376,8 @@ rmw_init_subscription_allocation(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_fini_publisher_allocation(
-  rmw_publisher_allocation_t * allocation);
+rmw_fini_subscription_allocation(
+  rmw_subscription_allocation_t * allocation);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
