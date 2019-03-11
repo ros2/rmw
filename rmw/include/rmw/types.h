@@ -36,6 +36,24 @@ extern "C"
 // implementation. It may need to be increased in the future.
 #define RMW_GID_STORAGE_SIZE 24
 
+
+typedef enum rmw_event_type_t
+{
+  RMW_EVENT_SAMPLE_REJECTED,
+  RMW_EVENT_LIVELINESS_CHANGED,
+  RMW_EVENT_REQUESTED_DEADLINE_MISSED,
+  RMW_EVENT_REQUESTED_INCOMPATIBLE_QOS,
+  RMW_EVENT_DATA_AVAILABLE,
+  RMW_EVENT_SAMPLE_LOST,
+  RMW_EVENT_SUBSCRIPTION_MATCHED,
+
+  RMW_EVENT_LIVELINESS_LOST,
+  RMW_EVENT_OFFERED_DEADLINE_MISSED,
+  RMW_EVENT_OFFERED_INCOMPATIBLE_QOS,
+  RMW_EVENT_PUBLICATION_MATCHED
+} rmw_event_type_t;
+
+
 typedef struct RMW_PUBLIC_TYPE rmw_node_t
 {
   const char * implementation_identifier;
@@ -77,6 +95,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_event_t
 {
   const char * implementation_identifier;
   void * data;
+  rmw_event_type_t event_type;
 } rmw_event_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_guard_condition_t
