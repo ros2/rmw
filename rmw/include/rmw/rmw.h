@@ -226,7 +226,7 @@ rmw_create_publisher(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_event_t *
-rmw_create_publisher_event(const rmw_publisher_t * publisher);
+rmw_create_publisher_event(const rmw_publisher_t * publisher, const rmw_event_type_t event_type);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -333,7 +333,7 @@ rmw_create_subscription(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_event_t *
-rmw_create_subscription_event(const rmw_subscription_t * subscription);
+rmw_create_subscription_event(const rmw_subscription_t * subscription, const rmw_event_type_t event_type);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
