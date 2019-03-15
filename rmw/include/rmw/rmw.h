@@ -333,7 +333,9 @@ rmw_create_subscription(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_event_t *
-rmw_create_subscription_event(const rmw_subscription_t * subscription, const rmw_event_type_t event_type);
+rmw_create_subscription_event(
+  const rmw_subscription_t * subscription,
+  const rmw_event_type_t event_type);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
