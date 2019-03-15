@@ -302,6 +302,195 @@ typedef enum RMW_PUBLIC_TYPE
   RMW_LOG_SEVERITY_FATAL = RCUTILS_LOG_SEVERITY_FATAL
 } rmw_log_severity_t;
 
+
+typedef struct RMW_STATUS
+{
+    rmw_event_type_t rmw_event_type;
+} rmw_status_t;
+
+//Defined in the DDS SSpec 15-04-10 page 116
+typedef struct RMW_SAMPLE_LOST_STATUS
+{
+    //Total cumulative count of all samples lost across of instances of data published under the Topic.
+    int32_t total_count;
+    //The incremental number of samples lost since the last time the listener was called or the status was read.
+    int32_t total_count_change;
+
+} rmw_sample_lost_status_t;
+
+//Defined in the DDS SSpec 15-04-10 page 116
+typedef struct RMW_SAMPLE_REJECTED_STATUS
+{
+    //Total cumulative count of samples rejected by the DataReader.
+    int32_t total_count;
+    //The incremental number of samples rejected since the last time the listener was called or the status was read.
+    int32_t total_count_change;
+    /**
+     * Reason for rejecting the last sample rejected. If no samples have been rejected, the reason is the special value
+     * NOT_REJECTED.
+     */
+    void * last_reason;
+    //Handle to the instance being updated by the last sample that was rejected.
+    void * last_instance_handle;
+
+} rmw_sample_rejected_status_t;
+
+//Defined in the DDS SSpec 15-04-10 page 116
+typedef struct RMW_LIVELINESS_CHANGED_STATUS
+{
+  /**
+   * The total number of currently active DataWriters that write the Topic read by the DataReader. This count
+   * increases when a newly matched DataWriter asserts its liveliness for the first time or when a DataWriter
+   * previously considered to be not alive reasserts its liveliness. The count decreases when a DataWriter considered
+   * alive fails to assert its liveliness and becomes not alive, whether because it was deleted normally or for some
+   * other reason.
+   */
+  int32_t alive_count;
+  /**
+   * The total count of currently DataWriters that write the Topic read by the DataReader that are no longer asserting
+   * their liveliness. This count increases when a DataWriter considered alive fails to assert its liveliness and
+   * becomes not alive for some reason other than the normal deletion of that DataWriter. It decreases when a
+   * previously not alive DataWriter either reasserts its liveliness or is deleted normally.
+   */
+  int32_t not_alive_count;
+  //The change in the alive_count since the last time the listener was called or the status was read.
+  int32_t alive_count_change;
+  //The change in the not_alive_count since the last time the listener was called or the status was read.
+  int32_t not_alive_count_change;
+  //Handle to the last DataWriter whose change in liveliness caused this status to change.
+  void * last_publication_handle;
+
+} rmw_liveliness_changed_status_t;
+
+//Defined in the DDS SSpec 15-04-10 page 116-117
+typedef struct RMW_REQUESTED_DEADLINE_MISSED_STATUS
+{
+  /**
+   * Total cumulative number of missed deadlines detected for any instance read by the DataReader. Missed deadlines
+   * accumulate; that is, each deadline period the total_count will be incremented by one for each instance for which
+   * data was not received.
+   */
+  int32_t total_count;
+  //The incremental number of deadlines detected since the last time the listener was called or the status was read.
+  int32_t total_count_change;
+  //Handle to the last instance in the DataReader for which a deadline was detected.
+  void * last_instance_handle;
+
+} rmw_requested_deadline_missed_status_t;
+
+//Defined in the DDS SSpec 15-04-10 page 117
+typedef struct RMW_REQUESTED_INCOMPATIBLE_QOS_STATUS
+{
+    /**
+     * Total cumulative number of times the concerned DataReader discovered a DataWriter for the same Topic with an
+     * offered QoS that was incompatible with that requested by the DataReader.
+     */
+    int32_t total_count;
+    //The change in total_count since the last time the listener was called or the status was read.
+    int32_t total_count_change;
+    /**
+     * A list containing for each policy the total number of times that the concerned DataReader discovered a
+     * DataWriter for the same Topic with an offered QoS that is incompatible with that requested by the DataReader.
+     */
+    void * policies;
+    /**
+     * The QosPolicyId_t of one of the policies that was found to be incompatible the last time an incompatibility
+     * was detected.
+     */
+    void * last_policy_id;
+
+} rmw_requested_incompatible_qos_status_t;
+
+//Defined in the DDS SSpec 15-04-10 page 118
+typedef struct RMW_SUBSCRIPTION_MATCHED_STATUS
+{
+  /**
+   * Total cumulative count the concerned DataReader discovered a “match” with a DataWriter. That is, it found a
+   * DataWriter for the same Topic with a requested QoS that is compatible with that offered by the DataReader.
+   */
+  int32_t total_count;
+  //The change in total_count since the last time the listener was called or the status was read.
+  int32_t total_count_change;
+  //Handle to the last DataWriter that matched the DataReader causing the status to change.
+  int32_t current_count;
+  //The number of DataWriters currently matched to the concerned DataReader.
+  int32_t current_count_change;
+  //The change in current_count since the last time the listener was called or the status was read.
+  void * last_publication_handle;
+
+} rmw_subscription_matched_status_t;
+
+////Defined in the DDS SSpec 15-04-10 page 117
+typedef struct RMW_LIVELINESS_LOST
+{
+  /**
+   * Total cumulative number of times that a previously-alive DataWriter became not alive due to a failure to
+   * actively signal its liveliness within its offered liveliness period. This count does not change when an
+   * already not alive DataWriter simply remains not alive for another liveliness period.
+   */
+  u_int32_t total_count;
+  //The change in total_count since the last time the listener was called or the status was read.
+  u_int32_t total_count_change;
+
+} rmw_liveliness_lost_t;
+
+//Defined in the DDS SSpec 15-04-10 page 117
+typedef struct RMW_OFFERED_DEADLINE_MISSED
+{
+  /**
+   * Total cumulative number of offered deadline periods elapsed during which a DataWriter failed to provide data.
+   * Missed deadlines accumulate; that is, each deadline period the total_count will be incremented by one.
+   */
+  u_int32_t total_count;
+  //The change in total_count since the last time the listener was called or the status was read.
+  u_int32_t total_count_change;
+  //Handle to the last instance in the DataWriter for which an offered deadline was missed.
+  void * last_instance_handle;
+
+} rmw_offered_deadline_missed_t;
+
+//Defined in the DDS SSpec 15-04-10 page 117-118
+typedef struct RMW_OFFERED_INCOMPATIBLE_QOS
+{
+  /**
+   * Total cumulative number of times the concerned DataWriter discovered a DataReader for the same Topic with a
+   * requested QoS that is incompatible with that offered by the DataWriter.
+   */
+  u_int32_t total_count;
+  //The change in total_count since the last time the listener was called or the status was read.
+  u_int32_t total_count_change;
+  /**
+   * The PolicyId_t of one of the policies that was found to be incompatible the last time an incompatibility
+   * was detected.
+   */
+  void * last_policy_id;
+  /**
+   * A list containing for each policy the total number of times that the concerned DataWriter discovered a DataReader
+   * for the same Topic with a requested QoS that is incompatible with that offered by the DataWriter.
+   */
+  void * policies;
+
+} rmw_offered_incompatible_qos_t;
+
+//Defined in the DDS SSpec 15-04-10 page 118
+typedef struct RMW_PUBLICATION_MATCHED
+{
+  /**
+   * Total cumulative count the concerned DataWriter discovered a “match” with a DataReader. That is, it found a
+   * DataReader for the same Topic with a requested QoS that is compatible with that offered by the DataWriter.
+   */
+  u_int32_t total_count;
+  //The change in total_count since the last time the listener was called or the status was read.
+  u_int32_t total_count_change;
+  //The number of DataReaders currently matched to the concerned DataWriter.
+  u_int32_t current_count;
+  //The change in current_count since the last time the listener was called or the status was read.
+  u_int32_t current_count_change;
+  //Handle to the last DataReader that matched the DataWriter causing the status to change.
+  void * last_subscription_handle;
+
+} rmw_publication_matched_t;
+
 #ifdef __cplusplus
 }
 #endif
