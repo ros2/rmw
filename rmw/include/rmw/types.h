@@ -299,150 +299,152 @@ typedef enum RMW_PUBLIC_TYPE
   RMW_LOG_SEVERITY_FATAL = RCUTILS_LOG_SEVERITY_FATAL
 } rmw_log_severity_t;
 
-//Defined in the DDS SSpec 15-04-10 section 2.2.4.1 Communication Status
+/// Defined in the DDS SSpec 15-04-10 section 2.2.4.1 Communication Status
 typedef struct RMW_SAMPLE_LOST_STATUS
 {
-    //Total cumulative count of all samples lost across of instances of data published under the Topic.
-    int32_t total_count;
-    //The incremental number of samples lost since the last time the listener was called or the status was read.
-    int32_t total_count_change;
-
+  /// Total cumulative count of all samples lost across of instances of data published under the
+  /// Topic.
+  int32_t total_count;
+  /// The incremental number of samples lost since the last time the listener was called or the
+  /// status was read.
+  int32_t total_count_change;
 } rmw_sample_lost_status_t;
 
-//Defined in the DDS SSpec 15-04-10 section 2.2.4.1 Communication Status
+/// Defined in the DDS SSpec 15-04-10 section 2.2.4.1 Communication Status
 typedef struct RMW_SAMPLE_REJECTED_STATUS
 {
-    //Total cumulative count of samples rejected by the DataReader.
-    int32_t total_count;
-    //The incremental number of samples rejected since the last time the listener was called or the status was read.
-    int32_t total_count_change;
-
+  /// Total cumulative count of samples rejected by the DataReader.
+  int32_t total_count;
+  /// The incremental number of samples rejected since the last time the listener was called or
+  /// the status was read.
+  int32_t total_count_change;
 } rmw_sample_rejected_status_t;
 
-//Defined in the DDS SSpec 15-04-10 section 2.2.4.1 Communication Status
+/// Defined in the DDS SSpec 15-04-10 section 2.2.4.1 Communication Status
 typedef struct RMW_LIVELINESS_CHANGED_STATUS
 {
   /**
-   * The total number of currently active DataWriters that write the Topic read by the DataReader. This count
-   * increases when a newly matched DataWriter asserts its liveliness for the first time or when a DataWriter
-   * previously considered to be not alive reasserts its liveliness. The count decreases when a DataWriter considered
-   * alive fails to assert its liveliness and becomes not alive, whether because it was deleted normally or for some
-   * other reason.
+   * The total number of currently active DataWriters that write the Topic read by the DataReader.
+   * This count increases when a newly matched DataWriter asserts its liveliness for the first
+   * time or when a DataWriter previously considered to be not alive reasserts its liveliness.
+   * The count decreases when a DataWriter considered alive fails to assert its liveliness and
+   * becomes not alive, whether because it was deleted normally or for some other reason.
    */
   int32_t alive_count;
   /**
-   * The total count of currently DataWriters that write the Topic read by the DataReader that are no longer asserting
-   * their liveliness. This count increases when a DataWriter considered alive fails to assert its liveliness and
-   * becomes not alive for some reason other than the normal deletion of that DataWriter. It decreases when a
-   * previously not alive DataWriter either reasserts its liveliness or is deleted normally.
+   * The total count of currently DataWriters that write the Topic read by the DataReader that are
+   * no longer asserting their liveliness. This count increases when a DataWriter considered alive
+   * fails to assert its liveliness and becomes not alive for some reason other than the normal
+   * deletion of that DataWriter. It decreases when a previously not alive DataWriter either
+   * reasserts its liveliness or is deleted normally.
    */
   int32_t not_alive_count;
-  //The change in the alive_count since the last time the listener was called or the status was read.
+  /// The change in the alive_count since the last time the listener was called or the status was
+  /// read.
   int32_t alive_count_change;
-  //The change in the not_alive_count since the last time the listener was called or the status was read.
+  /// The change in the not_alive_count since the last time the listener was called or the status
+  /// was read.
   int32_t not_alive_count_change;
-
 } rmw_liveliness_changed_status_t;
 
-//Defined in the DDS SSpec 15-04-10 section 2.2.4.1 Communication Status
+/// Defined in the DDS SSpec 15-04-10 section 2.2.4.1 Communication Status
 typedef struct RMW_REQUESTED_DEADLINE_MISSED_STATUS
 {
   /**
-   * Total cumulative number of missed deadlines detected for any instance read by the DataReader. Missed deadlines
-   * accumulate; that is, each deadline period the total_count will be incremented by one for each instance for which
+   * Total cumulative number of missed deadlines detected for any instance read by the DataReader.
+   * Missed deadlines accumulate; that is, each deadline period the total_count will be incremented
+   * by one for each instance for which
    * data was not received.
    */
   int32_t total_count;
-  //The incremental number of deadlines detected since the last time the listener was called or the status was read.
+  /// The incremental number of deadlines detected since the last time the listener was called or
+  /// the status was read.
   int32_t total_count_change;
-
 } rmw_requested_deadline_missed_status_t;
 
-//Defined in the DDS SSpec 15-04-10 section 2.2.4.1 Communication Status
+/// Defined in the DDS SSpec 15-04-10 section 2.2.4.1 Communication Status
 typedef struct RMW_REQUESTED_INCOMPATIBLE_QOS_STATUS
 {
-    /**
-     * Total cumulative number of times the concerned DataReader discovered a DataWriter for the same Topic with an
-     * offered QoS that was incompatible with that requested by the DataReader.
-     */
-    int32_t total_count;
-    //The change in total_count since the last time the listener was called or the status was read.
-    int32_t total_count_change;
-
+  /**
+   * Total cumulative number of times the concerned DataReader discovered a DataWriter for the
+   * same Topic with an offered QoS that was incompatible with that requested by the DataReader.
+   */
+  int32_t total_count;
+  /// The change in total_count since the last time the listener was called or the status was read.
+  int32_t total_count_change;
 } rmw_requested_incompatible_qos_status_t;
 
-//Defined in the DDS SSpec 15-04-10 section 2.2.4.1 Communication Status
+/// Defined in the DDS SSpec 15-04-10 section 2.2.4.1 Communication Status
 typedef struct RMW_SUBSCRIPTION_MATCHED_STATUS
 {
   /**
-   * Total cumulative count the concerned DataReader discovered a “match” with a DataWriter. That is, it found a
-   * DataWriter for the same Topic with a requested QoS that is compatible with that offered by the DataReader.
+   * Total cumulative count the concerned DataReader discovered a “match” with a DataWriter.
+   * That is, it found a DataWriter for the same Topic with a requested QoS that is compatible
+   * with that offered by the DataReader.
    */
   int32_t total_count;
-  //The change in total_count since the last time the listener was called or the status was read.
+  /// The change in total_count since the last time the listener was called or the status was read.
   int32_t total_count_change;
-  //Handle to the last DataWriter that matched the DataReader causing the status to change.
+  /// Handle to the last DataWriter that matched the DataReader causing the status to change.
   int32_t current_count;
-  //The number of DataWriters currently matched to the concerned DataReader.
+  /// The number of DataWriters currently matched to the concerned DataReader.
   int32_t current_count_change;
-
 } rmw_subscription_matched_status_t;
 
-////Defined in the DDS SSpec 15-04-10 section 2.2.4.1 Communication Status
+/// Defined in the DDS SSpec 15-04-10 section 2.2.4.1 Communication Status
 typedef struct RMW_LIVELINESS_LOST
 {
   /**
-   * Total cumulative number of times that a previously-alive DataWriter became not alive due to a failure to
-   * actively signal its liveliness within its offered liveliness period. This count does not change when an
-   * already not alive DataWriter simply remains not alive for another liveliness period.
+   * Total cumulative number of times that a previously-alive DataWriter became not alive due to
+   * a failure to actively signal its liveliness within its offered liveliness period. This count
+   * does not change when an already not alive DataWriter simply remains not alive for another
+   * liveliness period.
    */
   int32_t total_count;
-  //The change in total_count since the last time the listener was called or the status was read.
+  /// The change in total_count since the last time the listener was called or the status was read.
   int32_t total_count_change;
-
 } rmw_liveliness_lost_t;
 
-//Defined in the DDS SSpec 15-04-10 section 2.2.4.1 Communication Status
+/// Defined in the DDS SSpec 15-04-10 section 2.2.4.1 Communication Status
 typedef struct RMW_OFFERED_DEADLINE_MISSED
 {
   /**
-   * Total cumulative number of offered deadline periods elapsed during which a DataWriter failed to provide data.
-   * Missed deadlines accumulate; that is, each deadline period the total_count will be incremented by one.
+   * Total cumulative number of offered deadline periods elapsed during which a DataWriter failed
+   * to provide data. Missed deadlines accumulate; that is, each deadline period the total_count
+   * will be incremented by one.
    */
   int32_t total_count;
-  //The change in total_count since the last time the listener was called or the status was read.
+  // The change in total_count since the last time the listener was called or the status was read.
   int32_t total_count_change;
-
 } rmw_offered_deadline_missed_t;
 
-//Defined in the DDS SSpec 15-04-10 section 2.2.4.1 Communication Status
+// Defined in the DDS SSpec 15-04-10 section 2.2.4.1 Communication Status
 typedef struct RMW_OFFERED_INCOMPATIBLE_QOS
 {
   /**
-   * Total cumulative number of times the concerned DataWriter discovered a DataReader for the same Topic with a
-   * requested QoS that is incompatible with that offered by the DataWriter.
+   * Total cumulative number of times the concerned DataWriter discovered a DataReader for the
+   * same Topic with a requested QoS that is incompatible with that offered by the DataWriter.
    */
   int32_t total_count;
-  //The change in total_count since the last time the listener was called or the status was read.
+  // The change in total_count since the last time the listener was called or the status was read.
   int32_t total_count_change;
-
 } rmw_offered_incompatible_qos_t;
 
-//Defined in the DDS SSpec 15-04-10 section 2.2.4.1 Communication Status
+// Defined in the DDS SSpec 15-04-10 section 2.2.4.1 Communication Status
 typedef struct RMW_PUBLICATION_MATCHED
 {
   /**
-   * Total cumulative count the concerned DataWriter discovered a “match” with a DataReader. That is, it found a
-   * DataReader for the same Topic with a requested QoS that is compatible with that offered by the DataWriter.
+   * Total cumulative count the concerned DataWriter discovered a “match” with a DataReader.
+   * That is, it found a DataReader for the same Topic with a requested QoS that is compatible
+   * with that offered by the DataWriter.
    */
   int32_t total_count;
-  //The change in total_count since the last time the listener was called or the status was read.
+  // The change in total_count since the last time the listener was called or the status was read.
   int32_t total_count_change;
-  //The number of DataReaders currently matched to the concerned DataWriter.
+  // The number of DataReaders currently matched to the concerned DataWriter.
   int32_t current_count;
-  //The change in current_count since the last time the listener was called or the status was read.
+  // The change in current_count since the last time the listener was called or the status was read.
   int32_t current_count_change;
-
 } rmw_publication_matched_t;
 
 #ifdef __cplusplus
