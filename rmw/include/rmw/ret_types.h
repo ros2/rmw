@@ -26,7 +26,14 @@ typedef int32_t rmw_ret_t;
 #define RMW_RET_OK 0
 #define RMW_RET_ERROR 1
 #define RMW_RET_TIMEOUT 2
+/// The event is not supported by the implementation
 #define RMW_RET_EVENT_UNSUPPORTED 3
+#define RMW_RETCODE_PRECONDITION_NOT_MET 4
+#define RMW_RET_OUT_OF_RESOURCES 5
+#define RMW_RET_NOT_ENABLED 6
+#define RMW_RET_IMMUTABLE_POLICY 7
+#define RMW_RET_INCONSISTENT_POLICY 8
+#define RMW_RET_NO_DATA 9
 
 /// Failed to allocate memory return code.
 #define RMW_RET_BAD_ALLOC 10
