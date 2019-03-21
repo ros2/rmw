@@ -229,25 +229,12 @@ enum RMW_PUBLIC_TYPE rmw_qos_durability_policy_t
   RMW_QOS_POLICY_DURABILITY_UNKNOWN
 };
 
-enum RMW_PUBLIC_TYPE rmw_qos_deadline_policy_t
-{
-  RMW_QOS_POLICY_DEADLINE_SYSTEM_DEFAULT,
-  RMW_QOS_POLICY_DEADLINE_TRANSIENT_LOCAL,
-  RMW_QOS_POLICY_DEADLINE_VOLATILE
-};
-
-enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_t
+enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_kind_t
 {
   RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT,
-  RMW_QOS_POLICY_LIVELINESS_TRANSIENT_LOCAL,
-  RMW_QOS_POLICY_LIVELINESS_VOLATILE
-};
-
-enum RMW_PUBLIC_TYPE rmw_qos_lifespan_policy_t
-{
-  RMW_QOS_POLICY_LIFESPAN_SYSTEM_DEFAULT,
-  RMW_QOS_POLICY_LIFESPAN_TRANSIENT_LOCAL,
-  RMW_QOS_POLICY_LIFESPAN_VOLATILE
+  RMW_QOS_POLICY_LIVELINESS_AUTOMATIC,
+  RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_PARTICIPANT,
+  RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC
 };
 
 /// ROS MiddleWare quality of service profile.
@@ -259,9 +246,11 @@ typedef struct RMW_PUBLIC_TYPE rmw_qos_profile_t
 
   enum rmw_qos_reliability_policy_t reliability;
   enum rmw_qos_durability_policy_t durability;
-  enum rmw_qos_deadline_policy_t deadline;
-  enum rmw_qos_liveliness_policy_t liveliness;
-  enum rmw_qos_lifespan_policy_t lifespan;
+  struct rmw_time_t deadline;
+  struct rmw_time_t lifespan;
+
+  enum rmw_qos_liveliness_policy_kind_t liveliness;
+  struct rmw_time_t liveliness_lease_duration;
 
   /// If true, any ROS specific namespacing conventions will be circumvented.
   /**
