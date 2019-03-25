@@ -251,6 +251,24 @@ rmw_publisher_count_matched_subscriptions(
   const rmw_publisher_t * publisher,
   size_t * subscription_count);
 
+/// Retrieve the actual qos settings of the publisher.
+/**
+ * Query the underlying middleware to determine the qos settings
+ * of the publisher.
+ *
+ * \param[in] publisher the publisher object to inspect
+ * \param[out] qos the actual qos settings
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if either argument is null, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_publisher_get_actual_qos(
+  const rmw_publisher_t * publisher,
+  rmw_qos_profile_t * qos);
+
 /// Publish an already serialized message.
 /**
  * The publisher must already be registered with the correct message type
