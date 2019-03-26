@@ -255,6 +255,14 @@ rmw_publisher_count_matched_subscriptions(
 /**
  * Query the underlying middleware to determine the qos settings
  * of the publisher.
+ * The actual configuration applied when using RMW_*_SYSTEM_DEFAULT
+ * can only be resolved after the creation of the publisher, and it
+ * depends on the underlying rmw implementation.
+ * If the underlying setting in use can't be represented in ROS terms,
+ * it will be set to RMW_*_UNKNOWN.
+ * The value of avoid_ros_namespace_conventions field is not resolved
+ * with this function. The rcl function rcl_publisher_get_actual_qos
+ * resolves it.
  *
  * \param[in] publisher the publisher object to inspect
  * \param[out] qos the actual qos settings
