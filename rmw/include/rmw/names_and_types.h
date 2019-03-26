@@ -33,7 +33,9 @@ typedef struct RMW_PUBLIC_TYPE rmw_names_and_types_t
 {
   rcutils_string_array_t names;
   // The length of this array is the same as names.size
-  rcutils_string_array_t * types;
+  // Each element of an array list is a type represented by another array list of strings
+  // representing the fully qualified type name, e.g. ["pkg_name", "msg", "Empty"]
+  rcutils_array_list_t * types;
 } rmw_names_and_types_t;
 
 /// Return a rmw_names_and_types_t struct with members initialized to `NULL`.
@@ -51,9 +53,9 @@ rmw_names_and_types_check_zero(rmw_names_and_types_t * names_and_types);
 /// Initialize a rmw_names_and_types_t object.
 /**
  * This function initializes the string array for the names and allocates space
- * for all the string arrays for the types according to the given size, but
- * it does not initialize the string array for each setup of types.
- * However, the string arrays for each set of types is zero initialized.
+ * for all the array lists for the types according to the given size, but
+ * it does not initialize the array list for each set of types.
+ * However, the array lists for each set of types is zero initialized.
  *
  * \param[inout] names_and_types object to be initialized
  * \param[in] size the number of names and sets of types to be stored

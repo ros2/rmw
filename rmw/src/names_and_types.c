@@ -69,7 +69,7 @@ rmw_names_and_types_init(
     return rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret);
   }
   names_and_types->types =
-    allocator->zero_allocate(size, sizeof(rcutils_string_array_t), allocator->state);
+    allocator->allocate(size * sizeof(rcutils_array_list_t), allocator->state);
   if (!names_and_types->types) {
     rcutils_ret = rcutils_string_array_fini(&names_and_types->names);
     if (rcutils_ret != RCUTILS_RET_OK) {
@@ -77,6 +77,9 @@ rmw_names_and_types_init(
     }
     RMW_SET_ERROR_MSG("failed to allocate memory for types");
     return RMW_RET_BAD_ALLOC;
+  }
+  for (size_t i = 0; i < size; ++i) {
+    names_and_types->types[i] = rcutils_get_zero_initialized_array_list();
   }
   return RMW_RET_OK;
 }
@@ -93,19 +96,44 @@ rmw_names_and_types_fini(rmw_names_and_types_t * names_and_types)
     return RMW_RET_INVALID_ARGUMENT;
   }
   rcutils_ret_t rcutils_ret;
-  // Cleanup string arrays for types first
-  size_t i;
-  for (i = 0; i < names_and_types->names.size; ++i) {
-    if (!names_and_types->types) {
-      continue;
-    }
-    rcutils_ret = rcutils_string_array_fini(&names_and_types->types[i]);
-    if (rcutils_ret != RCUTILS_RET_OK) {
-      RMW_SET_ERROR_MSG(rcutils_get_error_string().str);
-      return rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret);
-    }
-  }
+  // Cleanup array lists for types first
+  // Each element of the array list is a string array that should also be cleaned up
   if (names_and_types->types) {
+    size_t i;
+    for (i = 0u; i < names_and_types->names.size; ++i) {
+      const rcutils_array_list_t type_list = names_and_types->types[i];
+      if (!type_list.impl) {
+        continue;
+      }
+      size_t type_list_size = 0u;
+      rcutils_ret = rcutils_array_list_get_size(&type_list, &type_list_size);
+      if (rcutils_ret != RCUTILS_RET_OK) {
+        RMW_SET_ERROR_MSG(rcutils_get_error_string().str);
+        return rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret);
+      }
+
+      size_t j;
+      for (j = 0u; j < type_list_size; ++j) {
+        rcutils_string_array_t type_name;
+        rcutils_ret = rcutils_array_list_get(&type_list, j, &type_name);
+        if (rcutils_ret != RCUTILS_RET_OK) {
+          RMW_SET_ERROR_MSG(rcutils_get_error_string().str);
+          return rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret);
+        }
+        if (type_name.data) {
+          rcutils_ret = rcutils_string_array_fini(&type_name);
+          if (rcutils_ret != RCUTILS_RET_OK) {
+            RMW_SET_ERROR_MSG(rcutils_get_error_string().str);
+            return rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret);
+          }
+        }
+      }
+      rcutils_ret = rcutils_array_list_fini(&names_and_types->types[i]);
+      if (rcutils_ret != RCUTILS_RET_OK) {
+        RMW_SET_ERROR_MSG(rcutils_get_error_string().str);
+        return rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret);
+      }
+    }
     // Use the allocator in the names string array
     // (prevents this data structure from having to also store it)
     names_and_types->names.allocator.deallocate(
