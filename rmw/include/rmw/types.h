@@ -233,8 +233,9 @@ enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_kind_t
 {
   RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT,
   RMW_QOS_POLICY_LIVELINESS_AUTOMATIC,
-  RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_PARTICIPANT,
-  RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC
+  // TODO(eknapp) - re-enable these once these types of liveliness are supported
+  // RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_PARTICIPANT,
+  // RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC
 };
 
 /// ROS MiddleWare quality of service profile.
