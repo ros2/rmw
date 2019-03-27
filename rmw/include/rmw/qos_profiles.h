@@ -22,9 +22,9 @@ extern "C"
 
 #include "rmw/types.h"
 
-#define rmw_qos_deadline_default {0, 0}
-#define rmw_qos_lifespan_default {0, 0}
-#define rmw_qos_liveliness_lease_duration_default {0, 0}
+#define RMW_QOS_DEADLINE_DEFAULT {0, 0}
+#define RMW_QOS_LIFESPAN_DEFAULT {0, 0}
+#define RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT {0, 0}
 
 static const rmw_qos_profile_t rmw_qos_profile_sensor_data =
 {
@@ -32,10 +32,10 @@ static const rmw_qos_profile_t rmw_qos_profile_sensor_data =
   5,
   RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT,
   RMW_QOS_POLICY_DURABILITY_VOLATILE,
-  rmw_qos_deadline_default,
-  rmw_qos_lifespan_default,
+  RMW_QOS_DEADLINE_DEFAULT,
+  RMW_QOS_LIFESPAN_DEFAULT,
   RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT,
-  rmw_qos_liveliness_lease_duration_default,
+  RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT,
   false
 };
 
@@ -45,10 +45,10 @@ static const rmw_qos_profile_t rmw_qos_profile_parameters =
   1000,
   RMW_QOS_POLICY_RELIABILITY_RELIABLE,
   RMW_QOS_POLICY_DURABILITY_VOLATILE,
-  rmw_qos_deadline_default,
-  rmw_qos_lifespan_default,
+  RMW_QOS_DEADLINE_DEFAULT,
+  RMW_QOS_LIFESPAN_DEFAULT,
   RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT,
-  rmw_qos_liveliness_lease_duration_default,
+  RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT,
   false
 };
 
@@ -58,10 +58,10 @@ static const rmw_qos_profile_t rmw_qos_profile_default =
   10,
   RMW_QOS_POLICY_RELIABILITY_RELIABLE,
   RMW_QOS_POLICY_DURABILITY_VOLATILE,
-  rmw_qos_deadline_default,
-  rmw_qos_lifespan_default,
+  RMW_QOS_DEADLINE_DEFAULT,
+  RMW_QOS_LIFESPAN_DEFAULT,
   RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT,
-  rmw_qos_liveliness_lease_duration_default,
+  RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT,
   false
 };
 
@@ -71,10 +71,10 @@ static const rmw_qos_profile_t rmw_qos_profile_services_default =
   10,
   RMW_QOS_POLICY_RELIABILITY_RELIABLE,
   RMW_QOS_POLICY_DURABILITY_VOLATILE,
-  rmw_qos_deadline_default,
-  rmw_qos_lifespan_default,
+  RMW_QOS_DEADLINE_DEFAULT,
+  RMW_QOS_LIFESPAN_DEFAULT,
   RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT,
-  rmw_qos_liveliness_lease_duration_default,
+  RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT,
   false
 };
 
@@ -84,10 +84,10 @@ static const rmw_qos_profile_t rmw_qos_profile_parameter_events =
   1000,
   RMW_QOS_POLICY_RELIABILITY_RELIABLE,
   RMW_QOS_POLICY_DURABILITY_VOLATILE,
-  rmw_qos_deadline_default,
-  rmw_qos_lifespan_default,
+  RMW_QOS_DEADLINE_DEFAULT,
+  RMW_QOS_LIFESPAN_DEFAULT,
   RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT,
-  rmw_qos_liveliness_lease_duration_default,
+  RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT,
   false
 };
 
@@ -97,10 +97,10 @@ static const rmw_qos_profile_t rmw_qos_profile_system_default =
   RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT,
   RMW_QOS_POLICY_RELIABILITY_SYSTEM_DEFAULT,
   RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT,
-  rmw_qos_deadline_default,
-  rmw_qos_lifespan_default,
+  RMW_QOS_DEADLINE_DEFAULT,
+  RMW_QOS_LIFESPAN_DEFAULT,
   RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT,
-  rmw_qos_liveliness_lease_duration_default,
+  RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT,
   false
 };
 

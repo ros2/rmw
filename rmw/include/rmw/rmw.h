@@ -223,6 +223,9 @@ rmw_create_publisher(
   const char * topic_name,
   const rmw_qos_profile_t * qos_policies);
 
+/**
+ *
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_event_t *
@@ -356,6 +359,7 @@ rmw_create_subscription(
   const rmw_qos_profile_t * qos_policies,
   bool ignore_local_publications);
 
+// todo needs documentation
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_event_t *
@@ -474,11 +478,6 @@ rmw_create_client(
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
-rmw_event_t *
-rmw_create_client_event(const rmw_client_t * client);
-
-RMW_PUBLIC
-RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_client(rmw_node_t * node, rmw_client_t * client);
 
@@ -507,11 +506,6 @@ rmw_create_service(
   const rosidl_service_type_support_t * type_support,
   const char * service_name,
   const rmw_qos_profile_t * qos_policies);
-
-RMW_PUBLIC
-RMW_WARN_UNUSED
-rmw_event_t *
-rmw_create_service_event(const rmw_service_t * service);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
