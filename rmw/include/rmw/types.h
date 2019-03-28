@@ -39,10 +39,16 @@ extern "C"
 /// Define QoS policy events
 typedef enum rmw_event_type_t
 {
+  // subscription events
   RMW_EVENT_LIVELINESS_CHANGED,
   RMW_EVENT_REQUESTED_DEADLINE_MISSED,
+
+  // publisher events
   RMW_EVENT_LIVELINESS_LOST,
   RMW_EVENT_OFFERED_DEADLINE_MISSED,
+
+  // sentinel value
+  RMW_EVENT_INVALID
 } rmw_event_type_t;
 
 
