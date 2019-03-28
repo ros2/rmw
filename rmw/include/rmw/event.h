@@ -58,21 +58,37 @@ RMW_WARN_UNUSED
 rmw_event_t
 rmw_get_zero_initialized_event(void);
 
-// TODO: needs documentation
+/**
+ * Initialize a rmw publisher event.
+ *
+ * \param rmw_event [in|out] to initialize
+ * \param publisher to initialize with
+ * \param event_type for the event to handle
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if invalid argument
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_publisher_event_init(
-  rmw_event_t * event,
+  rmw_event_t * rmw_event,
   const rmw_publisher_t * publisher,
   const rmw_event_type_t event_type);
 
-// TODO: needs documentation
+/**
+ * Initialize a rmw subscription event.
+ *
+ * \param rmw_event [in|out] to initialize
+ * \param subscription to initialize with
+ * \param event_type for the event to handle
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if invalid argument
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_subscription_event_init(
-  rmw_event_t * event,
+  rmw_event_t * rmw_event,
   const rmw_subscription_t * subscription,
   const rmw_event_type_t event_type);
 
@@ -94,7 +110,11 @@ rmw_take_event(
   void * event_info,
   bool * taken);
 
-// TODO: needs documentation
+/**
+ * Finalize an rmw_event_t.
+ *
+ * \param event to delete
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t

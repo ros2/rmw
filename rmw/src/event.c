@@ -14,6 +14,7 @@
 
 #include <stddef.h>
 
+#include "rmw/error_handling.h"
 #include "rmw/event.h"
 
 #ifdef __cplusplus
@@ -28,6 +29,69 @@ rmw_get_zero_initialized_event(void)
     .data = NULL,
     .event_type = RMW_EVENT_INVALID
   };  // NOLINT(readability/braces): false positive
+}
+
+/**
+ * Initialize an rmw_event with the appropriate data.
+ * 
+ * \param rmw_event [in|out] to initialize
+ * \param implementation_identifier to rmw_event
+ * \param data to pass to rmw_event
+ * \param event_type for the event to handle
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if invalid argument
+ */
+rmw_ret_t
+__rmw_init_event(
+  rmw_event_t * rmw_event,
+  const char * implementation_identifier,
+  void * data,
+  const rmw_event_type_t event_type)
+
+{
+  RMW_CHECK_ARGUMENT_FOR_NULL(implementation_identifier, RMW_RET_INVALID_ARGUMENT);
+  RMW_CHECK_ARGUMENT_FOR_NULL(data, RMW_RET_INVALID_ARGUMENT);
+  RMW_CHECK_ARGUMENT_FOR_NULL(rmw_event, RMW_RET_INVALID_ARGUMENT);
+  if (NULL != rmw_event->implementation_identifier) {
+    RMW_SET_ERROR_MSG("expected zero-initialized rmw_event");
+    return RMW_RET_INVALID_ARGUMENT;
+  }
+  rmw_event->implementation_identifier = implementation_identifier;
+  rmw_event->data = data;
+  rmw_event->event_type = event_type;
+  return RMW_RET_OK;
+}
+
+rmw_ret_t
+rmw_publisher_event_init(
+  rmw_event_t * rmw_event,
+  const rmw_publisher_t * publisher,
+  const rmw_event_type_t event_type)
+{
+  return __rmw_init_event(rmw_event,
+    publisher->implementation_identifier,
+    publisher->data,
+    event_type);
+}
+
+rmw_ret_t
+rmw_subscription_event_init(
+  rmw_event_t * rmw_event,
+  const rmw_subscription_t * subscription,
+  const rmw_event_type_t event_type)
+{
+    return __rmw_init_event(rmw_event,
+    subscription->implementation_identifier,
+    subscription->data,
+    event_type);
+}
+
+rmw_ret_t
+rmw_event_fini(rmw_event_t * rmw_event)
+{
+  RMW_CHECK_ARGUMENT_FOR_NULL(rmw_event, RMW_RET_INVALID_ARGUMENT);
+  *rmw_event = rmw_get_zero_initialized_event();
+  return RMW_RET_OK;
 }
 
 #ifdef __cplusplus
