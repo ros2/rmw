@@ -80,14 +80,6 @@ void
 rmw_service_free(rmw_service_t * service);
 
 RMW_PUBLIC
-rmw_event_t *
-rmw_event_allocate(void);
-
-RMW_PUBLIC
-void
-rmw_event_free(rmw_event_t * event);
-
-RMW_PUBLIC
 rmw_wait_set_t *
 rmw_wait_set_allocate(void);
 

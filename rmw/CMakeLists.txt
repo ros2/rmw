@@ -30,6 +30,7 @@ set(rmw_sources
   "src/init.c"
   "src/init_options.c"
   "src/names_and_types.c"
+  "src/event.c"
   "src/sanity_checks.c"
   "src/node_security_options.c"
   "src/validate_full_topic_name.c"

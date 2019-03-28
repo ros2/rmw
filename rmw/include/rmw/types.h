@@ -36,22 +36,6 @@ extern "C"
 // implementation. It may need to be increased in the future.
 #define RMW_GID_STORAGE_SIZE 24
 
-/// Define QoS policy events
-typedef enum rmw_event_type_t
-{
-  // subscription events
-  RMW_EVENT_LIVELINESS_CHANGED,
-  RMW_EVENT_REQUESTED_DEADLINE_MISSED,
-
-  // publisher events
-  RMW_EVENT_LIVELINESS_LOST,
-  RMW_EVENT_OFFERED_DEADLINE_MISSED,
-
-  // sentinel value
-  RMW_EVENT_INVALID
-} rmw_event_type_t;
-
-
 typedef struct RMW_PUBLIC_TYPE rmw_node_t
 {
   const char * implementation_identifier;
@@ -88,13 +72,6 @@ typedef struct RMW_PUBLIC_TYPE rmw_client_t
   void * data;
   const char * service_name;
 } rmw_client_t;
-
-typedef struct RMW_PUBLIC_TYPE rmw_event_t
-{
-  const char * implementation_identifier;
-  void * data;
-  rmw_event_type_t event_type;
-} rmw_event_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_guard_condition_t
 {
@@ -154,7 +131,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_events_t
   /// The number of events represented by the array.
   size_t event_count;
   /// Pointer to an array of void * pointers of events.
-  rmw_event_t ** events;
+  void ** events;
 } rmw_events_t;
 
 /// Array of guard condition handles.
@@ -227,7 +204,7 @@ enum RMW_PUBLIC_TYPE rmw_qos_durability_policy_t
   RMW_QOS_POLICY_DURABILITY_UNKNOWN
 };
 
-enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_kind_t
+enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_t
 {
   RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT,
   RMW_QOS_POLICY_LIVELINESS_AUTOMATIC,
@@ -247,7 +224,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_qos_profile_t
   struct rmw_time_t deadline;
   struct rmw_time_t lifespan;
 
-  enum rmw_qos_liveliness_policy_kind_t liveliness;
+  enum rmw_qos_liveliness_policy_t liveliness;
   struct rmw_time_t liveliness_lease_duration;
 
   /// If true, any ROS specific namespacing conventions will be circumvented.

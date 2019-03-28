@@ -223,14 +223,6 @@ rmw_create_publisher(
   const char * topic_name,
   const rmw_qos_profile_t * qos_policies);
 
-/**
- *
- */
-RMW_PUBLIC
-RMW_WARN_UNUSED
-rmw_event_t *
-rmw_create_publisher_event(const rmw_publisher_t * publisher, const rmw_event_type_t event_type);
-
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -359,14 +351,6 @@ rmw_create_subscription(
   const rmw_qos_profile_t * qos_policies,
   bool ignore_local_publications);
 
-// todo needs documentation
-RMW_PUBLIC
-RMW_WARN_UNUSED
-rmw_event_t *
-rmw_create_subscription_event(
-  const rmw_subscription_t * subscription,
-  const rmw_event_type_t event_type);
-
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -450,23 +434,6 @@ rmw_take_serialized_message_with_info(
   bool * taken,
   rmw_message_info_t * message_info);
 
-/*
- * Take an event from the event handle.
- *
- * \param event subscription object to take from
- * \param taken boolean flag indicating if an event was taken or not
- * \return `RMW_RET_OK` if successful, or
- * \return `RMW_RET_BAD_ALLOC` if memory allocation failed, or
- * \return `RMW_RET_ERROR` if an unexpected error occurs.
- */
-RMW_PUBLIC
-RMW_WARN_UNUSED
-rmw_ret_t
-rmw_take_event(
-  const rmw_event_t * event_handle,
-  void * event,
-  bool * taken);
-
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_client_t *
@@ -528,12 +495,6 @@ rmw_send_response(
   const rmw_service_t * service,
   rmw_request_id_t * request_header,
   void * ros_response);
-
-
-RMW_PUBLIC
-RMW_WARN_UNUSED
-rmw_ret_t
-rmw_destroy_event(rmw_event_t * event);
 
 
 // TODO(wjwwood): refactor this API to return a return code when updated to use an allocator
