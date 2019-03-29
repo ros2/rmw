@@ -44,7 +44,6 @@ typedef enum rmw_event_type_t
   RMW_EVENT_INVALID
 } rmw_event_type_t;
 
-
 /// Encapsulate the RMW event implementation, data, and type.
 typedef struct RMW_PUBLIC_TYPE rmw_event_t
 {
@@ -55,7 +54,6 @@ typedef struct RMW_PUBLIC_TYPE rmw_event_t
   /// The event type that occurred.
   rmw_event_type_t event_type;
 } rmw_event_t;
-
 
 /// Return a zero initialized event structure.
 RMW_PUBLIC
