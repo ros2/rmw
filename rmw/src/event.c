@@ -25,15 +25,15 @@ rmw_event_t
 rmw_get_zero_initialized_event(void)
 {
   return (const rmw_event_t) {
-    .implementation_identifier = NULL,
-    .data = NULL,
-    .event_type = RMW_EVENT_INVALID
+           .implementation_identifier = NULL,
+           .data = NULL,
+           .event_type = RMW_EVENT_INVALID
   };  // NOLINT(readability/braces): false positive
 }
 
 /**
  * Initialize an rmw_event with the appropriate data.
- * 
+ *
  * \param rmw_event [in|out] to initialize
  * \param implementation_identifier to rmw_event
  * \param data to pass to rmw_event
@@ -47,7 +47,6 @@ __rmw_init_event(
   const char * implementation_identifier,
   void * data,
   const rmw_event_type_t event_type)
-
 {
   RMW_CHECK_ARGUMENT_FOR_NULL(implementation_identifier, RMW_RET_INVALID_ARGUMENT);
   RMW_CHECK_ARGUMENT_FOR_NULL(data, RMW_RET_INVALID_ARGUMENT);
@@ -69,9 +68,9 @@ rmw_publisher_event_init(
   const rmw_event_type_t event_type)
 {
   return __rmw_init_event(rmw_event,
-    publisher->implementation_identifier,
-    publisher->data,
-    event_type);
+           publisher->implementation_identifier,
+           publisher->data,
+           event_type);
 }
 
 rmw_ret_t
@@ -80,10 +79,10 @@ rmw_subscription_event_init(
   const rmw_subscription_t * subscription,
   const rmw_event_type_t event_type)
 {
-    return __rmw_init_event(rmw_event,
-    subscription->implementation_identifier,
-    subscription->data,
-    event_type);
+  return __rmw_init_event(rmw_event,
+           subscription->implementation_identifier,
+           subscription->data,
+           event_type);
 }
 
 rmw_ret_t
