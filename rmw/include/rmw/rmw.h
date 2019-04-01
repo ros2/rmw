@@ -251,6 +251,32 @@ rmw_publisher_count_matched_subscriptions(
   const rmw_publisher_t * publisher,
   size_t * subscription_count);
 
+/// Retrieve the actual qos settings of the publisher.
+/**
+ * Query the underlying middleware to determine the qos settings
+ * of the publisher.
+ * The actual configuration applied when using RMW_*_SYSTEM_DEFAULT
+ * can only be resolved after the creation of the publisher, and it
+ * depends on the underlying rmw implementation.
+ * If the underlying setting in use can't be represented in ROS terms,
+ * it will be set to RMW_*_UNKNOWN.
+ * The value of avoid_ros_namespace_conventions field is not resolved
+ * with this function. The rcl function rcl_publisher_get_actual_qos
+ * resolves it.
+ *
+ * \param[in] publisher the publisher object to inspect
+ * \param[out] qos the actual qos settings
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if either argument is null, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_publisher_get_actual_qos(
+  const rmw_publisher_t * publisher,
+  rmw_qos_profile_t * qos);
+
 /// Publish an already serialized message.
 /**
  * The publisher must already be registered with the correct message type
