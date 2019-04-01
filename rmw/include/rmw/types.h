@@ -125,7 +125,6 @@ typedef struct RMW_PUBLIC_TYPE rmw_clients_t
   void ** clients;
 } rmw_clients_t;
 
-
 typedef struct RMW_PUBLIC_TYPE rmw_events_t
 {
   /// The number of events represented by the array.
@@ -267,21 +266,20 @@ typedef enum RMW_PUBLIC_TYPE
 } rmw_log_severity_t;
 
 /**
- * QoS Liveliness Changed information provided by a subscriber. Defined in the DDS SSpec 15-04-10
- * section 2.2.4.1 Communication Status
-*/
-typedef struct RmwLivelinessChangedStatus
+ * QoS Liveliness Changed information provided by a subscriber.
+ */
+typedef struct RMW_PUBLIC_TYPE rmw_liveliness_changed_status_t
 {
   /**
-   * The total number of currently active DataWriters that write the Topic read by the DataReader.
-   * This count increases when a newly matched DataWriter asserts its liveliness for the first
-   * time or when a DataWriter previously considered to be not alive reasserts its liveliness.
-   * The count decreases when a DataWriter considered alive fails to assert its liveliness and
+   * The total number of currently active Publishers that write the Topic read by the Subscriber.
+   * This count increases when a newly matched Publishers asserts its liveliness for the first
+   * time or when a Publishers previously considered to be not alive reasserts its liveliness.
+   * The count decreases when a Publisher considered alive fails to assert its liveliness and
    * becomes not alive, whether because it was deleted normally or for some other reason.
    */
   int32_t alive_count;
   /**
-   * The total count of currently DataWriters that write the Topic read by the DataReader that are
+   * The total count of currently Publishers that write the Topic read by the Subscriber that are
    * no longer asserting their liveliness. This count increases when a DataWriter considered alive
    * fails to assert its liveliness and becomes not alive for some reason other than the normal
    * deletion of that DataWriter. It decreases when a previously not alive DataWriter either
@@ -297,13 +295,12 @@ typedef struct RmwLivelinessChangedStatus
 } rmw_liveliness_changed_status_t;
 
 /**
- * QoS Requested Deadline Missed information provided by a subscriber. Defined in the DDS SSpec
- * 15-04-10 section 2.2.4.1 Communication Status
-*/
-typedef struct RmwRequestedDeadlineMissedStatus
+ * QoS Requested Deadline Missed information provided by a subscriber.
+ */
+typedef struct RMW_PUBLIC_TYPE rmw_requested_deadline_missed_status_t
 {
   /**
-   * Total cumulative number of missed deadlines detected for any instance read by the DataReader.
+   * Total cumulative number of missed deadlines detected for any instance read by the Subscriber.
    * Missed deadlines accumulate; that is, each deadline period the total_count will be incremented
    * by one for each instance for which
    * data was not received.
@@ -314,18 +311,15 @@ typedef struct RmwRequestedDeadlineMissedStatus
   int32_t total_count_change;
 } rmw_requested_deadline_missed_status_t;
 
-/// Defined in the DDS SSpec 15-04-10 section 2.2.4.1 Communication Status
-
 /**
- * QoS Liveliness Lost information provided by a publisher. Defined in the DDS SSpec 15-04-10
- * section 2.2.4.1 Communication Status
-*/
-typedef struct RmwLivelinessLostStatus
+ * QoS Liveliness Lost information provided by a publisher.
+ */
+typedef struct RMW_PUBLIC_TYPE rmw_liveliness_lost_status_t
 {
   /**
-   * Total cumulative number of times that a previously-alive DataWriter became not alive due to
+   * Total cumulative number of times that a previously-alive Publisher became not alive due to
    * a failure to actively signal its liveliness within its offered liveliness period. This count
-   * does not change when an already not alive DataWriter simply remains not alive for another
+   * does not change when an already not alive Publisher simply remains not alive for another
    * liveliness period.
    */
   int32_t total_count;
@@ -334,13 +328,12 @@ typedef struct RmwLivelinessLostStatus
 } rmw_liveliness_lost_status_t;
 
 /**
- * QoS Deadline Missed information provided by a publisher. Defined in the DDS SSpec 15-04-10
- * section 2.2.4.1 Communication Status
+ * QoS Deadline Missed information provided by a publisher.
  */
-typedef struct RmwOfferedDeadlineMissedStatus
+typedef struct RMW_PUBLIC_TYPE rmw_offered_deadline_missed_status_t
 {
   /**
-   * Total cumulative number of offered deadline periods elapsed during which a DataWriter failed
+   * Total cumulative number of offered deadline periods elapsed during which a Publisher failed
    * to provide data. Missed deadlines accumulate; that is, each deadline period the total_count
    * will be incremented by one.
    */
