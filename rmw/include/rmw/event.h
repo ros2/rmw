@@ -68,6 +68,7 @@ rmw_get_zero_initialized_event(void);
  * \param event_type for the event to handle
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if invalid argument
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -84,6 +85,7 @@ rmw_publisher_event_init(
  * \param event_type for the event to handle
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if invalid argument
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
