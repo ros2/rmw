@@ -184,7 +184,7 @@ rmw_destroy_node(rmw_node_t * node);
 
 /// Manually assert that this node is alive (for RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE)
 /**
- * If the rmw Liveliness policy is set to RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE, the creator of 
+ * If the rmw Liveliness policy is set to RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE, the creator of
  * this node may manually call `assert_liveliness` at some point in time to signal to the rest
  * of the system that this Node is still alive.
  *
