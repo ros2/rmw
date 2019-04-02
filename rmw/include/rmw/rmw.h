@@ -182,6 +182,11 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_node(rmw_node_t * node);
 
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_node_assert_liveliness(const rmw_node_t * node);
+
 /// Return a guard condition which is triggered when the ROS graph changes.
 /**
  * The handle returned is a pointer to an internally held rmw guard condition.
@@ -295,6 +300,11 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_publish_serialized_message(
   const rmw_publisher_t * publisher, const rmw_serialized_message_t * serialized_message);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_publisher_assert_liveliness(const rmw_publisher_t * publisher);
 
 /// Serialize a ROS message into a rmw_serialized_message_t.
 /**
