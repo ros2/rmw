@@ -250,8 +250,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_t
 
 enum {RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT = 0};
 
-// Type mapping of rcutils log severity types to
-// rmw specific types.
+/// Type mapping of rcutils log severity types to rmw specific types.
 typedef enum RMW_PUBLIC_TYPE
 {
   RMW_LOG_SEVERITY_DEBUG = RCUTILS_LOG_SEVERITY_DEBUG,
@@ -261,9 +260,7 @@ typedef enum RMW_PUBLIC_TYPE
   RMW_LOG_SEVERITY_FATAL = RCUTILS_LOG_SEVERITY_FATAL
 } rmw_log_severity_t;
 
-/**
- * QoS Liveliness Changed information provided by a subscription.
- */
+/// QoS Liveliness Changed information provided by a subscription.
 typedef struct RMW_PUBLIC_TYPE rmw_liveliness_changed_status_t
 {
   /**
@@ -283,15 +280,13 @@ typedef struct RMW_PUBLIC_TYPE rmw_liveliness_changed_status_t
    * alive Publisher either reasserts its liveliness or is deleted normally.
    */
   int32_t not_alive_count;
-  /// The change in the alive_count since the status was read.
+  /// The change in the alive_count since the status was last read.
   int32_t alive_count_change;
-  /// The change in the not_alive_count since the status was read.
+  /// The change in the not_alive_count since the status was last read.
   int32_t not_alive_count_change;
 } rmw_liveliness_changed_status_t;
 
-/**
- * QoS Requested Deadline Missed information provided by a subscription.
- */
+/// QoS Requested Deadline Missed information provided by a subscription.
 typedef struct RMW_PUBLIC_TYPE rmw_requested_deadline_missed_status_t
 {
   /**
@@ -304,9 +299,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_requested_deadline_missed_status_t
   int32_t total_count_change;
 } rmw_requested_deadline_missed_status_t;
 
-/**
- * QoS Liveliness Lost information provided by a publisher.
- */
+/// QoS Liveliness Lost information provided by a publisher.
 typedef struct RMW_PUBLIC_TYPE rmw_liveliness_lost_status_t
 {
   /**
@@ -316,13 +309,11 @@ typedef struct RMW_PUBLIC_TYPE rmw_liveliness_lost_status_t
    * liveliness period.
    */
   int32_t total_count;
-  /// The change in total_count since the last time the status was read.
+  /// The change in total_count since the last time the status was last read.
   int32_t total_count_change;
 } rmw_liveliness_lost_status_t;
 
-/**
- * QoS Deadline Missed information provided by a publisher.
- */
+/// QoS Deadline Missed information provided by a publisher.
 typedef struct RMW_PUBLIC_TYPE rmw_offered_deadline_missed_status_t
 {
   /**
@@ -331,10 +322,9 @@ typedef struct RMW_PUBLIC_TYPE rmw_offered_deadline_missed_status_t
    * will be incremented by one.
    */
   int32_t total_count;
-  /// The change in total_count since the last time the status was read.
+  /// The change in total_count since the last time the status was last read.
   int32_t total_count_change;
 } rmw_offered_deadline_missed_status_t;
-
 
 #ifdef __cplusplus
 }
