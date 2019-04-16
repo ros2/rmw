@@ -22,10 +22,6 @@ extern "C"
 
 #include "rmw/types.h"
 
-#define RMW_QOS_DEADLINE_DEFAULT {0, 0}
-#define RMW_QOS_LIFESPAN_DEFAULT {0, 0}
-#define RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT {0, 0}
-
 static const rmw_qos_profile_t rmw_qos_profile_sensor_data =
 {
   RMW_QOS_POLICY_HISTORY_KEEP_LAST,
