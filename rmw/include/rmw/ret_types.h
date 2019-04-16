@@ -26,6 +26,8 @@ typedef int32_t rmw_ret_t;
 #define RMW_RET_OK 0
 #define RMW_RET_ERROR 1
 #define RMW_RET_TIMEOUT 2
+/// The operation or event handling is not supported.
+#define RMW_RET_UNSUPPORTED 3
 
 /// Failed to allocate memory return code.
 #define RMW_RET_BAD_ALLOC 10
