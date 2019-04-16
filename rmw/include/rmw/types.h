@@ -213,13 +213,17 @@ typedef struct RMW_PUBLIC_TYPE rmw_qos_profile_t
   enum rmw_qos_history_policy_t history;
   /// Size of the message queue.
   size_t depth;
-
+  /// Reliabiilty QoS policy setting
   enum rmw_qos_reliability_policy_t reliability;
+  /// Durability QoS policy setting
   enum rmw_qos_durability_policy_t durability;
+  /// The period at which messages are expected to be sent/received
   struct rmw_time_t deadline;
+  /// The age at which messages are considered expired and no longer valid
   struct rmw_time_t lifespan;
-
+  /// Liveliness QoS policy setting
   enum rmw_qos_liveliness_policy_t liveliness;
+  /// The time within which the RMW node or publisher must show that it is alive
   struct rmw_time_t liveliness_lease_duration;
 
   /// If true, any ROS specific namespacing conventions will be circumvented.
@@ -265,19 +269,20 @@ typedef struct RMW_PUBLIC_TYPE rmw_liveliness_changed_status_t
 {
   /**
    * The total number of currently active Publishers which publish to the topic associated with
-   * the Subscription. This count increases when a newly matched Publisher asserts its liveliness
-   * for the first time or when a Publisher previously considered to be not alive reasserts its
-   * liveliness. The count decreases when a Publisher considered alive fails to assert its
-   * liveliness and becomes not alive, whether because it was deleted normally or for some
-   * other reason.
+   * the Subscription.
+   * This count increases when a newly matched Publisher asserts its liveliness for the first time
+   * or when a Publisher previously considered to be not alive reasserts its liveliness.
+   * The count decreases when a Publisher considered alive fails to assert its liveliness and
+   * becomes not alive, whether because it was deleted normally or for some other reason.
    */
   int32_t alive_count;
   /**
    * The total count of current Publishers which publish to the topic associated with the
-   * Subscription that are no longer asserting their liveliness. This count increases when a
-   * Publisher considered alive fails to assert its liveliness and becomes not alive for some
-   * reason other than the normal deletion of that Publisher. It decreases when a previously not
-   * alive Publisher either reasserts its liveliness or is deleted normally.
+   * Subscription that are no longer asserting their liveliness.
+   * This count increases when a Publisher considered alive fails to assert its liveliness and
+   * becomes not alive for some reason other than the normal deletion of that Publisher.
+   * It decreases when a previously not alive Publisher either reasserts its liveliness or is
+   * deleted normally.
    */
   int32_t not_alive_count;
   /// The change in the alive_count since the status was last read.
@@ -290,7 +295,8 @@ typedef struct RMW_PUBLIC_TYPE rmw_liveliness_changed_status_t
 typedef struct RMW_PUBLIC_TYPE rmw_requested_deadline_missed_status_t
 {
   /**
-   * Lifetime cumulative number of missed deadlines detected for any instance read by the subscription.
+   * Lifetime cumulative number of missed deadlines detected for any instance read by the
+   * subscription.
    * Missed deadlines accumulate; that is, each deadline period the total_count will be incremented
    * by one for each instance for which data was not received.
    */
@@ -304,9 +310,9 @@ typedef struct RMW_PUBLIC_TYPE rmw_liveliness_lost_status_t
 {
   /**
    * Lifetime cumulative number of times that a previously-alive Publisher became not alive due to
-   * a failure to actively signal its liveliness within its offered liveliness period. This count
-   * does not change when an already not alive Publisher simply remains not alive for another
-   * liveliness period.
+   * a failure to actively signal its liveliness within its offered liveliness period.
+   * This count does not change when an already not alive Publisher simply remains not alive for
+   * another liveliness period.
    */
   int32_t total_count;
   /// The change in total_count since the last time the status was last read.
@@ -318,8 +324,9 @@ typedef struct RMW_PUBLIC_TYPE rmw_offered_deadline_missed_status_t
 {
   /**
    * Lifetime cumulative number of offered deadline periods elapsed during which a Publisher failed
-   * to provide data. Missed deadlines accumulate; that is, each deadline period the total_count
-   * will be incremented by one.
+   * to provide data.
+   * Missed deadlines accumulate; that is, each deadline period the total_count will be incremented
+   * by one.
    */
   int32_t total_count;
   /// The change in total_count since the last time the status was last read.
