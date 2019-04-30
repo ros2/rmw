@@ -73,7 +73,7 @@
  *   - rmw/visibility_control.h
  * - Utility function to demangle a type to a human readable string (C++ specific):
  *   - rmw/impl/cpp/demangle.hpp
-*/
+ */
 
 #ifndef RMW__RMW_H_
 #define RMW__RMW_H_
@@ -89,8 +89,8 @@ extern "C"
 
 #include "rcutils/types.h"
 
-#include "rosidl_generator_c/message_type_support_struct.h"
 #include "rosidl_generator_c/message_bounds_struct.h"
+#include "rosidl_generator_c/message_type_support_struct.h"
 #include "rosidl_generator_c/service_type_support_struct.h"
 
 #include "rmw/init.h"
