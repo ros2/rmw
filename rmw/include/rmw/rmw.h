@@ -215,6 +215,23 @@ RMW_WARN_UNUSED
 const rmw_guard_condition_t *
 rmw_node_get_graph_guard_condition(const rmw_node_t * node);
 
+/// Initialize a publisher allocation to be used with later publications.
+/**
+ * This creates an allocation object that can be used in conjunction with
+ * the rmw_publish method to perform more carefully control memory allocations.
+ *
+ * This will allow the middleware to preallocate the correct amount of memory
+ * for a given message type and message bounds.
+ * As allocation is performed in this method, it will not be necessary to allocate
+ * in the `rmw_publish` method
+ *
+ * \param[in] type_support Type support of the message to be preallocated.
+ * \param[in] message_bounds Bounds structure of the message to be preallocated.
+ * \param[out] allocation Allocation structure to be passed to `rmw_publish`
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if an argument is null, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -223,6 +240,15 @@ rmw_init_publisher_allocation(
   const rosidl_message_bounds_t * message_bounds,
   rmw_publisher_allocation_t * allocation);
 
+/// Destroy a publisher allocation object.
+/**
+ * This deallocates any memory allocated by `rmw_init_publisher_allocation`.
+ *
+ * \param[in] allocation Allocation object to be destroyed.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if argument is null, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -243,6 +269,17 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_publisher(rmw_node_t * node, rmw_publisher_t * publisher);
 
+/// Publish a given ros_message
+/**
+ * Publish a given ROS message via a publisher.
+ *
+ * \param[in] publisher Publisher to be used to send message
+ * \param[in] ros_message Message to be sent
+ * \param[in] allocation (optionally) specify preallocated memory to use
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if publisher or ros_message is null, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -312,12 +349,23 @@ rmw_ret_t
 rmw_publish_serialized_message(
   const rmw_publisher_t * publisher, const rmw_serialized_message_t * serialized_message);
 
+/// Compute the size of of a serialized message
+/**
+ * Given a message definition and bounds, compute the serialized size.
+ *
+ * \param[in] type_support The type support of the message to compute
+ * \param[in] bounds Artifical bounds to use on unbounded fields
+ * \param[out] size The computed size of the serialized message.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if either argument is null, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_get_serialized_message_size(
-  const rosidl_message_bounds_t * message_bounds,
   const rosidl_message_type_support_t * type_support,
+  const rosidl_message_bounds_t * message_bounds,
   size_t * size);
 
 /// Serialize a ROS message into a rmw_serialized_message_t.
@@ -365,6 +413,23 @@ rmw_deserialize(
   const rosidl_message_type_support_t * type_support,
   void * ros_message);
 
+/// Initialize a subscription allocation to be used with later `take`s.
+/**
+ * This creates an allocation object that can be used in conjunction with
+ * the rmw_take method to perform more carefully control memory allocations.
+ *
+ * This will allow the middleware to preallocate the correct amount of memory
+ * for a given message type and message bounds.
+ * As allocation is performed in this method, it will not be necessary to allocate
+ * in the `rmw_take` method
+ *
+ * \param[in] type_support Type support of the message to be preallocated.
+ * \param[in] message_bounds Bounds structure of the message to be preallocated.
+ * \param[out] allocation Allocation structure to be passed to `rmw_take`
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if an argument is null, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -373,6 +438,15 @@ rmw_init_subscription_allocation(
   const rosidl_message_bounds_t * message_bounds,
   rmw_subscription_allocation_t * allocation);
 
+/// Destroy a publisher allocation object.
+/**
+ * This deallocates memory allocated by `rmw_init_subscription_allocation`.
+ *
+ * \param[in] allocation Allocation object to be destroyed.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if argument is null, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -412,12 +486,38 @@ rmw_subscription_count_matched_publishers(
   const rmw_subscription_t * subscription,
   size_t * publisher_count);
 
+/// Take an incoming message from a subscription
+/**
+ * Take an incoming ROS message from a given subscription.
+ *
+ * \param[in] subscription the subscription object to take from
+ * \param[out] ros_message On success, the ROS message data
+ * \param[out] taken True when message is successfully taken
+ * \param[in] allocation (optionally) preallocated buffer to use
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_take(const rmw_subscription_t * subscription, void * ros_message, bool * taken,
-   rmw_subscription_allocation_t * allocation);
+rmw_take(
+  const rmw_subscription_t * subscription,
+  void * ros_message,
+  bool * taken,
+  rmw_subscription_allocation_t * allocation);
 
+/// Take an incoming message from a subscription with additional metadata
+/**
+ * Take an incoming ROS message from a given subscription.
+ *
+ * \param[in] subscription the subscription object to take from
+ * \param[out] ros_message On success, the ROS message data
+ * \param[out] taken True when message is successfully taken
+ * \param[out] message_info Additional message metadata
+ * \param[in] allocation (optionally) preallocated buffer to use
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
