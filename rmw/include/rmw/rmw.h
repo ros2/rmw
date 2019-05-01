@@ -567,6 +567,7 @@ rmw_take_serialized_message(
  * \param[in] subscription Subscription object to take from.
  * \param[out] serialized_message The destination in which to store the serialized message.
  * \param[out] taken Boolean flag indicating if a message was taken or not.
+ * \param[out] message_info A structure containing meta information about the taken message.
  * \param[in] allocation Preallocated buffer to use (may be NULL).
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_BAD_ALLOC` if memory allocation failed, or
