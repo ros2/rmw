@@ -283,7 +283,9 @@ rmw_destroy_publisher(rmw_node_t * node, rmw_publisher_t * publisher);
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_publish(const rmw_publisher_t * publisher, const void * ros_message,
+rmw_publish(
+  const rmw_publisher_t * publisher,
+  const void * ros_message,
   rmw_publisher_allocation_t * allocation);
 
 /// Retrieve the number of matched subscriptions to a publisher.
@@ -338,8 +340,9 @@ rmw_publisher_get_actual_qos(
  * having to serialize the message first.
  * A ROS message can be serialized manually using the rmw_serialize() function.
  *
- * \param publisher the publisher object registered to send the message
- * \param serialized_message the serialized message holding the byte stream
+ * \param[in] publisher the publisher object registered to send the message
+ * \param[in] serialized_message the serialized message holding the byte stream
+ * \param[in] allocation specify preallocated memory to use (may be NULL)
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
@@ -347,7 +350,9 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_publish_serialized_message(
-  const rmw_publisher_t * publisher, const rmw_serialized_message_t * serialized_message);
+  const rmw_publisher_t * publisher,
+  const rmw_serialized_message_t * serialized_message,
+  rmw_publisher_allocation_t * allocation);
 
 /// Compute the size of a serialized message.
 /**
@@ -492,8 +497,8 @@ rmw_subscription_count_matched_publishers(
  *
  * \param[in] subscription the subscription object to take from.
  * \param[out] ros_message the ROS message data on success.
- * \param[out] taken True when message is successfully taken.
- * \param[in] allocation preallocated buffer to use (may be NULL)
+ * \param[out] taken boolean flag indicating if a message was taken or not.
+ * \param[in] allocation preallocated buffer to use (may be NULL).
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
@@ -512,9 +517,9 @@ rmw_take(
  *
  * \param[in] subscription the subscription object to take from.
  * \param[out] ros_message the ROS message data on success.
- * \param[out] taken True when message is successfully taken.
+ * \param[out] taken boolean flag indicating if a message was taken or not.
  * \param[out] message_info additional message metadata.
- * \param[in] allocation (optionally) preallocated buffer to use.
+ * \param[in] allocation preallocated buffer to use (may be NULL).
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
@@ -537,9 +542,10 @@ rmw_take_with_info(
  * If needed, this byte stream can then be deserialized in a ROS message with a call to
  * rmw_deserialize.
  *
- * \param subscription subscription object to take from
- * \param serialized_message the destination in which to store the serialized message
- * \param taken boolean flag indicating if a message was taken or not
+ * \param[in] subscription subscription object to take from.
+ * \param[out] serialized_message the destination in which to store the serialized message.
+ * \param[out] taken boolean flag indicating if a message was taken or not.
+ * \param[in] allocation preallocated buffer to use (may be NULL).
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_BAD_ALLOC` if memory allocation failed, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
@@ -550,17 +556,18 @@ rmw_ret_t
 rmw_take_serialized_message(
   const rmw_subscription_t * subscription,
   rmw_serialized_message_t * serialized_message,
-  bool * taken);
+  bool * taken,
+  rmw_subscription_allocation_t * allocation);
 
 /// Take a message without deserializing it and with its additional message information.
 /**
  * The same as rmw_take_serialized_message(), except it also includes the
  * rmw_message_info_t.
  *
- * \param subscription subscription object to take from
- * \param serialized_message the destination in which to store the serialized message
- * \param taken boolean flag indicating if a message was taken or not
- * \param message_info a structure containing meta information about the taken message
+ * \param[in] subscription subscription object to take from.
+ * \param[out] serialized_message the destination in which to store the serialized message.
+ * \param[out] taken boolean flag indicating if a message was taken or not.
+ * \param[in] allocation preallocated buffer to use (may be NULL).
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_BAD_ALLOC` if memory allocation failed, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
@@ -572,7 +579,8 @@ rmw_take_serialized_message_with_info(
   const rmw_subscription_t * subscription,
   rmw_serialized_message_t * serialized_message,
   bool * taken,
-  rmw_message_info_t * message_info);
+  rmw_message_info_t * message_info,
+  rmw_subscription_allocation_t * allocation);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
