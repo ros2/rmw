@@ -223,11 +223,11 @@ rmw_node_get_graph_guard_condition(const rmw_node_t * node);
  * This will allow the middleware to preallocate the correct amount of memory
  * for a given message type and message bounds.
  * As allocation is performed in this method, it will not be necessary to allocate
- * in the `rmw_publish` method
+ * in the `rmw_publish` method.
  *
  * \param[in] type_support Type support of the message to be preallocated.
  * \param[in] message_bounds Bounds structure of the message to be preallocated.
- * \param[out] allocation Allocation structure to be passed to `rmw_publish`
+ * \param[out] allocation Allocation structure to be passed to `rmw_publish`.
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if an argument is null, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
@@ -273,9 +273,9 @@ rmw_destroy_publisher(rmw_node_t * node, rmw_publisher_t * publisher);
 /**
  * Publish a given ROS message via a publisher.
  *
- * \param[in] publisher Publisher to be used to send message
- * \param[in] ros_message Message to be sent
- * \param[in] allocation (optionally) specify preallocated memory to use
+ * \param[in] publisher Publisher to be used to send message.
+ * \param[in] ros_message Message to be sent.
+ * \param[in] allocation specify preallocated memory to use (may be NULL)
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if publisher or ros_message is null, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
@@ -349,12 +349,12 @@ rmw_ret_t
 rmw_publish_serialized_message(
   const rmw_publisher_t * publisher, const rmw_serialized_message_t * serialized_message);
 
-/// Compute the size of of a serialized message
+/// Compute the size of a serialized message.
 /**
  * Given a message definition and bounds, compute the serialized size.
  *
- * \param[in] type_support The type support of the message to compute
- * \param[in] bounds Artifical bounds to use on unbounded fields
+ * \param[in] type_support The type support of the message to compute.
+ * \param[in] bounds Artifical bounds to use on unbounded fields.
  * \param[out] size The computed size of the serialized message.
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if either argument is null, or
@@ -421,11 +421,11 @@ rmw_deserialize(
  * This will allow the middleware to preallocate the correct amount of memory
  * for a given message type and message bounds.
  * As allocation is performed in this method, it will not be necessary to allocate
- * in the `rmw_take` method
+ * in the `rmw_take` method.
  *
  * \param[in] type_support Type support of the message to be preallocated.
  * \param[in] message_bounds Bounds structure of the message to be preallocated.
- * \param[out] allocation Allocation structure to be passed to `rmw_take`
+ * \param[out] allocation Allocation structure to be passed to `rmw_take`.
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if an argument is null, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
@@ -486,14 +486,14 @@ rmw_subscription_count_matched_publishers(
   const rmw_subscription_t * subscription,
   size_t * publisher_count);
 
-/// Take an incoming message from a subscription
+/// Take an incoming message from a subscription.
 /**
  * Take an incoming ROS message from a given subscription.
  *
- * \param[in] subscription the subscription object to take from
- * \param[out] ros_message On success, the ROS message data
- * \param[out] taken True when message is successfully taken
- * \param[in] allocation (optionally) preallocated buffer to use
+ * \param[in] subscription the subscription object to take from.
+ * \param[out] ros_message the ROS message data on success.
+ * \param[out] taken True when message is successfully taken.
+ * \param[in] allocation preallocated buffer to use (may be NULL)
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
@@ -506,15 +506,15 @@ rmw_take(
   bool * taken,
   rmw_subscription_allocation_t * allocation);
 
-/// Take an incoming message from a subscription with additional metadata
+/// Take an incoming message from a subscription with additional metadata.
 /**
  * Take an incoming ROS message from a given subscription.
  *
- * \param[in] subscription the subscription object to take from
- * \param[out] ros_message On success, the ROS message data
- * \param[out] taken True when message is successfully taken
- * \param[out] message_info Additional message metadata
- * \param[in] allocation (optionally) preallocated buffer to use
+ * \param[in] subscription the subscription object to take from.
+ * \param[out] ros_message the ROS message data on success.
+ * \param[out] taken True when message is successfully taken.
+ * \param[out] message_info additional message metadata.
+ * \param[in] allocation (optionally) preallocated buffer to use.
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */

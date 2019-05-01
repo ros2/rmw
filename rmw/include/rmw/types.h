@@ -92,7 +92,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_allocation_t
   void * data;
 } rmw_subscription_allocation_t;
 
-/// Array of subsciber handles.
+/// Array of subscriber handles.
 /**
  * An array of void * pointers representing type-erased middleware-specific subscriptions.
  * The number of non-null entries may be smaller than the allocated size of the array.
