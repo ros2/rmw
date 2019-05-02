@@ -89,6 +89,7 @@ extern "C"
 
 #include "rcutils/types.h"
 
+#include "rosidl_generator_c/message_bounds_struct.h"
 #include "rosidl_generator_c/message_type_support_struct.h"
 #include "rosidl_generator_c/service_type_support_struct.h"
 
@@ -238,6 +239,46 @@ RMW_WARN_UNUSED
 const rmw_guard_condition_t *
 rmw_node_get_graph_guard_condition(const rmw_node_t * node);
 
+/// Initialize a publisher allocation to be used with later publications.
+/**
+ * This creates an allocation object that can be used in conjunction with
+ * the rmw_publish method to perform more carefully control memory allocations.
+ *
+ * This will allow the middleware to preallocate the correct amount of memory
+ * for a given message type and message bounds.
+ * As allocation is performed in this method, it will not be necessary to allocate
+ * in the `rmw_publish` method.
+ *
+ * \param[in] type_support Type support of the message to be preallocated.
+ * \param[in] message_bounds Bounds structure of the message to be preallocated.
+ * \param[out] allocation Allocation structure to be passed to `rmw_publish`.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if an argument is null, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_init_publisher_allocation(
+  const rosidl_message_type_support_t * type_support,
+  const rosidl_message_bounds_t * message_bounds,
+  rmw_publisher_allocation_t * allocation);
+
+/// Destroy a publisher allocation object.
+/**
+ * This deallocates any memory allocated by `rmw_init_publisher_allocation`.
+ *
+ * \param[in] allocation Allocation object to be destroyed.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if argument is null, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_fini_publisher_allocation(
+  rmw_publisher_allocation_t * allocation);
+
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_publisher_t *
@@ -252,10 +293,24 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_publisher(rmw_node_t * node, rmw_publisher_t * publisher);
 
+/// Publish a given ros_message
+/**
+ * Publish a given ROS message via a publisher.
+ *
+ * \param[in] publisher Publisher to be used to send message.
+ * \param[in] ros_message Message to be sent.
+ * \param[in] allocation Specify preallocated memory to use (may be NULL).
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if publisher or ros_message is null, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_publish(const rmw_publisher_t * publisher, const void * ros_message);
+rmw_publish(
+  const rmw_publisher_t * publisher,
+  const void * ros_message,
+  rmw_publisher_allocation_t * allocation);
 
 /// Retrieve the number of matched subscriptions to a publisher.
 /**
@@ -309,8 +364,9 @@ rmw_publisher_get_actual_qos(
  * having to serialize the message first.
  * A ROS message can be serialized manually using the rmw_serialize() function.
  *
- * \param publisher the publisher object registered to send the message
- * \param serialized_message the serialized message holding the byte stream
+ * \param[in] publisher The publisher object registered to send the message.
+ * \param[in] serialized_message The serialized message holding the byte stream.
+ * \param[in] allocation Specify preallocated memory to use (may be NULL).
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
@@ -318,7 +374,28 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_publish_serialized_message(
-  const rmw_publisher_t * publisher, const rmw_serialized_message_t * serialized_message);
+  const rmw_publisher_t * publisher,
+  const rmw_serialized_message_t * serialized_message,
+  rmw_publisher_allocation_t * allocation);
+
+/// Compute the size of a serialized message.
+/**
+ * Given a message definition and bounds, compute the serialized size.
+ *
+ * \param[in] type_support The type support of the message to compute.
+ * \param[in] bounds Artifical bounds to use on unbounded fields.
+ * \param[out] size The computed size of the serialized message.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if either argument is null, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_get_serialized_message_size(
+  const rosidl_message_type_support_t * type_support,
+  const rosidl_message_bounds_t * message_bounds,
+  size_t * size);
 
 /// Manually assert that this Publisher is alive (for RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC)
 /**
@@ -389,6 +466,46 @@ rmw_deserialize(
   const rosidl_message_type_support_t * type_support,
   void * ros_message);
 
+/// Initialize a subscription allocation to be used with later `take`s.
+/**
+ * This creates an allocation object that can be used in conjunction with
+ * the rmw_take method to perform more carefully control memory allocations.
+ *
+ * This will allow the middleware to preallocate the correct amount of memory
+ * for a given message type and message bounds.
+ * As allocation is performed in this method, it will not be necessary to allocate
+ * in the `rmw_take` method.
+ *
+ * \param[in] type_support Type support of the message to be preallocated.
+ * \param[in] message_bounds Bounds structure of the message to be preallocated.
+ * \param[out] allocation Allocation structure to be passed to `rmw_take`.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if an argument is null, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_init_subscription_allocation(
+  const rosidl_message_type_support_t * type_support,
+  const rosidl_message_bounds_t * message_bounds,
+  rmw_subscription_allocation_t * allocation);
+
+/// Destroy a publisher allocation object.
+/**
+ * This deallocates memory allocated by `rmw_init_subscription_allocation`.
+ *
+ * \param[in] allocation Allocation object to be destroyed.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if argument is null, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_fini_subscription_allocation(
+  rmw_subscription_allocation_t * allocation);
+
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_subscription_t *
@@ -422,11 +539,38 @@ rmw_subscription_count_matched_publishers(
   const rmw_subscription_t * subscription,
   size_t * publisher_count);
 
+/// Take an incoming message from a subscription.
+/**
+ * Take an incoming ROS message from a given subscription.
+ *
+ * \param[in] subscription The subscription object to take from.
+ * \param[out] ros_message The ROS message data on success.
+ * \param[out] taken Boolean flag indicating if a message was taken or not.
+ * \param[in] allocation Preallocated buffer to use (may be NULL).
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_take(const rmw_subscription_t * subscription, void * ros_message, bool * taken);
+rmw_take(
+  const rmw_subscription_t * subscription,
+  void * ros_message,
+  bool * taken,
+  rmw_subscription_allocation_t * allocation);
 
+/// Take an incoming message from a subscription with additional metadata.
+/**
+ * Take an incoming ROS message from a given subscription.
+ *
+ * \param[in] subscription The subscription object to take from.
+ * \param[out] ros_message The ROS message data on success.
+ * \param[out] taken Boolean flag indicating if a message was taken or not.
+ * \param[out] message_info Additional message metadata.
+ * \param[in] allocation Preallocated buffer to use (may be NULL).
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -434,7 +578,8 @@ rmw_take_with_info(
   const rmw_subscription_t * subscription,
   void * ros_message,
   bool * taken,
-  rmw_message_info_t * message_info);
+  rmw_message_info_t * message_info,
+  rmw_subscription_allocation_t * allocation);
 
 /// Take a message without deserializing it.
 /**
@@ -445,9 +590,10 @@ rmw_take_with_info(
  * If needed, this byte stream can then be deserialized in a ROS message with a call to
  * rmw_deserialize.
  *
- * \param subscription subscription object to take from
- * \param serialized_message the destination in which to store the serialized message
- * \param taken boolean flag indicating if a message was taken or not
+ * \param[in] subscription Subscription object to take from.
+ * \param[out] serialized_message The destination in which to store the serialized message.
+ * \param[out] taken Boolean flag indicating if a message was taken or not.
+ * \param[in] allocation Preallocated buffer to use (may be NULL).
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_BAD_ALLOC` if memory allocation failed, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
@@ -458,17 +604,19 @@ rmw_ret_t
 rmw_take_serialized_message(
   const rmw_subscription_t * subscription,
   rmw_serialized_message_t * serialized_message,
-  bool * taken);
+  bool * taken,
+  rmw_subscription_allocation_t * allocation);
 
 /// Take a message without deserializing it and with its additional message information.
 /**
  * The same as rmw_take_serialized_message(), except it also includes the
  * rmw_message_info_t.
  *
- * \param subscription subscription object to take from
- * \param serialized_message the destination in which to store the serialized message
- * \param taken boolean flag indicating if a message was taken or not
- * \param message_info a structure containing meta information about the taken message
+ * \param[in] subscription Subscription object to take from.
+ * \param[out] serialized_message The destination in which to store the serialized message.
+ * \param[out] taken Boolean flag indicating if a message was taken or not.
+ * \param[out] message_info A structure containing meta information about the taken message.
+ * \param[in] allocation Preallocated buffer to use (may be NULL).
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_BAD_ALLOC` if memory allocation failed, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
@@ -480,7 +628,8 @@ rmw_take_serialized_message_with_info(
   const rmw_subscription_t * subscription,
   rmw_serialized_message_t * serialized_message,
   bool * taken,
-  rmw_message_info_t * message_info);
+  rmw_message_info_t * message_info,
+  rmw_subscription_allocation_t * allocation);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
