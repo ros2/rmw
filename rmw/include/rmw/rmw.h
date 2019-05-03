@@ -183,6 +183,30 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_node(rmw_node_t * node);
 
+/// Manually assert that this node is alive (for RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE)
+/**
+ * If the rmw Liveliness policy is set to RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE, the creator of
+ * this node may manually call `assert_liveliness` at some point in time to signal to the rest
+ * of the system that this Node is still alive.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | Yes
+ * Uses Atomics       | No
+ * Lock-Free          | Yes
+ *
+ * \param[in] node handle to the node that needs liveliness to be asserted
+ * \return `RMW_RET_OK` if the liveliness assertion was completed successfully, or
+ * \return `RMW_RET_ERROR` if an unspecified error occurs, or
+ * \return `RMW_RET_UNSUPPORTED` if the rmw implementation does not support asserting liveliness.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_node_assert_liveliness(const rmw_node_t * node);
+
 /// Return a guard condition which is triggered when the ROS graph changes.
 /**
  * The handle returned is a pointer to an internally held rmw guard condition.
@@ -372,6 +396,30 @@ rmw_get_serialized_message_size(
   const rosidl_message_type_support_t * type_support,
   const rosidl_message_bounds_t * message_bounds,
   size_t * size);
+
+/// Manually assert that this Publisher is alive (for RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC)
+/**
+ * If the rmw Liveliness policy is set to RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC, the creator of
+ * this publisher may manually call `assert_liveliness` at some point in time to signal to the rest
+ * of the system that this Node is still alive.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | Yes
+ * Uses Atomics       | No
+ * Lock-Free          | Yes
+ *
+ * \param[in] publisher handle to the publisher that needs liveliness to be asserted
+ * \return `RMW_RET_OK` if the liveliness assertion was completed successfully, or
+ * \return `RMW_RET_ERROR` if an unspecified error occurs, or
+ * \return `RMW_RET_UNSUPPORTED` if the rmw implementation does not support asserting liveliness.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_publisher_assert_liveliness(const rmw_publisher_t * publisher);
 
 /// Serialize a ROS message into a rmw_serialized_message_t.
 /**
@@ -764,6 +812,7 @@ rmw_wait(
   rmw_guard_conditions_t * guard_conditions,
   rmw_services_t * services,
   rmw_clients_t * clients,
+  rmw_events_t * events,
   rmw_wait_set_t * wait_set,
   const rmw_time_t * wait_timeout);
 
