@@ -539,6 +539,32 @@ rmw_subscription_count_matched_publishers(
   const rmw_subscription_t * subscription,
   size_t * publisher_count);
 
+/// Retrieve the actual qos settings of the subscription.
+/**
+ * Query the underlying middleware to determine the qos settings
+ * of the subscription.
+ * The actual configuration applied when using RMW_*_SYSTEM_DEFAULT
+ * can only be resolved after the creation of the subscription, and it
+ * depends on the underlying rmw implementation.
+ * If the underlying setting in use can't be represented in ROS terms,
+ * it will be set to RMW_*_UNKNOWN.
+ * The value of avoid_ros_namespace_conventions field is not resolved
+ * with this function. The rcl function rcl_subscription_get_actual_qos
+ * resolves it.
+ *
+ * \param[in] subscription the subscription object to inspect
+ * \param[out] qos the actual qos settings
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if either argument is null, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_subscription_get_actual_qos(
+  const rmw_subscription_t * subscription,
+  rmw_qos_profile_t * qos);
+
 /// Take an incoming message from a subscription.
 /**
  * Take an incoming ROS message from a given subscription.
