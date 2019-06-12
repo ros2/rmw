@@ -2,6 +2,11 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* add RMW_QOS_POLICY_LIVELINESS_UNKNOWN enum (`#175 <https://github.com/ros2/rmw/issues/175>`_)
+* Contributors: M. M
+
 0.7.1 (2019-05-08)
 ------------------
 
