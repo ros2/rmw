@@ -316,6 +316,7 @@ rmw_destroy_publisher(rmw_node_t * node, rmw_publisher_t * publisher);
  *
  * \param[in] publisher Publisher to be used to send message.
  * \param[in] ros_message Message to be sent.
+ * \param[in] is_loaned Boolean flag indicating if the ros message was loaned from the middleware.
  * \param[in] allocation Specify preallocated memory to use (may be NULL).
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if publisher or ros_message is null, or
@@ -327,7 +328,8 @@ rmw_ret_t
 rmw_publish(
   const rmw_publisher_t * publisher,
   const void * ros_message,
-  rmw_publisher_allocation_t * allocation);
+  rmw_publisher_allocation_t * allocation,
+  bool is_loaned);
 
 /// Retrieve the number of matched subscriptions to a publisher.
 /**
