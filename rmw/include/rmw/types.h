@@ -28,6 +28,7 @@ extern "C"
 #include <rcutils/logging.h>
 
 #include "rmw/init.h"
+#include "rmw/loaned_message.h"
 #include "rmw/ret_types.h"
 #include "rmw/serialized_message.h"
 #include "rmw/visibility_control.h"
@@ -121,6 +122,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_t
    * This field is not marked const to avoid any const casting during setup.
    */
   rmw_subscription_options_t options;
+  bool has_loaned_data;
 } rmw_subscription_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_service_t
@@ -149,21 +151,6 @@ typedef struct RMW_PUBLIC_TYPE rmw_publisher_allocation_t
   const char * implementation_identifier;
   void * data;
 } rmw_publisher_allocation_t;
-
-/// Loaned message allocated by the middleware containing a ros message to be published.
-/**
- * A loaned message contains a ros message which was previously allocated by the middleware.
- * The memory allocated belongs to the middleware and must not be destroyed outside of it.
- */
-typedef struct RMW_PUBLIC_TYPE rmw_loaned_message_t
-{
-  /// A unique string identifying the middleware
-  const char * implementation_identifier;
-  /// The type erased memory for the ros message
-  void * ros_message;
-  /// Extra data which might be necessary by the middleware
-  void * data;
-} rmw_loaned_message_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_subscription_allocation_t
 {
