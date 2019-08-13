@@ -28,7 +28,6 @@ extern "C"
 #include <rcutils/logging.h>
 
 #include "rmw/init.h"
-#include "rmw/loaned_message.h"
 #include "rmw/ret_types.h"
 #include "rmw/serialized_message.h"
 #include "rmw/visibility_control.h"
@@ -77,6 +76,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_publisher_t
    * This field is not marked const to avoid any const casting during setup.
    */
   rmw_publisher_options_t options;
+  bool can_loan_messages;
 } rmw_publisher_t;
 
 /// Options that can be used to configure the creation of a subscription in rmw.
@@ -122,7 +122,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_t
    * This field is not marked const to avoid any const casting during setup.
    */
   rmw_subscription_options_t options;
-  bool has_loaned_data;
+  bool can_loan_messages;
 } rmw_subscription_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_service_t
