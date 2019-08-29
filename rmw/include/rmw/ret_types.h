@@ -36,6 +36,10 @@ typedef int32_t rmw_ret_t;
 /// Incorrect rmw implementation.
 #define RMW_RET_INCORRECT_RMW_IMPLEMENTATION 12
 
+// rmw node specific ret codes in 2XX
+/// Failed to find node name
+#define RMW_RET_NON_EXISTENT_NODE_NAME 203
+
 #ifdef __cplusplus
 }
 #endif
