@@ -38,7 +38,8 @@ typedef int32_t rmw_ret_t;
 
 // rmw node specific ret codes in 2XX
 /// Failed to find node name
-#define RMW_RET_NON_EXISTENT_NODE_NAME 203
+// Using same return code than in rcl
+#define RMW_RET_NODE_NAME_NON_EXISTENT 203
 
 #ifdef __cplusplus
 }

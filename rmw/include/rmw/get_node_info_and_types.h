@@ -47,7 +47,7 @@ extern "C"
  * \return `RMW_RET_OK` if the query was successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if the node is invalid, or
  * \return `RMW_RET_INVALID_ARGUMENT` if any arguments are invalid, or
- * \return `RMW_RET_NON_EXISTENT_NODE_NAME` if the node name wasn't found, or
+ * \return `RMW_RET_NODE_NAME_NON_EXISTENT` if the node name wasn't found, or
  * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
  * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */
@@ -84,7 +84,7 @@ rmw_get_subscriber_names_and_types_by_node(
  * \return `RMW_RET_OK` if the query was successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if the node is invalid, or
  * \return `RMW_RET_INVALID_ARGUMENT` if any arguments are invalid, or
- * \return `RMW_RET_NON_EXISTENT_NODE_NAME` if the node name wasn't found, or
+ * \return `RMW_RET_NODE_NAME_NON_EXISTENT` if the node name wasn't found, or
  * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
  * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */
@@ -120,7 +120,7 @@ rmw_get_publisher_names_and_types_by_node(
  * \return `RMW_RET_OK` if the query was successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if the node is invalid, or
  * \return `RMW_RET_INVALID_ARGUMENT` if any arguments are invalid, or
- * \return `RMW_RET_NON_EXISTENT_NODE_NAME` if the node name wasn't found, or
+ * \return `RMW_RET_NODE_NAME_NON_EXISTENT` if the node name wasn't found, or
  * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
  * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */
@@ -156,7 +156,7 @@ rmw_get_service_names_and_types_by_node(
  * \return `RMW_RET_OK` if the query was successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if the node is invalid, or
  * \return `RMW_RET_INVALID_ARGUMENT` if any arguments are invalid, or
- * \return `RMW_RET_NON_EXISTENT_NODE_NAME` if the node name wasn't found, or
+ * \return `RMW_RET_NODE_NAME_NON_EXISTENT` if the node name wasn't found, or
  * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
  * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */
