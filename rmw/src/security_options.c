@@ -1,4 +1,4 @@
-// Copyright 2017 Open Source Robotics Foundation, Inc.
+// Copyright 2017-2019 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,26 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__NODE_SECURITY_OPTIONS_H_
-#define RMW__NODE_SECURITY_OPTIONS_H_
+#include "rmw/security_options.h"
 
-#ifdef __cplusplus
-extern "C"
+rmw_security_options_t
+rmw_get_zero_initialized_security_options()
 {
-#endif
-
-#include "rmw/types.h"
-
-RMW_PUBLIC
-rmw_node_security_options_t
-rmw_get_zero_initialized_node_security_options();
-
-RMW_PUBLIC
-rmw_node_security_options_t
-rmw_get_default_node_security_options();
-
-#ifdef __cplusplus
+  static rmw_security_options_t null_security_options = {0, NULL};
+  return null_security_options;
 }
-#endif
 
-#endif  // RMW__NODE_SECURITY_OPTIONS_H_
+rmw_security_options_t
+rmw_get_default_security_options()
+{
+  static rmw_security_options_t default_options;
+  default_options.enforce_security = RMW_SECURITY_ENFORCEMENT_PERMISSIVE;
+  default_options.security_root_path = NULL;
+  return default_options;
+}

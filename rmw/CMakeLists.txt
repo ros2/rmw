@@ -35,6 +35,7 @@ set(rmw_sources
   "src/node_security_options.c"
   "src/publisher_options.c"
   "src/sanity_checks.c"
+  "src/security_options.c"
   "src/subscription_options.c"
   "src/topic_endpoint_info_array.c"
   "src/topic_endpoint_info.c"
