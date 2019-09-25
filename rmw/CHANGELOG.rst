@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.8.0 (2019-09-24)
+------------------
 * Added specific return type for non existent node (`#182 <https://github.com/ros2/rmw/issues/182>`_)
 * Added function for getting clients by node (`#179 <https://github.com/ros2/rmw/issues/179>`_)
 * Added get_actual_qos() feature to subscriptions (`#177 <https://github.com/ros2/rmw/issues/177>`_)
