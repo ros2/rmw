@@ -327,6 +327,25 @@ typedef struct RMW_PUBLIC_TYPE rmw_qos_profile_t
   bool avoid_ros_namespace_conventions;
 } rmw_qos_profile_t;
 
+/// Structure to store the name of the participant and its respective qos profile
+typedef struct RMW_PUBLIC_TYPE rmw_participant_qos_profile_t
+{
+  /// Name of the participant
+  const char * participant_name;
+  /// Qos profile of the participant
+  const rmw_qos_profile_t * qos_profile;
+} rmw_participant_qos_profile_t;
+
+/// Array of rmw_participant_qos_profile_t
+typedef struct RMW_PUBLIC_TYPE rmw_participants_t
+{
+  /// The number of participants represented by the array.
+  size_t count;
+  /// Pointer to an array of void * pointers of participants of type rmw_participant_qos_profile_t.
+  void ** participants;
+} rmw_participants_t;
+
+
 typedef struct RMW_PUBLIC_TYPE rmw_gid_t
 {
   const char * implementation_identifier;
