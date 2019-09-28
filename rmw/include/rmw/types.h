@@ -327,7 +327,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_qos_profile_t
   bool avoid_ros_namespace_conventions;
 } rmw_qos_profile_t;
 
-/// Structure to store the name of the participant and its respective qos profile
+/// Stores participant name and its qos profile
 typedef struct RMW_PUBLIC_TYPE rmw_participant_qos_profile_t
 {
   /// Name of the participant

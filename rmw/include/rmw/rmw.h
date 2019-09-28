@@ -1052,12 +1052,16 @@ rmw_count_publishers(
   size_t * count);
 
 /**
- * This function can be used to retrieve a list of all publishers (described by the rmw_participants_t struct)
+ * Retrieves a list of all publishers (described by the rmw_participants_t struct)
  * publishing to a specific topic along with its respective qos profile.
+ *
  * None of the parameters provided to this function can be NULL.
+ *
  * Incorrect or non existent topic names are allowed.
+ *
  * \param[in] node the handle to the node being used to query the ROS graph.
  * \param[in] topic_name the name of the topic for which the list of publishers will be retrieved.
+ * \param[out] publishers an array of publishers.
  * \return `RMW_RET_OK` if the list of publishers was retrieved successfully.
  * \return `RMW_RET_ERROR` if any of the parameters are NULL.
  * \return `RMW_RET_ERROR` if an unspecified error occurs
@@ -1066,17 +1070,21 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_get_qos_for_publishers(
-    const rmw_node_t * node,
-    const char * topic_name,
-    rmw_participants_t * publishers);
+  const rmw_node_t * node,
+  const char * topic_name,
+  rmw_participants_t * publishers);
 
 /**
- * This function can be used to retrieve a list of all subscribers (described by the rmw_participants_t struct)
+ * Retrieves a list of all subscribers (described by the rmw_participants_t struct)
  * subscribing to a specific topic along with its respective qos profile.
+ *
  * None of the parameters provided to this function can be NULL.
+ *
  * Incorrect or non existent topic names are allowed.
+ *
  * \param[in] node the handle to the node being used to query the ROS graph.
  * \param[in] topic_name the name of the topic for which the list of subscribers will be retrieved.
+ * \param[out] subscribers an array of subscribers.
  * \return `RMW_RET_OK` if the list of publishers was retrieved successfully.
  * \return `RMW_RET_ERROR` if any of the parameters are NULL.
  * \return `RMW_RET_ERROR` if an unspecified error occurs
@@ -1085,9 +1093,9 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_get_qos_for_subscribers(
-    const rmw_node_t * node,
-    const char * topic_name,
-    rmw_participants_t * subscribers);
+  const rmw_node_t * node,
+  const char * topic_name,
+  rmw_participants_t * subscribers);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED

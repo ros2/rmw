@@ -158,4 +158,3 @@ rmw_participant_qos_profile_free(rmw_participant_qos_profile_t * participant_qos
 {
   rmw_free(participant_qos_profile);
 }
-
