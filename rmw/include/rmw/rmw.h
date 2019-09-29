@@ -707,7 +707,7 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_take_loaned_message_sequence(
-  const rmw_subscriptions_t * subscription,
+  const rmw_subscription_t * subscription,
   rmw_loaned_message_sequence_t * loaned_message_sequence,
   size_t n,
   bool * taken,
@@ -733,7 +733,7 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_take_loaned_message_sequence_with_info(
-  const rmw_subscriptions_t * subscription,
+  const rmw_subscription_t * subscription,
   rmw_loaned_message_sequence_t * loaned_message_sequence,
   rmw_message_info_sequence_t * message_info_sequence,
   size_t n,
@@ -753,7 +753,8 @@ rmw_take_loaned_message_sequence_with_info(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 void *
-rmw_loaned_message_at(
+rmw_loaned_message_sequence_at(
+  const rmw_subscription_t * subscription,
   const rmw_loaned_message_sequence_t * loaned_message_sequence,
   size_t position);
 
