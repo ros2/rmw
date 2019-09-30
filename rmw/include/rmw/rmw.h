@@ -720,10 +720,9 @@ rmw_take_loaned_message_sequence(
  *
  * \param[in] subscription Subscription object to take from.
  * \param[out] loaned_message_sequence The destination in which to store the loaned messages.
- * \param[out] message_info_sequence The destination in which to store the message info details.
  * \param[in] n The amount of messages to take.
  * \param[out] taken Boolean flag indicating if a message was taken or not.
- * \param[out] message_info A structure containing meta information about the taken message.
+ * \param[out] message_info_sequence The destination in which to store the message info details.
  * \param[in] allocation Preallocated buffer to use (may be NULL).
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_BAD_ALLOC` if memory allocation failed, or
@@ -735,9 +734,9 @@ rmw_ret_t
 rmw_take_loaned_message_sequence_with_info(
   const rmw_subscription_t * subscription,
   rmw_loaned_message_sequence_t * loaned_message_sequence,
-  rmw_message_info_sequence_t * message_info_sequence,
   size_t n,
   bool * taken,
+  rmw_message_info_sequence_t * message_info_sequence,
   rmw_subscription_allocation_t * allocation);
 
 /// Get an instance of a ROS message within a loaned message sequence.
@@ -756,6 +755,24 @@ void *
 rmw_loaned_message_sequence_at(
   const rmw_subscription_t * subscription,
   const rmw_loaned_message_sequence_t * loaned_message_sequence,
+  size_t position);
+
+/// Get an instance of a ROS message info within a message info sequence.
+/**
+ * As the actual representation of the loaned message sequence is middleware dependent,
+ * a call to `rmw_message_info_at` shall return a message info instance at a certain index.
+ *
+ * \param[in] message_info_sequence The message info sequence to index from.
+ * \param[in] position The index of the message info sequence to return.
+ * \return `void *` a pointer to a message info if valid,
+ * \return `NULL` if index is not valid
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+void *
+rmw_message_info_sequence_at(
+  const rmw_subscription_t * subscription,
+  const rmw_message_info_sequence_t * message_info_sequence,
   size_t position);
 
 /// Return and deallocate a loaned message sequence
