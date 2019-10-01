@@ -685,7 +685,71 @@ rmw_take_serialized_message_with_info(
   rmw_message_info_t * message_info,
   rmw_subscription_allocation_t * allocation);
 
-/// Take a sequence of messages.
+/// Take a loaned message.
+/**
+ * If capable, the middleware can loan messages containing incoming messages.
+ * The message is owned by the middleware and thus has to be returned
+ * with a call to \sa rmw_return_loaned_message.
+ *
+ * \param[in] subscription Subscription object to take from.
+ * \param[inout] loaned_message The destination in which to store the loaned message.
+ * \param[out] taken Boolean flag indicating if a message was taken or not.
+ * \param[in] allocation Preallocated buffer to use (may be NULL).
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_BAD_ALLOC` if memory allocation failed, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_take_loaned_message(
+  const rmw_subscription_t * subscription,
+  void ** loaned_message,
+  bool * taken,
+  rmw_subscription_allocation_t * allocation);
+
+/// Take a loaned message and with its additional message information.
+/**
+ * If capable, the middleware can loan messages containing incoming messages.
+ * The message is owned by the middleware and thus has to be returned
+ * with a call to \sa rmw_return_loaned_message.
+ *
+ * \param[in] subscription Subscription object to take from.
+ * \param[inout] loaned_message The destination in which to store the loaned message.
+ * \param[out] taken Boolean flag indicating if a message was taken or not.
+ * \param[out] message_info A structure containing meta information about the taken message.
+ * \param[in] allocation Preallocated buffer to use (may be NULL).
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_BAD_ALLOC` if memory allocation failed, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_take_loaned_message_with_info(
+  const rmw_subscription_t * subscription,
+  void ** loaned_message,
+  bool * taken,
+  rmw_message_info_t * message_info,
+  rmw_subscription_allocation_t * allocation);
+
+/// Return and deallocate a loaned message
+/**
+ * The middleware owns the loaned message.
+ * Therefore, the loaned message has to be returned and deallocated by the middleware.
+ * The loaned message must not be deallocated by the user.
+ *
+ * \param[in] subscription The subscription instance which loaned the message sequence.
+ * \param[in] loaned_message The message sequence to be returned.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_return_loaned_message(
+  const rmw_subscription_t * subscription,
+  void * loaned_message);
+
+/// Take a sequence of loaned messages.
 /**
  * If capable, the middleware can loan messages containing incoming messages.
  * The messages in the sequence are owned by the middleware and thus have to be returned
