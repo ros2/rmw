@@ -41,3 +41,12 @@ if(TARGET test_validate_namespace)
     set_target_properties(test_validate_namespace PROPERTIES COMPILE_FLAGS "-std=c++14")
   endif()
 endif()
+
+ament_add_gmock(test_rmw_participant_qos_profile_allocator
+  test_rmw_participant_qos_profile_allocator.cpp
+  # Append the directory of librmw so it is found at test time.
+  APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+)
+if(TARGET test_rmw_participant_qos_profile_allocator)
+  target_link_libraries(test_rmw_participant_qos_profile_allocator ${PROJECT_NAME})
+endif()
