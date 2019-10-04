@@ -1,4 +1,5 @@
 find_package(ament_cmake_gmock REQUIRED)
+find_package(osrf_testing_tools_cpp REQUIRED)
 
 ament_add_gmock(test_serialized_message
   test_serialized_message.cpp
@@ -48,5 +49,6 @@ ament_add_gmock(test_rmw_participant_qos_profile_allocator
   APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
 )
 if(TARGET test_rmw_participant_qos_profile_allocator)
-  target_link_libraries(test_rmw_participant_qos_profile_allocator ${PROJECT_NAME})
+  target_link_libraries(test_rmw_participant_qos_profile_allocator ${PROJECT_NAME}
+  osrf_testing_tools_cpp::memory_tools)
 endif()

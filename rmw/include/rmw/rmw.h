@@ -1052,12 +1052,12 @@ rmw_count_publishers(
   size_t * count);
 
 /**
- * Retrieves a list of all publishers (described by the rmw_participants_t struct)
- * publishing to a specific topic along with its respective qos profile.
+ * Retrieves a list of all publishers publishing to a specific topic along with its respective qos profile.
  *
- * None of the parameters provided to this function can be NULL.
+ * The node parameter must not be `NULL` and must point to a valid node.
  *
- * Incorrect or non existent topic names are allowed.
+ * The topic_name parameter must not be `NULL`.
+ * Incorrect or non existent topic names are allowed. They will return an empty array.
  *
  * \param[in] node the handle to the node being used to query the ROS graph.
  * \param[in] topic_name the name of the topic for which the list of publishers will be retrieved.
@@ -1078,9 +1078,10 @@ rmw_get_qos_for_publishers(
  * Retrieves a list of all subscribers (described by the rmw_participants_t struct)
  * subscribing to a specific topic along with its respective qos profile.
  *
- * None of the parameters provided to this function can be NULL.
+ * The node parameter must not be `NULL` and must point to a valid node.
  *
- * Incorrect or non existent topic names are allowed.
+ * The topic_name parameter must not be `NULL`.
+ * Incorrect or non existent topic names are allowed. They will return an empty array.
  *
  * \param[in] node the handle to the node being used to query the ROS graph.
  * \param[in] topic_name the name of the topic for which the list of subscribers will be retrieved.
