@@ -313,7 +313,7 @@ rmw_destroy_publisher(rmw_node_t * node, rmw_publisher_t * publisher);
 /// Borrow a loaned message.
 /**
  * The memory allocated for the ros message belongs to the middleware and must not be deallocated
- * or destroyed other than by a call to \sa rmw_return_loaned_message.
+ * or destroyed other than by a call to \sa rmw_return_loaned_message \sa rmw_publish_loned_message.
  *
  * In order to react to failures, the ros message is passed by pointer as an output parameter.
  * Therefore, the pointer to the ros message has to be `null` and not previously allocated or
@@ -352,7 +352,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_return_loaned_message(
   const rmw_publisher_t * publisher,
-  void * loaned_message);
+  const void * loaned_message);
 
 /// Publish a given ros_message
 /**
@@ -372,8 +372,33 @@ rmw_ret_t
 rmw_publish(
   const rmw_publisher_t * publisher,
   const void * ros_message,
-  rmw_publisher_allocation_t * allocation,
-  bool is_loaned);
+  rmw_publisher_allocation_t * allocation);
+
+/// Publish a loaned ros_message
+/**
+ * Publish a laoned ROS message via a publisher and return ownership of the laoned message
+ * back to the middleware.
+ *
+ * In contrast to \sa `rmw_publish` the ownership of the ros message is being transferred to the
+ * middleware which might deallocate the memory for it.
+ * Similar to \sa `rmw_return_loaned_message` the passed in ros message might not be valid after
+ * this call and thus should only be called with message previously loaned with a call to
+ * \sa `rmw_borrow_loaned_message`..
+ *
+ * \param[in] publisher Publisher to be used to send message.
+ * \param[in] ros_message Message to be sent.
+ * \param[in] allocation Specify preallocated memory to use (may be NULL).
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if publisher or ros_message is null, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_publish_loaned_message(
+  const rmw_publisher_t * publisher,
+  const void * ros_message,
+  rmw_publisher_allocation_t * allocation);
 
 /// Retrieve the number of matched subscriptions to a publisher.
 /**
