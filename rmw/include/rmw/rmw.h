@@ -352,7 +352,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_return_loaned_message(
   const rmw_publisher_t * publisher,
-  const void * loaned_message);
+  void * loaned_message);
 
 /// Publish a given ros_message
 /**
@@ -397,7 +397,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_publish_loaned_message(
   const rmw_publisher_t * publisher,
-  const void * ros_message,
+  void * ros_message,
   rmw_publisher_allocation_t * allocation);
 
 /// Retrieve the number of matched subscriptions to a publisher.
