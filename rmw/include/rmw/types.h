@@ -97,6 +97,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_options_t
    * inter- process communication is taking place.
    *
    * \TODO(wjwwood): nail this down when participant mapping is sorted out.
+   *   See: https://github.com/ros2/design/pull/250
    *
    * The definition of local is somewhat vague at the moment.
    * Right now it means local to the node, and that definition works best, but
