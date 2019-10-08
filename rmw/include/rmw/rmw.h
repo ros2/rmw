@@ -96,6 +96,7 @@ extern "C"
 #include "rmw/init.h"
 #include "rmw/macros.h"
 #include "rmw/qos_profiles.h"
+#include "rmw/subscription_options.h"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
 
@@ -279,6 +280,21 @@ rmw_ret_t
 rmw_fini_publisher_allocation(
   rmw_publisher_allocation_t * allocation);
 
+/// Return a rmw_publisher_options_t initialized with default values.
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_publisher_options_t
+rmw_get_default_publisher_options(void);
+
+/// Create and return an rmw publisher.
+/**
+ * \TODO(wjwwood): add detailed documentation, adding a not about one of the
+ *   arguments for now.
+ *
+ * The argument `publisher_options` must not be nullptr.
+ *
+ * \param[in] publisher_options options for configuring the publisher
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_publisher_t *
@@ -286,7 +302,8 @@ rmw_create_publisher(
   const rmw_node_t * node,
   const rosidl_message_type_support_t * type_support,
   const char * topic_name,
-  const rmw_qos_profile_t * qos_policies);
+  const rmw_qos_profile_t * qos_policies,
+  const rmw_publisher_options_t * publisher_options);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -506,6 +523,15 @@ rmw_ret_t
 rmw_fini_subscription_allocation(
   rmw_subscription_allocation_t * allocation);
 
+/// Create and return an rmw subscription.
+/**
+ * \TODO(wjwwood): add detailed documentation, adding a not about one of the
+ *   arguments for now.
+ *
+ * The argument `subscription_options` must not be nullptr.
+ *
+ * \param[in] subscription_options options for configuring the subscription
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_subscription_t *
@@ -514,7 +540,7 @@ rmw_create_subscription(
   const rosidl_message_type_support_t * type_support,
   const char * topic_name,
   const rmw_qos_profile_t * qos_policies,
-  bool ignore_local_publications);
+  const rmw_subscription_options_t * subscription_options);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
