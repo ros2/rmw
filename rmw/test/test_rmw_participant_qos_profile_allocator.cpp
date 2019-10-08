@@ -21,7 +21,7 @@
 TEST(test_rmw_participant_qos_profile_allocator, test_allocate_does_not_return_null) {
   rmw_participant_qos_profile_t * qos_profile = rmw_participant_qos_profile_allocate();
   OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT({
-    delete (qos_profile);
+    rmw_participant_qos_profile_free(qos_profile);
   });
   EXPECT_NE(qos_profile, nullptr);
 }
@@ -30,8 +30,8 @@ TEST(test_rmw_participant_qos_profile_allocator, test_allocate_allocates_differe
   rmw_participant_qos_profile_t * qos_profile1 = rmw_participant_qos_profile_allocate();
   rmw_participant_qos_profile_t * qos_profile2 = rmw_participant_qos_profile_allocate();
   OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT({
-    delete (qos_profile1);
-    delete (qos_profile2);
+    rmw_participant_qos_profile_free(qos_profile1);
+    rmw_participant_qos_profile_free(qos_profile2);
   });
   EXPECT_NE(qos_profile1, qos_profile2);
 }
