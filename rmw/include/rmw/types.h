@@ -341,8 +341,8 @@ typedef struct RMW_PUBLIC_TYPE rmw_participants_t
 {
   /// The number of participants represented by the array.
   size_t count;
-  /// Pointer to an array of rmw_participant_qos_profile_t *.
-  rmw_participant_qos_profile_t ** participants;
+  /// Pointer representing an array of rmw_participant_qos_profile_t.
+  rmw_participant_qos_profile_t * participants;
 } rmw_participants_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_gid_t
