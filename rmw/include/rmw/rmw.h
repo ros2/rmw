@@ -317,11 +317,11 @@ rmw_destroy_publisher(rmw_node_t * node, rmw_publisher_t * publisher);
  *
  * In order to react to failures, the ros message is passed by pointer as an output parameter.
  * Therefore, the pointer to the ros message has to be `null` and not previously allocated or
- * that memory is lost.
+ * else that memory is lost.
  *
  * \param[in] publisher Publisher to which the allocated message is associated.
  * \param[in] type_support Typesupport to which the internal ros message is allocated.
- * \param[out] ros_message The pointer to be filled to a valid ros message by the middleware.
+ * \param[out] ros_message The pointer to be filled with a valid ros message by the middleware.
  * \return RMW_RET_OK if the ros message was correctly initialized, or
  * \return RMW_RET_INVALID_ARGUMENT if an argument other than the ros message is null, or
  * \return RMW_RET_BAD_ALLOC if the ros message could not be correctly created, or
@@ -339,7 +339,7 @@ rmw_borrow_loaned_message(
 /**
  * The ownership of the passed in ros message will be transferred back to the middleware.
  * The middleware might deallocate and destroy the message so that the pointer is no longer
- * guarantueed to be valid after that call.
+ * guaranteed to be valid after this call.
  *
  * \param[in] publisher Publisher to which the loaned message is associated.
  * \param[in] loaned_message Loaned message to be returned.
@@ -376,7 +376,7 @@ rmw_publish(
 
 /// Publish a loaned ros_message
 /**
- * Publish a laoned ROS message via a publisher and return ownership of the laoned message
+ * Publish a loaned ROS message via a publisher and return ownership of the loaned message
  * back to the middleware.
  *
  * In contrast to \sa `rmw_publish` the ownership of the ros message is being transferred to the
