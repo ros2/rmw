@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <rmw/host.h>
+#include <rmw/localhost.h>
 
 #include "rcutils/get_env.h"
 
@@ -20,10 +20,9 @@
 #include <string.h>
 
 bool
-rmw_local_host_only()
+rmw_localhost_only()
 {
-	const char * ros_local_host_env_val = NULL;
-  return rcutils_get_env(RMW_LOCAL_HOST_ENV_VAR, &ros_local_host_env_val) == NULL &&
-    ros_local_host_env_val != NULL &&
-    (strcmp(ros_local_host_env_val, "true") == 0 || strcmp(ros_local_host_env_val, "1") == 0);
+  const char * ros_local_host_env_val = NULL;
+  return rcutils_get_env(RMW_LOCALHOST_ENV_VAR, &ros_local_host_env_val) == NULL &&
+    ros_local_host_env_val != NULL && strcmp(ros_local_host_env_val, "1") == 0;
 }

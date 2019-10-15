@@ -23,18 +23,18 @@ extern "C"
 #include "rmw/macros.h"
 #include "rmw/types.h"
 
-const char * RMW_LOCAL_HOST_ENV_VAR = "ROS_LOCALHOST_ONLY";
+const char * RMW_LOCALHOST_ENV_VAR = "ROS_LOCALHOST_ONLY";
 
 /// Determine if the user wants to communicate using loopback only.
 /**
  * Checks if localhost should be used for network communication checking ROS_LOCALHOST_ONLY env
  * variable
- * \returns true if ROS_LOCALHOST_ONLY is 1 or true, false otherwise.
+ * \returns true if ROS_LOCALHOST_ONLY is set and is 1, false otherwise.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 bool
-rmw_local_host_only();
+rmw_localhost_only();
 
 #ifdef __cplusplus
 }
