@@ -327,24 +327,6 @@ typedef struct RMW_PUBLIC_TYPE rmw_qos_profile_t
   bool avoid_ros_namespace_conventions;
 } rmw_qos_profile_t;
 
-/// Stores participant name and its qos profile
-typedef struct RMW_PUBLIC_TYPE rmw_participant_qos_profile_t
-{
-  /// Name of the participant
-  const char * participant_name;
-  /// Qos profile of the participant
-  const rmw_qos_profile_t * qos_profile;
-} rmw_participant_qos_profile_t;
-
-/// Array of rmw_participant_qos_profile_t
-typedef struct RMW_PUBLIC_TYPE rmw_participants_t
-{
-  /// The number of participants represented by the array.
-  size_t count;
-  /// Pointer representing an array of rmw_participant_qos_profile_t.
-  rmw_participant_qos_profile_t * participants;
-} rmw_participants_t;
-
 typedef struct RMW_PUBLIC_TYPE rmw_gid_t
 {
   const char * implementation_identifier;
@@ -445,6 +427,31 @@ typedef struct RMW_PUBLIC_TYPE rmw_offered_deadline_missed_status_t
   /// The change in total_count since the last time the status was last read.
   int32_t total_count_change;
 } rmw_offered_deadline_missed_status_t;
+
+/// A Structure that encapsulates the name, namespace, topic_type, gid and qos_profile
+/// of publishers and subscriptions for a topic
+typedef struct RMW_PUBLIC_TYPE rmw_topic_info_t
+{
+  /// Name of the node
+  const char * const node_name;
+  /// Namespace of the node
+  const char * const node_namespace;
+  /// The associated TopicType
+  const char * const topic_type;
+  /// The GID of the node
+  const rmw_gid_t * gid;
+  /// Qos profile of the node
+  const rmw_qos_profile_t * qos_profile;
+} rmw_topic_info_t;
+
+/// Array of rmw_topic_info_t
+typedef struct RMW_PUBLIC_TYPE rmw_topic_info_array_t
+{
+  /// Size of the array.
+  size_t count;
+  /// Pointer representing an array of rmw_topic_info_t
+  rmw_topic_info_t * info_array;
+} rmw_topic_info_array_t;
 
 #ifdef __cplusplus
 }

@@ -139,22 +139,3 @@ rmw_wait_set_free(rmw_wait_set_t * wait_set)
   // Should have matching overide with rmw_wait_set_allocate
   rmw_free(wait_set);
 }
-
-/**
-* @return an allocated instance of rmw_participant_qos_profile_t.
- */
-rmw_participant_qos_profile_t *
-rmw_participant_qos_profile_allocate()
-{
-  return (rmw_participant_qos_profile_t *)rmw_allocate(sizeof(rmw_participant_qos_profile_t));
-}
-
-/**
- * Frees the allocated instance.
- * @param participant_qos_profile the instance to free.
- */
-void
-rmw_participant_qos_profile_free(rmw_participant_qos_profile_t * participant_qos_profile)
-{
-  rmw_free(participant_qos_profile);
-}

@@ -1051,53 +1051,6 @@ rmw_count_publishers(
   const char * topic_name,
   size_t * count);
 
-/**
- * Retrieves a list of all publishers publishing to a specific topic along with its respective qos profile.
- *
- * The node parameter must not be `NULL` and must point to a valid node.
- *
- * The topic_name parameter must not be `NULL`.
- * Incorrect or non existent topic names are allowed. They will return an empty array.
- *
- * \param[in] node the handle to the node being used to query the ROS graph.
- * \param[in] topic_name the name of the topic for which the list of publishers will be retrieved.
- * \param[out] publishers an array of publishers.
- * \return `RMW_RET_OK` if the list of publishers was retrieved successfully.
- * \return `RMW_RET_ERROR` if any of the parameters are NULL.
- * \return `RMW_RET_ERROR` if an unspecified error occurs
- */
-RMW_PUBLIC
-RMW_WARN_UNUSED
-rmw_ret_t
-rmw_get_qos_for_publishers(
-  const rmw_node_t * node,
-  const char * topic_name,
-  rmw_participants_t * publishers);
-
-/**
- * Retrieves a list of all subscribers (described by the rmw_participants_t struct)
- * subscribing to a specific topic along with its respective qos profile.
- *
- * The node parameter must not be `NULL` and must point to a valid node.
- *
- * The topic_name parameter must not be `NULL`.
- * Incorrect or non existent topic names are allowed. They will return an empty array.
- *
- * \param[in] node the handle to the node being used to query the ROS graph.
- * \param[in] topic_name the name of the topic for which the list of subscribers will be retrieved.
- * \param[out] subscribers an array of subscribers.
- * \return `RMW_RET_OK` if the list of publishers was retrieved successfully.
- * \return `RMW_RET_ERROR` if any of the parameters are NULL.
- * \return `RMW_RET_ERROR` if an unspecified error occurs
- */
-RMW_PUBLIC
-RMW_WARN_UNUSED
-rmw_ret_t
-rmw_get_qos_for_subscribers(
-  const rmw_node_t * node,
-  const char * topic_name,
-  rmw_participants_t * subscribers);
-
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -1155,6 +1108,70 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_set_log_severity(rmw_log_severity_t severity);
+
+/// Retrieves the information for all publishers to a given topic.
+/**
+ * The retrieved information will contain the publisher's node name, node namespace,
+ * associated topic type, gid and qos profile.
+ *
+ * The node parameter must not be `NULL` and must point to a valid node.
+ *
+ * The topic_name parameter must not be `NULL` and must follow the topic naming rules
+ * mentioned at http://design.ros2.org/articles/topic_and_service_names.html
+ * Non existent topic names are allowed. They will return an empty array.
+ *
+ * \param[in] node the handle to the node being used to query the ROS graph.
+ * \param[in] allocator the allocator to be used when allocating space for the array.
+ * \param[in] topic_name the name of the topic for which the list of publishers will be retrieved.
+ * \param[in] no_mangle if true, the topic name will not be mangled.
+ * \param[out] publishers_info an array of rmw_topic_info_t.
+ * \return `RMW_RET_OK` if the query was successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if the node is invalid, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if any arguments are invalid, or
+ * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
+ * \return `RMW_RET_ERROR` if an unspecified error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_get_publishers_info_by_topic(
+  const rmw_node_t * node,
+  rcutils_allocator_t * allocator,
+  const char * topic_name,
+  bool no_mangle,
+  rmw_topic_info_array_t * publishers_info);
+
+/// Retrieves the information for all subscriptions to a given topic.
+/**
+ * The retrieved information will contain the subscriptions's node name, node namespace,
+ * associated topic type, gid and qos profile.
+ *
+ * The node parameter must not be `NULL` and must point to a valid node.
+ *
+ * The topic_name parameter must not be `NULL` and must follow the topic naming rules
+ * mentioned at http://design.ros2.org/articles/topic_and_service_names.html
+ * Non existent topic names are allowed. They will return an empty array.
+ *
+ * \param[in] node the handle to the node being used to query the ROS graph.
+ * \param[in] allocator the allocator to be used when allocating space for the array.
+ * \param[in] topic_name the name of the topic for which the list of subscriptions will be retrieved.
+ * \param[in] no_mangle if true, the topic name will not be mangled.
+ * \param[out] subscriptions_info an array of rmw_topic_info_t..
+ * \return `RMW_RET_OK` if the query was successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if the node is invalid, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if any arguments are invalid, or
+ * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
+ * \return `RMW_RET_ERROR` if an unspecified error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_get_subscriptions_info_by_topic(
+  const rmw_node_t * node,
+  rcutils_allocator_t * allocator,
+  const char * topic_name,
+  bool no_mangle,
+  rmw_topic_info_array_t * subscriptions_info);
 
 #ifdef __cplusplus
 }

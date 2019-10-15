@@ -87,21 +87,6 @@ RMW_PUBLIC
 void
 rmw_wait_set_free(rmw_wait_set_t * wait_set);
 
-/**
-* @return an allocated instance of rmw_participant_qos_profile_t.
- */
-RMW_PUBLIC
-rmw_participant_qos_profile_t *
-rmw_participant_qos_profile_allocate(void);
-
-/**
- * Frees the allocated instance.
- * @param participant_qos_profile the instance to free.
- */
-RMW_PUBLIC
-void
-rmw_participant_qos_profile_free(rmw_participant_qos_profile_t * participant_qos_profile);
-
 #ifdef __cplusplus
 }
 #endif
