@@ -14,37 +14,16 @@
 
 #include <rmw/host.h>
 
+#include "rcutils/get_env.h"
+
 #include <stdlib.h>
 #include <string.h>
 
-rmw_ret_t
-rmw_allowed_hosts(
-	char * allowed_hosts)
+bool
+rmw_local_host_only()
 {
-  rmw_ret_t ret = RMW_ENV_VAR_NOT_DEFINED_OR_EMPTY;
-	const char * ros_host_env = "ROS_ALLOWED_HOSTS";
-#ifndef _WIN32
-  const char * ros_host_env_val = getenv(ros_host_env);
-  if (ros_host_env_val != NULL && strlen(ros_host_env_val) > 0) {
-    allowed_hosts = malloc(strlen(ros_host_env_val)+1);
-    strcpy(allowed_hosts, ros_host_env_val);
-  }
-#else
-  size_t ros_host_env_val_size;
-  _dupenv_s(&allowed_hosts, &ros_host_env_val_size, ros_host_env);
-#endif
-  if (allowed_hosts != NULL && strcmp(allowed_hosts, "") != 0) {
-    if (strcmp(allowed_hosts, "localhost") != 0) {
-      ret = RMW_INVALID_ALLOWED_HOSTS;
-      free(allowed_hosts);
-    } else {
-      ret = RMW_LOCAL_HOST_ENABLED;
-    }
-  } else {
-    ret = RMW_ENV_VAR_NOT_DEFINED_OR_EMPTY;
-    if (allowed_hosts != NULL) {
-      free(allowed_hosts);
-    }
-  }
-  return ret;
+	const char * ros_local_host_env_val = NULL;
+  return rcutils_get_env(RMW_LOCAL_HOST_ENV_VAR, &ros_local_host_env_val) == NULL &&
+    ros_local_host_env_val != NULL &&
+    (strcmp(ros_local_host_env_val, "true") == 0 || strcmp(ros_local_host_env_val, "1") == 0);
 }

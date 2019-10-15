@@ -23,27 +23,18 @@ extern "C"
 #include "rmw/macros.h"
 #include "rmw/types.h"
 
-#define RMW_ENV_VAR_NOT_DEFINED_OR_EMPTY 0
-#define RMW_LOCAL_HOST_ENABLED 1
-#define RMW_INVALID_ALLOWED_HOSTS 2
+const char * RMW_LOCAL_HOST_ENV_VAR = "ROS_LOCALHOST_ONLY";
 
-
-/// Determine if the user provided a list of hosts to communicate to in the
+/// Determine if the user wants to communicate using loopback only.
 /**
- * Checks the allowed hosts declared by the user in the environment variable ROS_ALLOWED_HOSTS.
- * localhost is the only host supported besides using all network interfaces. Allocates memory for
- * the list of hosts if it's not empty and supported.
- * \param[out] allowed_hosts string that contains the list of allowed hosts.
- * \returns `RMW_ENV_VAR_NOT_DEFINED_OR_EMPTY` if the env var is not defined or is empty.
- * \returns `RMW_LOCAL_HOST_ENABLED` if the environment variable is localhost
- * \returns `RMW_INVALID_ALLOWED_HOSTS` when the user provides a non empty string
- * different than localhost.
+ * Checks if localhost should be used for network communication checking ROS_LOCALHOST_ONLY env
+ * variable
+ * \returns true if ROS_LOCALHOST_ONLY is 1 or true, false otherwise.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
-rmw_ret_t
-rmw_allowed_hosts(
-	char * allowed_hosts);
+bool
+rmw_local_host_only();
 
 #ifdef __cplusplus
 }
