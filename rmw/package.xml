@@ -9,6 +9,7 @@
   <license>Apache License 2.0</license>
 
   <buildtool_depend>ament_cmake_ros</buildtool_depend>
+  <buildtool_depend>ament_cmake_version</buildtool_depend>
 
   <build_depend>rcutils</build_depend>
 
