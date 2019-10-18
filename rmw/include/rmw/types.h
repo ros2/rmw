@@ -28,6 +28,7 @@ extern "C"
 #include <rcutils/logging.h>
 
 #include "rmw/init.h"
+#include "rmw/loaned_message_sequence.h"
 #include "rmw/ret_types.h"
 #include "rmw/serialized_message.h"
 #include "rmw/visibility_control.h"
@@ -76,6 +77,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_publisher_t
    * This field is not marked const to avoid any const casting during setup.
    */
   rmw_publisher_options_t options;
+  bool can_loan_messages;
 } rmw_publisher_t;
 
 /// Options that can be used to configure the creation of a subscription in rmw.
@@ -121,6 +123,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_t
    * This field is not marked const to avoid any const casting during setup.
    */
   rmw_subscription_options_t options;
+  bool can_loan_messages;
 } rmw_subscription_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_service_t
@@ -336,6 +339,13 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_t
   rmw_gid_t publisher_gid;
   bool from_intra_process;
 } rmw_message_info_t;
+
+typedef struct RMW_PUBLIC_TYPE rmw_message_info_sequence_t
+{
+  rmw_message_info_t * message_info_sequence;
+  size_t size;
+  size_t capacity;
+} rmw_message_info_sequence_t;
 
 enum {RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT = 0};
 
