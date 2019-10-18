@@ -360,7 +360,6 @@ rmw_return_loaned_message(
  *
  * \param[in] publisher Publisher to be used to send message.
  * \param[in] ros_message Message to be sent.
- * \param[in] is_loaned Boolean flag indicating if the ros message was loaned from the middleware.
  * \param[in] allocation Specify preallocated memory to use (may be NULL).
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if publisher or ros_message is null, or
