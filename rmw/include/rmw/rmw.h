@@ -160,6 +160,8 @@ rmw_get_serialization_format(void);
  * \param[in] namespace_ the node namespace
  * \param[in] domain_id the id of the domain that the node should join
  * \param[in] security_options the security configurations for the node
+ * \param[in] localhost_only whenever to use loopback only for communication or default
+ * network interfaces.
  * \return rmw node handle or `NULL` if there was an error
  */
 RMW_PUBLIC
@@ -170,7 +172,8 @@ rmw_create_node(
   const char * name,
   const char * namespace_,
   size_t domain_id,
-  const rmw_node_security_options_t * security_options);
+  const rmw_node_security_options_t * security_options,
+  bool localhost_only);
 
 /// Finalize a given node handle, reclaim the resources, and deallocate the node handle.
 /**
