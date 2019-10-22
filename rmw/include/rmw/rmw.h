@@ -315,8 +315,9 @@ rmw_destroy_publisher(rmw_node_t * node, rmw_publisher_t * publisher);
 
 /// Borrow a loaned message.
 /**
- * The memory allocated for the ros message belongs to the middleware and must not be deallocated
- * or destroyed other than by a call to \sa rmw_return_loaned_message \sa rmw_publish_loned_message.
+ * The memory allocated for the ros message belongs to the middleware and must not be deallocated.
+ * A call to \sa rmw_publish_loned_message as well as \sa rmw_return_loaned_message_from_publisher`
+ * will return ownership of the loaned message back to the middleware.
  *
  * In order to react to failures, the ros message is passed by pointer as an output parameter.
  * Therefore, the pointer to the ros message has to be `null` and not previously allocated or
@@ -338,7 +339,7 @@ rmw_borrow_loaned_message(
   const rosidl_message_type_support_t * type_support,
   void ** ros_message);
 
-/// Return a loaned message
+/// Return a loaned message previously borrow from a publisher.
 /**
  * The ownership of the passed in ros message will be transferred back to the middleware.
  * The middleware might deallocate and destroy the message so that the pointer is no longer
@@ -353,7 +354,7 @@ rmw_borrow_loaned_message(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_return_loaned_message(
+rmw_return_loaned_message_from_publisher(
   const rmw_publisher_t * publisher,
   void * loaned_message);
 
@@ -376,16 +377,16 @@ rmw_publish(
   const void * ros_message,
   rmw_publisher_allocation_t * allocation);
 
-/// Publish a loaned ros_message
+/// Publish a loaned ros_message.
 /**
  * Publish a loaned ROS message via a publisher and return ownership of the loaned message
  * back to the middleware.
  *
  * In contrast to \sa `rmw_publish` the ownership of the ros message is being transferred to the
  * middleware which might deallocate the memory for it.
- * Similar to \sa `rmw_return_loaned_message` the passed in ros message might not be valid after
- * this call and thus should only be called with message previously loaned with a call to
- * \sa `rmw_borrow_loaned_message`..
+ * Similar to \sa `rmw_return_loaned_message_from_publisher` the passed in ros message might
+ * not be valid after this call and thus should only be called with messages previously loaned with
+ * a call to \sa `rmw_borrow_loaned_message`.
  *
  * \param[in] publisher Publisher to be used to send message.
  * \param[in] ros_message Message to be sent.
@@ -760,7 +761,7 @@ rmw_take_serialized_message_with_info(
 /**
  * If capable, the middleware can loan messages containing incoming messages.
  * The message is owned by the middleware and thus has to be returned
- * with a call to \sa rmw_return_loaned_message.
+ * with a call to \sa rmw_return_loaned_message_from_subscription.
  *
  * \param[in] subscription Subscription object to take from.
  * \param[inout] loaned_message The destination in which to store the loaned message.
@@ -804,16 +805,13 @@ rmw_take_loaned_message_with_info(
   rmw_message_info_t * message_info,
   rmw_subscription_allocation_t * allocation);
 
-/// Release a loaned message
+/// Return a loaned message previously taken from a subscription.
 /**
  * After the taking a loaned message from the middleware, the middleware has to keep the memory
  * for the loaned message alive and valid as long as the user is working with that loan.
  * In order to indicate that the loaned message is no longer needed, the call to
- * \sa rmw_release_loaned_message tells the middleware that memory can be deallocated/destroyed.
- *
- * This call is different from \sa rmw_return_loaned_message in a way that the subscription does
- * not necessarily allocate new memory for the loaned message to take and thus solely has to be
- * released instead of returned.
+ * \sa rmw_return_loaned_message_from_subscription tells the middleware that memory can be
+ * deallocated/destroyed.
  *
  * \param[in] subscription The subscription instance which loaned the message.
  * \param[in] loaned_message The message to be released.
@@ -821,7 +819,7 @@ rmw_take_loaned_message_with_info(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_release_loaned_message(
+rmw_return_loaned_message_from_subscription(
   const rmw_subscription_t * subscription,
   void * loaned_message);
 
