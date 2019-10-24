@@ -2,6 +2,15 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.8.1 (2019-10-23)
+------------------
+* Use return_loaned_message_from (`#192 <https://github.com/ros2/rmw/issues/192>`_)
+* Add function to enable localhost communication only from env var (`#190 <https://github.com/ros2/rmw/issues/190>`_)
+* Zero copy api (`#185 <https://github.com/ros2/rmw/issues/185>`_)
+* Add call to bump dev version to the upcoming version 0.8.1 (`#191 <https://github.com/ros2/rmw/issues/191>`_)
+* Add pub/sub option structures to support rmw specific payload feature (`#187 <https://github.com/ros2/rmw/issues/187>`_)
+* Contributors: Brian Marchi, Dirk Thomas, Karsten Knese, William Woodall
+
 0.8.0 (2019-09-24)
 ------------------
 * Added specific return type for non existent node (`#182 <https://github.com/ros2/rmw/issues/182>`_)
