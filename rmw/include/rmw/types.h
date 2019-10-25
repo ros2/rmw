@@ -433,13 +433,13 @@ typedef struct RMW_PUBLIC_TYPE rmw_offered_deadline_missed_status_t
 typedef struct RMW_PUBLIC_TYPE rmw_topic_info_t
 {
   /// Name of the node
-  const char * const node_name;
+  const char * node_name;
   /// Namespace of the node
-  const char * const node_namespace;
+  const char * node_namespace;
   /// The associated TopicType
-  const char * const topic_type;
+  const char * topic_type;
   /// The GID of the node
-  const rmw_gid_t * gid;
+  const char * gid;
   /// Qos profile of the node
   const rmw_qos_profile_t * qos_profile;
 } rmw_topic_info_t;
