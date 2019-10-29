@@ -39,6 +39,7 @@ set(rmw_sources
   "src/validate_full_topic_name.c"
   "src/validate_namespace.c"
   "src/validate_node_name.c"
+  "src/topic_info_array.c"
 )
 set_source_files_properties(${rmw_sources} PROPERTIES LANGUAGE "C")
 add_library(${PROJECT_NAME} ${rmw_sources})
