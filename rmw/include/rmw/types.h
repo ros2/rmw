@@ -407,6 +407,12 @@ typedef struct RMW_PUBLIC_TYPE rmw_requested_deadline_missed_status_t
   int32_t total_count_change;
 } rmw_requested_deadline_missed_status_t;
 
+typedef struct RMW_PUBLIC_TYPE rmw_requested_incompatible_qos_status_t
+{
+   int32_t total_count;
+   int32_t total_count_change;
+} rmw_requested_incompatible_qos_status_t;
+
 /// QoS Liveliness Lost information provided by a publisher.
 typedef struct RMW_PUBLIC_TYPE rmw_liveliness_lost_status_t
 {
@@ -434,6 +440,12 @@ typedef struct RMW_PUBLIC_TYPE rmw_offered_deadline_missed_status_t
   /// The change in total_count since the last time the status was last read.
   int32_t total_count_change;
 } rmw_offered_deadline_missed_status_t;
+
+typedef struct RMW_PUBLIC_TYPE rmw_offered_incompatible_qos_status_t
+{
+  int32_t total_count;
+  int32_t total_count_change;
+} rmw_offered_incompatible_qos_status_t;
 
 #ifdef __cplusplus
 }
