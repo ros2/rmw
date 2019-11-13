@@ -32,14 +32,14 @@ set(rmw_sources
   "src/init_options.c"
   "src/loaned_message_sequence.c"
   "src/names_and_types.c"
+  "src/node_security_options.c"
   "src/publisher_options.c"
   "src/sanity_checks.c"
   "src/subscription_options.c"
-  "src/node_security_options.c"
+  "src/topic_info_array.c"
   "src/validate_full_topic_name.c"
   "src/validate_namespace.c"
   "src/validate_node_name.c"
-  "src/topic_info_array.c"
 )
 set_source_files_properties(${rmw_sources} PROPERTIES LANGUAGE "C")
 add_library(${PROJECT_NAME} ${rmw_sources})
