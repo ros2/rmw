@@ -78,16 +78,12 @@ rmw_topic_info_array_fini(
     return RMW_RET_INVALID_ARGUMENT;
   }
 
-  if (!topic_info_array->info_array) {
-    RMW_SET_ERROR_MSG("invalid topic_info_array");
-    return RMW_RET_INVALID_ARGUMENT;
-  }
   // free all const char * inside the topic_info_t
   for (size_t i = 0u; i < topic_info_array->count; i++) {
-    allocator->deallocate(topic_info_array->info_array[i].gid, allocator->state);
-    allocator->deallocate(topic_info_array->info_array[i].topic_type, allocator->state);
-    allocator->deallocate(topic_info_array->info_array[i].node_name, allocator->state);
-    allocator->deallocate(topic_info_array->info_array[i].node_namespace, allocator->state);
+    allocator->deallocate((char *) topic_info_array->info_array[i].gid, allocator->state);
+    allocator->deallocate((char *) topic_info_array->info_array[i].topic_type, allocator->state);
+    allocator->deallocate((char *) topic_info_array->info_array[i].node_name, allocator->state);
+    allocator->deallocate((char *) topic_info_array->info_array[i].node_namespace, allocator->state);
   }
 
   allocator->deallocate(topic_info_array->info_array, allocator->state);
