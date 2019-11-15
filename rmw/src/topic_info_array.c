@@ -83,7 +83,8 @@ rmw_topic_info_array_fini(
     allocator->deallocate((char *) topic_info_array->info_array[i].gid, allocator->state);
     allocator->deallocate((char *) topic_info_array->info_array[i].topic_type, allocator->state);
     allocator->deallocate((char *) topic_info_array->info_array[i].node_name, allocator->state);
-    allocator->deallocate((char *) topic_info_array->info_array[i].node_namespace, allocator->state);
+    allocator->deallocate((char *) topic_info_array->info_array[i].node_namespace,
+      allocator->state);
   }
 
   allocator->deallocate(topic_info_array->info_array, allocator->state);
