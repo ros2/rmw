@@ -411,6 +411,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_requested_incompatible_qos_status_t
 {
    int32_t total_count;
    int32_t total_count_change;
+   int32_t last_policy_id;
 } rmw_requested_incompatible_qos_status_t;
 
 /// QoS Liveliness Lost information provided by a publisher.
@@ -445,6 +446,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_offered_incompatible_qos_status_t
 {
   int32_t total_count;
   int32_t total_count_change;
+  int32_t last_policy_id;
 } rmw_offered_incompatible_qos_status_t;
 
 #ifdef __cplusplus
