@@ -109,8 +109,9 @@ _rmw_topic_info_copy_str(
     RMW_SET_ERROR_MSG("topic_info_str is null");
     return RMW_RET_INVALID_ARGUMENT;
   }
-  char * temp_str = allocator->allocate(strlen(str) + 1, allocator->state);
-  strcpy(temp_str, str);
+  size_t size = strlen(str) + 1;
+  char * temp_str = allocator->allocate(size, allocator->state);
+  strncpy(temp_str, str, size);
   *topic_info_str = temp_str;
   return RMW_RET_OK;
 }
