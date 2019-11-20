@@ -111,7 +111,7 @@ _rmw_topic_info_copy_str(
   }
   size_t size = strlen(str) + 1;
   char * temp_str = allocator->allocate(size, allocator->state);
-  strncpy(temp_str, str, size);
+  memcpy(temp_str, str, size);
   *topic_info_str = temp_str;
   return RMW_RET_OK;
 }
