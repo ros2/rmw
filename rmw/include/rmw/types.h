@@ -411,19 +411,19 @@ typedef struct RMW_PUBLIC_TYPE rmw_requested_deadline_missed_status_t
 typedef struct RMW_PUBLIC_TYPE rmw_requested_incompatible_qos_status_t
 {
   /**
-       * Total cumulative number of times the concerned subscription discovered a
-       * publisher for the same topic with an offered QoS that was incompatible
-       * with that requested by the subscription..
-       */
+   * Total cumulative number of times the concerned subscription discovered a
+   * publisher for the same topic with an offered QoS that was incompatible
+   * with that requested by the subscription..
+   */
   int32_t total_count;
   /**
-       * The change in total_count since the last time the status was read.
-       */
+   * The change in total_count since the last time the status was read.
+   */
   int32_t total_count_change;
   /**
-       * The Qos Policy Id of one of the policies that was found to be
-       * incompatible the last time an incompatibility was detected
-       */
+   * The Qos Policy Id of one of the policies that was found to be
+   * incompatible the last time an incompatibility was detected
+   */
   int32_t last_policy_id;
 } rmw_requested_incompatible_qos_status_t;
 
@@ -459,19 +459,19 @@ typedef struct RMW_PUBLIC_TYPE rmw_offered_deadline_missed_status_t
 typedef struct RMW_PUBLIC_TYPE rmw_offered_incompatible_qos_status_t
 {
   /**
-       * Total cumulative number of times the concerned publisher discovered a
-       * subscription for the same topic with a requested QoS that was incompatible
-       * with that offered by the publisher.
-       */
+   * Total cumulative number of times the concerned publisher discovered a
+   * subscription for the same topic with a requested QoS that was incompatible
+   * with that offered by the publisher.
+   */
   int32_t total_count;
   /**
-       * The change in total_count since the last time the status was read.
-       */
+   * The change in total_count since the last time the status was read.
+   */
   int32_t total_count_change;
   /**
-       * The Qos Policy Id of one of the policies that was found to be
-       * incompatible the last time an incompatibility was detected
-       */
+   * The Qos Policy Id of one of the policies that was found to be
+   * incompatible the last time an incompatibility was detected
+   */
   int32_t last_policy_id;
 } rmw_offered_incompatible_qos_status_t;
 
