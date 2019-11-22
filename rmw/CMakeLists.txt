@@ -37,6 +37,7 @@ set(rmw_sources
   "src/sanity_checks.c"
   "src/subscription_options.c"
   "src/topic_info_array.c"
+  "src/topic_info.c"
   "src/validate_full_topic_name.c"
   "src/validate_namespace.c"
   "src/validate_node_name.c"

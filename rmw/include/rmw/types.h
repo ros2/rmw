@@ -439,9 +439,9 @@ typedef struct RMW_PUBLIC_TYPE rmw_topic_info_t
   /// The associated TopicType
   const char * topic_type;
   /// The GID of the node
-  const char * gid;
+  uint8_t gid[RMW_GID_STORAGE_SIZE];
   /// Qos profile of the node
-  const rmw_qos_profile_t * qos_profile;
+  rmw_qos_profile_t qos_profile;
 } rmw_topic_info_t;
 
 /// Array of rmw_topic_info_t

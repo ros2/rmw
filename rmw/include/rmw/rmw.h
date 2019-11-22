@@ -1112,7 +1112,7 @@ rmw_set_log_severity(rmw_log_severity_t severity);
 /// Retrieves the information for all publishers to a given topic.
 /**
  * The retrieved information will contain the publisher's node name, node namespace,
- * associated topic type, gid and qos profile.
+ * associated topic type, publisher gid and qos profile.
  *
  * The node parameter must not be `NULL` and must point to a valid node.
  *
@@ -1158,7 +1158,7 @@ rmw_get_publishers_info_by_topic(
 /// Retrieves the information for all subscriptions to a given topic.
 /**
  * The retrieved information will contain the subscriptions's node name, node namespace,
- * associated topic type, gid and qos profile.
+ * associated topic type, subscription gid and qos profile.
  *
  * The node parameter must not be `NULL` and must point to a valid node.
  *

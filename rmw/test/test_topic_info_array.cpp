@@ -31,7 +31,7 @@ TEST(test_topic_info_array, check_zero) {
   rmw_topic_info_array_t arr_count_not_zero = {1, nullptr};
   EXPECT_EQ(rmw_topic_info_array_check_zero(&arr_count_not_zero), RMW_RET_INVALID_ARGUMENT);
   rmw_topic_info_t topic_info;
-  rmw_topic_info_array_t arr_info_array_not_null = {1, &topic_info};
+  rmw_topic_info_array_t arr_info_array_not_null = {0, &topic_info};
   EXPECT_EQ(rmw_topic_info_array_check_zero(&arr_info_array_not_null), RMW_RET_INVALID_ARGUMENT);
   EXPECT_EQ(rmw_topic_info_array_check_zero(nullptr), RMW_RET_INVALID_ARGUMENT);
 }
@@ -40,13 +40,13 @@ TEST(test_topic_info_array, check_init_with_size) {
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
   rmw_topic_info_array_t arr = rmw_get_zero_initialized_topic_info_array();
   OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT({
-    rmw_ret_t fini_ret = rmw_topic_info_array_fini(&allocator, &arr);
+    rmw_ret_t fini_ret = rmw_topic_info_array_fini(&arr, &allocator);
     EXPECT_EQ(fini_ret, RMW_RET_OK);
   });
-  EXPECT_EQ(rmw_topic_info_array_init_with_size(nullptr, 1, &arr), RMW_RET_INVALID_ARGUMENT);
-  EXPECT_EQ(rmw_topic_info_array_init_with_size(&allocator, 1, nullptr), RMW_RET_INVALID_ARGUMENT);
+  EXPECT_EQ(rmw_topic_info_array_init_with_size(&arr, 1, nullptr), RMW_RET_INVALID_ARGUMENT);
+  EXPECT_EQ(rmw_topic_info_array_init_with_size(nullptr, 1, &allocator), RMW_RET_INVALID_ARGUMENT);
   EXPECT_FALSE(arr.info_array);
-  rmw_ret_t ret = rmw_topic_info_array_init_with_size(&allocator, 5, &arr);
+  rmw_ret_t ret = rmw_topic_info_array_init_with_size(&arr, 5, &allocator);
   EXPECT_EQ(ret, RMW_RET_OK);
   EXPECT_TRUE(arr.info_array);
 }
@@ -54,10 +54,10 @@ TEST(test_topic_info_array, check_init_with_size) {
 TEST(test_topic_info_array, check_fini) {
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
   rmw_topic_info_array_t arr = rmw_get_zero_initialized_topic_info_array();
-  rmw_ret_t ret = rmw_topic_info_array_init_with_size(&allocator, 5, &arr);
+  rmw_ret_t ret = rmw_topic_info_array_init_with_size(&arr, 5, &allocator);
   EXPECT_EQ(ret, RMW_RET_OK);
   EXPECT_TRUE(arr.info_array);
-  ret = rmw_topic_info_array_fini(&allocator, &arr);
+  ret = rmw_topic_info_array_fini(&arr, &allocator);
   EXPECT_EQ(ret, RMW_RET_OK);
   EXPECT_FALSE(arr.info_array);
 }
