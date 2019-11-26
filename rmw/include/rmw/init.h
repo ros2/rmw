@@ -22,10 +22,28 @@ extern "C"
 
 #include <stdint.h>
 
+#include "rmw/init_options.h"
 #include "rmw/macros.h"
 #include "rmw/ret_types.h"
-#include "rmw/types.h"
 #include "rmw/visibility_control.h"
+
+/// Implementation defined context structure returned by rmw_init().
+/**
+ * This should be defined by the rmw implementation.
+ */
+typedef struct rmw_context_impl_t rmw_context_impl_t;
+
+/// Initialization context structure which is used to store init specific information.
+typedef struct RMW_PUBLIC_TYPE rmw_context_t
+{
+  /// Locally (process local) unique ID that represents this init/shutdown cycle.
+  uint64_t instance_id;
+  /// Implementation identifier, used to ensure two different implementations are not being mixed.
+  const char * implementation_identifier;
+  /// Implementation defined context information.
+  /** May be NULL if there is no implementation defined context information. */
+  rmw_context_impl_t * impl;
+} rmw_context_t;
 
 /// Return a zero initialized context structure.
 RMW_PUBLIC

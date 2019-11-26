@@ -28,6 +28,8 @@ rmw_get_zero_initialized_init_options(void)
            .instance_id = 0,
            .implementation_identifier = NULL,
            .impl = NULL,
+           .domain_id = RMW_INIT_OPTIONS_DEFAULT_DOMAIN_ID,
+           .security_options = rmw_get_default_security_options(),
   };  // NOLINT(readability/braces): false positive
 }
 
