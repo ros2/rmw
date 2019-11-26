@@ -56,6 +56,7 @@
  *   - rmw/names_and_types.h
  *   - rmw/get_topic_names_and_types.h
  *   - rmw/get_service_names_and_types.h
+ *   - rmw/get_topic_info.h
  *
  * Further still there are some useful abstractions and utilities:
  *
@@ -1108,98 +1109,6 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_set_log_severity(rmw_log_severity_t severity);
-
-/// Retrieves the information for all publishers to a given topic.
-/**
- * The retrieved information will contain the publisher's node name, node namespace,
- * associated topic type, publisher gid and qos profile.
- *
- * The node parameter must not be `NULL` and must point to a valid node.
- *
- * The topic_name parameter must not be `NULL` and must follow the topic naming rules
- * mentioned at http://design.ros2.org/articles/topic_and_service_names.html
- * Non existent topic names are allowed. They will return an empty array.
- *
- * It is the responsibility of the caller to ensure that `publishers_info` parameter points
- * to a valid struct of type rmw_topic_info_array_t. The `count` field inside the struct
- * must be set to 0 and the `info_array` field inside the struct must be set to null.
- * @see rmw_get_zero_initialized_topic_info_array
- *
- * The `allocator` will be used to allocate memory to the `info_array` member
- * inside of `publishers_info`.
- * Moreover, every const char * member inside of
- * rmw_topic_info_t will be allocated memory and assigned a copied value.
- * @see rmw_topic_info_set_node_name and the likes.
- * However, it is the responsibility of the caller to
- * reclaim any allocated resources to `publishers_info` to avoid leaking memory.
- * @see rmw_topic_info_array_fini
- *
- * \param[in] node the handle to the node being used to query the ROS graph.
- * \param[in] allocator the allocator to be used when allocating space for the array.
- * \param[in] topic_name the name of the topic for which the list of publishers will be retrieved.
- * \param[in] no_mangle if true, the topic name will not be mangled.
- * \param[out] publishers_info an array of rmw_topic_info_t.
- * \return `RMW_RET_OK` if the query was successful, or
- * \return `RMW_RET_INVALID_ARGUMENT` if the node is invalid, or
- * \return `RMW_RET_INVALID_ARGUMENT` if any arguments are invalid, or
- * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
- * \return `RMW_RET_ERROR` if an unspecified error occurs.
- */
-RMW_PUBLIC
-RMW_WARN_UNUSED
-rmw_ret_t
-rmw_get_publishers_info_by_topic(
-  const rmw_node_t * node,
-  rcutils_allocator_t * allocator,
-  const char * topic_name,
-  bool no_mangle,
-  rmw_topic_info_array_t * publishers_info);
-
-/// Retrieves the information for all subscriptions to a given topic.
-/**
- * The retrieved information will contain the subscriptions's node name, node namespace,
- * associated topic type, subscription gid and qos profile.
- *
- * The node parameter must not be `NULL` and must point to a valid node.
- *
- * The topic_name parameter must not be `NULL` and must follow the topic naming rules
- * mentioned at http://design.ros2.org/articles/topic_and_service_names.html
- * Non existent topic names are allowed. They will return an empty array.
- *
- * It is the responsibility of the caller to ensure that `subscriptions_info` parameter points
- * to a valid struct of type rmw_topic_info_array_t. The `count` field inside the struct
- * must be set to 0 and the `info_array` field inside the struct must be set to null.
- * @see rmw_get_zero_initialized_topic_info_array
- *
- * The `allocator` will be used to allocate memory to the `info_array` member
- * inside of `publishers_info`.
- * Moreover, every const char * member inside of
- * rmw_topic_info_t will be allocated memory and assigned a copied value.
- * @see rmw_topic_info_set_node_name and the likes.
- * However, it is the responsibility of the caller to
- * reclaim any allocated resources to `publishers_info` to avoid leaking memory.
- * @see rmw_topic_info_array_fini
- *
- * \param[in] node the handle to the node being used to query the ROS graph.
- * \param[in] allocator the allocator to be used when allocating space for the array.
- * \param[in] topic_name the name of the topic for which the list of subscriptions will be retrieved.
- * \param[in] no_mangle if true, the topic name will not be mangled.
- * \param[out] subscriptions_info an array of rmw_topic_info_t..
- * \return `RMW_RET_OK` if the query was successful, or
- * \return `RMW_RET_INVALID_ARGUMENT` if the node is invalid, or
- * \return `RMW_RET_INVALID_ARGUMENT` if any arguments are invalid, or
- * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
- * \return `RMW_RET_ERROR` if an unspecified error occurs.
- */
-RMW_PUBLIC
-RMW_WARN_UNUSED
-rmw_ret_t
-rmw_get_subscriptions_info_by_topic(
-  const rmw_node_t * node,
-  rcutils_allocator_t * allocator,
-  const char * topic_name,
-  bool no_mangle,
-  rmw_topic_info_array_t * subscriptions_info);
 
 #ifdef __cplusplus
 }

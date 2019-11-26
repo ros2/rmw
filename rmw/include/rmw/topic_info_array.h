@@ -21,8 +21,17 @@ extern "C"
 #endif
 
 #include "rcutils/allocator.h"
-#include "rmw/types.h"
+#include "rmw/topic_info.h"
 #include "rmw/visibility_control.h"
+
+/// Array of rmw_topic_info_t
+typedef struct RMW_PUBLIC_TYPE rmw_topic_info_array_t
+{
+  /// Size of the array.
+  size_t count;
+  /// Pointer representing an array of rmw_topic_info_t
+  rmw_topic_info_t * info_array;
+} rmw_topic_info_array_t;
 
 /// Return a rmw_topic_info_array_t struct with members initialized to `NULL`.
 RMW_PUBLIC
@@ -42,11 +51,14 @@ rmw_topic_info_array_check_zero(rmw_topic_info_array_t * topic_info_array);
  * type rmw_topic_info_t. This function allocates memory to this array to hold n elements,
  * where n is the value of the size param to this function.
  *
- * \param[in] allocator the allocator to be used to allocate space
+ * topic_info_array must be zero initialized before being passed into this function.
+ *
+ * \param[inout] topic_info_array the data structure to initialise
  * \param[in] size the size of the array
- * \param[out] topic_info_array the data structure to initialise
+ * \param[in] allocator the allocator to be used to allocate space
  * \returns `RMW_RET_OK` on successful init, or
  * \returns `RMW_RET_INVALID_ARGUMENT` if any of the parameters are NULL, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if topic_info_array is not zero initialized, or
  * \returns `RMW_BAD_ALLOC` if memory allocation fails, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
  */
@@ -65,8 +77,8 @@ rmw_topic_info_array_init_with_size(
  * This function reclaims any allocated resources within the object and also sets the value of count
  * to 0.
  *
+ * \param[inout] topic_info_array object to be finalized
  * \param[in] allocator the allocator used to allocate memory to the object
- * \param[out] topic_info_array object to be finalized
  * \returns `RMW_RET_OK` on successfully reclaiming memory, or
  * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.

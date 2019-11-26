@@ -428,31 +428,6 @@ typedef struct RMW_PUBLIC_TYPE rmw_offered_deadline_missed_status_t
   int32_t total_count_change;
 } rmw_offered_deadline_missed_status_t;
 
-/// A Structure that encapsulates the name, namespace, topic_type, gid and qos_profile
-/// of publishers and subscriptions for a topic
-typedef struct RMW_PUBLIC_TYPE rmw_topic_info_t
-{
-  /// Name of the node
-  const char * node_name;
-  /// Namespace of the node
-  const char * node_namespace;
-  /// The associated TopicType
-  const char * topic_type;
-  /// The GID of the node
-  uint8_t gid[RMW_GID_STORAGE_SIZE];
-  /// Qos profile of the node
-  rmw_qos_profile_t qos_profile;
-} rmw_topic_info_t;
-
-/// Array of rmw_topic_info_t
-typedef struct RMW_PUBLIC_TYPE rmw_topic_info_array_t
-{
-  /// Size of the array.
-  size_t count;
-  /// Pointer representing an array of rmw_topic_info_t
-  rmw_topic_info_t * info_array;
-} rmw_topic_info_array_t;
-
 #ifdef __cplusplus
 }
 #endif

@@ -24,31 +24,30 @@ extern "C"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
 
-/// Set the gid in rmw_topic_info_t.
-/**
- * Copies the values from gid into the gid member inside topic_info.
- *
- * \param[in] gid the gid value to set in rmw_topic_info_t
- * \param[out] topic_info pointer to an initialized instance of rmw_topic_info_t
- * \returns `RMW_RET_OK` on successfully setting the gid, or
- * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
- * \returns `RMW_RET_ERROR` when an unspecified error occurs.
- */
-RMW_PUBLIC
-RMW_WARN_UNUSED
-rmw_ret_t
-rmw_topic_info_set_gid(
-  rmw_topic_info_t * topic_info,
-  const uint8_t gid[],
-  size_t size);
+/// A Structure that encapsulates the name, namespace, topic_type, gid and qos_profile
+/// of publishers and subscriptions for a topic
+typedef struct RMW_PUBLIC_TYPE rmw_topic_info_t
+{
+  /// Name of the node
+  const char * node_name;
+  /// Namespace of the node
+  const char * node_namespace;
+  /// The associated TopicType
+  const char * topic_type;
+  /// The GID of the node
+  uint8_t gid[RMW_GID_STORAGE_SIZE];
+  /// Qos profile of the node
+  rmw_qos_profile_t qos_profile;
+} rmw_topic_info_t;
 
 /// Set the topic_type in rmw_topic_info_t.
 /**
  * rmw_topic_info_t has a member topic_type of type const char *;
  * this function allocates memory and copies the value of param passed to it.
  *
+ * \param[inout] topic_info pointer to an initialized instance of rmw_topic_info_t
  * \param[in] topic_type the topic_type value to set in rmw_topic_info_t
- * \param[out] topic_info pointer to an initialized instance of rmw_topic_info_t
+ * \param[in] allocator the allocator that will be used to allocate memory
  * \returns `RMW_RET_OK` on successfully setting the topic_type, or
  * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
@@ -66,8 +65,9 @@ rmw_topic_info_set_topic_type(
  * rmw_topic_info_t has a member node_name of type const char *;
  * this function allocates memory and copies the value of param passed to it.
  *
+ * \param[inout] topic_info pointer to an initialized instance of rmw_topic_info_t
  * \param[in] node_name the node_name value to set in rmw_topic_info_t
- * \param[out] topic_info pointer to an initialized instance of rmw_topic_info_t
+ * \param[in] allocator the allocator that will be used to allocate memory
  * \returns `RMW_RET_OK` on successfully setting the node_name, or
  * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
@@ -85,8 +85,9 @@ rmw_topic_info_set_node_name(
  * rmw_topic_info_t has a member node_namespace of type const char *;
  * this function allocates memory and copies the value of param passed to it.
  *
+ * \param[inout] topic_info pointer to an initialized instance of rmw_topic_info_t
  * \param[in] node_namespace the node_namespace value to set in rmw_topic_info_t
- * \param[out] topic_info pointer to an initialized instance of rmw_topic_info_t
+ * \param[in] allocator the allocator that will be used to allocate memory
  * \returns `RMW_RET_OK` on successfully setting the node_namespace, or
  * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
@@ -104,8 +105,8 @@ rmw_topic_info_set_node_namespace(
  * rmw_topic_info_t has a member qos_profile of type const rmw_qos_profile_t *.
  * This function assigns the passed qos_profile pointer to the member.
  *
+ * \param[inout] topic_info pointer to an initialized instance of rmw_topic_info_t
  * \param[in] qos_profile the qos_profile to set in rmw_topic_info_t
- * \param[out] topic_info pointer to an initialized instance of rmw_topic_info_t
  * \returns `RMW_RET_OK` on successfully setting the qos_profile, or
  * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
@@ -115,7 +116,75 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_topic_info_set_qos_profile(
   rmw_topic_info_t * topic_info,
-  rmw_qos_profile_t * qos_profile);
+  const rmw_qos_profile_t * qos_profile);
+
+/// Set the gid in rmw_topic_info_t.
+/**
+ * Copies the values from gid into the gid member inside topic_info.
+ *
+ * \param[inout] topic_info pointer to an initialized instance of rmw_topic_info_t
+ * \param[in] gid the gid value to set in rmw_topic_info_t
+ * \param[in] size the size of the gid param
+ * \returns `RMW_RET_OK` on successfully setting the gid, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` size is greater than RMW_GID_STORAGE_SIZE, or
+ * \returns `RMW_RET_ERROR` when an unspecified error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_topic_info_set_gid(
+  rmw_topic_info_t * topic_info,
+  const uint8_t gid[],
+  size_t size);
+
+/// Free the memory which was allocated for topic_info.node_name
+/**
+ *
+ * \param[inout] topic_info pointer to an initialized instance of rmw_topic_info_t
+ * \param[in] allocator the allocator that was used to allocate memory
+ * \returns `RMW_RET_OK` on successfully freeing the memory, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
+ * \returns `RMW_RET_ERROR` when an unspecified error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_topic_info_fini_node_name(
+  rmw_topic_info_t * topic_info,
+  rcutils_allocator_t * allocator);
+
+/// Free the memory which was allocated for topic_info.node_namespace
+/**
+ *
+ * \param[inout] topic_info pointer to an initialized instance of rmw_topic_info_t
+ * \param[in] allocator the allocator that was used to allocate memory
+ * \returns `RMW_RET_OK` on successfully freeing the memory, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
+ * \returns `RMW_RET_ERROR` when an unspecified error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_topic_info_fini_node_namespace(
+  rmw_topic_info_t * topic_info,
+  rcutils_allocator_t * allocator);
+
+/// Free the memory which was allocated for topic_info.topic_type
+/**
+ *
+ * \param[inout] topic_info pointer to an initialized instance of rmw_topic_info_t
+ * \param[in] allocator the allocator that was used to allocate memory
+ * \returns `RMW_RET_OK` on successfully freeing the memory, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
+ * \returns `RMW_RET_ERROR` when an unspecified error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_topic_info_fini_topic_type(
+  rmw_topic_info_t * topic_info,
+  rcutils_allocator_t * allocator);
 
 #ifdef __cplusplus
 }

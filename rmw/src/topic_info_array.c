@@ -13,7 +13,6 @@
 // limitations under the License.
 
 #include "rmw/topic_info_array.h"
-
 #include "rmw/error_handling.h"
 #include "rmw/types.h"
 
@@ -76,12 +75,21 @@ rmw_topic_info_array_fini(
     return RMW_RET_INVALID_ARGUMENT;
   }
 
+  rmw_ret_t ret;
   // free all const char * inside the topic_info_t
   for (size_t i = 0u; i < topic_info_array->count; i++) {
-    allocator->deallocate((char *) topic_info_array->info_array[i].topic_type, allocator->state);
-    allocator->deallocate((char *) topic_info_array->info_array[i].node_name, allocator->state);
-    allocator->deallocate((char *) topic_info_array->info_array[i].node_namespace,
-      allocator->state);
+    ret = rmw_topic_info_fini_node_name(&topic_info_array->info_array[i], allocator);
+    if (ret != RMW_RET_OK) {
+      return ret;
+    }
+    ret = rmw_topic_info_fini_node_namespace(&topic_info_array->info_array[i], allocator);
+    if (ret != RMW_RET_OK) {
+      return ret;
+    }
+    ret = rmw_topic_info_fini_topic_type(&topic_info_array->info_array[i], allocator);
+    if (ret != RMW_RET_OK) {
+      return ret;
+    }
   }
 
   allocator->deallocate(topic_info_array->info_array, allocator->state);
