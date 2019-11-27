@@ -17,6 +17,33 @@
 #include "rmw/error_handling.h"
 #include "rmw/types.h"
 
+rmw_topic_info_t
+rmw_get_zero_initialized_topic_info(void)
+{
+  rmw_topic_info_t zero = {0};
+  return zero;
+}
+
+rmw_ret_t
+rmw_topic_info_fini(
+  rmw_topic_info_t * topic_info,
+  rcutils_allocator_t * allocator)
+{
+  if (!topic_info) {
+    RMW_SET_ERROR_MSG("topic_info is null");
+    return RMW_RET_INVALID_ARGUMENT;
+  }
+  if (!allocator) {
+    RMW_SET_ERROR_MSG("allocator is null");
+    return RMW_RET_INVALID_ARGUMENT;
+  }
+  allocator->deallocate((char *) topic_info->node_name, allocator->state);
+  allocator->deallocate((char *) topic_info->node_namespace, allocator->state);
+  allocator->deallocate((char *) topic_info->topic_type, allocator->state);
+  *topic_info = rmw_get_zero_initialized_topic_info();
+  return RMW_RET_OK;
+}
+
 rmw_ret_t
 _rmw_topic_info_copy_str(
   const char ** topic_info_str,

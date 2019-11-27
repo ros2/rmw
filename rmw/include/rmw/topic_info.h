@@ -40,6 +40,31 @@ typedef struct RMW_PUBLIC_TYPE rmw_topic_info_t
   rmw_qos_profile_t qos_profile;
 } rmw_topic_info_t;
 
+/// Return a rmw_topic_info_t struct with members initialized to `NULL`.
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_topic_info_t
+rmw_get_zero_initialized_topic_info(void);
+
+/// Finalize a rmw_topic_info_t object.
+/**
+ * The rmw_topic_info_t struct has members which require memory to be allocated to them before
+ * setting values. This function reclaims any allocated resources within the object and zeroes out
+ * all other members.
+ *
+ * \param[inout] topic_info object to be finalized
+ * \param[in] allocator the allocator used to allocate memory to the object
+ * \returns `RMW_RET_OK` on successfully reclaiming memory, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
+ * \returns `RMW_RET_ERROR` when an unspecified error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_topic_info_fini(
+  rmw_topic_info_t * topic_info,
+  rcutils_allocator_t * allocator);
+
 /// Set the topic_type in rmw_topic_info_t.
 /**
  * rmw_topic_info_t has a member topic_type of type const char *;

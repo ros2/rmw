@@ -102,7 +102,6 @@ TEST(test_topic_info, set_gid) {
   ret = rmw_topic_info_set_gid(&topic_info, gid, RMW_GID_STORAGE_SIZE);
   EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
   for (uint8_t i = 0; i < RMW_GID_STORAGE_SIZE; i++) {
-    printf("gid[%d]: %d and topic_gid[%d]: %d", i, gid[i], i, topic_info.gid[i]);
     EXPECT_EQ(topic_info.gid[i], gid[i]) << "Gid value is not as expected";
   }
 }
@@ -145,4 +144,88 @@ TEST(test_topic_info, set_qos_profile) {
     0u) << "Unequal liveliness lease duration nsec";
   EXPECT_EQ(topic_info.qos_profile.avoid_ros_namespace_conventions,
     false) << "Unequal avoid namespace conventions";
+}
+
+TEST(test_topic_info, zero_init) {
+  rmw_topic_info_t topic_info = rmw_get_zero_initialized_topic_info();
+  EXPECT_FALSE(topic_info.node_name);
+  EXPECT_FALSE(topic_info.node_namespace);
+  EXPECT_FALSE(topic_info.topic_type);
+  for (uint8_t i = 0; i < RMW_GID_STORAGE_SIZE; i++) {
+    EXPECT_EQ(topic_info.gid[i], 0) << "Gid value should be 0";
+  }
+  EXPECT_EQ(topic_info.qos_profile.history, 0) << "Non-zero history";
+  EXPECT_EQ(topic_info.qos_profile.depth, 0u) << "Non-zero depth";
+  EXPECT_EQ(topic_info.qos_profile.reliability, 0) << "Non-zero reliability";
+  EXPECT_EQ(topic_info.qos_profile.durability, 0) << "Non-zero durability";
+  EXPECT_EQ(topic_info.qos_profile.deadline.sec, 0u) << "Non-zero deadline sec";
+  EXPECT_EQ(topic_info.qos_profile.deadline.nsec, 0u) << "Non-zero deadline nsec";
+  EXPECT_EQ(topic_info.qos_profile.lifespan.sec, 0u) << "Non-zero lifespan sec";
+  EXPECT_EQ(topic_info.qos_profile.lifespan.nsec, 0u) << "Non-zero lifespan nsec";
+  EXPECT_EQ(topic_info.qos_profile.liveliness, 0) << "Non-zero liveliness";
+  EXPECT_EQ(topic_info.qos_profile.liveliness_lease_duration.sec,
+    0u) << "Non-zero liveliness lease duration sec";
+  EXPECT_EQ(topic_info.qos_profile.liveliness_lease_duration.nsec,
+    0u) << "Non-zero liveliness lease duration nsec";
+  EXPECT_EQ(topic_info.qos_profile.avoid_ros_namespace_conventions,
+    false) << "Non-zero avoid namespace conventions";
+}
+
+TEST(test_topic_info, fini) {
+  rmw_ret_t ret;
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
+  rmw_topic_info_t topic_info = rmw_get_zero_initialized_topic_info();
+  rmw_qos_profile_t qos_profile;
+  qos_profile.history = RMW_QOS_POLICY_HISTORY_KEEP_LAST;
+  qos_profile.depth = 0;
+  qos_profile.reliability = RMW_QOS_POLICY_RELIABILITY_RELIABLE;
+  qos_profile.durability = RMW_QOS_POLICY_DURABILITY_VOLATILE;
+  qos_profile.deadline = {1, 0};
+  qos_profile.lifespan = {2, 0};
+  qos_profile.liveliness = RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE;
+  qos_profile.liveliness_lease_duration = {3, 0};
+  qos_profile.avoid_ros_namespace_conventions = false;
+  ret = rmw_topic_info_set_qos_profile(&topic_info, &qos_profile);
+  EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
+  uint8_t gid[RMW_GID_STORAGE_SIZE];
+  for (uint8_t i = 0; i < RMW_GID_STORAGE_SIZE; i++) {
+    gid[i] = i * 12;
+  }
+  ret = rmw_topic_info_set_gid(&topic_info, gid, RMW_GID_STORAGE_SIZE);
+  EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid gid arguments";
+  ret = rmw_topic_info_set_node_namespace(&topic_info, "namespace", &allocator);
+  EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid node_namespace arguments";
+  ret = rmw_topic_info_set_node_name(&topic_info, "name", &allocator);
+  EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid node_name arguments";
+  ret = rmw_topic_info_set_topic_type(&topic_info, "type", &allocator);
+  EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid topic_type arguments";
+  ret = rmw_topic_info_fini(&topic_info, nullptr);
+  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null allocator";
+  ret = rmw_topic_info_fini(nullptr, &allocator);
+  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null topic_info";
+
+  ret = rmw_topic_info_fini(&topic_info, &allocator);
+  // Verify that the values inside the struct are zero-ed out and finished.
+  EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid fini arguments";
+  EXPECT_FALSE(topic_info.node_name);
+  EXPECT_FALSE(topic_info.node_namespace);
+  EXPECT_FALSE(topic_info.topic_type);
+  for (uint8_t i = 0; i < RMW_GID_STORAGE_SIZE; i++) {
+    EXPECT_EQ(topic_info.gid[i], 0) << "Gid value should be 0";
+  }
+  EXPECT_EQ(topic_info.qos_profile.history, 0) << "Non-zero history";
+  EXPECT_EQ(topic_info.qos_profile.depth, 0u) << "Non-zero depth";
+  EXPECT_EQ(topic_info.qos_profile.reliability, 0) << "Non-zero reliability";
+  EXPECT_EQ(topic_info.qos_profile.durability, 0) << "Non-zero durability";
+  EXPECT_EQ(topic_info.qos_profile.deadline.sec, 0u) << "Non-zero deadline sec";
+  EXPECT_EQ(topic_info.qos_profile.deadline.nsec, 0u) << "Non-zero deadline nsec";
+  EXPECT_EQ(topic_info.qos_profile.lifespan.sec, 0u) << "Non-zero lifespan sec";
+  EXPECT_EQ(topic_info.qos_profile.lifespan.nsec, 0u) << "Non-zero lifespan nsec";
+  EXPECT_EQ(topic_info.qos_profile.liveliness, 0) << "Non-zero liveliness";
+  EXPECT_EQ(topic_info.qos_profile.liveliness_lease_duration.sec,
+    0u) << "Non-zero liveliness lease duration sec";
+  EXPECT_EQ(topic_info.qos_profile.liveliness_lease_duration.nsec,
+    0u) << "Non-zero liveliness lease duration nsec";
+  EXPECT_EQ(topic_info.qos_profile.avoid_ros_namespace_conventions,
+    false) << "Non-zero avoid namespace conventions";
 }
