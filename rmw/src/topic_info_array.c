@@ -32,7 +32,7 @@ rmw_topic_info_array_check_zero(rmw_topic_info_array_t * topic_info_array)
   }
   if (topic_info_array->count != 0 || topic_info_array->info_array != NULL) {
     RMW_SET_ERROR_MSG("topic_info_array is not zeroed");
-    return RMW_RET_INVALID_ARGUMENT;
+    return RMW_RET_ERROR;
   }
   return RMW_RET_OK;
 }

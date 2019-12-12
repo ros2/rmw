@@ -40,6 +40,14 @@ rmw_topic_info_array_t
 rmw_get_zero_initialized_topic_info_array(void);
 
 /// Check that a rmw_topic_info_array_t struct is zero initialized.
+/**
+ * This function checks if the provided rmw_topic_info_array_t is zero initialized or not.
+ *
+ * \param[in] topic_info_array the data structure to be checked
+ * \returns `RMW_RET_OK` if topic_info_array is zero initialized
+ * \returns `RMW_RET_INVALID_ARGUMENT` if the parameter is NULL, or
+ * \returns `RMW_RET_ERROR` if topic_info_array is not zero initialized
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -48,7 +56,8 @@ rmw_topic_info_array_check_zero(rmw_topic_info_array_t * topic_info_array);
 /// Initialize the info_array member inside rmw_topic_info_array_t with the given size
 /**
  * The rmw_topic_info_array_t has a member variable info_array which is an array of
- * type rmw_topic_info_t. This function allocates memory to this array to hold n elements,
+ * type rmw_topic_info_t.
+ * This function allocates memory to this array to hold n elements,
  * where n is the value of the size param to this function.
  *
  * topic_info_array must be zero initialized before being passed into this function.
@@ -73,7 +82,8 @@ rmw_topic_info_array_init_with_size(
 /// Finalize a rmw_topic_info_array_t object.
 /**
  * The info_array member variable inside of rmw_topic_info_array represents an array of
- * rmw_topic_info_t. When initializing this array, memory is allocated for it using the allocator.
+ * rmw_topic_info_t.
+ * When initializing this array, memory is allocated for it using the allocator.
  * This function reclaims any allocated resources within the object and also sets the value of count
  * to 0.
  *

@@ -24,7 +24,7 @@ extern "C"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
 
-/// A Structure that encapsulates the name, namespace, topic_type, gid and qos_profile
+/// A structure that encapsulates the name, namespace, topic_type, gid and qos_profile
 /// of publishers and subscriptions for a topic
 typedef struct RMW_PUBLIC_TYPE rmw_topic_info_t
 {
@@ -32,7 +32,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_topic_info_t
   const char * node_name;
   /// Namespace of the node
   const char * node_namespace;
-  /// The associated TopicType
+  /// The associated topic type
   const char * topic_type;
   /// The GID of the node
   uint8_t gid[RMW_GID_STORAGE_SIZE];

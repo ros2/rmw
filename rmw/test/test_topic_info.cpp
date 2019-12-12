@@ -28,7 +28,7 @@ char * get_mallocd_string(const char * s)
 }
 
 TEST(test_topic_info, set_topic_type) {
-  rmw_topic_info_t topic_info;
+  rmw_topic_info_t topic_info = rmw_get_zero_initialized_topic_info();
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
   char * val = get_mallocd_string("test_topic_type");
   rmw_ret_t ret = rmw_topic_info_set_topic_type(&topic_info, val, nullptr);
@@ -48,7 +48,7 @@ TEST(test_topic_info, set_topic_type) {
 }
 
 TEST(test_topic_info, set_node_name) {
-  rmw_topic_info_t topic_info;
+  rmw_topic_info_t topic_info = rmw_get_zero_initialized_topic_info();
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
   char * val = get_mallocd_string("test_node_name");
   rmw_ret_t ret = rmw_topic_info_set_node_name(&topic_info, val, nullptr);
@@ -68,7 +68,7 @@ TEST(test_topic_info, set_node_name) {
 }
 
 TEST(test_topic_info, set_node_namespace) {
-  rmw_topic_info_t topic_info;
+  rmw_topic_info_t topic_info = rmw_get_zero_initialized_topic_info();
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
   char * val = get_mallocd_string("test_node_namespace");
   rmw_ret_t ret = rmw_topic_info_set_node_namespace(&topic_info, val, nullptr);
@@ -89,7 +89,7 @@ TEST(test_topic_info, set_node_namespace) {
 }
 
 TEST(test_topic_info, set_gid) {
-  rmw_topic_info_t topic_info;
+  rmw_topic_info_t topic_info = rmw_get_zero_initialized_topic_info();
   uint8_t gid[RMW_GID_STORAGE_SIZE];
   for (uint8_t i = 0; i < RMW_GID_STORAGE_SIZE; i++) {
     gid[i] = i;
@@ -107,7 +107,7 @@ TEST(test_topic_info, set_gid) {
 }
 
 TEST(test_topic_info, set_qos_profile) {
-  rmw_topic_info_t topic_info;
+  rmw_topic_info_t topic_info = rmw_get_zero_initialized_topic_info();
   rmw_qos_profile_t qos_profile;
   qos_profile.history = RMW_QOS_POLICY_HISTORY_KEEP_LAST;
   qos_profile.depth = 0;
@@ -172,7 +172,6 @@ TEST(test_topic_info, zero_init) {
 }
 
 TEST(test_topic_info, fini) {
-  rmw_ret_t ret;
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
   rmw_topic_info_t topic_info = rmw_get_zero_initialized_topic_info();
   rmw_qos_profile_t qos_profile;
@@ -185,7 +184,7 @@ TEST(test_topic_info, fini) {
   qos_profile.liveliness = RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE;
   qos_profile.liveliness_lease_duration = {3, 0};
   qos_profile.avoid_ros_namespace_conventions = false;
-  ret = rmw_topic_info_set_qos_profile(&topic_info, &qos_profile);
+  rmw_ret_t ret = rmw_topic_info_set_qos_profile(&topic_info, &qos_profile);
   EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
   uint8_t gid[RMW_GID_STORAGE_SIZE];
   for (uint8_t i = 0; i < RMW_GID_STORAGE_SIZE; i++) {

@@ -32,7 +32,8 @@ extern "C"
  *
  * The topic_name parameter must not be `NULL` and must follow the topic naming rules
  * mentioned at http://design.ros2.org/articles/topic_and_service_names.html
- * Non existent topic names are allowed. They will return an empty array.
+ * Non existent topic names are allowed.
+ * In that case, this function will return an empty array.
  *
  * It is the responsibility of the caller to ensure that `publishers_info` parameter points
  * to a valid struct of type rmw_topic_info_array_t. The `count` field inside the struct
@@ -42,8 +43,10 @@ extern "C"
  * The `allocator` will be used to allocate memory to the `info_array` member
  * inside of `publishers_info`.
  * Moreover, every const char * member inside of
- * rmw_topic_info_t will be allocated memory and assigned a copied value.
- * @see rmw_topic_info_set_node_name and the likes.
+ * rmw_topic_info_t will be assigned a copied value on allocated memory.
+ * @see rmw_topic_info_set_topic_type
+ * @see rmw_topic_info_set_node_name
+ * @see rmw_topic_info_set_node_namespace
  * However, it is the responsibility of the caller to
  * reclaim any allocated resources to `publishers_info` to avoid leaking memory.
  * @see rmw_topic_info_array_fini
@@ -78,7 +81,8 @@ rmw_get_publishers_info_by_topic(
  *
  * The topic_name parameter must not be `NULL` and must follow the topic naming rules
  * mentioned at http://design.ros2.org/articles/topic_and_service_names.html
- * Non existent topic names are allowed. They will return an empty array.
+ * Non existent topic names are allowed.
+ * They will return an empty array.
  *
  * It is the responsibility of the caller to ensure that `subscriptions_info` parameter points
  * to a valid struct of type rmw_topic_info_array_t. The `count` field inside the struct
@@ -88,8 +92,10 @@ rmw_get_publishers_info_by_topic(
  * The `allocator` will be used to allocate memory to the `info_array` member
  * inside of `publishers_info`.
  * Moreover, every const char * member inside of
- * rmw_topic_info_t will be allocated memory and assigned a copied value.
- * @see rmw_topic_info_set_node_name and the likes.
+ * rmw_topic_info_t will be assigned a copied value on allocated memory.
+ * @see rmw_topic_info_set_topic_type
+ * @see rmw_topic_info_set_node_name
+ * @see rmw_topic_info_set_node_namespace
  * However, it is the responsibility of the caller to
  * reclaim any allocated resources to `publishers_info` to avoid leaking memory.
  * @see rmw_topic_info_array_fini

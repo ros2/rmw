@@ -144,7 +144,7 @@ rmw_topic_info_set_gid(
     RMW_SET_ERROR_MSG("size is more than RMW_GID_STORAGE_SIZE");
     return RMW_RET_INVALID_ARGUMENT;
   }
-  memset(&topic_info->gid, 0, RMW_GID_STORAGE_SIZE);
+  memset(topic_info->gid, 0, RMW_GID_STORAGE_SIZE);
   memcpy(topic_info->gid, gid, size);
   return RMW_RET_OK;
 }

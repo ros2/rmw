@@ -29,10 +29,10 @@ TEST(test_topic_info_array, check_zero) {
   rmw_topic_info_array_t arr = rmw_get_zero_initialized_topic_info_array();
   EXPECT_EQ(rmw_topic_info_array_check_zero(&arr), RMW_RET_OK);
   rmw_topic_info_array_t arr_count_not_zero = {1, nullptr};
-  EXPECT_EQ(rmw_topic_info_array_check_zero(&arr_count_not_zero), RMW_RET_INVALID_ARGUMENT);
+  EXPECT_EQ(rmw_topic_info_array_check_zero(&arr_count_not_zero), RMW_RET_ERROR);
   rmw_topic_info_t topic_info;
   rmw_topic_info_array_t arr_info_array_not_null = {0, &topic_info};
-  EXPECT_EQ(rmw_topic_info_array_check_zero(&arr_info_array_not_null), RMW_RET_INVALID_ARGUMENT);
+  EXPECT_EQ(rmw_topic_info_array_check_zero(&arr_info_array_not_null), RMW_RET_ERROR);
   EXPECT_EQ(rmw_topic_info_array_check_zero(nullptr), RMW_RET_INVALID_ARGUMENT);
 }
 
