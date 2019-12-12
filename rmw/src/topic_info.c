@@ -37,16 +37,16 @@ rmw_topic_info_fini(
     RMW_SET_ERROR_MSG("allocator is null");
     return RMW_RET_INVALID_ARGUMENT;
   }
-  allocator->deallocate(topic_info->node_name, allocator->state);
-  allocator->deallocate(topic_info->node_namespace, allocator->state);
-  allocator->deallocate(topic_info->topic_type, allocator->state);
+  allocator->deallocate((char *) topic_info->node_name, allocator->state);
+  allocator->deallocate((char *) topic_info->node_namespace, allocator->state);
+  allocator->deallocate((char *) topic_info->topic_type, allocator->state);
   *topic_info = rmw_get_zero_initialized_topic_info();
   return RMW_RET_OK;
 }
 
 rmw_ret_t
 _rmw_topic_info_copy_str(
-  char ** topic_info_str,
+  const char ** topic_info_str,
   const char * str,
   rcutils_allocator_t * allocator)
 {
@@ -151,7 +151,7 @@ rmw_topic_info_set_gid(
 
 rmw_ret_t
 _rmw_topic_info_fini_str(
-  char ** topic_info_str,
+  const char ** topic_info_str,
   rcutils_allocator_t * allocator)
 {
   if (!topic_info_str) {
@@ -164,7 +164,7 @@ _rmw_topic_info_fini_str(
     return RMW_RET_INVALID_ARGUMENT;
   }
 
-  allocator->deallocate(*topic_info_str, allocator->state);
+  allocator->deallocate((char *) *topic_info_str, allocator->state);
   *topic_info_str = NULL;
 
   return RMW_RET_OK;

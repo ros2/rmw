@@ -29,11 +29,11 @@ extern "C"
 typedef struct RMW_PUBLIC_TYPE rmw_topic_info_t
 {
   /// Name of the node
-  char * node_name;
+  const char * node_name;
   /// Namespace of the node
-  char * node_namespace;
+  const char * node_namespace;
   /// The associated TopicType
-  char * topic_type;
+  const char * topic_type;
   /// The GID of the node
   uint8_t gid[RMW_GID_STORAGE_SIZE];
   /// Qos profile of the node
