@@ -22,11 +22,11 @@ extern "C"
 
 #include "rmw/visibility_control.h"
 
-enum RMW_PUBLIC_TYPE rmw_security_enforcement_policy_t
+typedef enum RMW_PUBLIC_TYPE rmw_security_enforcement_policy_t
 {
   RMW_SECURITY_ENFORCEMENT_PERMISSIVE,
   RMW_SECURITY_ENFORCEMENT_ENFORCE,
-};
+} rmw_security_enforcement_policy_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_security_options_t
 {

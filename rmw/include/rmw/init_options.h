@@ -23,6 +23,8 @@ extern "C"
 #include <stdint.h>
 
 #include "rcutils/allocator.h"
+#include "rmw/domain_id.h"
+#include "rmw/localhost.h"
 #include "rmw/macros.h"
 #include "rmw/ret_types.h"
 #include "rmw/security_options.h"
@@ -33,8 +35,6 @@ extern "C"
  * This should be defined by the rmw implementation.
  */
 typedef struct rmw_init_options_impl_t rmw_init_options_impl_t;
-
-#define RMW_INIT_OPTIONS_DEFAULT_DOMAIN_ID SIZE_MAX
 
 /// Options structure used during rmw_init().
 typedef struct RMW_PUBLIC_TYPE rmw_init_options_t
@@ -52,6 +52,8 @@ typedef struct RMW_PUBLIC_TYPE rmw_init_options_t
   size_t domain_id;
   /// Security options
   rmw_security_options_t security_options;
+  /// Enable localhost only
+  rmw_localhost_only_t localhost_only;
 
   // TODO(wjwwood): replace with rmw_allocator_t when that refactor happens
   /// Allocator used during internal allocation of init options, if needed.

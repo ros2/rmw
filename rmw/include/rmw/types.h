@@ -37,7 +37,7 @@ extern "C"
 
 // 24 bytes is the most memory needed to represent the GID by any current
 // implementation. It may need to be increased in the future.
-#define RMW_GID_STORAGE_SIZE 24
+#define RMW_GID_STORAGE_SIZE 24u
 
 typedef struct RMW_PUBLIC_TYPE rmw_node_t
 {
