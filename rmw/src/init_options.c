@@ -25,10 +25,11 @@ rmw_init_options_t
 rmw_get_zero_initialized_init_options(void)
 {
   return (const rmw_init_options_t) {
+           .domain_id = RMW_DEFAULT_DOMAIN_ID,
+           .localhost_only = false,
            .instance_id = 0,
            .implementation_identifier = NULL,
            .impl = NULL,
-           .domain_id = RMW_DEFAULT_DOMAIN_ID,
            .security_options = rmw_get_default_security_options(),
   };  // NOLINT(readability/braces): false positive
 }
