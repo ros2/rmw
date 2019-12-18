@@ -36,8 +36,9 @@ extern "C"
  * In that case, this function will return an empty array.
  *
  * It is the responsibility of the caller to ensure that `publishers_info` parameter points
- * to a valid struct of type rmw_topic_info_array_t. The `count` field inside the struct
- * must be set to 0 and the `info_array` field inside the struct must be set to null.
+ * to a valid struct of type rmw_topic_info_array_t.
+ * The `count` field inside the struct must be set to 0 and the `info_array` field inside
+ * the struct must be set to null.
  * @see rmw_get_zero_initialized_topic_info_array
  *
  * The `allocator` will be used to allocate memory to the `info_array` member
@@ -85,8 +86,9 @@ rmw_get_publishers_info_by_topic(
  * They will return an empty array.
  *
  * It is the responsibility of the caller to ensure that `subscriptions_info` parameter points
- * to a valid struct of type rmw_topic_info_array_t. The `count` field inside the struct
- * must be set to 0 and the `info_array` field inside the struct must be set to null.
+ * to a valid struct of type rmw_topic_info_array_t.
+ * The `count` field inside the struct must be set to 0 and the `info_array` field inside
+ * the struct must be set to null.
  * @see rmw_get_zero_initialized_topic_info_array
  *
  * The `allocator` will be used to allocate memory to the `info_array` member

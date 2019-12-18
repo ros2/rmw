@@ -49,8 +49,9 @@ rmw_get_zero_initialized_topic_info(void);
 /// Finalize a rmw_topic_info_t object.
 /**
  * The rmw_topic_info_t struct has members which require memory to be allocated to them before
- * setting values. This function reclaims any allocated resources within the object and zeroes out
- * all other members.
+ * setting values.
+ * This function reclaims any allocated resources within the object and zeroes out all other
+ * members.
  *
  * \param[inout] topic_info object to be finalized
  * \param[in] allocator the allocator used to allocate memory to the object
