@@ -103,7 +103,7 @@ static const rmw_qos_profile_t rmw_qos_profile_system_default =
 static const rmw_qos_profile_t rmw_qos_profile_unknown =
 {
   RMW_QOS_POLICY_HISTORY_UNKNOWN,
-  0,
+  RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT,
   RMW_QOS_POLICY_RELIABILITY_UNKNOWN,
   RMW_QOS_POLICY_DURABILITY_UNKNOWN,
   RMW_QOS_DEADLINE_DEFAULT,
