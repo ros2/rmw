@@ -50,8 +50,7 @@ typedef enum RMW_PUBLIC_TYPE
 {
   RMW_ENDPOINT_INVALID = 0,
   RMW_ENDPOINT_PUBLISHER,
-  RMW_ENDPOINT_SUBSCRIPTION,
-  RMW_ENDPOINT_UNKNOWN
+  RMW_ENDPOINT_SUBSCRIPTION
 } rmw_endpoint_type_t;
 
 /// Options that can be used to configure the creation of a publisher in rmw.
