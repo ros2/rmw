@@ -43,8 +43,10 @@ TEST(test_topic_endpoint_info_array, check_init_with_size) {
     rmw_ret_t fini_ret = rmw_topic_endpoint_info_array_fini(&arr, &allocator);
     EXPECT_EQ(fini_ret, RMW_RET_OK);
   });
-  EXPECT_EQ(rmw_topic_endpoint_info_array_init_with_size(&arr, 1, nullptr), RMW_RET_INVALID_ARGUMENT);
-  EXPECT_EQ(rmw_topic_endpoint_info_array_init_with_size(nullptr, 1, &allocator), RMW_RET_INVALID_ARGUMENT);
+  EXPECT_EQ(rmw_topic_endpoint_info_array_init_with_size(&arr, 1, nullptr),
+    RMW_RET_INVALID_ARGUMENT);
+  EXPECT_EQ(rmw_topic_endpoint_info_array_init_with_size(nullptr, 1,
+    &allocator), RMW_RET_INVALID_ARGUMENT);
   EXPECT_FALSE(arr.info_array);
   rmw_ret_t ret = rmw_topic_endpoint_info_array_init_with_size(&arr, 5, &allocator);
   EXPECT_EQ(ret, RMW_RET_OK);

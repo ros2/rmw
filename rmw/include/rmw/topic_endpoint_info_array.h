@@ -51,7 +51,8 @@ rmw_get_zero_initialized_topic_endpoint_info_array(void);
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_topic_endpoint_info_array_check_zero(rmw_topic_endpoint_info_array_t * topic_endpoint_info_array);
+rmw_topic_endpoint_info_array_check_zero(
+  rmw_topic_endpoint_info_array_t * topic_endpoint_info_array);
 
 /// Initialize the info_array member inside rmw_topic_endpoint_info_array_t with the given size
 /**

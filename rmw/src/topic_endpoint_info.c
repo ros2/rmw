@@ -166,7 +166,10 @@ rmw_topic_endpoint_info_set_node_namespace(
     RMW_SET_ERROR_MSG("topic_endpoint_info is null");
     return RMW_RET_INVALID_ARGUMENT;
   }
-  return _rmw_topic_endpoint_info_copy_str(&topic_endpoint_info->node_namespace, node_namespace, allocator);
+  return _rmw_topic_endpoint_info_copy_str(
+    &topic_endpoint_info->node_namespace,
+    node_namespace,
+    allocator);
 }
 
 rmw_ret_t

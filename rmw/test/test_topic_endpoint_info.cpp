@@ -36,7 +36,8 @@ TEST(test_topic_endpoint_info, set_topic_type) {
   ret = rmw_topic_endpoint_info_set_topic_type(&topic_endpoint_info, nullptr, &allocator);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null topic_type";
   ret = rmw_topic_endpoint_info_set_topic_type(nullptr, val, &allocator);
-  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null topic_endpoint_info";
+  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
+    "Expected invalid argument for null topic_endpoint_info";
   OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT({
     allocator.deallocate(const_cast<char *>(topic_endpoint_info.topic_type), allocator.state);
   });
@@ -44,7 +45,8 @@ TEST(test_topic_endpoint_info, set_topic_type) {
   EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
   // free the mallocd string and verify that the string was copied by value
   free(val);
-  EXPECT_STREQ(topic_endpoint_info.topic_type, "test_topic_type") << "Topic Type value is not as expected";
+  EXPECT_STREQ(topic_endpoint_info.topic_type,
+    "test_topic_type") << "Topic Type value is not as expected";
 }
 
 TEST(test_topic_endpoint_info, set_node_name) {
@@ -56,7 +58,8 @@ TEST(test_topic_endpoint_info, set_node_name) {
   ret = rmw_topic_endpoint_info_set_node_name(&topic_endpoint_info, nullptr, &allocator);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null node_name";
   ret = rmw_topic_endpoint_info_set_node_name(nullptr, val, &allocator);
-  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null topic_endpoint_info";
+  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
+    "Expected invalid argument for null topic_endpoint_info";
   OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT({
     allocator.deallocate(const_cast<char *>(topic_endpoint_info.node_name), allocator.state);
   });
@@ -64,7 +67,8 @@ TEST(test_topic_endpoint_info, set_node_name) {
   EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
   // free the mallocd string and verify that the string was copied by value
   free(val);
-  EXPECT_STREQ(topic_endpoint_info.node_name, "test_node_name") << "Node name value is not as expected";
+  EXPECT_STREQ(topic_endpoint_info.node_name, "test_node_name") <<
+    "Node name value is not as expected";
 }
 
 TEST(test_topic_endpoint_info, set_node_namespace) {
@@ -76,7 +80,8 @@ TEST(test_topic_endpoint_info, set_node_namespace) {
   ret = rmw_topic_endpoint_info_set_node_namespace(&topic_endpoint_info, nullptr, &allocator);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null node_namespace";
   ret = rmw_topic_endpoint_info_set_node_namespace(nullptr, val, &allocator);
-  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null topic_endpoint_info";
+  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
+    "Expected invalid argument for null topic_endpoint_info";
   OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT({
     allocator.deallocate(const_cast<char *>(topic_endpoint_info.node_namespace), allocator.state);
   });
@@ -84,8 +89,8 @@ TEST(test_topic_endpoint_info, set_node_namespace) {
   EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
   // free the mallocd string and verify that the string was copied by value
   free(val);
-  EXPECT_STREQ(topic_endpoint_info.node_namespace, "test_node_namespace") << "Node namespace value is"
-    "not as expected";
+  EXPECT_STREQ(topic_endpoint_info.node_namespace, "test_node_namespace") <<
+    "Node namespace value is not as expected";
 }
 
 TEST(test_topic_endpoint_info, set_gid) {
@@ -95,10 +100,11 @@ TEST(test_topic_endpoint_info, set_gid) {
     gid[i] = i;
   }
   rmw_ret_t ret = rmw_topic_endpoint_info_set_gid(nullptr, gid, RMW_GID_STORAGE_SIZE);
-  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null topic_endpoint_info";
+  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
+    "Expected invalid argument for null topic_endpoint_info";
   ret = rmw_topic_endpoint_info_set_gid(&topic_endpoint_info, gid, RMW_GID_STORAGE_SIZE + 1);
-  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for size greater than "
-    "RMW_GID_STORAGE_SIZE";
+  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
+    "Expected invalid argument for size greater than RMW_GID_STORAGE_SIZE";
   ret = rmw_topic_endpoint_info_set_gid(&topic_endpoint_info, gid, RMW_GID_STORAGE_SIZE);
   EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
   for (uint8_t i = 0; i < RMW_GID_STORAGE_SIZE; i++) {
@@ -120,13 +126,15 @@ TEST(test_topic_endpoint_info, set_qos_profile) {
   qos_profile.avoid_ros_namespace_conventions = false;
 
   rmw_ret_t ret = rmw_topic_endpoint_info_set_qos_profile(nullptr, &qos_profile);
-  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null topic_endpoint_info";
+  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
+    "Expected invalid argument for null topic_endpoint_info";
   ret = rmw_topic_endpoint_info_set_qos_profile(&topic_endpoint_info, nullptr);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null qos_profile";
   ret = rmw_topic_endpoint_info_set_qos_profile(&topic_endpoint_info, &qos_profile);
   EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
 
-  EXPECT_EQ(topic_endpoint_info.qos_profile.history, RMW_QOS_POLICY_HISTORY_KEEP_LAST) << "Unequal history";
+  EXPECT_EQ(topic_endpoint_info.qos_profile.history, RMW_QOS_POLICY_HISTORY_KEEP_LAST) <<
+    "Unequal history";
   EXPECT_EQ(topic_endpoint_info.qos_profile.depth, 0u) << "Unequal depth";
   EXPECT_EQ(topic_endpoint_info.qos_profile.reliability,
     RMW_QOS_POLICY_RELIABILITY_RELIABLE) << "Unequal reliability";
@@ -151,7 +159,8 @@ TEST(test_topic_endpoint_info, zero_init) {
   EXPECT_FALSE(topic_endpoint_info.node_name);
   EXPECT_FALSE(topic_endpoint_info.node_namespace);
   EXPECT_FALSE(topic_endpoint_info.topic_type);
-  EXPECT_EQ(topic_endpoint_info.endpoint_type, RMW_ENDPOINT_INVALID) << "Endpoint type value should be invalid";
+  EXPECT_EQ(topic_endpoint_info.endpoint_type, RMW_ENDPOINT_INVALID) <<
+    "Endpoint type value should be invalid";
   for (uint8_t i = 0; i < RMW_GID_STORAGE_SIZE; i++) {
     EXPECT_EQ(topic_endpoint_info.endpoint_gid[i], 0) << "Gid value should be 0";
   }
@@ -204,7 +213,8 @@ TEST(test_topic_endpoint_info, fini) {
   ret = rmw_topic_endpoint_info_fini(&topic_endpoint_info, nullptr);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null allocator";
   ret = rmw_topic_endpoint_info_fini(nullptr, &allocator);
-  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null topic_endpoint_info";
+  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
+    "Expected invalid argument for null topic_endpoint_info";
 
   ret = rmw_topic_endpoint_info_fini(&topic_endpoint_info, &allocator);
   // Verify that the values inside the struct are zero-ed out and finished.
@@ -226,10 +236,10 @@ TEST(test_topic_endpoint_info, fini) {
   EXPECT_EQ(topic_endpoint_info.qos_profile.lifespan.sec, 0u) << "Non-zero lifespan sec";
   EXPECT_EQ(topic_endpoint_info.qos_profile.lifespan.nsec, 0u) << "Non-zero lifespan nsec";
   EXPECT_EQ(topic_endpoint_info.qos_profile.liveliness, 0) << "Non-zero liveliness";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.liveliness_lease_duration.sec,
-    0u) << "Non-zero liveliness lease duration sec";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.liveliness_lease_duration.nsec,
-    0u) << "Non-zero liveliness lease duration nsec";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.avoid_ros_namespace_conventions,
-    false) << "Non-zero avoid namespace conventions";
+  EXPECT_EQ(topic_endpoint_info.qos_profile.liveliness_lease_duration.sec, 0u) <<
+    "Non-zero liveliness lease duration sec";
+  EXPECT_EQ(topic_endpoint_info.qos_profile.liveliness_lease_duration.nsec, 0u) <<
+    "Non-zero liveliness lease duration nsec";
+  EXPECT_EQ(topic_endpoint_info.qos_profile.avoid_ros_namespace_conventions, false) <<
+    "Non-zero avoid namespace conventions";
 }
