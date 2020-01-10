@@ -46,6 +46,14 @@ typedef struct RMW_PUBLIC_TYPE rmw_node_t
   rmw_context_t * context;
 } rmw_node_t;
 
+typedef enum RMW_PUBLIC_TYPE
+{
+  RMW_ENDPOINT_INVALID = 0,
+  RMW_ENDPOINT_PUBLISHER,
+  RMW_ENDPOINT_SUBSCRIPTION,
+  RMW_ENDPOINT_UNKNOWN
+} rmw_endpoint_type_t;
+
 /// Options that can be used to configure the creation of a publisher in rmw.
 typedef struct RMW_PUBLIC_TYPE rmw_publisher_options_t
 {

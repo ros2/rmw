@@ -55,8 +55,8 @@
  *   - rmw_get_service_names_and_types()
  *   - rmw/names_and_types.h
  *   - rmw/get_topic_names_and_types.h
- *   - rmw/get_service_names_and_types.h
  *   - rmw/get_topic_info.h
+ *   - rmw/get_service_names_and_types.h
  *
  * Further still there are some useful abstractions and utilities:
  *

@@ -14,6 +14,7 @@
 
 #include "rmw/topic_info.h"
 
+#include "rcutils/strdup.h"
 #include "rmw/error_handling.h"
 #include "rmw/types.h"
 
@@ -22,6 +23,52 @@ rmw_get_zero_initialized_topic_info(void)
 {
   rmw_topic_info_t zero = {0};
   return zero;
+}
+
+rmw_ret_t
+_rmw_topic_info_fini_str(
+  const char ** topic_info_str,
+  rcutils_allocator_t * allocator)
+{
+  allocator->deallocate((char *) *topic_info_str, allocator->state);
+  *topic_info_str = NULL;
+  return RMW_RET_OK;
+}
+
+rmw_ret_t
+_rmw_topic_info_fini_node_name(
+  rmw_topic_info_t * topic_info,
+  rcutils_allocator_t * allocator)
+{
+  if (!topic_info->node_name) {
+    RMW_SET_ERROR_MSG("topic_info->node_name is null");
+    return RMW_RET_INVALID_ARGUMENT;
+  }
+  return _rmw_topic_info_fini_str(&topic_info->node_name, allocator);
+}
+
+rmw_ret_t
+_rmw_topic_info_fini_node_namespace(
+  rmw_topic_info_t * topic_info,
+  rcutils_allocator_t * allocator)
+{
+  if (!topic_info->node_namespace) {
+    RMW_SET_ERROR_MSG("topic_info->node_namespace is null");
+    return RMW_RET_INVALID_ARGUMENT;
+  }
+  return _rmw_topic_info_fini_str(&topic_info->node_namespace, allocator);
+}
+
+rmw_ret_t
+_rmw_topic_info_fini_topic_type(
+  rmw_topic_info_t * topic_info,
+  rcutils_allocator_t * allocator)
+{
+  if (!topic_info->topic_type) {
+    RMW_SET_ERROR_MSG("topic_info->topic_type is null");
+    return RMW_RET_INVALID_ARGUMENT;
+  }
+  return _rmw_topic_info_fini_str(&topic_info->topic_type, allocator);
 }
 
 rmw_ret_t
@@ -37,10 +84,23 @@ rmw_topic_info_fini(
     RMW_SET_ERROR_MSG("allocator is null");
     return RMW_RET_INVALID_ARGUMENT;
   }
-  allocator->deallocate((char *) topic_info->node_name, allocator->state);
-  allocator->deallocate((char *) topic_info->node_namespace, allocator->state);
-  allocator->deallocate((char *) topic_info->topic_type, allocator->state);
+
+  rmw_ret_t ret;
+  ret = _rmw_topic_info_fini_node_name(topic_info, allocator);
+  if (ret != RMW_RET_OK) {
+    return ret;
+  }
+  ret = _rmw_topic_info_fini_node_namespace(topic_info, allocator);
+  if (ret != RMW_RET_OK) {
+    return ret;
+  }
+  ret = _rmw_topic_info_fini_topic_type(topic_info, allocator);
+  if (ret != RMW_RET_OK) {
+    return ret;
+  }
+
   *topic_info = rmw_get_zero_initialized_topic_info();
+
   return RMW_RET_OK;
 }
 
@@ -65,10 +125,8 @@ _rmw_topic_info_copy_str(
     return RMW_RET_INVALID_ARGUMENT;
   }
 
-  size_t size = strlen(str) + 1;
-  char * temp_str = allocator->allocate(size, allocator->state);
-  memcpy(temp_str, str, size);
-  *topic_info_str = temp_str;
+  *topic_info_str = rcutils_strdup(str, *allocator);
+
   return RMW_RET_OK;
 }
 
@@ -112,21 +170,17 @@ rmw_topic_info_set_node_namespace(
 }
 
 rmw_ret_t
-rmw_topic_info_set_qos_profile(
+rmw_topic_info_set_endpoint_type(
   rmw_topic_info_t * topic_info,
-  const rmw_qos_profile_t * qos_profile)
+  rmw_endpoint_type_t type)
 {
   if (!topic_info) {
     RMW_SET_ERROR_MSG("topic_info is null");
     return RMW_RET_INVALID_ARGUMENT;
   }
 
-  if (!qos_profile) {
-    RMW_SET_ERROR_MSG("qos_profile is null");
-    return RMW_RET_INVALID_ARGUMENT;
-  }
+  topic_info->endpoint_type = type;
 
-  topic_info->qos_profile = *qos_profile;
   return RMW_RET_OK;
 }
 
@@ -144,64 +198,26 @@ rmw_topic_info_set_gid(
     RMW_SET_ERROR_MSG("size is more than RMW_GID_STORAGE_SIZE");
     return RMW_RET_INVALID_ARGUMENT;
   }
-  memset(topic_info->gid, 0, RMW_GID_STORAGE_SIZE);
-  memcpy(topic_info->gid, gid, size);
+  memset(topic_info->endpoint_gid, 0, RMW_GID_STORAGE_SIZE);
+  memcpy(topic_info->endpoint_gid, gid, size);
   return RMW_RET_OK;
 }
 
 rmw_ret_t
-_rmw_topic_info_fini_str(
-  const char ** topic_info_str,
-  rcutils_allocator_t * allocator)
+rmw_topic_info_set_qos_profile(
+  rmw_topic_info_t * topic_info,
+  const rmw_qos_profile_t * qos_profile)
 {
-  if (!topic_info_str) {
-    RMW_SET_ERROR_MSG("topic_info_str is null");
+  if (!topic_info) {
+    RMW_SET_ERROR_MSG("topic_info is null");
     return RMW_RET_INVALID_ARGUMENT;
   }
 
-  if (!allocator) {
-    RMW_SET_ERROR_MSG("allocator is null");
+  if (!qos_profile) {
+    RMW_SET_ERROR_MSG("qos_profile is null");
     return RMW_RET_INVALID_ARGUMENT;
   }
 
-  allocator->deallocate((char *) *topic_info_str, allocator->state);
-  *topic_info_str = NULL;
-
+  topic_info->qos_profile = *qos_profile;
   return RMW_RET_OK;
-}
-
-rmw_ret_t
-rmw_topic_info_fini_node_name(
-  rmw_topic_info_t * topic_info,
-  rcutils_allocator_t * allocator)
-{
-  if (!topic_info) {
-    RMW_SET_ERROR_MSG("topic_info is null");
-    return RMW_RET_INVALID_ARGUMENT;
-  }
-  return _rmw_topic_info_fini_str(&topic_info->node_name, allocator);
-}
-
-rmw_ret_t
-rmw_topic_info_fini_node_namespace(
-  rmw_topic_info_t * topic_info,
-  rcutils_allocator_t * allocator)
-{
-  if (!topic_info) {
-    RMW_SET_ERROR_MSG("topic_info is null");
-    return RMW_RET_INVALID_ARGUMENT;
-  }
-  return _rmw_topic_info_fini_str(&topic_info->node_namespace, allocator);
-}
-
-rmw_ret_t
-rmw_topic_info_fini_topic_type(
-  rmw_topic_info_t * topic_info,
-  rcutils_allocator_t * allocator)
-{
-  if (!topic_info) {
-    RMW_SET_ERROR_MSG("topic_info is null");
-    return RMW_RET_INVALID_ARGUMENT;
-  }
-  return _rmw_topic_info_fini_str(&topic_info->topic_type, allocator);
 }

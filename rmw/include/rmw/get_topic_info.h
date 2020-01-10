@@ -23,7 +23,7 @@ extern "C"
 #include "rmw/topic_info_array.h"
 #include "rmw/visibility_control.h"
 
-/// Retrieves the information for all publishers to a given topic.
+/// Retrieve the information for all publishers to a given topic.
 /**
  * The retrieved information will contain the publisher's node name, node namespace,
  * associated topic type, publisher gid and qos profile.
@@ -32,25 +32,24 @@ extern "C"
  *
  * The topic_name parameter must not be `NULL` and must follow the topic naming rules
  * mentioned at http://design.ros2.org/articles/topic_and_service_names.html
- * Non existent topic names are allowed.
+ * Names of non-existent topics are allowed.
  * In that case, this function will return an empty array.
  *
  * It is the responsibility of the caller to ensure that `publishers_info` parameter points
  * to a valid struct of type rmw_topic_info_array_t.
- * The `count` field inside the struct must be set to 0 and the `info_array` field inside
- * the struct must be set to null.
- * @see rmw_get_zero_initialized_topic_info_array
+ * The rmw_topic_info_array_t struct must be zero initialized.
+ * \see rmw_get_zero_initialized_topic_info_array
  *
  * The `allocator` will be used to allocate memory to the `info_array` member
  * inside of `publishers_info`.
- * Moreover, every const char * member inside of
+ * Moreover, every `const char *` member inside of
  * rmw_topic_info_t will be assigned a copied value on allocated memory.
- * @see rmw_topic_info_set_topic_type
- * @see rmw_topic_info_set_node_name
- * @see rmw_topic_info_set_node_namespace
+ * \see rmw_topic_info_set_topic_type
+ * \see rmw_topic_info_set_node_name
+ * \see rmw_topic_info_set_node_namespace
  * However, it is the responsibility of the caller to
  * reclaim any allocated resources to `publishers_info` to avoid leaking memory.
- * @see rmw_topic_info_array_fini
+ * \see rmw_topic_info_array_fini
  *
  * \param[in] node the handle to the node being used to query the ROS graph.
  * \param[in] allocator the allocator to be used when allocating space for the array.
@@ -73,7 +72,7 @@ rmw_get_publishers_info_by_topic(
   bool no_mangle,
   rmw_topic_info_array_t * publishers_info);
 
-/// Retrieves the information for all subscriptions to a given topic.
+/// Retrieve the information for all subscriptions to a given topic.
 /**
  * The retrieved information will contain the subscriptions's node name, node namespace,
  * associated topic type, subscription gid and qos profile.
@@ -82,25 +81,24 @@ rmw_get_publishers_info_by_topic(
  *
  * The topic_name parameter must not be `NULL` and must follow the topic naming rules
  * mentioned at http://design.ros2.org/articles/topic_and_service_names.html
- * Non existent topic names are allowed.
+ * Names of non-existent topics are allowed.
  * They will return an empty array.
  *
  * It is the responsibility of the caller to ensure that `subscriptions_info` parameter points
  * to a valid struct of type rmw_topic_info_array_t.
- * The `count` field inside the struct must be set to 0 and the `info_array` field inside
- * the struct must be set to null.
- * @see rmw_get_zero_initialized_topic_info_array
+ * The rmw_topic_info_array_t struct must be zero initialized.
+ * \see rmw_get_zero_initialized_topic_info_array
  *
  * The `allocator` will be used to allocate memory to the `info_array` member
  * inside of `publishers_info`.
- * Moreover, every const char * member inside of
+ * Moreover, every `const char *` member inside of
  * rmw_topic_info_t will be assigned a copied value on allocated memory.
- * @see rmw_topic_info_set_topic_type
- * @see rmw_topic_info_set_node_name
- * @see rmw_topic_info_set_node_namespace
+ * \see rmw_topic_info_set_topic_type
+ * \see rmw_topic_info_set_node_name
+ * \see rmw_topic_info_set_node_namespace
  * However, it is the responsibility of the caller to
  * reclaim any allocated resources to `publishers_info` to avoid leaking memory.
- * @see rmw_topic_info_array_fini
+ * \see rmw_topic_info_array_fini
  *
  * \param[in] node the handle to the node being used to query the ROS graph.
  * \param[in] allocator the allocator to be used when allocating space for the array.

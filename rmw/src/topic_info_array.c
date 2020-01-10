@@ -78,15 +78,7 @@ rmw_topic_info_array_fini(
   rmw_ret_t ret;
   // free all const char * inside the topic_info_t
   for (size_t i = 0u; i < topic_info_array->count; i++) {
-    ret = rmw_topic_info_fini_node_name(&topic_info_array->info_array[i], allocator);
-    if (ret != RMW_RET_OK) {
-      return ret;
-    }
-    ret = rmw_topic_info_fini_node_namespace(&topic_info_array->info_array[i], allocator);
-    if (ret != RMW_RET_OK) {
-      return ret;
-    }
-    ret = rmw_topic_info_fini_topic_type(&topic_info_array->info_array[i], allocator);
+    ret = rmw_topic_info_fini(&topic_info_array->info_array[i], allocator);
     if (ret != RMW_RET_OK) {
       return ret;
     }

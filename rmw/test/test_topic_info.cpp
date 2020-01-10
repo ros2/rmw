@@ -102,7 +102,7 @@ TEST(test_topic_info, set_gid) {
   ret = rmw_topic_info_set_gid(&topic_info, gid, RMW_GID_STORAGE_SIZE);
   EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
   for (uint8_t i = 0; i < RMW_GID_STORAGE_SIZE; i++) {
-    EXPECT_EQ(topic_info.gid[i], gid[i]) << "Gid value is not as expected";
+    EXPECT_EQ(topic_info.endpoint_gid[i], gid[i]) << "Gid value is not as expected";
   }
 }
 
@@ -151,8 +151,9 @@ TEST(test_topic_info, zero_init) {
   EXPECT_FALSE(topic_info.node_name);
   EXPECT_FALSE(topic_info.node_namespace);
   EXPECT_FALSE(topic_info.topic_type);
+  EXPECT_EQ(topic_info.endpoint_type, RMW_ENDPOINT_INVALID) << "Endpoint type value should be invalid";
   for (uint8_t i = 0; i < RMW_GID_STORAGE_SIZE; i++) {
-    EXPECT_EQ(topic_info.gid[i], 0) << "Gid value should be 0";
+    EXPECT_EQ(topic_info.endpoint_gid[i], 0) << "Gid value should be 0";
   }
   EXPECT_EQ(topic_info.qos_profile.history, 0) << "Non-zero history";
   EXPECT_EQ(topic_info.qos_profile.depth, 0u) << "Non-zero depth";
@@ -190,6 +191,8 @@ TEST(test_topic_info, fini) {
   for (uint8_t i = 0; i < RMW_GID_STORAGE_SIZE; i++) {
     gid[i] = i * 12;
   }
+  ret = rmw_topic_info_set_endpoint_type(&topic_info, RMW_ENDPOINT_PUBLISHER);
+  EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid rmw_endpoint_type_t arguments";
   ret = rmw_topic_info_set_gid(&topic_info, gid, RMW_GID_STORAGE_SIZE);
   EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid gid arguments";
   ret = rmw_topic_info_set_node_namespace(&topic_info, "namespace", &allocator);
@@ -209,8 +212,10 @@ TEST(test_topic_info, fini) {
   EXPECT_FALSE(topic_info.node_name);
   EXPECT_FALSE(topic_info.node_namespace);
   EXPECT_FALSE(topic_info.topic_type);
+  EXPECT_EQ(topic_info.endpoint_type,
+    RMW_ENDPOINT_INVALID) << "Endpoint type value should be invalid";
   for (uint8_t i = 0; i < RMW_GID_STORAGE_SIZE; i++) {
-    EXPECT_EQ(topic_info.gid[i], 0) << "Gid value should be 0";
+    EXPECT_EQ(topic_info.endpoint_gid[i], 0) << "Gid value should be 0";
   }
   EXPECT_EQ(topic_info.qos_profile.history, 0) << "Non-zero history";
   EXPECT_EQ(topic_info.qos_profile.depth, 0u) << "Non-zero depth";

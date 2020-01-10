@@ -25,7 +25,7 @@ extern "C"
 #include "rmw/visibility_control.h"
 
 /// A structure that encapsulates the name, namespace, topic_type, gid and qos_profile
-/// of publishers and subscriptions for a topic
+/// of publishers and subscriptions for a topic.
 typedef struct RMW_PUBLIC_TYPE rmw_topic_info_t
 {
   /// Name of the node
@@ -34,9 +34,11 @@ typedef struct RMW_PUBLIC_TYPE rmw_topic_info_t
   const char * node_namespace;
   /// The associated topic type
   const char * topic_type;
-  /// The GID of the node
-  uint8_t gid[RMW_GID_STORAGE_SIZE];
-  /// Qos profile of the node
+  /// The endpoint type
+  rmw_endpoint_type_t endpoint_type;
+  /// The GID of the endpoint
+  uint8_t endpoint_gid[RMW_GID_STORAGE_SIZE];
+  /// QoS profile of the endpoint
   rmw_qos_profile_t qos_profile;
 } rmw_topic_info_t;
 
@@ -126,23 +128,24 @@ rmw_topic_info_set_node_namespace(
   const char * node_namespace,
   rcutils_allocator_t * allocator);
 
-/// Set the qos_profile in rmw_topic_info_t.
+/// Set the gid in rmw_topic_info_t.
 /**
- * rmw_topic_info_t has a member qos_profile of type const rmw_qos_profile_t *.
- * This function assigns the passed qos_profile pointer to the member.
+ * Copies the values from gid into the gid member inside topic_info.
  *
  * \param[inout] topic_info pointer to an initialized instance of rmw_topic_info_t
- * \param[in] qos_profile the qos_profile to set in rmw_topic_info_t
- * \returns `RMW_RET_OK` on successfully setting the qos_profile, or
+ * \param[in] gid the gid value to set in rmw_topic_info_t
+ * \param[in] size the size of the gid param
+ * \returns `RMW_RET_OK` on successfully setting the gid, or
  * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` size is greater than RMW_GID_STORAGE_SIZE, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_topic_info_set_qos_profile(
+rmw_topic_info_set_endpoint_type(
   rmw_topic_info_t * topic_info,
-  const rmw_qos_profile_t * qos_profile);
+  rmw_endpoint_type_t type);
 
 /// Set the gid in rmw_topic_info_t.
 /**
@@ -164,53 +167,23 @@ rmw_topic_info_set_gid(
   const uint8_t gid[],
   size_t size);
 
-/// Free the memory which was allocated for topic_info.node_name
+/// Set the qos_profile in rmw_topic_info_t.
 /**
+ * rmw_topic_info_t has a member qos_profile of type const rmw_qos_profile_t *.
+ * This function assigns the passed qos_profile pointer to the member.
  *
  * \param[inout] topic_info pointer to an initialized instance of rmw_topic_info_t
- * \param[in] allocator the allocator that was used to allocate memory
- * \returns `RMW_RET_OK` on successfully freeing the memory, or
+ * \param[in] qos_profile the qos_profile to set in rmw_topic_info_t
+ * \returns `RMW_RET_OK` on successfully setting the qos_profile, or
  * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_topic_info_fini_node_name(
+rmw_topic_info_set_qos_profile(
   rmw_topic_info_t * topic_info,
-  rcutils_allocator_t * allocator);
-
-/// Free the memory which was allocated for topic_info.node_namespace
-/**
- *
- * \param[inout] topic_info pointer to an initialized instance of rmw_topic_info_t
- * \param[in] allocator the allocator that was used to allocate memory
- * \returns `RMW_RET_OK` on successfully freeing the memory, or
- * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
- * \returns `RMW_RET_ERROR` when an unspecified error occurs.
- */
-RMW_PUBLIC
-RMW_WARN_UNUSED
-rmw_ret_t
-rmw_topic_info_fini_node_namespace(
-  rmw_topic_info_t * topic_info,
-  rcutils_allocator_t * allocator);
-
-/// Free the memory which was allocated for topic_info.topic_type
-/**
- *
- * \param[inout] topic_info pointer to an initialized instance of rmw_topic_info_t
- * \param[in] allocator the allocator that was used to allocate memory
- * \returns `RMW_RET_OK` on successfully freeing the memory, or
- * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
- * \returns `RMW_RET_ERROR` when an unspecified error occurs.
- */
-RMW_PUBLIC
-RMW_WARN_UNUSED
-rmw_ret_t
-rmw_topic_info_fini_topic_type(
-  rmw_topic_info_t * topic_info,
-  rcutils_allocator_t * allocator);
+  const rmw_qos_profile_t * qos_profile);
 
 #ifdef __cplusplus
 }
