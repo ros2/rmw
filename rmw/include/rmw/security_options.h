@@ -1,4 +1,4 @@
-// Copyright 2017-2019 Open Source Robotics Foundation, Inc.
+// Copyright 2020 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,6 +20,11 @@ extern "C"
 {
 #endif
 
+#include <stdbool.h>
+
+#include "rcutils/allocator.h"
+
+#include "rmw/ret_types.h"
 #include "rmw/visibility_control.h"
 
 typedef enum RMW_PUBLIC_TYPE rmw_security_enforcement_policy_t
@@ -31,16 +36,37 @@ typedef enum RMW_PUBLIC_TYPE rmw_security_enforcement_policy_t
 typedef struct RMW_PUBLIC_TYPE rmw_security_options_t
 {
   enum rmw_security_enforcement_policy_t enforce_security;
-  const char * security_root_path;
+  char * security_root_path;
 } rmw_security_options_t;
 
+/// Get zero initialized security options.
 RMW_PUBLIC
 rmw_security_options_t
 rmw_get_zero_initialized_security_options();
 
+/// Get default initialized security options.
 RMW_PUBLIC
 rmw_security_options_t
 rmw_get_default_security_options();
+
+/// Copy the security_root_path in the security_options using the allocator.
+/**
+ * \param security_root_path path to be copied.
+ * \param allocator allocator used to store the new string.
+ * \param security_options security options to be set.
+ */
+rmw_ret_t
+rmw_security_options_set_root_path(
+  const char * security_root_path,
+  rcutils_allocator_t * allocator,
+  rmw_security_options_t * security_options);
+
+/// Finalize the given security_options.
+RMW_PUBLIC
+rmw_ret_t
+rmw_security_options_fini(
+  rmw_security_options_t * security_options,
+  rcutils_allocator_t * allocator);
 
 #ifdef __cplusplus
 }
