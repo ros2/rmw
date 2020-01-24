@@ -49,11 +49,21 @@ RMW_PUBLIC
 rmw_security_options_t
 rmw_get_default_security_options();
 
+/// Copy the given security options.
+RMW_PUBLIC
+rmw_ret_t
+rmw_security_options_copy(
+  const rmw_security_options_t * src,
+  const rcutils_allocator_t * allocator,
+  rmw_security_options_t * dst);
+
 /// Copy the security_root_path in the security_options using the allocator.
 /**
  * \param security_root_path path to be copied.
  * \param allocator allocator used to store the new string.
  * \param security_options security options to be set.
+ * \returns RMW_RET_BAD_ALLOC, or
+ * \returns RMW_RET_OK
  */
 rmw_ret_t
 rmw_security_options_set_root_path(
