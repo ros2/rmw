@@ -31,7 +31,8 @@ rmw_get_default_security_options()
 {
   rmw_security_options_t default_options = {
     RMW_SECURITY_ENFORCEMENT_PERMISSIVE,
-    NULL};
+    NULL,
+  };
   return default_options;
 }
 
