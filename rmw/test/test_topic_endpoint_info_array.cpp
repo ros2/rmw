@@ -39,14 +39,18 @@ TEST(test_topic_endpoint_info_array, check_zero) {
 TEST(test_topic_endpoint_info_array, check_init_with_size) {
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
   rmw_topic_endpoint_info_array_t arr = rmw_get_zero_initialized_topic_endpoint_info_array();
-  OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT({
+  OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT(
+  {
     rmw_ret_t fini_ret = rmw_topic_endpoint_info_array_fini(&arr, &allocator);
     EXPECT_EQ(fini_ret, RMW_RET_OK);
   });
-  EXPECT_EQ(rmw_topic_endpoint_info_array_init_with_size(&arr, 1, nullptr),
+  EXPECT_EQ(
+    rmw_topic_endpoint_info_array_init_with_size(&arr, 1, nullptr),
     RMW_RET_INVALID_ARGUMENT);
-  EXPECT_EQ(rmw_topic_endpoint_info_array_init_with_size(nullptr, 1,
-    &allocator), RMW_RET_INVALID_ARGUMENT);
+  EXPECT_EQ(
+    rmw_topic_endpoint_info_array_init_with_size(
+      nullptr, 1,
+      &allocator), RMW_RET_INVALID_ARGUMENT);
   EXPECT_FALSE(arr.info_array);
   rmw_ret_t ret = rmw_topic_endpoint_info_array_init_with_size(&arr, 5, &allocator);
   EXPECT_EQ(ret, RMW_RET_OK);
