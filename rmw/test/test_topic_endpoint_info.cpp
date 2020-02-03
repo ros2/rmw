@@ -38,14 +38,16 @@ TEST(test_topic_endpoint_info, set_topic_type) {
   ret = rmw_topic_endpoint_info_set_topic_type(nullptr, val, &allocator);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
     "Expected invalid argument for null topic_endpoint_info";
-  OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT({
+  OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT(
+  {
     allocator.deallocate(const_cast<char *>(topic_endpoint_info.topic_type), allocator.state);
   });
   ret = rmw_topic_endpoint_info_set_topic_type(&topic_endpoint_info, val, &allocator);
   EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
   // free the mallocd string and verify that the string was copied by value
   free(val);
-  EXPECT_STREQ(topic_endpoint_info.topic_type,
+  EXPECT_STREQ(
+    topic_endpoint_info.topic_type,
     "test_topic_type") << "Topic Type value is not as expected";
 }
 
@@ -60,7 +62,8 @@ TEST(test_topic_endpoint_info, set_node_name) {
   ret = rmw_topic_endpoint_info_set_node_name(nullptr, val, &allocator);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
     "Expected invalid argument for null topic_endpoint_info";
-  OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT({
+  OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT(
+  {
     allocator.deallocate(const_cast<char *>(topic_endpoint_info.node_name), allocator.state);
   });
   ret = rmw_topic_endpoint_info_set_node_name(&topic_endpoint_info, val, &allocator);
@@ -82,7 +85,8 @@ TEST(test_topic_endpoint_info, set_node_namespace) {
   ret = rmw_topic_endpoint_info_set_node_namespace(nullptr, val, &allocator);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
     "Expected invalid argument for null topic_endpoint_info";
-  OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT({
+  OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT(
+  {
     allocator.deallocate(const_cast<char *>(topic_endpoint_info.node_namespace), allocator.state);
   });
   ret = rmw_topic_endpoint_info_set_node_namespace(&topic_endpoint_info, val, &allocator);
@@ -136,21 +140,27 @@ TEST(test_topic_endpoint_info, set_qos_profile) {
   EXPECT_EQ(topic_endpoint_info.qos_profile.history, RMW_QOS_POLICY_HISTORY_KEEP_LAST) <<
     "Unequal history";
   EXPECT_EQ(topic_endpoint_info.qos_profile.depth, 0u) << "Unequal depth";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.reliability,
+  EXPECT_EQ(
+    topic_endpoint_info.qos_profile.reliability,
     RMW_QOS_POLICY_RELIABILITY_RELIABLE) << "Unequal reliability";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.durability,
+  EXPECT_EQ(
+    topic_endpoint_info.qos_profile.durability,
     RMW_QOS_POLICY_DURABILITY_VOLATILE) << "Unequal durability";
   EXPECT_EQ(topic_endpoint_info.qos_profile.deadline.sec, 1u) << "Unequal deadline sec";
   EXPECT_EQ(topic_endpoint_info.qos_profile.deadline.nsec, 0u) << "Unequal deadline nsec";
   EXPECT_EQ(topic_endpoint_info.qos_profile.lifespan.sec, 2u) << "Unequal lifespan sec";
   EXPECT_EQ(topic_endpoint_info.qos_profile.lifespan.nsec, 0u) << "Unequal lifespan nsec";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.liveliness,
+  EXPECT_EQ(
+    topic_endpoint_info.qos_profile.liveliness,
     RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE) << "Unequal liveliness";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.liveliness_lease_duration.sec,
+  EXPECT_EQ(
+    topic_endpoint_info.qos_profile.liveliness_lease_duration.sec,
     3u) << "Unequal liveliness lease duration sec";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.liveliness_lease_duration.nsec,
+  EXPECT_EQ(
+    topic_endpoint_info.qos_profile.liveliness_lease_duration.nsec,
     0u) << "Unequal liveliness lease duration nsec";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.avoid_ros_namespace_conventions,
+  EXPECT_EQ(
+    topic_endpoint_info.qos_profile.avoid_ros_namespace_conventions,
     false) << "Unequal avoid namespace conventions";
 }
 
@@ -173,11 +183,14 @@ TEST(test_topic_endpoint_info, zero_init) {
   EXPECT_EQ(topic_endpoint_info.qos_profile.lifespan.sec, 0u) << "Non-zero lifespan sec";
   EXPECT_EQ(topic_endpoint_info.qos_profile.lifespan.nsec, 0u) << "Non-zero lifespan nsec";
   EXPECT_EQ(topic_endpoint_info.qos_profile.liveliness, 0) << "Non-zero liveliness";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.liveliness_lease_duration.sec,
+  EXPECT_EQ(
+    topic_endpoint_info.qos_profile.liveliness_lease_duration.sec,
     0u) << "Non-zero liveliness lease duration sec";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.liveliness_lease_duration.nsec,
+  EXPECT_EQ(
+    topic_endpoint_info.qos_profile.liveliness_lease_duration.nsec,
     0u) << "Non-zero liveliness lease duration nsec";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.avoid_ros_namespace_conventions,
+  EXPECT_EQ(
+    topic_endpoint_info.qos_profile.avoid_ros_namespace_conventions,
     false) << "Non-zero avoid namespace conventions";
 }
 
@@ -222,7 +235,8 @@ TEST(test_topic_endpoint_info, fini) {
   EXPECT_FALSE(topic_endpoint_info.node_name);
   EXPECT_FALSE(topic_endpoint_info.node_namespace);
   EXPECT_FALSE(topic_endpoint_info.topic_type);
-  EXPECT_EQ(topic_endpoint_info.endpoint_type,
+  EXPECT_EQ(
+    topic_endpoint_info.endpoint_type,
     RMW_ENDPOINT_INVALID) << "Endpoint type value should be invalid";
   for (uint8_t i = 0; i < RMW_GID_STORAGE_SIZE; i++) {
     EXPECT_EQ(topic_endpoint_info.endpoint_gid[i], 0) << "Gid value should be 0";
