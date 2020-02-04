@@ -68,7 +68,7 @@ rmw_security_options_copy(
 rmw_ret_t
 rmw_security_options_set_root_path(
   const char * security_root_path,
-  rcutils_allocator_t * allocator,
+  const rcutils_allocator_t * allocator,
   rmw_security_options_t * security_options);
 
 /// Finalize the given security_options.
@@ -76,7 +76,7 @@ RMW_PUBLIC
 rmw_ret_t
 rmw_security_options_fini(
   rmw_security_options_t * security_options,
-  rcutils_allocator_t * allocator);
+  const rcutils_allocator_t * allocator);
 
 #ifdef __cplusplus
 }

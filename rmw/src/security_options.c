@@ -58,7 +58,7 @@ rmw_security_options_copy(
 rmw_ret_t
 rmw_security_options_set_root_path(
   const char * security_root_path,
-  rcutils_allocator_t * allocator,
+  const rcutils_allocator_t * allocator,
   rmw_security_options_t * security_options)
 {
   RMW_CHECK_ARGUMENT_FOR_NULL(security_root_path, RMW_RET_INVALID_ARGUMENT);
@@ -75,7 +75,7 @@ rmw_security_options_set_root_path(
 rmw_ret_t
 rmw_security_options_fini(
   rmw_security_options_t * security_options,
-  rcutils_allocator_t * allocator)
+  const rcutils_allocator_t * allocator)
 {
   RMW_CHECK_ARGUMENT_FOR_NULL(security_options, RMW_RET_INVALID_ARGUMENT);
   RCUTILS_CHECK_ALLOCATOR(allocator, return RMW_RET_INVALID_ARGUMENT);
