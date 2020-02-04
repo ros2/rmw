@@ -50,6 +50,13 @@ rmw_security_options_t
 rmw_get_default_security_options();
 
 /// Copy the given security options.
+/**
+ * \param src security options to be copied.
+ * \param allocator allocator used when copying data to the new security options.
+ * \param dst security options to be set.
+ * \returns RMW_RET_BAD_ALLOC, or
+ * \returns RMW_RET_OK
+ */
 RMW_PUBLIC
 rmw_ret_t
 rmw_security_options_copy(
@@ -60,7 +67,7 @@ rmw_security_options_copy(
 /// Copy the security_root_path in the security_options using the allocator.
 /**
  * \param security_root_path path to be copied.
- * \param allocator allocator used to store the new string.
+ * \param allocator allocator used to allocate the new path.
  * \param security_options security options to be set.
  * \returns RMW_RET_BAD_ALLOC, or
  * \returns RMW_RET_OK
@@ -72,6 +79,12 @@ rmw_security_options_set_root_path(
   rmw_security_options_t * security_options);
 
 /// Finalize the given security_options.
+/**
+ * \param security_options security options to be finalized.
+ * \param allocator allocator used to deallocate the root path.
+ * \returns RMW_RET_ERROR, or
+ * \returns RMW_RET_OK
+ */
 RMW_PUBLIC
 rmw_ret_t
 rmw_security_options_fini(
