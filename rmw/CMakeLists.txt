@@ -32,7 +32,6 @@ set(rmw_sources
   "src/init_options.c"
   "src/loaned_message_sequence.c"
   "src/names_and_types.c"
-  "src/security_options.c"
   "src/publisher_options.c"
   "src/sanity_checks.c"
   "src/security_options.c"
