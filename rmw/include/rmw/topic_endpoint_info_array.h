@@ -28,7 +28,7 @@ extern "C"
 typedef struct RMW_PUBLIC_TYPE rmw_topic_endpoint_info_array_t
 {
   /// Size of the array.
-  size_t count;
+  size_t size;
   /// Pointer representing an array of rmw_topic_endpoint_info_t
   rmw_topic_endpoint_info_t * info_array;
 } rmw_topic_endpoint_info_array_t;
@@ -60,6 +60,7 @@ rmw_topic_endpoint_info_array_check_zero(
  * type rmw_topic_endpoint_info_t.
  * This function allocates memory to this array to hold n elements,
  * where n is the value of the size param to this function.
+ * The member `size` is updated accordingly.
  *
  * topic_endpoint_info_array must be zero initialized before being passed into this function.
  *
@@ -85,7 +86,7 @@ rmw_topic_endpoint_info_array_init_with_size(
  * The info_array member variable inside of rmw_topic_endpoint_info_array represents an array of
  * rmw_topic_endpoint_info_t.
  * When initializing this array, memory is allocated for it using the allocator.
- * This function reclaims any allocated resources within the object and also sets the value of count
+ * This function reclaims any allocated resources within the object and also sets the value of size
  * to 0.
  *
  * \param[inout] topic_endpoint_info_array object to be finalized

@@ -38,7 +38,7 @@ rmw_topic_endpoint_info_array_check_zero(
     RMW_SET_ERROR_MSG("topic_endpoint_info_array is null");
     return RMW_RET_INVALID_ARGUMENT;
   }
-  if (topic_endpoint_info_array->count != 0 || topic_endpoint_info_array->info_array != NULL) {
+  if (topic_endpoint_info_array->size != 0 || topic_endpoint_info_array->info_array != NULL) {
     RMW_SET_ERROR_MSG("topic_endpoint_info_array is not zeroed");
     return RMW_RET_ERROR;
   }
@@ -61,6 +61,9 @@ rmw_topic_endpoint_info_array_init_with_size(
   }
   topic_endpoint_info_array->info_array =
     allocator->allocate(sizeof(*topic_endpoint_info_array->info_array) * size, allocator->state);
+  for (size_t i = 0; i < size; i++) {
+    topic_endpoint_info_array->info_array[i] = rmw_get_zero_initialized_topic_endpoint_info();
+  }
   if (!topic_endpoint_info_array->info_array) {
     RMW_SET_ERROR_MSG("failed to allocate memory for info_array");
     return RMW_RET_BAD_ALLOC;
@@ -85,7 +88,7 @@ rmw_topic_endpoint_info_array_fini(
 
   rmw_ret_t ret;
   // free all const char * inside the topic_endpoint_info_t
-  for (size_t i = 0u; i < topic_endpoint_info_array->count; i++) {
+  for (size_t i = 0u; i < topic_endpoint_info_array->size; i++) {
     ret = rmw_topic_endpoint_info_fini(&topic_endpoint_info_array->info_array[i], allocator);
     if (ret != RMW_RET_OK) {
       return ret;
@@ -94,6 +97,6 @@ rmw_topic_endpoint_info_array_fini(
 
   allocator->deallocate(topic_endpoint_info_array->info_array, allocator->state);
   topic_endpoint_info_array->info_array = NULL;
-  topic_endpoint_info_array->count = 0;
+  topic_endpoint_info_array->size = 0;
   return RMW_RET_OK;
 }

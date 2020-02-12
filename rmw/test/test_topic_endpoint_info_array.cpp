@@ -21,15 +21,15 @@
 
 TEST(test_topic_endpoint_info_array, zero_initialize) {
   rmw_topic_endpoint_info_array_t arr = rmw_get_zero_initialized_topic_endpoint_info_array();
-  EXPECT_EQ(arr.count, 0u);
+  EXPECT_EQ(arr.size, 0u);
   EXPECT_FALSE(arr.info_array);
 }
 
 TEST(test_topic_endpoint_info_array, check_zero) {
   rmw_topic_endpoint_info_array_t arr = rmw_get_zero_initialized_topic_endpoint_info_array();
   EXPECT_EQ(rmw_topic_endpoint_info_array_check_zero(&arr), RMW_RET_OK);
-  rmw_topic_endpoint_info_array_t arr_count_not_zero = {1, nullptr};
-  EXPECT_EQ(rmw_topic_endpoint_info_array_check_zero(&arr_count_not_zero), RMW_RET_ERROR);
+  rmw_topic_endpoint_info_array_t arr_size_not_zero = {1, nullptr};
+  EXPECT_EQ(rmw_topic_endpoint_info_array_check_zero(&arr_size_not_zero), RMW_RET_ERROR);
   rmw_topic_endpoint_info_t topic_endpoint_info;
   rmw_topic_endpoint_info_array_t arr_info_array_not_null = {0, &topic_endpoint_info};
   EXPECT_EQ(rmw_topic_endpoint_info_array_check_zero(&arr_info_array_not_null), RMW_RET_ERROR);
