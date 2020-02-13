@@ -61,12 +61,12 @@ rmw_topic_endpoint_info_array_init_with_size(
   }
   topic_endpoint_info_array->info_array =
     allocator->allocate(sizeof(*topic_endpoint_info_array->info_array) * size, allocator->state);
-  for (size_t i = 0; i < size; i++) {
-    topic_endpoint_info_array->info_array[i] = rmw_get_zero_initialized_topic_endpoint_info();
-  }
   if (!topic_endpoint_info_array->info_array) {
     RMW_SET_ERROR_MSG("failed to allocate memory for info_array");
     return RMW_RET_BAD_ALLOC;
+  }
+  for (size_t i = 0; i < size; i++) {
+    topic_endpoint_info_array->info_array[i] = rmw_get_zero_initialized_topic_endpoint_info();
   }
   return RMW_RET_OK;
 }
