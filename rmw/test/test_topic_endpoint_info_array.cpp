@@ -16,24 +16,28 @@
 #include "osrf_testing_tools_cpp/scope_exit.hpp"
 #include "rcutils/allocator.h"
 
+#include "rmw/error_handling.h"
 #include "rmw/topic_endpoint_info_array.h"
 #include "rmw/types.h"
 
 TEST(test_topic_endpoint_info_array, zero_initialize) {
   rmw_topic_endpoint_info_array_t arr = rmw_get_zero_initialized_topic_endpoint_info_array();
-  EXPECT_EQ(arr.count, 0u);
+  EXPECT_EQ(arr.size, 0u);
   EXPECT_FALSE(arr.info_array);
 }
 
 TEST(test_topic_endpoint_info_array, check_zero) {
   rmw_topic_endpoint_info_array_t arr = rmw_get_zero_initialized_topic_endpoint_info_array();
   EXPECT_EQ(rmw_topic_endpoint_info_array_check_zero(&arr), RMW_RET_OK);
-  rmw_topic_endpoint_info_array_t arr_count_not_zero = {1, nullptr};
-  EXPECT_EQ(rmw_topic_endpoint_info_array_check_zero(&arr_count_not_zero), RMW_RET_ERROR);
+  rmw_topic_endpoint_info_array_t arr_size_not_zero = {1, nullptr};
+  EXPECT_EQ(rmw_topic_endpoint_info_array_check_zero(&arr_size_not_zero), RMW_RET_ERROR);
+  rmw_reset_error();
   rmw_topic_endpoint_info_t topic_endpoint_info;
   rmw_topic_endpoint_info_array_t arr_info_array_not_null = {0, &topic_endpoint_info};
   EXPECT_EQ(rmw_topic_endpoint_info_array_check_zero(&arr_info_array_not_null), RMW_RET_ERROR);
+  rmw_reset_error();
   EXPECT_EQ(rmw_topic_endpoint_info_array_check_zero(nullptr), RMW_RET_INVALID_ARGUMENT);
+  rmw_reset_error();
 }
 
 TEST(test_topic_endpoint_info_array, check_init_with_size) {
@@ -47,10 +51,12 @@ TEST(test_topic_endpoint_info_array, check_init_with_size) {
   EXPECT_EQ(
     rmw_topic_endpoint_info_array_init_with_size(&arr, 1, nullptr),
     RMW_RET_INVALID_ARGUMENT);
+  rmw_reset_error();
   EXPECT_EQ(
     rmw_topic_endpoint_info_array_init_with_size(
       nullptr, 1,
       &allocator), RMW_RET_INVALID_ARGUMENT);
+  rmw_reset_error();
   EXPECT_FALSE(arr.info_array);
   rmw_ret_t ret = rmw_topic_endpoint_info_array_init_with_size(&arr, 5, &allocator);
   EXPECT_EQ(ret, RMW_RET_OK);

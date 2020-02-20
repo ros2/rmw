@@ -47,10 +47,6 @@ _rmw_topic_endpoint_info_fini_node_name(
   rmw_topic_endpoint_info_t * topic_endpoint_info,
   rcutils_allocator_t * allocator)
 {
-  if (!topic_endpoint_info->node_name) {
-    RMW_SET_ERROR_MSG("topic_endpoint_info->node_name is null");
-    return RMW_RET_INVALID_ARGUMENT;
-  }
   return _rmw_topic_endpoint_info_fini_str(&topic_endpoint_info->node_name, allocator);
 }
 
@@ -59,10 +55,6 @@ _rmw_topic_endpoint_info_fini_node_namespace(
   rmw_topic_endpoint_info_t * topic_endpoint_info,
   rcutils_allocator_t * allocator)
 {
-  if (!topic_endpoint_info->node_namespace) {
-    RMW_SET_ERROR_MSG("topic_endpoint_info->node_namespace is null");
-    return RMW_RET_INVALID_ARGUMENT;
-  }
   return _rmw_topic_endpoint_info_fini_str(&topic_endpoint_info->node_namespace, allocator);
 }
 
@@ -71,10 +63,6 @@ _rmw_topic_endpoint_info_fini_topic_type(
   rmw_topic_endpoint_info_t * topic_endpoint_info,
   rcutils_allocator_t * allocator)
 {
-  if (!topic_endpoint_info->topic_type) {
-    RMW_SET_ERROR_MSG("topic_endpoint_info->topic_type is null");
-    return RMW_RET_INVALID_ARGUMENT;
-  }
   return _rmw_topic_endpoint_info_fini_str(&topic_endpoint_info->topic_type, allocator);
 }
 
