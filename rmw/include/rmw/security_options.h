@@ -64,9 +64,11 @@ rmw_security_options_copy(
   const rcutils_allocator_t * allocator,
   rmw_security_options_t * dst);
 
-/// Copy the security_root_path in the security_options using the allocator.
+/// Set the security root path for the given security options.
 /**
- * \param security_root_path path to be copied.
+ * The provided `security_root_path` will be copied into allocated memory.
+ *
+ * \param security_root_path path to be set.
  * \param allocator allocator used to allocate the new path.
  * \param security_options security options to be set.
  * \returns RMW_RET_BAD_ALLOC, or
