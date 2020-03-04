@@ -15,6 +15,10 @@
 #ifndef RMW__INCOMPATIBLE_QOS_EVENTS_STATUSES_H_
 #define RMW__INCOMPATIBLE_QOS_EVENTS_STATUSES_H_
 
+#include <stdint.h>
+
+#include "rmw/visibility_control.h"
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -32,8 +36,7 @@ enum RMW_PUBLIC_TYPE rmw_qos_policy_kind_t
   RMW_QOS_POLICY_LIFESPAN    = 1 << 6
 };
 
-/// Event state for a subscription's 'RMW_EVENT_REQUESTED_QOS_INCOMPATIBLE' events.
-typedef struct RMW_PUBLIC_TYPE rmw_requested_qos_incompatible_event_status_t
+struct RMW_PUBLIC_TYPE rmw_qos_incompatible_event_status_t
 {
   /**
    * Total cumulative number of times the concerned subscription discovered a
@@ -50,27 +53,13 @@ typedef struct RMW_PUBLIC_TYPE rmw_requested_qos_incompatible_event_status_t
    * incompatible the last time an incompatibility was detected.
    */
   int32_t last_policy_kind;
-} rmw_requested_qos_incompatible_event_status_t;
+};
+
+/// Event state for a subscription's 'RMW_EVENT_REQUESTED_QOS_INCOMPATIBLE' events.
+typedef rmw_qos_incompatible_event_status_t rmw_requested_qos_incompatible_event_status_t;
 
 /// Event state for a publisher's 'RMW_EVENT_OFFERED_QOS_INCOMPATIBLE' events.
-typedef struct RMW_PUBLIC_TYPE rmw_offered_qos_incompatible_event_status_t
-{
-  /**
-   * Total cumulative number of times the concerned publisher discovered a
-   * subscription for the same topic with a requested QoS that was incompatible
-   * with that offered by the publisher.
-   */
-  int32_t total_count;
-  /**
-   * The change in total_count since the last time the status was read.
-   */
-  int32_t total_count_change;
-  /**
-   * The Qos Policy Kind of one of the policies that was found to be
-   * incompatible the last time an incompatibility was detected.
-   */
-  int32_t last_policy_kind;
-} rmw_offered_qos_incompatible_event_status_t;
+typedef rmw_qos_incompatible_event_status_t rmw_offered_qos_incompatible_event_status_t;
 
 #ifdef __cplusplus
 }
