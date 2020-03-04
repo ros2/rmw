@@ -302,18 +302,6 @@ enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_t
 #define RMW_QOS_LIFESPAN_DEFAULT {0, 0}
 #define RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT {0, 0}
 
-/// QoS Policy IDs
-enum RMW_PUBLIC_TYPE rmw_qos_policy_id_t
-{
-  RMW_QOS_POLICY_ID_INVALID    = 0,
-  RMW_QOS_POLICY_ID_DURABILITY = 2,
-  RMW_QOS_POLICY_ID_DEADLINE   = 4,
-  RMW_QOS_POLICY_ID_LIVELINESS = 8,
-  RMW_QOS_POLICY_ID_RELIABILITY= 11,
-  RMW_QOS_POLICY_ID_HISTORY    = 13,
-  RMW_QOS_POLICY_ID_LIFESPAN   = 21
-};
-
 /// ROS MiddleWare quality of service profile.
 typedef struct RMW_PUBLIC_TYPE rmw_qos_profile_t
 {
