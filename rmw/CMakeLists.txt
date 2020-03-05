@@ -51,7 +51,7 @@ configure_rmw_library(${PROJECT_NAME} LANGUAGE "C")
 
 ament_export_dependencies(
   rcutils
-  rosidl_generator_c
+  rosidl_runtime_c
 )
 ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})

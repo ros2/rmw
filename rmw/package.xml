@@ -15,7 +15,7 @@
 
   <build_export_depend>rcutils</build_export_depend>
   <!-- This is required for the definition of the rosidl typesupport types -->
-  <build_export_depend>rosidl_generator_c</build_export_depend>
+  <build_export_depend>rosidl_runtime_c</build_export_depend>
 
   <test_depend>ament_cmake_gmock</test_depend>
   <test_depend>ament_lint_auto</test_depend>
