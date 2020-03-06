@@ -54,7 +54,7 @@ function(get_available_rmw_implementations var)
       set(middleware_implementations ${filtered})
     endforeach()
     message(STATUS
-      "Override available RMW implementations: ${middleware_implementations}")
+      "Filtered available RMW implementations: ${middleware_implementations}")
   endif()
 
   set(${var} ${middleware_implementations} PARENT_SCOPE)
