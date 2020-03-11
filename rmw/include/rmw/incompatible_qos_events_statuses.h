@@ -25,7 +25,7 @@ extern "C"
 #endif
 
 /// QoS Policy Kinds
-enum RMW_PUBLIC_TYPE rmw_qos_policy_kind_t
+typedef enum RMW_PUBLIC_TYPE rmw_qos_policy_kind_t
 {
   RMW_QOS_POLICY_INVALID     = 1 << 0,
   RMW_QOS_POLICY_DURABILITY  = 1 << 1,
@@ -34,7 +34,7 @@ enum RMW_PUBLIC_TYPE rmw_qos_policy_kind_t
   RMW_QOS_POLICY_RELIABILITY = 1 << 4,
   RMW_QOS_POLICY_HISTORY     = 1 << 5,
   RMW_QOS_POLICY_LIFESPAN    = 1 << 6
-};
+} rmw_qos_policy_kind_t;
 
 struct RMW_PUBLIC_TYPE rmw_qos_incompatible_event_status_t
 {
@@ -52,14 +52,14 @@ struct RMW_PUBLIC_TYPE rmw_qos_incompatible_event_status_t
    * The Qos Policy Kind of one of the policies that was found to be
    * incompatible the last time an incompatibility was detected.
    */
-  int32_t last_policy_kind;
+  rmw_qos_policy_kind_t last_policy_kind;
 };
 
 /// Event state for a subscription's 'RMW_EVENT_REQUESTED_QOS_INCOMPATIBLE' events.
-typedef rmw_qos_incompatible_event_status_t rmw_requested_qos_incompatible_event_status_t;
+typedef struct rmw_qos_incompatible_event_status_t rmw_requested_qos_incompatible_event_status_t;
 
 /// Event state for a publisher's 'RMW_EVENT_OFFERED_QOS_INCOMPATIBLE' events.
-typedef rmw_qos_incompatible_event_status_t rmw_offered_qos_incompatible_event_status_t;
+typedef struct rmw_qos_incompatible_event_status_t rmw_offered_qos_incompatible_event_status_t;
 
 #ifdef __cplusplus
 }
