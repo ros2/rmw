@@ -45,8 +45,10 @@ rmw_security_options_copy(
   RMW_CHECK_ARGUMENT_FOR_NULL(src, RMW_RET_INVALID_ARGUMENT);
   RCUTILS_CHECK_ALLOCATOR(allocator, return RMW_RET_INVALID_ARGUMENT);
   RMW_CHECK_ARGUMENT_FOR_NULL(dst, RMW_RET_INVALID_ARGUMENT);
-  *dst = *src;
 
+  allocator->deallocate(dst->security_root_path, allocator->state);
+  *dst = *src;
+  dst->security_root_path = NULL;
   dst->security_root_path = rcutils_strdup(src->security_root_path, *allocator);
   if (src->security_root_path && !dst->security_root_path) {
     RMW_SET_ERROR_MSG("failed to copy security root path");

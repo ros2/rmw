@@ -56,8 +56,6 @@ typedef struct RMW_PUBLIC_TYPE rmw_init_options_t
   rmw_localhost_only_t localhost_only;
   /// Context name
   char * name;
-  /// Context namespace_
-  char * namespace_;
 
   // TODO(wjwwood): replace with rmw_allocator_t when that refactor happens
   /// Allocator used during internal allocation of init options, if needed.
