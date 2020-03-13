@@ -181,7 +181,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscriptions_t
   size_t subscriber_count;
   /// Pointer to an array of void * pointers of subscriptions.
   void ** subscribers;
-  /// Pointer to an array rcutil timestamps, to be filled in same order as the above
+  /// Pointer to an array of rcutils timestamps, to be filled in same order as the above.
   rcutils_time_point_value_t *timestamps;
 } rmw_subscriptions_t;
 
