@@ -338,7 +338,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_gid_t
 
 typedef struct RMW_PUBLIC_TYPE rmw_message_info_t
 {
-  const rmw_time_t received_timestamp;
+  rmw_time_t received_timestamp;
   rmw_gid_t publisher_gid;
   bool from_intra_process;
 } rmw_message_info_t;
