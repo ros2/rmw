@@ -46,6 +46,10 @@ __rmw_init_event(
     RMW_SET_ERROR_MSG("expected zero-initialized rmw_event");
     return RMW_RET_INVALID_ARGUMENT;
   }
+  if (!rmw_event_type_is_supported(event_type)) {
+    RMW_SET_ERROR_MSG("provided event_type is not supported by rmw_implementation");
+    return RMW_RET_UNSUPPORTED;
+  }
   rmw_event->implementation_identifier = implementation_identifier;
   rmw_event->data = data;
   rmw_event->event_type = event_type;
