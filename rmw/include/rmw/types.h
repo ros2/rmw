@@ -170,10 +170,12 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_allocation_t
 
 /// Array of subscriber handles.
 /**
- * An array of void * pointers representing type-erased middleware-specific subscriptions.
+ * An array of void * pointers representing type-erased middleware-specific subscriptions,
+ * and arrival timestamp information for the entries (in the same order).
  * The number of non-null entries may be smaller than the allocated size of the array.
  * The number of subscriptions represented may be smaller than the allocated size of the array.
- * The creator of this struct is responsible for allocating and deallocating the array.
+ * The creator of this struct is responsible for allocating and deallocating the array,
+ * including the timestamp array.
  */
 typedef struct RMW_PUBLIC_TYPE rmw_subscriptions_t
 {
@@ -187,10 +189,12 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscriptions_t
 
 /// Array of service handles.
 /**
- * An array of void * pointers representing type-erased middleware-specific services.
+ * An array of void * pointers representing type-erased middleware-specific services,
+ * and arrival timestamp information for the entries (in the same order).
  * The number of non-null entries may be smaller than the allocated size of the array.
  * The number of services represented may be smaller than the allocated size of the array.
- * The creator of this struct is responsible for allocating and deallocating the array.
+ * The creator of this struct is responsible for allocating and deallocating the array,
+ * including the timestamp array.
  */
 typedef struct RMW_PUBLIC_TYPE rmw_services_t
 {
@@ -205,9 +209,11 @@ typedef struct RMW_PUBLIC_TYPE rmw_services_t
 /// Array of client handles.
 /**
  * An array of void * pointers representing type-erased middleware-specific clients.
+ * and arrival timestamp information for the entries (in the same order).
  * The number of non-null entries may be smaller than the allocated size of the array.
  * The number of clients represented may be smaller than the allocated size of the array.
  * The creator of this struct is responsible for allocating and deallocating the array.
+ * including the timestamp array.
  */
 typedef struct RMW_PUBLIC_TYPE rmw_clients_t
 {
