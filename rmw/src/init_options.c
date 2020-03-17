@@ -31,7 +31,7 @@ rmw_get_zero_initialized_init_options(void)
            .implementation_identifier = NULL,
            .impl = NULL,
            .instance_id = 0,
-           .name = NULL,
+           .security_context = NULL,
            .security_options = rmw_get_default_security_options(),
   };  // NOLINT(readability/braces): false positive
 }
