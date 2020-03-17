@@ -202,7 +202,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_services_t
   size_t service_count;
   /// Pointer to an array of void * pointers of services.
   void ** services;
-  /// Pointer to an array rcutil timestamps, to be filled in same order as the above
+  /// Pointer to an array of rcutil timestamps, to be filled in same order as the above
   rcutils_time_point_value_t * timestamps;
 } rmw_services_t;
 
@@ -221,7 +221,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_clients_t
   size_t client_count;
   /// Pointer to an array of void * pointers of clients.
   void ** clients;
-  /// Pointer to an array rcutil timestamps, to be filled in same order as the above
+  /// Pointer to an array of rcutil timestamps, to be filled in same order as the above
   rcutils_time_point_value_t * timestamps;
 } rmw_clients_t;
 
