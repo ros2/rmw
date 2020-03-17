@@ -3,7 +3,6 @@ find_package(osrf_testing_tools_cpp REQUIRED)
 
 ament_add_gmock(test_serialized_message
   test_serialized_message.cpp
-  fake_rmw_implementation.cpp
   # Append the directory of librmw so it is found at test time.
   APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
 )
@@ -13,7 +12,6 @@ endif()
 
 ament_add_gmock(test_validate_full_topic_name
   test_validate_full_topic_name.cpp
-  fake_rmw_implementation.cpp
   # Append the directory of librmw so it is found at test time.
   APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
 )
@@ -23,7 +21,6 @@ endif()
 
 ament_add_gmock(test_validate_node_name
   test_validate_node_name.cpp
-  fake_rmw_implementation.cpp
   # Append the directory of librmw so it is found at test time.
   APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
 )
@@ -33,7 +30,6 @@ endif()
 
 ament_add_gmock(test_validate_namespace
   test_validate_namespace.cpp
-  fake_rmw_implementation.cpp
   # Append the directory of librmw so it is found at test time.
   APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
 )
@@ -49,7 +45,6 @@ endif()
 
 ament_add_gmock(test_topic_endpoint_info_array
   test_topic_endpoint_info_array.cpp
-  fake_rmw_implementation.cpp
   # Append the directory of librmw so it is found at test time.
   APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
 )
@@ -60,7 +55,6 @@ endif()
 
 ament_add_gmock(test_topic_endpoint_info
   test_topic_endpoint_info.cpp
-  fake_rmw_implementation.cpp
   # Append the directory of librmw so it is found at test time.
   APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
 )
