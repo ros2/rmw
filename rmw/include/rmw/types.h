@@ -212,7 +212,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_services_t
  * and arrival timestamp information for the entries (in the same order).
  * The number of non-null entries may be smaller than the allocated size of the array.
  * The number of clients represented may be smaller than the allocated size of the array.
- * The creator of this struct is responsible for allocating and deallocating the array.
+ * The creator of this struct is responsible for allocating and deallocating the array,
  * including the timestamp array.
  */
 typedef struct RMW_PUBLIC_TYPE rmw_clients_t
