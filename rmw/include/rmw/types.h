@@ -208,7 +208,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_services_t
 
 /// Array of client handles.
 /**
- * An array of void * pointers representing type-erased middleware-specific clients.
+ * An array of void * pointers representing type-erased middleware-specific clients,
  * and arrival timestamp information for the entries (in the same order).
  * The number of non-null entries may be smaller than the allocated size of the array.
  * The number of clients represented may be smaller than the allocated size of the array.
