@@ -221,7 +221,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_clients_t
   size_t client_count;
   /// Pointer to an array of void * pointers of clients.
   void ** clients;
-  /// Pointer to an array of rcutil timestamps, to be filled in same order as the above
+  /// Pointer to an array of rcutils timestamps, to be filled in same order as the above.
   rcutils_time_point_value_t * timestamps;
 } rmw_clients_t;
 
