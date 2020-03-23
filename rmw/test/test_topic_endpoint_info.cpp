@@ -16,6 +16,7 @@
 #include "osrf_testing_tools_cpp/scope_exit.hpp"
 #include "rcutils/allocator.h"
 
+#include "rmw/error_handling.h"
 #include "rmw/topic_endpoint_info.h"
 #include "rmw/types.h"
 
@@ -33,11 +34,17 @@ TEST(test_topic_endpoint_info, set_topic_type) {
   char * val = get_mallocd_string("test_topic_type");
   rmw_ret_t ret = rmw_topic_endpoint_info_set_topic_type(&topic_endpoint_info, val, nullptr);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null allocator";
+  rmw_reset_error();
+
   ret = rmw_topic_endpoint_info_set_topic_type(&topic_endpoint_info, nullptr, &allocator);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null topic_type";
+  rmw_reset_error();
+
   ret = rmw_topic_endpoint_info_set_topic_type(nullptr, val, &allocator);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
     "Expected invalid argument for null topic_endpoint_info";
+  rmw_reset_error();
+
   OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT(
   {
     allocator.deallocate(const_cast<char *>(topic_endpoint_info.topic_type), allocator.state);
@@ -57,11 +64,17 @@ TEST(test_topic_endpoint_info, set_node_name) {
   char * val = get_mallocd_string("test_node_name");
   rmw_ret_t ret = rmw_topic_endpoint_info_set_node_name(&topic_endpoint_info, val, nullptr);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null allocator";
+  rmw_reset_error();
+
   ret = rmw_topic_endpoint_info_set_node_name(&topic_endpoint_info, nullptr, &allocator);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null node_name";
+  rmw_reset_error();
+
   ret = rmw_topic_endpoint_info_set_node_name(nullptr, val, &allocator);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
     "Expected invalid argument for null topic_endpoint_info";
+  rmw_reset_error();
+
   OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT(
   {
     allocator.deallocate(const_cast<char *>(topic_endpoint_info.node_name), allocator.state);
@@ -80,11 +93,17 @@ TEST(test_topic_endpoint_info, set_node_namespace) {
   char * val = get_mallocd_string("test_node_namespace");
   rmw_ret_t ret = rmw_topic_endpoint_info_set_node_namespace(&topic_endpoint_info, val, nullptr);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null allocator";
+  rmw_reset_error();
+
   ret = rmw_topic_endpoint_info_set_node_namespace(&topic_endpoint_info, nullptr, &allocator);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null node_namespace";
+  rmw_reset_error();
+
   ret = rmw_topic_endpoint_info_set_node_namespace(nullptr, val, &allocator);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
     "Expected invalid argument for null topic_endpoint_info";
+  rmw_reset_error();
+
   OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT(
   {
     allocator.deallocate(const_cast<char *>(topic_endpoint_info.node_namespace), allocator.state);
@@ -106,9 +125,13 @@ TEST(test_topic_endpoint_info, set_gid) {
   rmw_ret_t ret = rmw_topic_endpoint_info_set_gid(nullptr, gid, RMW_GID_STORAGE_SIZE);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
     "Expected invalid argument for null topic_endpoint_info";
+  rmw_reset_error();
+
   ret = rmw_topic_endpoint_info_set_gid(&topic_endpoint_info, gid, RMW_GID_STORAGE_SIZE + 1);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
     "Expected invalid argument for size greater than RMW_GID_STORAGE_SIZE";
+  rmw_reset_error();
+
   ret = rmw_topic_endpoint_info_set_gid(&topic_endpoint_info, gid, RMW_GID_STORAGE_SIZE);
   EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
   for (uint8_t i = 0; i < RMW_GID_STORAGE_SIZE; i++) {
@@ -132,8 +155,12 @@ TEST(test_topic_endpoint_info, set_qos_profile) {
   rmw_ret_t ret = rmw_topic_endpoint_info_set_qos_profile(nullptr, &qos_profile);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
     "Expected invalid argument for null topic_endpoint_info";
+  rmw_reset_error();
+
   ret = rmw_topic_endpoint_info_set_qos_profile(&topic_endpoint_info, nullptr);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null qos_profile";
+  rmw_reset_error();
+
   ret = rmw_topic_endpoint_info_set_qos_profile(&topic_endpoint_info, &qos_profile);
   EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
 
@@ -215,6 +242,9 @@ TEST(test_topic_endpoint_info, fini) {
   }
   ret = rmw_topic_endpoint_info_set_endpoint_type(&topic_endpoint_info, RMW_ENDPOINT_PUBLISHER);
   EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid rmw_endpoint_type_t arguments";
+  ret = rmw_topic_endpoint_info_set_endpoint_type(nullptr, RMW_ENDPOINT_PUBLISHER);
+  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null topic endpoint";
+  rmw_reset_error();
   ret = rmw_topic_endpoint_info_set_gid(&topic_endpoint_info, gid, RMW_GID_STORAGE_SIZE);
   EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid gid arguments";
   ret = rmw_topic_endpoint_info_set_node_namespace(&topic_endpoint_info, "namespace", &allocator);
@@ -225,9 +255,11 @@ TEST(test_topic_endpoint_info, fini) {
   EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid topic_type arguments";
   ret = rmw_topic_endpoint_info_fini(&topic_endpoint_info, nullptr);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null allocator";
+  rmw_reset_error();
   ret = rmw_topic_endpoint_info_fini(nullptr, &allocator);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
     "Expected invalid argument for null topic_endpoint_info";
+  rmw_reset_error();
 
   ret = rmw_topic_endpoint_info_fini(&topic_endpoint_info, &allocator);
   // Verify that the values inside the struct are zero-ed out and finished.
