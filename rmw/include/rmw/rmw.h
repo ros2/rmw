@@ -1054,6 +1054,8 @@ rmw_get_node_names(
  * \return `RMW_RET_OK` if node the query was made successfully, or
  * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */
+RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_get_node_names_with_security_contexts(
   const rmw_node_t * node,
