@@ -67,7 +67,8 @@ rmw_get_zero_initialized_event(void);
  * \param publisher to initialize with
  * \param event_type for the event to handle
  * \return `RMW_RET_OK` if successful, or
- * \return `RMW_RET_INVALID_ARGUMENT` if invalid argument
+ * \return `RMW_RET_INVALID_ARGUMENT` if invalid argument, or
+ * \return `RMW_RET_UNSUPPORTED` if event_type is not supported, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
@@ -84,7 +85,8 @@ rmw_publisher_event_init(
  * \param subscription to initialize with
  * \param event_type for the event to handle
  * \return `RMW_RET_OK` if successful, or
- * \return `RMW_RET_INVALID_ARGUMENT` if invalid argument
+ * \return `RMW_RET_INVALID_ARGUMENT` if invalid argument, or
+ * \return `RMW_RET_UNSUPPORTED` if event_type is not supported, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
