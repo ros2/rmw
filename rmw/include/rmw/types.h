@@ -48,7 +48,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_node_t
   rmw_context_t * context;
 } rmw_node_t;
 
-typedef enum RMW_PUBLIC_TYPE
+typedef enum RMW_PUBLIC_TYPE rmw_endpoint_type_t
 {
   RMW_ENDPOINT_INVALID = 0,
   RMW_ENDPOINT_PUBLISHER,
