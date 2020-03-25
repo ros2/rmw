@@ -13,7 +13,7 @@
 # limitations under the License.
 
 #
-# Get the package name of the default ROS middleware implemenation.
+# Get the package name of the default ROS middleware implementation.
 #
 # Either selecting it using the variable RMW_IMPLEMENTATION or
 # choosing a default from the available implementations.

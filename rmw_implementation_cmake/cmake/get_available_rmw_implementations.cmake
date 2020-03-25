@@ -13,7 +13,7 @@
 # limitations under the License.
 
 #
-# Get the package names of the available ROS middleware implemenations.
+# Get the package names of the available ROS middleware implementations.
 #
 # The result can be overridden by setting either a CMake or environment
 # variable named ``RMW_IMPLEMENTATIONS``.

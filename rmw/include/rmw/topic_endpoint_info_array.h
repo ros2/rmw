@@ -43,6 +43,8 @@ rmw_get_zero_initialized_topic_endpoint_info_array(void);
 /**
  * This function checks if the provided rmw_topic_endpoint_info_array_t is zero initialized or not.
  *
+ * If a non RMW_RET_OK return value is returned, the RMW error message will be set
+ *
  * \param[in] topic_endpoint_info_array the data structure to be checked
  * \returns `RMW_RET_OK` if topic_endpoint_info_array is zero initialized
  * \returns `RMW_RET_INVALID_ARGUMENT` if the parameter is NULL, or
@@ -63,6 +65,8 @@ rmw_topic_endpoint_info_array_check_zero(
  * The member `size` is updated accordingly.
  *
  * topic_endpoint_info_array must be zero initialized before being passed into this function.
+ *
+ * If a non RMW_RET_OK return value is returned, the RMW error message will be set
  *
  * \param[inout] topic_endpoint_info_array the data structure to initialise
  * \param[in] size the size of the array
@@ -88,6 +92,8 @@ rmw_topic_endpoint_info_array_init_with_size(
  * When initializing this array, memory is allocated for it using the allocator.
  * This function reclaims any allocated resources within the object and also sets the value of size
  * to 0.
+ *
+ * If a non RMW_RET_OK return value is returned, the RMW error message will be set 
  *
  * \param[inout] topic_endpoint_info_array object to be finalized
  * \param[in] allocator the allocator used to allocate memory to the object

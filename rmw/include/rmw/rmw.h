@@ -102,6 +102,10 @@ extern "C"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
 
+/// Get the name of the rmw implementation being used
+/**
+ * \return Name of rmw implementation
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 const char *
@@ -873,6 +877,15 @@ rmw_return_loaned_message_from_subscription(
   const rmw_subscription_t * subscription,
   void * loaned_message);
 
+/// Create an rmw client to communicate with the specified service
+/**
+ * \param node Handle to node with which to register this client
+ * \param type_support The type_support of this rosidl service
+ * \param service_name The name of the ROS 2 service to connect with
+ * \param qos_policies The QoS profile policies to utilize for this connection
+ *
+ * \return The initialized client if successful, `nullptr` if not
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_client_t *
@@ -882,11 +895,24 @@ rmw_create_client(
   const char * service_name,
   const rmw_qos_profile_t * qos_policies);
 
+/// Destroy and unregister a service client
+/**
+ * \param node The associated node whose client will be destroyed
+ * \param client The service client to destroy
+ * \return RMW_RET_OK if successful, otherwise an appropriate error code
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_client(rmw_node_t * node, rmw_client_t * client);
 
+/// Send a service request to the rmw server
+/**
+ * \param client The connected client over which to send this request
+ * \param ros_request the request message to send to the server
+ * \param[out] sequence_id A unique identification value to identify this request
+ * \return RMW_RET_OK if successful, otherwise an appropriate error code
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -895,6 +921,14 @@ rmw_send_request(
   const void * ros_request,
   int64_t * sequence_id);
 
+/// Attempt to get the response from a service request
+/**
+ * \param client The connected client to check on this request
+ * \param[out] request_header Header response information
+ * \param[out] ros_response The response of this service request,
+ * \param[out] taken True if the response was taken, false otherwise
+ * \return RMW_RET_OK if successful, otherwise an appropriate error code
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -904,6 +938,14 @@ rmw_take_response(
   void * ros_response,
   bool * taken);
 
+/// Create an rmw service server that responds to requests
+/**
+ * \param node The node that responds the service requests
+ * \param type_support The type support description of this service
+ * \param service_name The name of this service advertised across the ROS graph
+ * \param qos_policies The QoS profile policies to utilize for connections
+ * \return The created service object if successful, otherwise a nullptr
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_service_t *
@@ -913,11 +955,25 @@ rmw_create_service(
   const char * service_name,
   const rmw_qos_profile_t * qos_policies);
 
+/// Destroy and unregister the service from this node
+/**
+ * \param node The node that owns the service that is being destroyed
+ * \param service Pointer to the service type created in `rmw_create_service`
+ * \return RMW_RET_OK if successful, otherwise an appropriate error code
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_service(rmw_node_t * node, rmw_service_t * service);
 
+/// Attempt to take a request from this service's request buffer
+/**
+ * \param service service object that responds to these requests
+ * \param[out] request_header Request information header with writer guid and sequence number
+ * \param[out] ros_request The deserialized ros_request, and is unmodified if there are no requests
+ * \param[out] taken true if the request was taken, otherwise false
+ * \return RMW_RET_OK if successful, otherwise an appropriate error code
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -927,6 +983,13 @@ rmw_take_request(
   void * ros_request,
   bool * taken);
 
+/// Send response to a client's request
+/**
+ * \param service The service that responding to this request
+ * \param request_header The request header obtained when this request was taken
+ * \param ros_response The response message to send to the client
+ * \return RMW_RET_OK if successful, otherwise an appropriate error code
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -1007,6 +1070,11 @@ RMW_WARN_UNUSED
 rmw_wait_set_t *
 rmw_create_wait_set(rmw_context_t * context, size_t max_conditions);
 
+/// Destroy and free memory of this wait_set
+/**
+ * \param wait_set The wait_set object to destroy
+ * \return RMW_RET_OK if successful, otherwise an appropriate error code
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -1113,6 +1181,13 @@ rmw_get_node_names_with_enclaves(
   rcutils_string_array_t * node_namespaces,
   rcutils_string_array_t * enclaves);
 
+/// Count the number of publishers matching a topic name
+/**
+* \param node rmw node connected to the ROS graph
+* \param topic_name The name of the topic to match under possible prefixes
+* \param[out] count The number of publishers matching the topic name
+* \return RMW_RET_OK if successful, otherwise an appropriate error code
+*/
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -1121,6 +1196,13 @@ rmw_count_publishers(
   const char * topic_name,
   size_t * count);
 
+/// Count the number of subscribers matching a topic name
+/**
+ * \param node rmw node connected to the ROS graph
+ * \param topic_name The name of the topic to match under possible prefixes
+ * \param[out] count The number of subscribers matching the topic name
+ * \return RMW_RET_OK if successful, otherwise an appropriate error code
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -1129,11 +1211,24 @@ rmw_count_subscribers(
   const char * topic_name,
   size_t * count);
 
+/// Get the unique identifier of the publisher
+/**
+ * \param publisher The publisher to get the gid of
+ * \param[out] gid The resulting gid
+ * \return RMW_RET_OK if successful, otherwise an appropriate error code
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_get_gid_for_publisher(const rmw_publisher_t * publisher, rmw_gid_t * gid);
 
+/// Check if two gid objects are the same
+/**
+ * \param gid1 One gid1 to compare
+ * \param gid2 The other gid to compare
+ * \param[out] bool true if the gid objects match, false otherwise
+ * \return RMW_RET_OK if successful, otherwise an appropriate error code
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -1174,6 +1269,11 @@ rmw_service_server_is_available(
   const rmw_client_t * client,
   bool * is_available);
 
+/// Set the current log severity
+/**
+ * \param severity The log severity to set
+ * \return RMW_RET_OK if successful, otherwise an appropriate error code
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
