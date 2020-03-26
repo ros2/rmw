@@ -1050,7 +1050,7 @@ rmw_get_node_names(
  * \param[in] node the handle to the node being used to query the ROS graph
  * \param[out] node_names a list of discovered node names
  * \param[out] node_namespaces a list of discovered node namespaces
- * \param[out] security_contexts list of the security context of the nodes
+ * \param[out] security_contexts list of discovered nodes' security context names
  * \return `RMW_RET_OK` if node the query was made successfully, or
  * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */

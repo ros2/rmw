@@ -46,14 +46,14 @@ rmw_security_options_copy(
   RCUTILS_CHECK_ALLOCATOR(allocator, return RMW_RET_INVALID_ARGUMENT);
   RMW_CHECK_ARGUMENT_FOR_NULL(dst, RMW_RET_INVALID_ARGUMENT);
 
-  allocator->deallocate(dst->security_root_path, allocator->state);
-  *dst = *src;
-  dst->security_root_path = NULL;
-  dst->security_root_path = rcutils_strdup(src->security_root_path, *allocator);
-  if (src->security_root_path && !dst->security_root_path) {
+  char * new_root_path = rcutils_strdup(src->security_root_path, *allocator);
+  if (src->security_root_path && !new_root_path) {
     RMW_SET_ERROR_MSG("failed to copy security root path");
     return RMW_RET_BAD_ALLOC;
   }
+  allocator->deallocate(dst->security_root_path, allocator->state);
+  dst->security_root_path = new_root_path;
+  dst->enforce_security = src->enforce_security;
   return RMW_RET_OK;
 }
 
@@ -66,14 +66,13 @@ rmw_security_options_set_root_path(
   RMW_CHECK_ARGUMENT_FOR_NULL(security_root_path, RMW_RET_INVALID_ARGUMENT);
   RCUTILS_CHECK_ALLOCATOR(allocator, return RMW_RET_INVALID_ARGUMENT);
   RMW_CHECK_ARGUMENT_FOR_NULL(security_options, RMW_RET_INVALID_ARGUMENT);
-  char * old_security_root_path = security_options->security_root_path;
-  security_options->security_root_path = rcutils_strdup(security_root_path, *allocator);
-  if (!security_options->security_root_path) {
-    security_options->security_root_path = old_security_root_path;
+  char * new_root_path = rcutils_strdup(security_root_path, *allocator);
+  if (!new_root_path) {
     RMW_SET_ERROR_MSG("failed to copy security root path");
     return RMW_RET_BAD_ALLOC;
   }
-  allocator->deallocate(old_security_root_path, allocator->state);
+  allocator->deallocate(security_options->security_root_path, allocator->state);
+  security_options->security_root_path = new_root_path;
   return RMW_RET_OK;
 }
 
