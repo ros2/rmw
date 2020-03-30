@@ -327,10 +327,11 @@ rmw_destroy_publisher(rmw_node_t * node, rmw_publisher_t * publisher);
  * \param[in] publisher Publisher to which the allocated message is associated.
  * \param[in] type_support Typesupport to which the internal ros message is allocated.
  * \param[out] ros_message The pointer to be filled with a valid ros message by the middleware.
- * \return RMW_RET_OK if the ros message was correctly initialized, or
- * \return RMW_RET_INVALID_ARGUMENT if an argument other than the ros message is null, or
- * \return RMW_RET_BAD_ALLOC if the ros message could not be correctly created, or
- * \return RMW_RET_ERROR if an unexpected error occured.
+ * \return `RMW_RET_OK` if the ros message was correctly initialized, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if an argument other than the ros message is null, or
+ * \return `RMW_RET_BAD_ALLOC` if the ros message could not be correctly created, or
+ * \return `RMW_RET_UNSUPPORTED` if the rmw_implementation does not support loaned_message, or
+ * \return `RMW_RET_ERROR` if an unexpected error occured.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -350,6 +351,7 @@ rmw_borrow_loaned_message(
  * \param[in] loaned_message Loaned message to be returned.
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if an argument is null, or
+ * \return `RMW_RET_UNSUPPORTED` if the rmw_implementation does not support loaned_message, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs and no message can be initialized.
  */
 RMW_PUBLIC
@@ -394,6 +396,7 @@ rmw_publish(
  * \param[in] allocation Specify preallocated memory to use (may be NULL).
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if publisher or ros_message is null, or
+ * \return `RMW_RET_UNSUPPORTED` if the rmw_implementation does not support loaned_message, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
@@ -770,6 +773,7 @@ rmw_take_serialized_message_with_info(
  * \param[in] allocation Preallocated buffer to use (may be NULL).
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_BAD_ALLOC` if memory allocation failed, or
+ * \return `RMW_RET_UNSUPPORTED` if the rmw_implementation does not support loaned_message, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
@@ -794,6 +798,7 @@ rmw_take_loaned_message(
  * \param[in] allocation Preallocated buffer to use (may be NULL).
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_BAD_ALLOC` if memory allocation failed, or
+ * \return `RMW_RET_UNSUPPORTED` if the rmw_implementation does not support loaned_message, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
