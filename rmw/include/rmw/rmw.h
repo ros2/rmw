@@ -1045,7 +1045,7 @@ rmw_get_node_names(
 
 /// Return a list of node name and namespaces discovered via a node with its security context.
 /**
- * \sa Similar to rmw_get_node_names, but it also provides the security context name.
+ * Similar to \ref rmw_get_node_names, but it also provides the security context name.
  *
  * \param[in] node the handle to the node being used to query the ROS graph
  * \param[out] node_names a list of discovered node names
