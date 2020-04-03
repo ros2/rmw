@@ -28,14 +28,16 @@ extern "C"
 #include <rcutils/logging.h>
 
 #include "rmw/init.h"
+#include "rmw/init_options.h"
 #include "rmw/loaned_message_sequence.h"
 #include "rmw/ret_types.h"
+#include "rmw/security_options.h"
 #include "rmw/serialized_message.h"
 #include "rmw/visibility_control.h"
 
 // 24 bytes is the most memory needed to represent the GID by any current
 // implementation. It may need to be increased in the future.
-#define RMW_GID_STORAGE_SIZE 24
+#define RMW_GID_STORAGE_SIZE 24u
 
 typedef struct RMW_PUBLIC_TYPE rmw_node_t
 {
@@ -46,7 +48,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_node_t
   rmw_context_t * context;
 } rmw_node_t;
 
-typedef enum RMW_PUBLIC_TYPE
+typedef enum RMW_PUBLIC_TYPE rmw_endpoint_type_t
 {
   RMW_ENDPOINT_INVALID = 0,
   RMW_ENDPOINT_PUBLISHER,
@@ -252,18 +254,6 @@ typedef struct RMW_PUBLIC_TYPE rmw_time_t
   uint64_t sec;
   uint64_t nsec;
 } rmw_time_t;
-
-enum RMW_PUBLIC_TYPE rmw_security_enforcement_policy_t
-{
-  RMW_SECURITY_ENFORCEMENT_PERMISSIVE,
-  RMW_SECURITY_ENFORCEMENT_ENFORCE,
-};
-
-typedef struct RMW_PUBLIC_TYPE rmw_node_security_options_t
-{
-  enum rmw_security_enforcement_policy_t enforce_security;
-  const char * security_root_path;
-} rmw_node_security_options_t;
 
 enum RMW_PUBLIC_TYPE rmw_qos_reliability_policy_t
 {

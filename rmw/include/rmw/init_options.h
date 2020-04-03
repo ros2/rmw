@@ -23,8 +23,11 @@ extern "C"
 #include <stdint.h>
 
 #include "rcutils/allocator.h"
+#include "rmw/domain_id.h"
+#include "rmw/localhost.h"
 #include "rmw/macros.h"
 #include "rmw/ret_types.h"
+#include "rmw/security_options.h"
 #include "rmw/visibility_control.h"
 
 /// Implementation defined options structure used during rmw_init().
@@ -45,6 +48,15 @@ typedef struct RMW_PUBLIC_TYPE rmw_init_options_t
   uint64_t instance_id;
   /// Implementation identifier, used to ensure two different implementations are not being mixed.
   const char * implementation_identifier;
+  /// ROS domain id
+  size_t domain_id;
+  /// Security options
+  rmw_security_options_t security_options;
+  /// Enable localhost only
+  rmw_localhost_only_t localhost_only;
+  /// Security context
+  char * security_context;
+
   // TODO(wjwwood): replace with rmw_allocator_t when that refactor happens
   /// Allocator used during internal allocation of init options, if needed.
   rcutils_allocator_t allocator;
