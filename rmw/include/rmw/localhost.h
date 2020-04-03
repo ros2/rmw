@@ -1,4 +1,4 @@
-// Copyright 2017 Open Source Robotics Foundation, Inc.
+// Copyright 2019 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,26 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__NODE_SECURITY_OPTIONS_H_
-#define RMW__NODE_SECURITY_OPTIONS_H_
+#ifndef RMW__LOCALHOST_H_
+#define RMW__LOCALHOST_H_
+
+#include "rmw/visibility_control.h"
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-#include "rmw/types.h"
-
-RMW_PUBLIC
-rmw_node_security_options_t
-rmw_get_zero_initialized_node_security_options();
-
-RMW_PUBLIC
-rmw_node_security_options_t
-rmw_get_default_node_security_options();
+/// Used to specify if the context can only communicate through localhost.
+typedef enum RMW_PUBLIC_TYPE rmw_localhost_only_t
+{
+  /// Uses ROS_LOCALHOST_ONLY environment variable.
+  RMW_LOCALHOST_ONLY_DEFAULT = 0,
+  /// Forces using only localhost.
+  RMW_LOCALHOST_ONLY_ENABLED = 1,
+  /// Forces disabling localhost only.
+  RMW_LOCALHOST_ONLY_DISABLED = 2,
+} rmw_localhost_only_t;
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  // RMW__NODE_SECURITY_OPTIONS_H_
+#endif  // RMW__LOCALHOST_H_

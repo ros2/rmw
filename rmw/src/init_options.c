@@ -15,6 +15,7 @@
 #include <stddef.h>
 
 #include "rmw/init_options.h"
+#include "rmw/localhost.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -25,9 +26,13 @@ rmw_init_options_t
 rmw_get_zero_initialized_init_options(void)
 {
   return (const rmw_init_options_t) {
-           .instance_id = 0,
+           .domain_id = RMW_DEFAULT_DOMAIN_ID,
+           .localhost_only = RMW_LOCALHOST_ONLY_DEFAULT,
            .implementation_identifier = NULL,
            .impl = NULL,
+           .instance_id = 0,
+           .security_context = NULL,
+           .security_options = rmw_get_default_security_options(),
   };  // NOLINT(readability/braces): false positive
 }
 

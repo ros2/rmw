@@ -40,6 +40,8 @@ typedef struct RMW_PUBLIC_TYPE rmw_context_t
   uint64_t instance_id;
   /// Implementation identifier, used to ensure two different implementations are not being mixed.
   const char * implementation_identifier;
+  /// Options used to initialize the context.
+  rmw_init_options_t options;
   /// Implementation defined context information.
   /** May be NULL if there is no implementation defined context information. */
   rmw_context_impl_t * impl;
