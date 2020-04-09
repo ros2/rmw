@@ -55,7 +55,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_init_options_t
   /// Enable localhost only
   rmw_localhost_only_t localhost_only;
   /// Security context
-  char * security_context;
+  char * enclave;
 
   // TODO(wjwwood): replace with rmw_allocator_t when that refactor happens
   /// Allocator used during internal allocation of init options, if needed.
