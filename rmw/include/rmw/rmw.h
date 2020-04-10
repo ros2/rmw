@@ -98,6 +98,7 @@ extern "C"
 #include "rmw/macros.h"
 #include "rmw/qos_profiles.h"
 #include "rmw/subscription_options.h"
+#include "rmw/message_sequence.h"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
 
@@ -714,6 +715,34 @@ rmw_take_with_info(
   void * ros_message,
   bool * taken,
   rmw_message_info_t * message_info,
+  rmw_subscription_allocation_t * allocation);
+
+/// Take multiple incoming messages from a subscription with additional metadata.
+/**
+ * Take a sequence of ROS messgages from a given subscription.
+ *
+ * While `count` messages may be requested, fewer messages may be available on the subscription.
+ * In this case, only the currently available messages will be returned.
+ * The `taken` flag indicate the number of messages actually taken.
+ *
+ * \param[in] subscription The subscription object to take from.
+ * \param[in] count Number of messages to attempt to take.
+ * \param[out] message_sequence The sequence ROS message data on success.
+ * \param[out] message_info_sequence The seqeucne of additional message metadata on success.
+ * \param[out] taken Number of messages actually taken from subscription.
+ * \param[in] allocation Preallocated buffer to use (may be NULL).
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_take_sequence(
+  const rmw_subscription_t * subscription,
+  size_t count,
+  rmw_message_sequence_t * message_sequence,
+  rmw_message_info_sequence_t * message_info_sequence,
+  size_t * taken,
   rmw_subscription_allocation_t * allocation);
 
 /// Take a message without deserializing it.
