@@ -54,8 +54,8 @@ typedef struct RMW_PUBLIC_TYPE rmw_init_options_t
   rmw_security_options_t security_options;
   /// Enable localhost only
   rmw_localhost_only_t localhost_only;
-  /// Security context
-  char * security_context;
+  /// Enclave, name used to find security artifacts in a sros2 keystore.
+  char * enclave;
 
   // TODO(wjwwood): replace with rmw_allocator_t when that refactor happens
   /// Allocator used during internal allocation of init options, if needed.

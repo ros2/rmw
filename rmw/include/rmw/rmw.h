@@ -1048,25 +1048,25 @@ rmw_get_node_names(
   rcutils_string_array_t * node_names,
   rcutils_string_array_t * node_namespaces);
 
-/// Return a list of node name and namespaces discovered via a node with its security context.
+/// Return a list of node name and namespaces discovered via a node with its enclave.
 /**
- * Similar to \ref rmw_get_node_names, but it also provides the security context name.
+ * Similar to \ref rmw_get_node_names, but it also provides the enclave name.
  *
  * \param[in] node the handle to the node being used to query the ROS graph
  * \param[out] node_names a list of discovered node names
  * \param[out] node_namespaces a list of discovered node namespaces
- * \param[out] security_contexts list of discovered nodes' security context names
+ * \param[out] enclaves list of discovered nodes' enclave names
  * \return `RMW_RET_OK` if node the query was made successfully, or
  * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_get_node_names_with_security_contexts(
+rmw_get_node_names_with_enclaves(
   const rmw_node_t * node,
   rcutils_string_array_t * node_names,
   rcutils_string_array_t * node_namespaces,
-  rcutils_string_array_t * security_contexts);
+  rcutils_string_array_t * enclaves);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
