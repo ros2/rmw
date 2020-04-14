@@ -332,11 +332,17 @@ typedef struct RMW_PUBLIC_TYPE rmw_gid_t
 
 typedef struct RMW_PUBLIC_TYPE rmw_message_info_t
 {
-  const rmw_time_t source_timestamp;
-  const rmw_time_t received_timestamp;
+  rmw_time_t source_timestamp;
+  rmw_time_t received_timestamp;
   rmw_gid_t publisher_gid;
   bool from_intra_process;
 } rmw_message_info_t;
+
+/// Get zero initialized mesage info.
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_message_info_t
+rmw_get_zero_initialized_message_info(void);
 
 typedef struct RMW_PUBLIC_TYPE rmw_message_info_sequence_t
 {
