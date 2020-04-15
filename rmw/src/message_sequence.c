@@ -57,8 +57,8 @@ rmw_message_sequence_fini(
     assert(sequence->capacity > 0);
     free(sequence->data);
     sequence->data = NULL;
-    sequence->size = 0;
-    sequence->capacity = 0;
+    sequence->size = 0u;
+    sequence->capacity = 0u;
   } else {
     assert(0 == sequence->size);
     assert(0 == sequence->capacity);
@@ -93,7 +93,7 @@ rmw_message_info_sequence_init(
     }
   }
   sequence->data = data;
-  sequence->size = 0;
+  sequence->size = 0u;
   sequence->capacity = size;
   return RMW_RET_OK;
 }
@@ -108,8 +108,8 @@ rmw_message_info_sequence_fini(
     assert(sequence->capacity > 0);
     free(sequence->data);
     sequence->data = NULL;
-    sequence->size = 0;
-    sequence->capacity = 0;
+    sequence->size = 0u;
+    sequence->capacity = 0u;
   } else {
     assert(0 == sequence->size);
     assert(0 == sequence->capacity);
