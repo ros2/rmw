@@ -724,14 +724,24 @@ rmw_take_with_info(
  * While `count` messages may be requested, fewer messages may be available on the subscription.
  * In this case, only the currently available messages will be returned.
  * The `taken` flag indicate the number of messages actually taken.
+ * The method will return `RMW_RET_OK` even in the case that fewer (or zero) messages retrieved
+ * from the subscription, and will `RMW_RET_ERROR` in the case of unexpected errors.
+ * In the case that `count` is zero, the function will return `RMW_RET_INVALID_ARGUMENT`.
+ *
+ * `message_sequence` and `message_info_sequence` should be initialized and have sufficient capacity.
+ * It is not critical that the sequence sizes match, and they may be reused from previous calls.
+ * Both must be valid (not NULL) for the method to run successfully.
  *
  * \param[in] subscription The subscription object to take from.
  * \param[in] count Number of messages to attempt to take.
  * \param[out] message_sequence The sequence ROS message data on success.
- * \param[out] message_info_sequence The seqeucne of additional message metadata on success.
+ * \param[out] message_info_sequence The sequence of additional message metadata on success.
  * \param[out] taken Number of messages actually taken from subscription.
  * \param[in] allocation Preallocated buffer to use (may be NULL).
  * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if an argument is invalid, or
+ * \return `RMW_RET_BAD_ALLOC` if memory allocation failed, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the subscription is invalid, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
