@@ -26,17 +26,63 @@ extern "C"
 {
 #endif
 
+/// Structure to hold a sequence of ROS messages.
+typedef struct RMW_PUBLIC_TYPE rmw_message_sequence_t
+{
+  /// Array of pointers to ROS messages.
+  void ** data;
+  /// The number of valid entries in `data`.
+  size_t size;
+  /// The total allocated capacity of the data array.
+  size_t capacity;
+} rmw_message_sequence_t;
+
+/// Structure to hold a sequence of message infos.
+typedef struct RMW_PUBLIC_TYPE rmw_message_info_sequence_t
+{
+  /// Array of message info.
+  rmw_message_info_t * data;
+  /// The number of valid entries in data.
+  size_t size;
+  /// The total allocated capacity of the data array.
+  size_t capacity;
+} rmw_message_info_sequence_t;
+
+/// Return an rmw_message_sequence_t struct with members initialized to `NULL`;
 RMW_PUBLIC
 rmw_message_sequence_t
 rmw_get_zero_initialized_message_sequence(void);
 
+/// Initialize an rmw_message_sequence_t object.
+/**
+ * \param[inout] sequence sequence object to be initialized.
+ * \param[in] size capacity of the sequence to be allocated.
+ * \param[in] allocator the allcator used to allocate memory.
+ */
 RMW_PUBLIC
 rmw_ret_t
-rmw_message_sequence_init(rmw_message_sequence_t * sequence, size_t size);
+rmw_message_sequence_init(
+  rmw_message_sequence_t * sequence,
+  size_t size,
+  const rcutils_allocator_t * allocator);
 
+/// Finalize an rmw_message_sequence_t object.
+/**
+ * The rmw_message_sequence_t struct has members which require memory to be allocated to them
+ * before setting values.
+ * This function reclaims any allocated resources within the obect and zeroes out all other
+ * members.
+ *
+ * Note: This will not call `fini` or deallocate the underlying message structures.
+ *
+ * \param[inout] sequence sequence object to be finalized.
+ * \param[in] allocator the allocator used to allocate memory to the object.
+ */
 RMW_PUBLIC
 rmw_ret_t
-rmw_message_sequence_fini(rmw_message_sequence_t * sequence);
+rmw_message_sequence_fini(
+  rmw_message_sequence_t * sequence,
+  const rcutils_allocator_t * allocator);
 
 RMW_PUBLIC
 rmw_message_info_sequence_t
@@ -44,11 +90,16 @@ rmw_get_zero_initialized_message_info_sequence(void);
 
 RMW_PUBLIC
 rmw_ret_t
-rmw_message_info_sequence_init(rmw_message_info_sequence_t * sequence, size_t size);
+rmw_message_info_sequence_init(
+  rmw_message_info_sequence_t * sequence,
+  size_t size,
+  const rcutils_allocator_t * allocator);
 
 RMW_PUBLIC
 rmw_ret_t
-rmw_message_info_sequence_fini(rmw_message_info_sequence_t * sequence);
+rmw_message_info_sequence_fini(
+  rmw_message_info_sequence_t * sequence,
+  const rcutils_allocator_t * allocator);
 
 #if __cplusplus
 }
