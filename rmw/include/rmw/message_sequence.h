@@ -35,6 +35,8 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_sequence_t
   size_t size;
   /// The total allocated capacity of the data array.
   size_t capacity;
+  /// The allocator used to allocate the data array.
+  rcutils_allocator_t * allocator;
 } rmw_message_sequence_t;
 
 /// Structure to hold a sequence of message infos.
@@ -46,6 +48,8 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_sequence_t
   size_t size;
   /// The total allocated capacity of the data array.
   size_t capacity;
+  /// The allocator used to allocate the data array.
+  rcutils_allocator_t * allocator;
 } rmw_message_info_sequence_t;
 
 /// Return an rmw_message_sequence_t struct with members initialized to `NULL`;
@@ -64,7 +68,7 @@ rmw_ret_t
 rmw_message_sequence_init(
   rmw_message_sequence_t * sequence,
   size_t size,
-  const rcutils_allocator_t * allocator);
+  rcutils_allocator_t * allocator);
 
 /// Finalize an rmw_message_sequence_t object.
 /**
@@ -76,13 +80,10 @@ rmw_message_sequence_init(
  * Note: This will not call `fini` or deallocate the underlying message structures.
  *
  * \param[inout] sequence sequence object to be finalized.
- * \param[in] allocator the allocator used to allocate memory to the object.
  */
 RMW_PUBLIC
 rmw_ret_t
-rmw_message_sequence_fini(
-  rmw_message_sequence_t * sequence,
-  const rcutils_allocator_t * allocator);
+rmw_message_sequence_fini(rmw_message_sequence_t * sequence);
 
 RMW_PUBLIC
 rmw_message_info_sequence_t
@@ -93,13 +94,11 @@ rmw_ret_t
 rmw_message_info_sequence_init(
   rmw_message_info_sequence_t * sequence,
   size_t size,
-  const rcutils_allocator_t * allocator);
+  rcutils_allocator_t * allocator);
 
 RMW_PUBLIC
 rmw_ret_t
-rmw_message_info_sequence_fini(
-  rmw_message_info_sequence_t * sequence,
-  const rcutils_allocator_t * allocator);
+rmw_message_info_sequence_fini(rmw_message_info_sequence_t * sequence);
 
 #if __cplusplus
 }

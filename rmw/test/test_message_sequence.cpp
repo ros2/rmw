@@ -28,7 +28,7 @@ TEST(test_message_info_sequence, default_initialization) {
   EXPECT_EQ(0u, info_sequence.capacity);
   EXPECT_EQ(nullptr, info_sequence.data);
 
-  EXPECT_EQ(RMW_RET_OK, rmw_message_info_sequence_fini(&info_sequence, &allocator));
+  EXPECT_EQ(RMW_RET_OK, rmw_message_info_sequence_fini(&info_sequence));
   EXPECT_EQ(0u, info_sequence.size);
   EXPECT_EQ(0u, info_sequence.capacity);
   EXPECT_EQ(nullptr, info_sequence.data);
@@ -43,7 +43,7 @@ TEST(test_message_info_sequence, initialization_with_size) {
   EXPECT_EQ(5u, info_sequence.capacity);
   EXPECT_NE(nullptr, info_sequence.data);
 
-  EXPECT_EQ(RMW_RET_OK, rmw_message_info_sequence_fini(&info_sequence, &allocator));
+  EXPECT_EQ(RMW_RET_OK, rmw_message_info_sequence_fini(&info_sequence));
   EXPECT_EQ(0u, info_sequence.size);
   EXPECT_EQ(0u, info_sequence.capacity);
   EXPECT_EQ(nullptr, info_sequence.data);
@@ -59,7 +59,7 @@ TEST(test_message_sequence, default_initialization) {
   EXPECT_EQ(0u, message_sequence.capacity);
   EXPECT_EQ(nullptr, message_sequence.data);
 
-  EXPECT_EQ(RMW_RET_OK, rmw_message_sequence_fini(&message_sequence, &allocator));
+  EXPECT_EQ(RMW_RET_OK, rmw_message_sequence_fini(&message_sequence));
   EXPECT_EQ(0u, message_sequence.size);
   EXPECT_EQ(0u, message_sequence.capacity);
   EXPECT_EQ(nullptr, message_sequence.data);
@@ -74,7 +74,7 @@ TEST(test_message_sequence, initialization_with_size) {
   EXPECT_EQ(5u, message_sequence.capacity);
   EXPECT_NE(nullptr, message_sequence.data);
 
-  EXPECT_EQ(RMW_RET_OK, rmw_message_sequence_fini(&message_sequence, &allocator));
+  EXPECT_EQ(RMW_RET_OK, rmw_message_sequence_fini(&message_sequence));
   EXPECT_EQ(0u, message_sequence.size);
   EXPECT_EQ(0u, message_sequence.capacity);
   EXPECT_EQ(nullptr, message_sequence.data);
