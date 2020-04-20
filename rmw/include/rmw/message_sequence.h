@@ -52,7 +52,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_sequence_t
   rcutils_allocator_t * allocator;
 } rmw_message_info_sequence_t;
 
-/// Return an rmw_message_sequence_t struct with members initialized to `NULL`;
+/// Return an rmw_message_sequence_t struct with members initialized to `NULL`
 RMW_PUBLIC
 rmw_message_sequence_t
 rmw_get_zero_initialized_message_sequence(void);
@@ -74,7 +74,7 @@ rmw_message_sequence_init(
 /**
  * The rmw_message_sequence_t struct has members which require memory to be allocated to them
  * before setting values.
- * This function reclaims any allocated resources within the obect and zeroes out all other
+ * This function reclaims any allocated resources within the object and zeroes out all other
  * members.
  *
  * Note: This will not call `fini` or deallocate the underlying message structures.

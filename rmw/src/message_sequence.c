@@ -21,7 +21,8 @@ rmw_get_zero_initialized_message_sequence(void)
   static rmw_message_sequence_t message_sequence = {
     .data = NULL,
     .size = 0u,
-    .capacity = 0u
+    .capacity = 0u,
+    .allocator = NULL
   };
 
   return message_sequence;
