@@ -177,6 +177,12 @@ rmw_create_node(
 
 /// Finalize a given node handle, reclaim the resources, and deallocate the node handle.
 /**
+ * The method may assume - but should verify - that all publishers, subscribers,
+ * services, and clients created from this node have already been destroyed.
+ * If the rmw implementation chooses to verify instead of assume, it should
+ * return `RMW_RET_ERROR` and set a human readable error message if any entity
+ * created from this node has not yet been destroyed.
+ *
  * \param node the node handle to be destroyed
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if node is null, or
