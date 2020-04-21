@@ -330,10 +330,12 @@ typedef struct RMW_PUBLIC_TYPE rmw_gid_t
   uint8_t data[RMW_GID_STORAGE_SIZE];
 } rmw_gid_t;
 
+typedef rcutils_time_point_value_t rmw_time_point_value_t;
+
 typedef struct RMW_PUBLIC_TYPE rmw_message_info_t
 {
-  rmw_time_t source_timestamp;
-  rmw_time_t received_timestamp;
+  rmw_time_point_value_t source_timestamp;
+  rmw_time_point_value_t received_timestamp;
   rmw_gid_t publisher_gid;
   bool from_intra_process;
 } rmw_message_info_t;
