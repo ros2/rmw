@@ -22,8 +22,6 @@ find_package(rcutils REQUIRED)
 
 include(cmake/configure_rmw_library.cmake)
 
-include_directories(include)
-
 set(rmw_sources
   "src/allocators.c"
   "src/convert_rcutils_ret_to_rmw_ret.c"
@@ -44,6 +42,9 @@ set(rmw_sources
 )
 set_source_files_properties(${rmw_sources} PROPERTIES LANGUAGE "C")
 add_library(${PROJECT_NAME} ${rmw_sources})
+target_include_directories(${PROJECT_NAME} PUBLIC
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+  "$<INSTALL_INTERFACE:include>")
 ament_target_dependencies(${PROJECT_NAME}
   "rcutils"
 )
@@ -55,6 +56,7 @@ ament_export_dependencies(
 )
 ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})
+ament_export_targets(${PROJECT_NAME})
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -75,7 +77,7 @@ install(
   DESTINATION include
 )
 install(
-  TARGETS ${PROJECT_NAME}
+  TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
