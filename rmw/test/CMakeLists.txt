@@ -65,15 +65,6 @@ if(TARGET test_names_and_types)
   target_link_libraries(test_names_and_types ${PROJECT_NAME})
 endif()
 
-ament_add_gmock(test_node_security_options
-  test_node_security_options.cpp
-  # Append the directory of librmw so it is found at test time.
-  APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
-)
-if(TARGET test_node_security_options)
-  target_link_libraries(test_node_security_options ${PROJECT_NAME})
-endif()
-
 ament_add_gmock(test_publisher_options
   test_publisher_options.cpp
   # Append the directory of librmw so it is found at test time.
@@ -90,6 +81,15 @@ ament_add_gmock(test_sanity_checks
 )
 if(TARGET test_sanity_checks)
   target_link_libraries(test_sanity_checks ${PROJECT_NAME})
+endif()
+
+ament_add_gmock(test_security_options
+  test_security_options.cpp
+  # Append the directory of librmw so it is found at test time.
+  APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+)
+if(TARGET test_security_options)
+  target_link_libraries(test_security_options ${PROJECT_NAME})
 endif()
 
 ament_add_gmock(test_serialized_message

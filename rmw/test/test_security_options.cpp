@@ -13,18 +13,18 @@
 // limitations under the License.
 
 #include "gmock/gmock.h"
-#include "rmw/node_security_options.h"
+#include "rmw/security_options.h"
 
-TEST(rmw_node_security_options, get_zero_init)
+TEST(rmw_security_options, get_zero_init)
 {
-  rmw_node_security_options_t options = rmw_get_zero_initialized_node_security_options();
+  rmw_security_options_t options = rmw_get_zero_initialized_security_options();
   EXPECT_EQ(options.enforce_security, RMW_SECURITY_ENFORCEMENT_PERMISSIVE);
   EXPECT_EQ(options.security_root_path, nullptr);
 }
 
-TEST(rmw_node_security_options, get_default_init)
+TEST(rmw_security_options, get_default_init)
 {
-  rmw_node_security_options_t options = rmw_get_default_node_security_options();
+  rmw_security_options_t options = rmw_get_default_security_options();
   EXPECT_EQ(options.enforce_security, RMW_SECURITY_ENFORCEMENT_PERMISSIVE);
   EXPECT_EQ(options.security_root_path, nullptr);
 }
