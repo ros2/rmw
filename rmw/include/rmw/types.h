@@ -255,11 +255,13 @@ typedef struct RMW_PUBLIC_TYPE rmw_time_t
   uint64_t nsec;
 } rmw_time_t;
 
+typedef rcutils_time_point_value_t rmw_time_point_value_t;
+
 /// Meta-data for a service-related take.
 typedef struct RMW_PUBLIC_TYPE rmw_service_info_t
 {
-  rmw_time_t source_timestamp;
-  rmw_time_t received_timestamp;
+  rmw_time_point_value_t source_timestamp;
+  rmw_time_point_value_t received_timestamp;
   rmw_request_id_t request_id;
 } rmw_service_info_t;
 
