@@ -37,6 +37,7 @@ set(rmw_sources
   "src/subscription_options.c"
   "src/topic_endpoint_info_array.c"
   "src/topic_endpoint_info.c"
+  "src/types.c"
   "src/validate_full_topic_name.c"
   "src/validate_namespace.c"
   "src/validate_node_name.c"
