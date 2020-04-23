@@ -66,7 +66,9 @@ if(BUILD_TESTING)
 endif()
 
 ament_export_development_version_if_higher_than_manifest("0.8.2-dev")
-ament_package(CONFIG_EXTRAS "rmw-extras.cmake")
+ament_package(
+  CONFIG_EXTRAS "rmw-extras.cmake"
+  CONFIG_EXTRAS_POST "rmw-extras-post.cmake")
 
 install(
   DIRECTORY cmake
