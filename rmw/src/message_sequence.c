@@ -38,15 +38,15 @@ rmw_message_sequence_init(
   RCUTILS_CHECK_ALLOCATOR(allocator, return RMW_RET_INVALID_ARGUMENT);
 
   void * data = NULL;
-  if (size) {
+  if (size > 0u) {
     data = allocator->allocate(sizeof(void *) * size, allocator->state);
-    if (!data) {
+    if (NULL == data) {
       return RMW_RET_BAD_ALLOC;
     }
   }
 
   sequence->data = data;
-  sequence->size = 0;
+  sequence->size = 0u;
   sequence->capacity = size;
   sequence->allocator = allocator;
 
@@ -58,8 +58,8 @@ rmw_message_sequence_fini(rmw_message_sequence_t * sequence)
 {
   RCUTILS_CHECK_ARGUMENT_FOR_NULL(sequence, RMW_RET_INVALID_ARGUMENT);
 
-  if (sequence->data) {
-    assert(sequence->capacity > 0);
+  if (NULL != sequence->data) {
+    assert(sequence->capacity > 0u);
     RCUTILS_CHECK_ALLOCATOR(sequence->allocator, return RMW_RET_INVALID_ARGUMENT);
     sequence->allocator->deallocate(sequence->data, sequence->allocator->state);
   }
@@ -95,9 +95,9 @@ rmw_message_info_sequence_init(
   RCUTILS_CHECK_ALLOCATOR(allocator, return RMW_RET_INVALID_ARGUMENT);
 
   rmw_message_info_t * data = NULL;
-  if (size) {
+  if (size > 0u) {
     data = allocator->allocate(sizeof(rmw_message_info_t) * size, allocator->state);
-    if (!data) {
+    if (NULL == data) {
       return RMW_RET_BAD_ALLOC;
     }
   }
@@ -114,8 +114,8 @@ rmw_message_info_sequence_fini(rmw_message_info_sequence_t * sequence)
 {
   RCUTILS_CHECK_ARGUMENT_FOR_NULL(sequence, RMW_RET_INVALID_ARGUMENT);
 
-  if (sequence->data) {
-    assert(sequence->capacity > 0);
+  if (NULL != sequence->data) {
+    assert(sequence->capacity > 0u);
     RCUTILS_CHECK_ALLOCATOR(sequence->allocator, return RMW_RET_INVALID_ARGUMENT);
     sequence->allocator->deallocate(sequence->data, sequence->allocator->state);
   }
