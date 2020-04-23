@@ -12,6 +12,8 @@
   <buildtool_depend>ament_cmake_version</buildtool_depend>
 
   <build_depend>rcutils</build_depend>
+  <!-- Only needed because CMake versions less than 3.13 don't support CMP0079 -->
+  <build_depend>rosidl_runtime_c</build_depend>
 
   <build_export_depend>rcutils</build_export_depend>
   <!-- This is required for the definition of the rosidl typesupport types -->
