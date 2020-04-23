@@ -46,7 +46,7 @@ rmw_get_zero_initialized_names_and_types(void);
 /**
  * Sets error message if names_and_types is not zero initialized
  *
- * \param names_and_types Object to check
+ * \param[in] names_and_types Object to check
  * \return RMW_RET_OK if zero initialized, RMW_RET_INVALID_ARGUMENT otherwise
  */
 RMW_PUBLIC
@@ -61,7 +61,7 @@ rmw_names_and_types_check_zero(rmw_names_and_types_t * names_and_types);
  * it does not initialize the string array for each setup of types.
  * However, the string arrays for each set of types is zero initialized.
  *
- * If a non RMW_RET_OK return value is returned, the RMW error message will be set 
+ * If a non RMW_RET_OK return value is returned, the RMW error message will be set
  *
  * \param[inout] names_and_types object to be initialized
  * \param[in] size the number of names and sets of types to be stored

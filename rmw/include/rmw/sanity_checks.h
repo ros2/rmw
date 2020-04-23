@@ -30,7 +30,7 @@ extern "C"
 /**
  * This sets error message and returns error code if array is not zero initialized
  *
- * \param array The string array to check
+ * \param[in] array The string array to check
  * \return RMW_RET_OK if array is zero initialized, otherwise RMW_RET_ERROR
  */
 RMW_PUBLIC

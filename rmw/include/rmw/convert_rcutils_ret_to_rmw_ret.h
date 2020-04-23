@@ -27,8 +27,8 @@ extern "C"
 
 /// Map a `rcutil_ret_t` value to the equivalent `rmw_ret_t` value
 /**
- * \param rcutils_ret The rcutils type to map
- * \param rmw_ret_t result mapped value, or RMW_RET_ERROR if the rcutils_ret value is not supported
+ * \param[in] rcutils_ret The rcutils type to map
+ * \return rmw_ret_t result mapped value, or RMW_RET_ERROR if the rcutils_ret value is not supported
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
