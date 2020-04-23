@@ -19,6 +19,7 @@ endif()
 find_package(ament_cmake_ros REQUIRED)
 
 find_package(rcutils REQUIRED)
+find_package(rosidl_runtime_c REQUIRED)
 
 include(cmake/configure_rmw_library.cmake)
 
@@ -47,6 +48,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
   "$<INSTALL_INTERFACE:include>")
 ament_target_dependencies(${PROJECT_NAME}
   "rcutils"
+  "rosidl_runtime_c"
 )
 configure_rmw_library(${PROJECT_NAME} LANGUAGE "C")
 
@@ -66,9 +68,7 @@ if(BUILD_TESTING)
 endif()
 
 ament_export_development_version_if_higher_than_manifest("0.8.2-dev")
-ament_package(
-  CONFIG_EXTRAS "rmw-extras.cmake"
-  CONFIG_EXTRAS_POST "rmw-extras-post.cmake")
+ament_package(CONFIG_EXTRAS "rmw-extras.cmake")
 
 install(
   DIRECTORY cmake
