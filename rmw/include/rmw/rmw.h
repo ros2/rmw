@@ -90,9 +90,9 @@ extern "C"
 
 #include "rcutils/types.h"
 
-#include "rosidl_runtime_c/message_bounds_struct.h"
 #include "rosidl_runtime_c/message_type_support_struct.h"
 #include "rosidl_runtime_c/service_type_support_struct.h"
+#include "rosidl_runtime_c/sequence_bound.h"
 
 #include "rmw/init.h"
 #include "rmw/macros.h"
@@ -272,7 +272,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_init_publisher_allocation(
   const rosidl_message_type_support_t * type_support,
-  const rosidl_message_bounds_t * message_bounds,
+  const rosidl_runtime_c__Sequence__bound * message_bounds,
   rmw_publisher_allocation_t * allocation);
 
 /// Destroy a publisher allocation object.
@@ -495,7 +495,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_get_serialized_message_size(
   const rosidl_message_type_support_t * type_support,
-  const rosidl_message_bounds_t * message_bounds,
+  const rosidl_runtime_c__Sequence__bound * message_bounds,
   size_t * size);
 
 /// Manually assert that this Publisher is alive (for RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC)
@@ -589,7 +589,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_init_subscription_allocation(
   const rosidl_message_type_support_t * type_support,
-  const rosidl_message_bounds_t * message_bounds,
+  const rosidl_runtime_c__Sequence__bound * message_bounds,
   rmw_subscription_allocation_t * allocation);
 
 /// Destroy a publisher allocation object.
