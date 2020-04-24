@@ -254,6 +254,16 @@ typedef struct RMW_PUBLIC_TYPE rmw_time_t
   uint64_t nsec;
 } rmw_time_t;
 
+typedef rcutils_time_point_value_t rmw_time_point_value_t;
+
+/// Meta-data for a service-related take.
+typedef struct RMW_PUBLIC_TYPE rmw_service_info_t
+{
+  rmw_time_point_value_t source_timestamp;
+  rmw_time_point_value_t received_timestamp;
+  rmw_request_id_t request_id;
+} rmw_service_info_t;
+
 enum RMW_PUBLIC_TYPE rmw_qos_reliability_policy_t
 {
   RMW_QOS_POLICY_RELIABILITY_SYSTEM_DEFAULT,
@@ -328,8 +338,6 @@ typedef struct RMW_PUBLIC_TYPE rmw_gid_t
   const char * implementation_identifier;
   uint8_t data[RMW_GID_STORAGE_SIZE];
 } rmw_gid_t;
-
-typedef rcutils_time_point_value_t rmw_time_point_value_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_message_info_t
 {

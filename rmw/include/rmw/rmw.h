@@ -900,7 +900,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_take_response(
   const rmw_client_t * client,
-  rmw_request_id_t * request_header,
+  rmw_service_info_t * request_header,
   void * ros_response,
   bool * taken);
 
@@ -923,7 +923,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_take_request(
   const rmw_service_t * service,
-  rmw_request_id_t * request_header,
+  rmw_service_info_t * request_header,
   void * ros_request,
   bool * taken);
 
