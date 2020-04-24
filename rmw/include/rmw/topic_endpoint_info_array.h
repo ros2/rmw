@@ -93,7 +93,7 @@ rmw_topic_endpoint_info_array_init_with_size(
  * This function reclaims any allocated resources within the object and also sets the value of size
  * to 0.
  *
- * If a non RMW_RET_OK return value is returned, the RMW error message will be set 
+ * If a non RMW_RET_OK return value is returned, the RMW error message will be set
  *
  * \param[inout] topic_endpoint_info_array object to be finalized
  * \param[in] allocator the allocator used to allocate memory to the object
