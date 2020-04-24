@@ -29,7 +29,7 @@ set(rmw_sources
   "src/event.c"
   "src/init.c"
   "src/init_options.c"
-  "src/loaned_message_sequence.c"
+  "src/message_sequence.c"
   "src/names_and_types.c"
   "src/publisher_options.c"
   "src/sanity_checks.c"
