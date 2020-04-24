@@ -1028,7 +1028,6 @@ RMW_WARN_UNUSED
 rmw_guard_condition_t *
 rmw_create_guard_condition(rmw_context_t * context);
 
-
 /// Finalize a given guard condition handle, reclaim the resources, and deallocate the handle.
 /**
  * \param[in] guard_condition the guard condition handle to be destroyed
