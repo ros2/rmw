@@ -55,6 +55,8 @@ rmw_get_zero_initialized_topic_endpoint_info(void);
  * This function reclaims any allocated resources within the object and zeroes out all other
  * members.
  *
+ * If a non RMW_RET_OK return value is returned, the RMW error message will be set
+ *
  * \param[inout] topic_endpoint_info object to be finalized
  * \param[in] allocator the allocator used to allocate memory to the object
  * \returns `RMW_RET_OK` on successfully reclaiming memory, or
@@ -72,6 +74,8 @@ rmw_topic_endpoint_info_fini(
 /**
  * rmw_topic_endpoint_info_t has a member topic_type of type const char *;
  * this function allocates memory and copies the value of param passed to it.
+ *
+ * If a non RMW_RET_OK return value is returned, the RMW error message will be set
  *
  * \param[inout] topic_endpoint_info pointer to an initialized instance of rmw_topic_endpoint_info_t
  * \param[in] topic_type the topic_type value to set in rmw_topic_endpoint_info_t
@@ -93,6 +97,8 @@ rmw_topic_endpoint_info_set_topic_type(
  * rmw_topic_endpoint_info_t has a member node_name of type const char *;
  * this function allocates memory and copies the value of param passed to it.
  *
+ * If a non RMW_RET_OK return value is returned, the RMW error message will be set
+ *
  * \param[inout] topic_endpoint_info pointer to an initialized instance of rmw_topic_endpoint_info_t
  * \param[in] node_name the node_name value to set in rmw_topic_endpoint_info_t
  * \param[in] allocator the allocator that will be used to allocate memory
@@ -113,6 +119,8 @@ rmw_topic_endpoint_info_set_node_name(
  * rmw_topic_endpoint_info_t has a member node_namespace of type const char *;
  * this function allocates memory and copies the value of param passed to it.
  *
+ * If a non RMW_RET_OK return value is returned, the RMW error message will be set
+ *
  * \param[inout] topic_endpoint_info pointer to an initialized instance of rmw_topic_endpoint_info_t
  * \param[in] node_namespace the node_namespace value to set in rmw_topic_endpoint_info_t
  * \param[in] allocator the allocator that will be used to allocate memory
@@ -132,6 +140,8 @@ rmw_topic_endpoint_info_set_node_namespace(
 /**
  * Copies the values from gid into the gid member inside topic_endpoint_info.
  *
+ * If a non RMW_RET_OK return value is returned, the RMW error message will be set
+ *
  * \param[inout] topic_endpoint_info pointer to an initialized instance of rmw_topic_endpoint_info_t
  * \param[in] gid the gid value to set in rmw_topic_endpoint_info_t
  * \param[in] size the size of the gid param
@@ -150,6 +160,8 @@ rmw_topic_endpoint_info_set_endpoint_type(
 /// Set the gid in rmw_topic_endpoint_info_t.
 /**
  * Copies the values from gid into the gid member inside topic_endpoint_info.
+ *
+ * If a non RMW_RET_OK return value is returned, the RMW error message will be set
  *
  * \param[inout] topic_endpoint_info pointer to an initialized instance of rmw_topic_endpoint_info_t
  * \param[in] gid the gid value to set in rmw_topic_endpoint_info_t
@@ -171,6 +183,8 @@ rmw_topic_endpoint_info_set_gid(
 /**
  * rmw_topic_endpoint_info_t has a member qos_profile of type const rmw_qos_profile_t *.
  * This function assigns the passed qos_profile pointer to the member.
+ *
+ * If a non RMW_RET_OK return value is returned, the RMW error message will be set
  *
  * \param[inout] topic_endpoint_info pointer to an initialized instance of rmw_topic_endpoint_info_t
  * \param[in] qos_profile the qos_profile to set in rmw_topic_endpoint_info_t

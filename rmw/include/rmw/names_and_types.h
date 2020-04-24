@@ -43,6 +43,12 @@ rmw_names_and_types_t
 rmw_get_zero_initialized_names_and_types(void);
 
 /// Check that a rmw_topic_names_and_types_t struct is zero initialized.
+/**
+ * Sets error message if names_and_types is not zero initialized
+ *
+ * \param[in] names_and_types Object to check
+ * \return RMW_RET_OK if zero initialized, RMW_RET_INVALID_ARGUMENT otherwise
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -54,6 +60,8 @@ rmw_names_and_types_check_zero(rmw_names_and_types_t * names_and_types);
  * for all the string arrays for the types according to the given size, but
  * it does not initialize the string array for each setup of types.
  * However, the string arrays for each set of types is zero initialized.
+ *
+ * If a non RMW_RET_OK return value is returned, the RMW error message will be set
  *
  * \param[inout] names_and_types object to be initialized
  * \param[in] size the number of names and sets of types to be stored
@@ -81,6 +89,8 @@ rmw_names_and_types_init(
  *
  * The allocator within the rmw_names_and_types_t object is used to deallocate
  * memory.
+ *
+ * If a non RMW_RET_OK return value is returned, the RMW error message will be set
  *
  * \param[inout] names_and_types object to be finalized
  * \returns `RMW_RET_OK` on successfully running the check, or
