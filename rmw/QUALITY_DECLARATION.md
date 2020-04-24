@@ -68,7 +68,7 @@ There is documentation for all of the public API, and new additions to the publi
 
 ### License [3.iii]
 
-The license for `rmw` is Apache 2.0, and a summary is in each source file, the type is declared in the `package.xml` manifest file, and a full copy of the license is in the `LICENSE` file.
+The license for `rmw_implementation_cmake` is Apache 2.0, and a summary is in each source file, the type is declared in the [package.xml](package.xml) manifest file, and a full copy of the license is in the [LICENSE](../LICENSE) file.
 
 There is an automated test which runs a linter that ensures each file has a license statement.
 
@@ -79,6 +79,10 @@ Most recent test results can be found [here](http://build.ros2.org/view/Epr/job/
 The copyright holders each provide a statement of copyright in each source code file in `rmw`.
 
 There is an automated test which runs a linter that ensures each file has at least one copyright statement.
+
+The results of those tests are available [here](http://build.ros2.org/view/Epr/job/Epr__rmw__ubuntu_bionic_amd64/lastBuild/testReport/rmw/copyright/).
+
+Results of the copyright test can be found [here](http://build.ros2.org/view/Epr/job/Epr__rmw__ubuntu_bionic_amd64/lastBuild/testReport/rmw_implementation_cmake/copyright/).
 
 ## Testing [4]
 
@@ -104,15 +108,7 @@ The tests aim to cover both typical usage and corner cases, but are quantified b
 
 `rmw` uses and passes all the standard linters and static analysis tools for a C++ package as described in the [ROS 2 Developer Guide](https://index.ros.org/doc/ros2/Contributing/Developer-Guide/#linters).
 
-### Performance [5]
-
-TODO document performance tests
-
-`rmw` follows the recommendations for performance testing of C++ code in the [ROS 2 Developer Guide](https://index.ros.org/doc/ros2/Contributing/Developer-Guide/#package-requirements), and opts to do performance analysis on each release rather than each change.
-
-### Linters and Static Analysis [4.v]
-
-`rmw` uses and passes all the standard linters and static analysis tools for a C++ package as described in the [ROS 2 Developer Guide](https://index.ros.org/doc/ros2/Contributing/Developer-Guide/#linters).
+Results of linter tests can be found [here](http://build.ros2.org/view/Epr/job/Epr__rmw__ubuntu_bionic_amd64/lastBuild/testReport/rmw/).
 
 ## Dependencies [5]
 

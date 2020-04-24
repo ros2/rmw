@@ -67,7 +67,7 @@ There is documentation for all of the public API, and new additions to the publi
 
 ### License [3.iii]
 
-The license for `rmw_implementation_cmake` is Apache 2.0, and a summary is in each source file, the type is declared in the `package.xml` manifest file, and a full copy of the license is in the `LICENSE` file.
+The license for `rmw_implementation_cmake` is Apache 2.0, and a summary is in each source file, the type is declared in the [package.xml](package.xml) manifest file, and a full copy of the license is in the [LICENSE](../LICENSE) file.
 
 There is an automated test which runs a linter that ensures each file has a license statement.
 
@@ -79,9 +79,17 @@ The copyright holders each provide a statement of copyright in each source code 
 
 There is an automated test which runs a linter that ensures each file has at least one copyright statement.
 
+Results of the copyright tests can be found [here](http://build.ros2.org/view/Epr/job/Epr__rmw__ubuntu_bionic_amd64/lastBuild/testReport/rmw_implementation_cmake/copyright/).
+
 ## Testing [4]
 
 `rmw_implementation_cmake` is a package providing solely CMake files and therefore does not require tests and has no coverage or performance requirements.
+
+### Linters and Static Analysis [4.v]
+
+`rmw` uses and passes all the standard linters and static analysis tools for a CMake package as described in the [ROS 2 Developer Guide](https://index.ros.org/doc/ros2/Contributing/Developer-Guide/#linters).
+
+Results of linter tests can be found [here](http://build.ros2.org/view/Epr/job/Epr__rmw__ubuntu_bionic_amd64/lastBuild/testReport/rmw_implementation_cmake).
 
 ## Dependencies [5]
 
