@@ -2,6 +2,32 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.9.0 (2020-04-24)
+------------------
+* Delete superfluous empty line (`#222 <https://github.com/ros2/rmw/issues/222>`_)
+* Fix linter warning (`#224 <https://github.com/ros2/rmw/issues/224>`_)
+* Rename rosidl_message_bounds_t (`#223 <https://github.com/ros2/rmw/issues/223>`_)
+* Adding doxygen documentation and READMEs to packages (`#204 <https://github.com/ros2/rmw/issues/204>`_)
+* Service timestamps (`#217 <https://github.com/ros2/rmw/issues/217>`_)
+* Add API for taking a sequence of messages (`#212 <https://github.com/ros2/rmw/issues/212>`_)
+* Add timestamps to message info (`#214 <https://github.com/ros2/rmw/issues/214>`_)
+* Add build dep on rosidl_runtime_c to work with CMake < 3.13 (`#221 <https://github.com/ros2/rmw/issues/221>`_)
+* Fix missing target dependency on rosidl_runtime_c (`#220 <https://github.com/ros2/rmw/issues/220>`_)
+* Export targets in addition to include directories / libraries (`#218 <https://github.com/ros2/rmw/issues/218>`_)
+* Document destroy_node may assume correct destruction order (`#216 <https://github.com/ros2/rmw/issues/216>`_)
+* security-context -> enclave (`#211 <https://github.com/ros2/rmw/issues/211>`_)
+* Rename rosidl_generator_c namespace to rosidl_runtime_c (`#213 <https://github.com/ros2/rmw/issues/213>`_)
+* Added the right dependency rosidl runtime c instead of rosidl generator c (`#198 <https://github.com/ros2/rmw/issues/198>`_)
+* Use one participant per context API changes (`#189 <https://github.com/ros2/rmw/issues/189>`_)
+* Add comment about RMW_RET_UNSUPPORTED for loaned_message. (`#208 <https://github.com/ros2/rmw/issues/208>`_)
+* Support for ON_REQUESTED_INCOMPATIBLE_QOS and ON_OFFERED_INCOMPATIBLE_QOS events (`#193 <https://github.com/ros2/rmw/issues/193>`_)
+* Move rmw\_*_event_init() functions to rmw_implementation (`#202 <https://github.com/ros2/rmw/issues/202>`_)
+* Rename rmw_topic_endpoint_info_array `count` to `size`, and initialize it (`#196 <https://github.com/ros2/rmw/issues/196>`_)
+* Code style only: wrap after open parenthesis if not in one line (`#195 <https://github.com/ros2/rmw/issues/195>`_)
+* Update development version after merging `#186 <https://github.com/ros2/rmw/issues/186>`_ (`#194 <https://github.com/ros2/rmw/issues/194>`_)
+* Adding required structs and methods to get a list  of publishers or subscribers with their respective qos (`#186 <https://github.com/ros2/rmw/issues/186>`_)
+* Contributors: Alejandro Hernández Cordero, Dirk Thomas, Ingo Lütkebohle, Ivan Santiago Paunovic, Jaison Titus, Karsten Knese, Miaofei Mei, Michael Carroll, Mikael Arguedas, Shane Loretz, William Woodall, Stephen Brawner, Tomoya Fujita
+
 0.8.1 (2019-10-23)
 ------------------
 * Use return_loaned_message_from (`#192 <https://github.com/ros2/rmw/issues/192>`_)
