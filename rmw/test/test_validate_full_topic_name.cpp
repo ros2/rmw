@@ -16,6 +16,7 @@
 
 #include "gmock/gmock.h"
 
+#include "rmw/error_handling.h"
 #include "rmw/validate_full_topic_name.h"
 
 TEST(test_validate_topic_name, invalid_parameters) {
@@ -25,6 +26,17 @@ TEST(test_validate_topic_name, invalid_parameters) {
   ASSERT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
   ret = rmw_validate_full_topic_name("test", nullptr, &invalid_index);
   ASSERT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
+
+  // name is null pointer,
+  ret = rmw_validate_full_topic_name_with_size(nullptr, 0u, &validation_result, &invalid_index);
+  ASSERT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
+  rmw_reset_error();
+
+  // Invalid validation result
+  ASSERT_STREQ(
+    "unknown result code for rwm topic name validation",
+    rmw_full_topic_name_validation_result_string(-1));
+  rmw_reset_error();
 }
 
 TEST(test_validate_topic_name, valid_topic) {
@@ -90,7 +102,9 @@ TEST(test_validate_topic_name, not_absolute) {
   ASSERT_EQ(RMW_TOPIC_INVALID_NOT_ABSOLUTE, validation_result);
   ASSERT_EQ(0ul, invalid_index);
 
-  ASSERT_NE((char *)nullptr, rmw_full_topic_name_validation_result_string(validation_result));
+  ASSERT_NE(
+    (char *)nullptr,
+    rmw_full_topic_name_validation_result_string(validation_result));
 }
 
 TEST(test_validate_topic_name, ends_with_forward_slash) {

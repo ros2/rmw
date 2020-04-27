@@ -16,6 +16,7 @@
 
 #include "gmock/gmock.h"
 
+#include "rmw/error_handling.h"
 #include "rmw/validate_namespace.h"
 
 TEST(test_validate_namespace, invalid_parameters) {
@@ -25,6 +26,17 @@ TEST(test_validate_namespace, invalid_parameters) {
   ASSERT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
   ret = rmw_validate_namespace("/test", nullptr, &invalid_index);
   ASSERT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
+
+  // name is null pointer,
+  ret = rmw_validate_namespace_with_size(nullptr, 0u, &validation_result, &invalid_index);
+  ASSERT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
+  rmw_reset_error();
+
+  // Invalid validation result
+  ASSERT_STREQ(
+    "unknown result code for rmw namespace validation",
+    rmw_namespace_validation_result_string(-1));
+  rmw_reset_error();
 }
 
 TEST(test_validate_namespace, valid_namespace) {

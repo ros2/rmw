@@ -16,6 +16,7 @@
 
 #include "gmock/gmock.h"
 
+#include "rmw/error_handling.h"
 #include "rmw/validate_node_name.h"
 
 TEST(test_validate_node_name, invalid_parameters) {
@@ -25,6 +26,17 @@ TEST(test_validate_node_name, invalid_parameters) {
   ASSERT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
   ret = rmw_validate_node_name("test", nullptr, &invalid_index);
   ASSERT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
+
+  // name is null pointer,
+  ret = rmw_validate_node_name_with_size(nullptr, 0u, &validation_result, &invalid_index);
+  ASSERT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
+  rmw_reset_error();
+
+  // Invalid validation result
+  ASSERT_STREQ(
+    "unknown result code for rmw node name validation",
+    rmw_node_name_validation_result_string(-1));
+  rmw_reset_error();
 }
 
 TEST(test_validate_node_name, valid_node_name) {
