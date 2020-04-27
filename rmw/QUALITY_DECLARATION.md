@@ -40,11 +40,11 @@ This package requires that all changes occur through a pull request.
 
 ### Contributor Origin [2.ii]
 
- This package uses DCO as its confirmation of contributor origin policy. More information can be found in [CONTRIBUTING](../CONTRIBUTING.md).
+This package uses DCO as its confirmation of contributor origin policy. More information can be found in [CONTRIBUTING](../CONTRIBUTING.md).
 
 ### Peer Review Policy [2.iii]
 
- Following the recommended guidelines for ROS Core packages, all pull requests must have at least 1 peer review.
+Following the recommended guidelines for ROS Core packages, all pull requests must have at least 1 peer review.
 
 ### Continuous Integration [2.iv]
 
