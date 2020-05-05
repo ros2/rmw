@@ -111,6 +111,8 @@ Currently nightly results can be seen here:
 * [mac_osx_release](https://ci.ros2.org/view/nightly/job/nightly_osx_release/lastBuild/testReport/rmw_implementation_cmake/)
 * [windows_release](https://ci.ros2.org/view/nightly/job/nightly_win_rel/lastBuild/testReport/rmw_implementation_cmake/)
 
-## Vulnerability Disclosure Policy [7.i]
+## Security [7]
 
-This package does not yet have a Vulnerability Disclosure Policy
+### Vulnerability Disclosure Policy [7.i]
+
+This package does not yet have a Vulnerability Disclosure Policy.

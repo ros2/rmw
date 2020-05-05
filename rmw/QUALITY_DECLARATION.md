@@ -112,14 +112,24 @@ Results of linter tests can be found [here](http://build.ros2.org/view/Epr/job/E
 
 ## Dependencies [5]
 
-### Direct Runtime ROS Dependencies [5.i]/[5.ii]
-
-`rmw` has the following ROS dependencies:
-* `rcutils`
-* `rosidl_runtime_c`
+Below are evaluations of each of `rmw`'s run-time and build-time dependencies that have been determined to influence the quality.
 
 It has several "buildtool" dependencies, which do not affect the resulting quality of the package, because they do not contribute to the public library API.
 It also has several test dependencies, which do not affect the resulting quality of the package, because they are only used to build and run the test code.
+
+### Direct Runtime ROS Dependencies [5.i]/[5.ii]
+
+#### `rcutils`
+
+The `rcutils` package provides an API which contains common utilities and data structures needed when programming in C.
+
+It is **Quality Level 4**, see its [Quality Declaration document](https://github.com/ros2/rcutils/blob/master/QUALITY_DECLARATION.md).
+
+#### `rosidl_runtime_c`
+
+The `rosidl_runtime_c` package provides runtime interfaces in C based on user defined ROS Messages and ROS Services, as well as associated support functions for those types.
+
+It is **Quality Level 4**, see its [Quality Declaration document](https://github.com/ros2/rosidl/tree/master/rosidl_runtime_c/Quality_Declaration.md).
 
 ### Direct Runtime Non-ROS Dependencies [5.iii]
 
@@ -135,6 +145,8 @@ Currently nightly results can be seen here:
 * [mac_osx_release](https://ci.ros2.org/view/nightly/job/nightly_osx_release/lastBuild/testReport/rmw/)
 * [windows_release](https://ci.ros2.org/view/nightly/job/nightly_win_rel/lastBuild/testReport/rmw/)
 
-## Vulnerability Disclosure Policy [7.i]
+## Security [7]
 
-This package does not yet have a Vulnerability Disclosure Policy
+### Vulnerability Disclosure Policy [7.i]
+
+This package does not yet have a Vulnerability Disclosure Policy.
