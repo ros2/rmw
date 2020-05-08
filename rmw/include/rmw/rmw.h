@@ -198,6 +198,14 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_node(rmw_node_t * node);
 
+
+RMW_PUBLIC
+RCUTILS_DEPRECATED_WITH_MSG(
+  "rmw_node_assert_liveliness implementation was removed."
+  " If manual liveliness assertion is needed, use MANUAL_BY_TOPIC.")
+rmw_ret_t
+rmw_node_assert_liveliness(const rmw_node_t * node);
+
 /// Return a guard condition which is triggered when the ROS graph changes.
 /**
  * The handle returned is a pointer to an internally held rmw guard condition.
