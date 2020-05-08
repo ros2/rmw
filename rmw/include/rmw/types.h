@@ -389,18 +389,19 @@ enum RMW_PUBLIC_TYPE rmw_qos_durability_policy_t
 enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_t
 {
   /// Implementation specific default
-  RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT,
+  RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT = 0,
 
   /// The signal that establishes a Topic is alive comes from the ROS rmw layer.
-  RMW_QOS_POLICY_LIVELINESS_AUTOMATIC,
+  RMW_QOS_POLICY_LIVELINESS_AUTOMATIC = 1,
 
   /// The signal that establishes a Topic is alive is at the Topic level. Only publishing a message
   /// on the Topic or an explicit signal from the application to assert liveliness on the Topic
   /// will mark the Topic as being alive.
-  RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC,
+  // Using `3` for backwards compatibility.
+  RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC = 3,
 
   /// Liveliness policy has not yet been set
-  RMW_QOS_POLICY_LIVELINESS_UNKNOWN
+  RMW_QOS_POLICY_LIVELINESS_UNKNOWN = 4
 };
 
 /// QoS Deadline default, 0s indicates deadline policies are not tracked or enforced
