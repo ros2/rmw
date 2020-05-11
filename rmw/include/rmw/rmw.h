@@ -88,6 +88,7 @@ extern "C"
 #include <stddef.h>
 #include <stdint.h>
 
+#include "rcutils/macros.h"
 #include "rcutils/types.h"
 
 #include "rosidl_runtime_c/message_type_support_struct.h"
