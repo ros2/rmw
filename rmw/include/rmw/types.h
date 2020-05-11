@@ -394,6 +394,15 @@ enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_t
   /// The signal that establishes a Topic is alive comes from the ROS rmw layer.
   RMW_QOS_POLICY_LIVELINESS_AUTOMATIC = 1,
 
+#ifdef _WIN32
+  /// Explicitly asserting node liveliness is required in this case.
+  /// This option is deprecated, use RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC if your application
+  /// requires to assert liveliness manually.
+  RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE = 2,
+#else
+  _RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE = 2,
+#endif
+
   /// The signal that establishes a Topic is alive is at the Topic level. Only publishing a message
   /// on the Topic or an explicit signal from the application to assert liveliness on the Topic
   /// will mark the Topic as being alive.
@@ -403,6 +412,17 @@ enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_t
   /// Liveliness policy has not yet been set
   RMW_QOS_POLICY_LIVELINESS_UNKNOWN = 4
 };
+
+#define RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC_DEPRECATED_MSG \
+  "RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE is deprecated. " \
+  "Use RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE if manually asserted liveliness is needed."
+#ifdef _WIN32
+# pragma deprecated(RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC)
+#else
+__attribute__ ((deprecated(RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC_DEPRECATED_MSG)))
+static const enum rmw_qos_liveliness_policy_t RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE =
+  _RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE;
+#endif
 
 /// QoS Deadline default, 0s indicates deadline policies are not tracked or enforced
 #define RMW_QOS_DEADLINE_DEFAULT {0, 0}
