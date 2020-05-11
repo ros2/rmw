@@ -64,6 +64,9 @@ ament_export_targets(${PROJECT_NAME})
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
+  # pass extra include dirs to cppcheck explicitly
+  list(APPEND AMENT_LINT_AUTO_EXCLUDE ament_cmake_cppcheck)
+  ament_cppcheck(INCLUDE_DIRS ${rcutils_INCLUDE_DIRS})
 
   add_subdirectory(test)
 endif()
