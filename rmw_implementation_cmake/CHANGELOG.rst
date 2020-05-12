@@ -2,6 +2,12 @@
 Changelog for package rmw_implementation_cmake
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.0 (2020-05-12)
+------------------
+* Improved Quality declarations (`#225 <https://github.com/ros2/rmw/issues/225>`_)
+* Quality declarations for rmw and rmw_implementation_cmake (`#205 <https://github.com/ros2/rmw/issues/205>`_)
+* Contributors: Alejandro Hernández Cordero, Stephen Brawner
+
 0.9.0 (2020-04-24)
 ------------------
 * Adding doxygen documentation and READMEs to packages (`#204 <https://github.com/ros2/rmw/issues/204>`_)

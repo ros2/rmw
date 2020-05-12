@@ -2,6 +2,14 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.0 (2020-05-12)
+------------------
+* Remove MANUAL_BY_NODE liveliness API (`#227 <https://github.com/ros2/rmw/issues/227>`_)
+* Improved Quality declarations (`#225 <https://github.com/ros2/rmw/issues/225>`_)
+* Quality declarations for rmw and rmw_implementation_cmake (`#205 <https://github.com/ros2/rmw/issues/205>`_)
+* Add tests for untested public functionality (`#203 <https://github.com/ros2/rmw/issues/203>`_)
+* Contributors: Alejandro Hernández Cordero, Ivan Santiago Paunovic, Stephen Brawner
+
 0.9.0 (2020-04-24)
 ------------------
 * Delete superfluous empty line (`#222 <https://github.com/ros2/rmw/issues/222>`_)
