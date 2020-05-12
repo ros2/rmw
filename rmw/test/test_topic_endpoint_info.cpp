@@ -148,7 +148,7 @@ TEST(test_topic_endpoint_info, set_qos_profile) {
   qos_profile.durability = RMW_QOS_POLICY_DURABILITY_VOLATILE;
   qos_profile.deadline = {1, 0};
   qos_profile.lifespan = {2, 0};
-  qos_profile.liveliness = RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE;
+  qos_profile.liveliness = RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC;
   qos_profile.liveliness_lease_duration = {3, 0};
   qos_profile.avoid_ros_namespace_conventions = false;
 
@@ -179,7 +179,7 @@ TEST(test_topic_endpoint_info, set_qos_profile) {
   EXPECT_EQ(topic_endpoint_info.qos_profile.lifespan.nsec, 0u) << "Unequal lifespan nsec";
   EXPECT_EQ(
     topic_endpoint_info.qos_profile.liveliness,
-    RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE) << "Unequal liveliness";
+    RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC) << "Unequal liveliness";
   EXPECT_EQ(
     topic_endpoint_info.qos_profile.liveliness_lease_duration.sec,
     3u) << "Unequal liveliness lease duration sec";
@@ -231,7 +231,7 @@ TEST(test_topic_endpoint_info, fini) {
   qos_profile.durability = RMW_QOS_POLICY_DURABILITY_VOLATILE;
   qos_profile.deadline = {1, 0};
   qos_profile.lifespan = {2, 0};
-  qos_profile.liveliness = RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE;
+  qos_profile.liveliness = RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC;
   qos_profile.liveliness_lease_duration = {3, 0};
   qos_profile.avoid_ros_namespace_conventions = false;
   rmw_ret_t ret = rmw_topic_endpoint_info_set_qos_profile(&topic_endpoint_info, &qos_profile);

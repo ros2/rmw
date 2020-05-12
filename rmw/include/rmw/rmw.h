@@ -88,6 +88,7 @@ extern "C"
 #include <stddef.h>
 #include <stdint.h>
 
+#include "rcutils/macros.h"
 #include "rcutils/types.h"
 
 #include "rosidl_runtime_c/message_type_support_struct.h"
@@ -198,27 +199,11 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_node(rmw_node_t * node);
 
-/// Manually assert that this node is alive (for RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE)
-/**
- * If the rmw Liveliness policy is set to RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE, the creator of
- * this node may manually call `assert_liveliness` at some point in time to signal to the rest
- * of the system that this Node is still alive.
- *
- * <hr>
- * Attribute          | Adherence
- * ------------------ | -------------
- * Allocates Memory   | No
- * Thread-Safe        | Yes
- * Uses Atomics       | No
- * Lock-Free          | Yes
- *
- * \param[in] node handle to the node that needs liveliness to be asserted
- * \return `RMW_RET_OK` if the liveliness assertion was completed successfully, or
- * \return `RMW_RET_ERROR` if an unspecified error occurs, or
- * \return `RMW_RET_UNSUPPORTED` if the rmw implementation does not support asserting liveliness.
- */
+
 RMW_PUBLIC
-RMW_WARN_UNUSED
+RCUTILS_DEPRECATED_WITH_MSG(
+  "rmw_node_assert_liveliness implementation was removed."
+  " If manual liveliness assertion is needed, use MANUAL_BY_TOPIC.")
 rmw_ret_t
 rmw_node_assert_liveliness(const rmw_node_t * node);
 
