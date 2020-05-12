@@ -26,6 +26,7 @@ extern "C"
 
 // map rcutils specific log levels to rmw speicfic type
 #include <rcutils/logging.h>
+#include <rcutils/macros.h>
 
 #include "rmw/init.h"
 #include "rmw/init_options.h"
@@ -384,6 +385,10 @@ enum RMW_PUBLIC_TYPE rmw_qos_durability_policy_t
   RMW_QOS_POLICY_DURABILITY_UNKNOWN
 };
 
+#define RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE_DEPRECATED_MSG \
+  "RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE is deprecated. " \
+  "Use RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC if manually asserted liveliness is needed."
+
 /// QoS liveliness enumerations that describe a publisher's reporting policy for its alive status.
 /// For a subscriber, these are its requirements for its topic's publishers.
 enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_t
@@ -394,14 +399,11 @@ enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_t
   /// The signal that establishes a Topic is alive comes from the ROS rmw layer.
   RMW_QOS_POLICY_LIVELINESS_AUTOMATIC = 1,
 
-#ifdef _WIN32
   /// Explicitly asserting node liveliness is required in this case.
   /// This option is deprecated, use RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC if your application
   /// requires to assert liveliness manually.
-  RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE = 2,
-#else
-  _RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE = 2,
-#endif
+  RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE RCUTILS_DEPRECATED_WITH_MSG(
+    RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE_DEPRECATED_MSG) = 2,
 
   /// The signal that establishes a Topic is alive is at the Topic level. Only publishing a message
   /// on the Topic or an explicit signal from the application to assert liveliness on the Topic
@@ -412,17 +414,6 @@ enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_t
   /// Liveliness policy has not yet been set
   RMW_QOS_POLICY_LIVELINESS_UNKNOWN = 4
 };
-
-#define RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE_DEPRECATED_MSG \
-  "RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE is deprecated. " \
-  "Use RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC if manually asserted liveliness is needed."
-#ifdef _WIN32
-# pragma deprecated(RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE)
-#else
-__attribute__ ((deprecated(RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE_DEPRECATED_MSG)))
-static const enum rmw_qos_liveliness_policy_t RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE =
-  _RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE;
-#endif
 
 /// QoS Deadline default, 0s indicates deadline policies are not tracked or enforced
 #define RMW_QOS_DEADLINE_DEFAULT {0, 0}
