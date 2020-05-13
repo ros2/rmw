@@ -396,6 +396,8 @@ enum RMW_PUBLIC_TYPE rmw_qos_durability_policy_t
 
 /// QoS liveliness enumerations that describe a publisher's reporting policy for its alive status.
 /// For a subscriber, these are its requirements for its topic's publishers.
+// Suppress syntax errors, as cppcheck does not seem to handle enumerator attributes.
+// cppcheck-suppress syntaxError
 enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_t
 {
   /// Implementation specific default
