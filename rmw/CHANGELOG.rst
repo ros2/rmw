@@ -2,6 +2,12 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.1 (2020-05-19)
+------------------
+* Fix cppcheck error (`#229 <https://github.com/ros2/rmw/issues/229>`_)
+* Update Quality Declaration to reflect 1.0 (`#228 <https://github.com/ros2/rmw/issues/228>`_)
+* Contributors: Michel Hidalgo, Stephen Brawner
+
 1.0.0 (2020-05-12)
 ------------------
 * Remove MANUAL_BY_NODE liveliness API (`#227 <https://github.com/ros2/rmw/issues/227>`_)
