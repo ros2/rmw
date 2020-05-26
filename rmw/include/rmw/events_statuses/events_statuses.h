@@ -12,9 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__INCOMPATIBLE_QOS_EVENTS_STATUSES_H_
-#define RMW__INCOMPATIBLE_QOS_EVENTS_STATUSES_H_
+#ifndef RMW__EVENTS_STATUSES__EVENTS_STATUSES_H_
+#define RMW__EVENTS_STATUSES__EVENTS_STATUSES_H_
 
 #include "rmw/events_statuses/incompatible_qos.h"
+#include "rmw/events_statuses/liveliness_changed.h"
+#include "rmw/events_statuses/liveliness_lost.h"
+#include "rmw/events_statuses/offered_deadline_missed.h"
+#include "rmw/events_statuses/requested_deadline_missed.h"
 
-#endif  // RMW__INCOMPATIBLE_QOS_EVENTS_STATUSES_H_
+#endif  // RMW__EVENTS_STATUSES__EVENTS_STATUSES_H_
