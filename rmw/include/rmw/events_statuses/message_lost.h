@@ -12,14 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__EVENTS_STATUSES__EVENTS_STATUSES_H_
-#define RMW__EVENTS_STATUSES__EVENTS_STATUSES_H_
+#ifndef RMW__EVENTS_STATUSES__MESSAGE_LOST_H_
+#define RMW__EVENTS_STATUSES__MESSAGE_LOST_H_
 
-#include "rmw/events_statuses/incompatible_qos.h"
-#include "rmw/events_statuses/liveliness_changed.h"
-#include "rmw/events_statuses/liveliness_lost.h"
-#include "rmw/events_statuses/message_lost.h"
-#include "rmw/events_statuses/offered_deadline_missed.h"
-#include "rmw/events_statuses/requested_deadline_missed.h"
+#include <stddef.h>
 
-#endif  // RMW__EVENTS_STATUSES__EVENTS_STATUSES_H_
+#include "rmw/visibility_control.h"
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+typedef struct RMW_PUBLIC_TYPE rmw_message_lost_status_t
+{
+  /// Total number of messages lost.
+  size_t total_count;
+  /// Number of messages lost since last callback.
+  size_t total_count_change;
+} rmw_message_lost_status_t;
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif  // RMW__EVENTS_STATUSES__MESSAGE_LOST_H_
