@@ -2,9 +2,9 @@ This document is a declaration of software quality for the `rmw` package, based 
 
 # `rmw` Quality Declaration
 
-The package `rmw` claims to be in the **Quality Level 4** category.
+The package `rmw` claims to be in the **Quality Level 2** category.
 
-Below are the rationales, notes, and caveats for this claim, organized by each requirement listed in the [Package Requirements for Quality Level 4 in REP-2004](https://www.ros.org/reps/rep-2004.html).
+Below are the rationales, notes, and caveats for this claim, organized by each requirement listed in the [Package Requirements for Quality Level 2 in REP-2004](https://www.ros.org/reps/rep-2004.html).
 
 ## Version Policy [1]
 
@@ -136,13 +136,13 @@ It also has several test dependencies, which do not affect the resulting quality
 
 The `rcutils` package provides an API which contains common utilities and data structures needed when programming in C.
 
-It is **Quality Level 4**, see its [Quality Declaration document](https://github.com/ros2/rcutils/blob/master/QUALITY_DECLARATION.md).
+It is **Quality Level 2**, see its [Quality Declaration document](https://github.com/ros2/rcutils/blob/master/QUALITY_DECLARATION.md).
 
 #### `rosidl_runtime_c`
 
 The `rosidl_runtime_c` package provides runtime interfaces in C based on user defined ROS Messages and ROS Services, as well as associated support functions for those types.
 
-It is **Quality Level 4**, see its [Quality Declaration document](https://github.com/ros2/rosidl/tree/master/rosidl_runtime_c/Quality_Declaration.md).
+It is **Quality Level 2**, see its [Quality Declaration document](https://github.com/ros2/rosidl/tree/master/rosidl_runtime_c/Quality_Declaration.md).
 
 ### Direct Runtime Non-ROS Dependencies [5.iii]
 
