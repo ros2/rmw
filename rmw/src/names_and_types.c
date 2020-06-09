@@ -96,9 +96,6 @@ rmw_names_and_types_fini(rmw_names_and_types_t * names_and_types)
   // Cleanup string arrays for types first
   size_t i;
   for (i = 0; i < names_and_types->names.size; ++i) {
-    if (!names_and_types->types) {
-      continue;
-    }
     rcutils_ret = rcutils_string_array_fini(&names_and_types->types[i]);
     if (rcutils_ret != RCUTILS_RET_OK) {
       RMW_SET_ERROR_MSG(rcutils_get_error_string().str);
