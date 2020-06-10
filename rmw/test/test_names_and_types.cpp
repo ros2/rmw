@@ -106,6 +106,11 @@ TEST(rmw_names_and_types, rmw_names_and_types_init) {
   allocator = rcutils_get_default_allocator();
   rmw_reset_error();
 
+  // Size == 0 is Ok
+  result = rmw_names_and_types_init(&names_and_types, 0, &allocator);
+  EXPECT_EQ(result, RMW_RET_OK);
+  EXPECT_EQ(rmw_names_and_types_fini(&names_and_types), RMW_RET_OK);
+
   result = rmw_names_and_types_init(&names_and_types, size, &allocator);
   EXPECT_EQ(result, RMW_RET_OK);
   EXPECT_EQ(rmw_names_and_types_fini(&names_and_types), RMW_RET_OK);
@@ -115,6 +120,9 @@ TEST(rmw_names_and_types, rmw_names_and_types_fini) {
   rmw_names_and_types_t names_and_types = rmw_get_zero_initialized_names_and_types();
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
   size_t size = 100;
+
+  // Zero-initialized is Ok
+  EXPECT_EQ(rmw_names_and_types_fini(&names_and_types), RMW_RET_OK);
 
   rmw_ret_t result = rmw_names_and_types_init(&names_and_types, size, &allocator);
   EXPECT_EQ(result, RMW_RET_OK);
@@ -131,19 +139,31 @@ TEST(rmw_names_and_types, rmw_names_and_types_fini) {
   // Size != 0 and types is null
   auto types_ptr = names_and_types.types;
   names_and_types.types = nullptr;
+  EXPECT_EQ(rmw_names_and_types_fini(&names_and_types), RMW_RET_OK);
+  result = rcutils_string_array_init(&names_and_types.names, size, &allocator);
+  ASSERT_EQ(result, RCUTILS_RET_OK);
+
+  // bad 'names' allocator, rcutils fails to finalize string array
+  names_and_types.types = nullptr;
+  names_and_types.names.size = 0u;
+  names_and_types.names.allocator.deallocate = nullptr;
   EXPECT_EQ(rmw_names_and_types_fini(&names_and_types), RMW_RET_INVALID_ARGUMENT);
   rmw_reset_error();
 
-  // bad allocator, rcutils fails to finalize string array
-  names_and_types.names.allocator.deallocate = nullptr;
-  names_and_types.names.size = 0u;
-  names_and_types.types = nullptr;
+  // bad 'types' allocator, rcutils fails to finalize string array
+  names_and_types.types = types_ptr;
+  names_and_types.names.size = size;
+  names_and_types.names.allocator = allocator;
+  result = rcutils_string_array_init(&names_and_types.types[0], 1, &allocator);
+  ASSERT_EQ(result, RCUTILS_RET_OK);
+  names_and_types.types[0].allocator.deallocate = nullptr;
   EXPECT_EQ(rmw_names_and_types_fini(&names_and_types), RMW_RET_INVALID_ARGUMENT);
   rmw_reset_error();
 
   // Restore back to nominal for proper finalizing
   names_and_types.types = types_ptr;
   names_and_types.names.size = size;
-  names_and_types.names.allocator = rcutils_get_default_allocator();
+  names_and_types.names.allocator = allocator;
+  names_and_types.types[0].allocator = allocator;
   EXPECT_EQ(rmw_names_and_types_fini(&names_and_types), RMW_RET_OK);
 }
