@@ -62,7 +62,8 @@ ament_add_gmock(test_names_and_types
   APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
 )
 if(TARGET test_names_and_types)
-  target_link_libraries(test_names_and_types ${PROJECT_NAME})
+  target_link_libraries(test_names_and_types ${PROJECT_NAME}
+                        osrf_testing_tools_cpp::memory_tools)
 endif()
 
 ament_add_gmock(test_publisher_options
@@ -108,6 +109,15 @@ ament_add_gmock(test_subscription_options
 )
 if(TARGET test_subscription_options)
   target_link_libraries(test_subscription_options ${PROJECT_NAME})
+endif()
+
+ament_add_gmock(test_types
+  test_types.cpp
+  # Append the directory of librmw so it is found at test time.
+  APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+)
+if(TARGET test_types)
+  target_link_libraries(test_types ${PROJECT_NAME})
 endif()
 
 ament_add_gmock(test_validate_full_topic_name

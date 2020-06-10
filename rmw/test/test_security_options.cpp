@@ -14,6 +14,7 @@
 
 #include "gmock/gmock.h"
 
+#include "./time_bomb_allocator_testing_utils.h"
 #include "rmw/error_handling.h"
 #include "rmw/security_options.h"
 
@@ -29,6 +30,38 @@ TEST(rmw_security_options, get_default_init)
   rmw_security_options_t options = rmw_get_default_security_options();
   EXPECT_EQ(options.enforce_security, RMW_SECURITY_ENFORCEMENT_PERMISSIVE);
   EXPECT_EQ(options.security_root_path, nullptr);
+}
+
+TEST(rmw_security_options, options_copy) {
+  rmw_security_options_t source = rmw_get_default_security_options();
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
+  EXPECT_EQ(RMW_RET_OK, rmw_security_options_set_root_path("root_path", &allocator, &source));
+
+  rmw_security_options_t destination = rmw_get_zero_initialized_security_options();
+  EXPECT_EQ(
+    RMW_RET_INVALID_ARGUMENT,
+    rmw_security_options_copy(nullptr, &allocator, &destination));
+
+  EXPECT_EQ(
+    RMW_RET_INVALID_ARGUMENT,
+    rmw_security_options_copy(&source, nullptr, &destination));
+
+  EXPECT_EQ(
+    RMW_RET_INVALID_ARGUMENT,
+    rmw_security_options_copy(&source, &allocator, nullptr));
+
+  rcutils_allocator_t failing_allocator = get_time_bomb_allocator();
+  set_time_bomb_allocator_malloc_count(failing_allocator, 0);
+  EXPECT_EQ(
+    RMW_RET_BAD_ALLOC,
+    rmw_security_options_copy(&source, &failing_allocator, &destination));
+
+  EXPECT_EQ(
+    RMW_RET_OK,
+    rmw_security_options_copy(&source, &allocator, &destination));
+
+  EXPECT_EQ(RMW_RET_OK, rmw_security_options_fini(&source, &allocator));
+  EXPECT_EQ(RMW_RET_OK, rmw_security_options_fini(&destination, &allocator));
 }
 
 TEST(rmw_security_options, security_root_path) {
@@ -58,5 +91,18 @@ TEST(rmw_security_options, security_root_path) {
   EXPECT_EQ(RMW_RET_OK, rmw_security_options_set_root_path("root_path", &allocator, &options));
   EXPECT_STREQ(options.security_root_path, "root_path");
 
+  EXPECT_EQ(RMW_RET_OK, rmw_security_options_fini(&options, &allocator));
+}
+
+TEST(rmw_security_options, security_options_fini) {
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
+  EXPECT_EQ(RMW_RET_INVALID_ARGUMENT, rmw_security_options_fini(nullptr, &allocator));
+
+  rmw_security_options_t options = rmw_get_zero_initialized_security_options();
+  EXPECT_EQ(RMW_RET_INVALID_ARGUMENT, rmw_security_options_fini(&options, nullptr));
+
+  EXPECT_EQ(RMW_RET_OK, rmw_security_options_fini(&options, &allocator));
+
+  options = rmw_get_default_security_options();
   EXPECT_EQ(RMW_RET_OK, rmw_security_options_fini(&options, &allocator));
 }
