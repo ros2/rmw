@@ -74,6 +74,7 @@ rmw_security_options_copy(
  * \returns RMW_RET_BAD_ALLOC, or
  * \returns RMW_RET_OK
  */
+RMW_PUBLIC
 rmw_ret_t
 rmw_security_options_set_root_path(
   const char * security_root_path,
