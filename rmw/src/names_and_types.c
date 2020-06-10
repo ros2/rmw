@@ -70,7 +70,7 @@ rmw_names_and_types_init(
   }
   names_and_types->types =
     allocator->zero_allocate(size, sizeof(rcutils_string_array_t), allocator->state);
-  if (!names_and_types->types) {
+  if (!names_and_types->types && size != 0) {
     rcutils_ret = rcutils_string_array_fini(&names_and_types->names);
     if (rcutils_ret != RCUTILS_RET_OK) {
       RCUTILS_LOG_ERROR("error while reporting error: %s", rcutils_get_error_string().str);
@@ -88,21 +88,23 @@ rmw_names_and_types_fini(rmw_names_and_types_t * names_and_types)
     RMW_SET_ERROR_MSG("names_and_types is null");
     return RMW_RET_INVALID_ARGUMENT;
   }
-  if (names_and_types->names.size && !names_and_types->types) {
-    RMW_SET_ERROR_MSG("invalid names_and_types");
-    return RMW_RET_INVALID_ARGUMENT;
-  }
   rcutils_ret_t rcutils_ret;
-  // Cleanup string arrays for types first
-  size_t i;
-  for (i = 0; i < names_and_types->names.size; ++i) {
-    rcutils_ret = rcutils_string_array_fini(&names_and_types->types[i]);
-    if (rcutils_ret != RCUTILS_RET_OK) {
-      RMW_SET_ERROR_MSG(rcutils_get_error_string().str);
-      return rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret);
-    }
-  }
   if (names_and_types->types) {
+    RCUTILS_CHECK_ALLOCATOR_WITH_MSG(
+      &names_and_types->names.allocator,
+      "allocator is invalid",
+      return RMW_RET_INVALID_ARGUMENT);
+
+    // Cleanup string arrays for types first
+    size_t i;
+    for (i = 0; i < names_and_types->names.size; ++i) {
+      rcutils_ret = rcutils_string_array_fini(&names_and_types->types[i]);
+      if (rcutils_ret != RCUTILS_RET_OK) {
+        RMW_SET_ERROR_MSG(rcutils_get_error_string().str);
+        return rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret);
+      }
+    }
+
     // Use the allocator in the names string array
     // (prevents this data structure from having to also store it)
     names_and_types->names.allocator.deallocate(
