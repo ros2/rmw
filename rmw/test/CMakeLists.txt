@@ -111,6 +111,15 @@ if(TARGET test_subscription_options)
   target_link_libraries(test_subscription_options ${PROJECT_NAME})
 endif()
 
+ament_add_gmock(test_types
+  test_types.cpp
+  # Append the directory of librmw so it is found at test time.
+  APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+)
+if(TARGET test_types)
+  target_link_libraries(test_types ${PROJECT_NAME})
+endif()
+
 ament_add_gmock(test_validate_full_topic_name
   test_validate_full_topic_name.cpp
   # Append the directory of librmw so it is found at test time.
