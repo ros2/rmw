@@ -141,8 +141,9 @@ TEST(rmw_names_and_types, rmw_names_and_types_fini) {
   EXPECT_EQ(rmw_names_and_types_fini(&names_and_types), RMW_RET_INVALID_ARGUMENT);
   rmw_reset_error();
 
+  // Restore back to nominal for proper finalizing
   names_and_types.types = types_ptr;
-  names_and_types.names.size = 100;
+  names_and_types.names.size = size;
   names_and_types.names.allocator = rcutils_get_default_allocator();
   EXPECT_EQ(rmw_names_and_types_fini(&names_and_types), RMW_RET_OK);
 }
