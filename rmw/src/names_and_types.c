@@ -70,7 +70,7 @@ rmw_names_and_types_init(
   }
   names_and_types->types =
     allocator->zero_allocate(size, sizeof(rcutils_string_array_t), allocator->state);
-  if (!names_and_types->types) {
+  if (!names_and_types->types && size != 0) {
     rcutils_ret = rcutils_string_array_fini(&names_and_types->names);
     if (rcutils_ret != RCUTILS_RET_OK) {
       RCUTILS_LOG_ERROR("error while reporting error: %s", rcutils_get_error_string().str);
