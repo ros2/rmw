@@ -15,7 +15,7 @@
 #include "gmock/gmock.h"
 #include "rmw/types.h"
 
-TEST(TestTypes, zero_initialized_message_info) {
+TEST(test_types, zero_initialized_message_info) {
   rmw_message_info_t info = rmw_get_zero_initialized_message_info();
   EXPECT_EQ(0u, info.source_timestamp);
   EXPECT_EQ(0u, info.received_timestamp);
