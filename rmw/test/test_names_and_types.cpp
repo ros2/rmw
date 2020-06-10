@@ -122,7 +122,7 @@ TEST(rmw_names_and_types, rmw_names_and_types_fini) {
   // Ok
   EXPECT_EQ(rmw_names_and_types_fini(&names_and_types), RMW_RET_OK);
   result = rmw_names_and_types_init(&names_and_types, size, &allocator);
-  EXPECT_EQ(result, RMW_RET_OK);
+  ASSERT_EQ(result, RMW_RET_OK);
 
   // names_and_types is nullptr
   EXPECT_EQ(rmw_names_and_types_fini(nullptr), RMW_RET_INVALID_ARGUMENT);
