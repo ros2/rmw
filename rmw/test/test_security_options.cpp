@@ -14,7 +14,7 @@
 
 #include "gmock/gmock.h"
 
-#include "./allocator_testing_utils.h"
+#include "./time_bomb_allocator_testing_utils.h"
 #include "rmw/error_handling.h"
 #include "rmw/security_options.h"
 
@@ -50,8 +50,8 @@ TEST(rmw_security_options, options_copy) {
     RMW_RET_INVALID_ARGUMENT,
     rmw_security_options_copy(&source, &allocator, nullptr));
 
-
-  rcutils_allocator_t failing_allocator = get_failing_allocator();
+  rcutils_allocator_t failing_allocator = get_time_bomb_allocator();
+  set_time_bomb_allocator_malloc_count(failing_allocator, 0);
   EXPECT_EQ(
     RMW_RET_BAD_ALLOC,
     rmw_security_options_copy(&source, &failing_allocator, &destination));

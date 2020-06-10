@@ -62,7 +62,8 @@ ament_add_gmock(test_names_and_types
   APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
 )
 if(TARGET test_names_and_types)
-  target_link_libraries(test_names_and_types ${PROJECT_NAME})
+  target_link_libraries(test_names_and_types ${PROJECT_NAME}
+                        osrf_testing_tools_cpp::memory_tools)
 endif()
 
 ament_add_gmock(test_publisher_options
