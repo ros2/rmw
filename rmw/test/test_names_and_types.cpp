@@ -13,23 +13,12 @@
 // limitations under the License.
 
 #include "gmock/gmock.h"
+#include "osrf_testing_tools_cpp/scope_exit.hpp"
 
+#include "./time_bomb_allocator_testing_utils.h"
 #include "rcutils/error_handling.h"
 #include "rmw/error_handling.h"
 #include "rmw/names_and_types.h"
-
-namespace
-{
-void *
-bad_zero_allocator(size_t number, size_t size, void * state)
-{
-  RCUTILS_UNUSED(number);
-  RCUTILS_UNUSED(size);
-  RCUTILS_UNUSED(state);
-  return nullptr;
-}
-}  // namespace
-
 
 TEST(rmw_names_and_types, get_zero_init)
 {
@@ -92,19 +81,36 @@ TEST(rmw_names_and_types, rmw_names_and_types_init) {
   rmw_reset_error();
 
   // allocator fails to allocate memory to names
-  allocator.zero_allocate = &bad_zero_allocator;
-  result = rmw_names_and_types_init(&names_and_types, size, &allocator);
+  rcutils_allocator_t failing_allocator = get_time_bomb_allocator();
+  set_time_bomb_allocator_calloc_count(failing_allocator, 0);
+  result = rmw_names_and_types_init(&names_and_types, size, &failing_allocator);
   EXPECT_EQ(result, RMW_RET_BAD_ALLOC);
-  allocator = rcutils_get_default_allocator();
   rmw_reset_error();
 
-  // Fails to deallocate after failing to zero allocate types
-  allocator.zero_allocate = &bad_zero_allocator;
-  allocator.deallocate = nullptr;
-  result = rmw_names_and_types_init(&names_and_types, size, &allocator);
+  // allocator fails to allocate memory to types
+  set_time_bomb_allocator_calloc_count(failing_allocator, 1);
+  result = rmw_names_and_types_init(&names_and_types, size, &failing_allocator);
   EXPECT_EQ(result, RMW_RET_BAD_ALLOC);
-  allocator = rcutils_get_default_allocator();
   rmw_reset_error();
+
+  // Fails to deallocate names after failing to zero allocate types
+  set_time_bomb_allocator_calloc_count(failing_allocator, 1);
+  failing_allocator.deallocate = nullptr;
+
+  // Logging is initialized during this code path and would need to be shutdown.
+  ASSERT_EQ(rcutils_logging_initialize(), RCUTILS_RET_OK);
+  OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT(
+  {
+    // If logging shutdown is not called, there's a small memory leak
+    EXPECT_EQ(rcutils_logging_shutdown(), RCUTILS_RET_OK);
+  });
+  result = rmw_names_and_types_init(&names_and_types, size, &failing_allocator);
+  EXPECT_EQ(result, RMW_RET_BAD_ALLOC);
+  rmw_reset_error();
+
+  // Needs to properly clean up names before the next several inits
+  names_and_types.names.allocator = rcutils_get_default_allocator();
+  ASSERT_EQ(rcutils_string_array_fini(&names_and_types.names), RMW_RET_OK);
 
   // Size == 0 is Ok
   result = rmw_names_and_types_init(&names_and_types, 0, &allocator);

@@ -16,7 +16,7 @@
 
 #include "rcutils/allocator.h"
 
-#include "./allocator_testing_utils.h"
+#include "./time_bomb_allocator_testing_utils.h"
 #include "rmw/error_handling.h"
 #include "rmw/message_sequence.h"
 
@@ -67,7 +67,8 @@ TEST(test_message_info_sequence, bad_arguments) {
   EXPECT_EQ(nullptr, info_sequence.data);
   rmw_reset_error();
 
-  rcutils_allocator_t failing_allocator = get_failing_allocator();
+  rcutils_allocator_t failing_allocator = get_time_bomb_allocator();
+  set_time_bomb_allocator_malloc_count(failing_allocator, 0);
   EXPECT_EQ(
     RMW_RET_BAD_ALLOC, rmw_message_info_sequence_init(&info_sequence, 5u, &failing_allocator));
   EXPECT_EQ(0u, info_sequence.size);
@@ -123,7 +124,8 @@ TEST(test_message_sequence, bad_arguments) {
   EXPECT_EQ(nullptr, message_sequence.data);
   rmw_reset_error();
 
-  rcutils_allocator_t failing_allocator = get_failing_allocator();
+  rcutils_allocator_t failing_allocator = get_time_bomb_allocator();
+  set_time_bomb_allocator_malloc_count(failing_allocator, 0);
   EXPECT_EQ(
     RMW_RET_BAD_ALLOC, rmw_message_sequence_init(&message_sequence, 5u, &failing_allocator));
   EXPECT_EQ(0u, message_sequence.size);
