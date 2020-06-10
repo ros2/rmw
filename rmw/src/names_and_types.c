@@ -90,6 +90,11 @@ rmw_names_and_types_fini(rmw_names_and_types_t * names_and_types)
   }
   rcutils_ret_t rcutils_ret;
   if (names_and_types->types) {
+    RCUTILS_CHECK_ALLOCATOR_WITH_MSG(
+      &names_and_types->names.allocator,
+      "allocator is invalid",
+      return RMW_RET_INVALID_ARGUMENT);
+
     // Cleanup string arrays for types first
     size_t i;
     for (i = 0; i < names_and_types->names.size; ++i) {
