@@ -13,6 +13,8 @@
 // limitations under the License.
 
 #include "gmock/gmock.h"
+
+#include "rmw/error_handling.h"
 #include "rmw/security_options.h"
 
 TEST(rmw_security_options, get_zero_init)
@@ -27,4 +29,34 @@ TEST(rmw_security_options, get_default_init)
   rmw_security_options_t options = rmw_get_default_security_options();
   EXPECT_EQ(options.enforce_security, RMW_SECURITY_ENFORCEMENT_PERMISSIVE);
   EXPECT_EQ(options.security_root_path, nullptr);
+}
+
+TEST(rmw_security_options, security_root_path) {
+  rmw_security_options_t options = rmw_get_default_security_options();
+  EXPECT_EQ(options.enforce_security, RMW_SECURITY_ENFORCEMENT_PERMISSIVE);
+  EXPECT_EQ(options.security_root_path, nullptr);
+
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
+  EXPECT_EQ(
+    RMW_RET_INVALID_ARGUMENT,
+    rmw_security_options_set_root_path(nullptr, &allocator, &options));
+  EXPECT_EQ(options.security_root_path, nullptr);
+  rmw_reset_error();
+
+  EXPECT_EQ(
+    RMW_RET_INVALID_ARGUMENT,
+    rmw_security_options_set_root_path("root_path", nullptr, &options));
+  EXPECT_EQ(options.security_root_path, nullptr);
+  rmw_reset_error();
+
+  EXPECT_EQ(
+    RMW_RET_INVALID_ARGUMENT,
+    rmw_security_options_set_root_path("root_path", &allocator, nullptr));
+  EXPECT_EQ(options.security_root_path, nullptr);
+  rmw_reset_error();
+
+  EXPECT_EQ(RMW_RET_OK, rmw_security_options_set_root_path("root_path", &allocator, &options));
+  EXPECT_STREQ(options.security_root_path, "root_path");
+
+  EXPECT_EQ(RMW_RET_OK, rmw_security_options_fini(&options, &allocator));
 }
