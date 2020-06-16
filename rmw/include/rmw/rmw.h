@@ -199,7 +199,6 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_node(rmw_node_t * node);
 
-
 RMW_PUBLIC
 RCUTILS_DEPRECATED_WITH_MSG(
   "rmw_node_assert_liveliness implementation was removed."
