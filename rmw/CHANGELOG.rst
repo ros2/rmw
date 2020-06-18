@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.1.0 (2020-06-18)
+------------------
 * Add message lost subscription event (`#232 <https://github.com/ros2/rmw/issues/232>`_)
 * Move statuses definitions to rmw/events_statuses/*.h (`#232 <https://github.com/ros2/rmw/issues/232>`_)
 * Increase rmw testing coverage above 95% (`#238 <https://github.com/ros2/rmw/issues/238>`_)
