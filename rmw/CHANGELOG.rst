@@ -2,6 +2,17 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add message lost subscription event (`#232 <https://github.com/ros2/rmw/issues/232>`_)
+* Move statuses definitions to rmw/events_statuses/*.h (`#232 <https://github.com/ros2/rmw/issues/232>`_)
+* Increase rmw testing coverage above 95% (`#238 <https://github.com/ros2/rmw/issues/238>`_)
+* Handle zero-length names_and_types properly (`#239 <https://github.com/ros2/rmw/issues/239>`_)
+* Add missing RMW_PUBLIC to security_options_set_root_path (`#236 <https://github.com/ros2/rmw/issues/236>`_)
+* Update Quality Declaration for QL 2 (`#233 <https://github.com/ros2/rmw/issues/233>`_)
+* Add Security Vulnerability Policy pointing to REP-2006. (`#230 <https://github.com/ros2/rmw/issues/230>`_)
+* Contributors: Chris Lalancette, Ivan Santiago Paunovic, Karsten Knese, Scott K Logan, Stephen Brawner, brawner
+
 1.0.1 (2020-05-19)
 ------------------
 * Fix cppcheck error (`#229 <https://github.com/ros2/rmw/issues/229>`_)
