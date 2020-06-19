@@ -114,8 +114,6 @@ rmw_shutdown(rmw_context_t * context);
 /**
  * The context to be finalized must have been previously initialized with
  * `rmw_init()`, and then later invalidated with `rmw_shutdown()`.
- * If context is `NULL`, then `RMW_RET_INVALID_ARGUMENT` is returned.
- * If context is zero-initialized, then `RMW_RET_INVALID_ARGUMENT` is returned.
  * If context is initialized and valid (`rmw_shutdown()` was not called on it),
  * then `RMW_RET_INVALID_ARGUMENT` is returned.
  *
@@ -130,6 +128,8 @@ rmw_shutdown(rmw_context_t * context);
  *
  * \return `RMW_RET_OK` if the shutdown was completed successfully, or
  * \return `RMW_RET_INVALID_ARGUMENT` if any arguments are invalid, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the implementation
+ *   identifier does not match, or
  * \return `RMW_RET_ERROR` if an unspecified error occur.
  */
 RMW_PUBLIC
