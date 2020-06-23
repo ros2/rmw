@@ -84,6 +84,9 @@ rmw_get_zero_initialized_init_options(void);
  *
  * \post If initialization fails, init options will remain zero initialized.
  *
+ * \remark Giving an already initialized init options will result
+ *   in a failure with return code `RMW_RET_INVALID_ARGUMENT`.
+ *
  * <hr>
  * Attribute          | Adherence
  * ------------------ | -------------
@@ -97,7 +100,6 @@ rmw_get_zero_initialized_init_options(void);
  * \param[inout] init_options object to be setup
  * \param[in] allocator to be used during setup and during initialization
  * \return `RMW_RET_OK` if setup is successful, or
- * \return `RMW_RET_INVALID_ARGUMENT` if init_options has already been initialized, or
  * \return `RMW_RET_INVALID_ARGUMENT` if any arguments are invalid, or
  * \return `RMW_RET_BAD_ALLOC` if allocating memory failed, or
  * \return `RMW_RET_ERROR` if an unspecified error occurs.
@@ -112,10 +114,14 @@ rmw_init_options_init(rmw_init_options_t * init_options, rcutils_allocator_t all
  * The allocator from the source is used for any allocations and stored in the
  * destination.
  *
+ * \pre The source init options must have been initialized
+ *   i.e. had `rmw_init_options_init()` called on.
  * \pre The destination init options must be zero initialized.
  *
  * \post If copy fails, destination init options will remain zero initialized.
  *
+ * \remark Giving an zero initialized init options as a source will result
+ *   in a failure with return code `RMW_RET_INVALID_ARGUMENT`.
  * \remark Giving an already initialized init options for the destination will result
  *   in a failure with return code `RMW_RET_INVALID_ARGUMENT`.
  *
@@ -134,7 +140,6 @@ rmw_init_options_init(rmw_init_options_t * init_options, rcutils_allocator_t all
  * \return `RMW_RET_OK` if the copy is successful, or
  * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the implementation
  *   identifier for src does not match the implementation of this function, or
- * \return `RMW_RET_INVALID_ARGUMENT` if the dst has already been initialized, or
  * \return `RMW_RET_INVALID_ARGUMENT` if any arguments are invalid, or
  * \return `RMW_RET_BAD_ALLOC` if allocating memory failed, or
  * \return `RMW_RET_ERROR` if an unspecified error occurs.
