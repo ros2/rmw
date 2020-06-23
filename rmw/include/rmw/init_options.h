@@ -151,11 +151,14 @@ rmw_init_options_copy(const rmw_init_options_t * src, rmw_init_options_t * dst);
 
 /// Finalize the given init options.
 /**
+ * This function will return early if a logical error, such as `RMW_RET_INVALID_ARGUMENT`
+ * or `RMW_RET_INCORRECT_RMW_IMPLEMENTATION`, ensues, leaving the given init options
+ * unchanged.
+ * Otherwise, it will proceed despite errors, freeing as much resources as it can and zero
+ * initializing the given init options.
+ *
  * \pre The given init options must have been initialized
  *   i.e. had `rmw_init_options_init()` called on.
- *
- * \post Finalized init options are zero initialized
- *   i.e. it can be initialized again.
  *
  * \remarks If init options are zero initialized,
  *   then `RMW_RET_INVALID_ARGUMENT` is returned.
