@@ -59,10 +59,15 @@ rmw_get_zero_initialized_context(void);
  * The context is used when initializing some entities like nodes and
  * guard conditions, and is also required to properly call `rmw_shutdown()`.
  *
+ * \pre The given options must have been initialized
+ *   i.e. `rmw_init_options_init()` called on it.
  * \pre The given context must be zero initialized.
  *
- * \remarks If context has been already initialized (`rmw_init()` was called on it),
- *   then `RMW_RET_INVALID_ARGUMENT` is returned.
+ * \post If initialization fails, context will remain zero initialized.
+ *
+ * \remarks If options are zero-initialized, then `RMW_RET_INVALID_ARGUMENT` is returned.
+ *   If context has been already initialized (`rmw_init()` was called on it), then
+ *   `RMW_RET_INVALID_ARGUMENT` is returned.
  *
  * <hr>
  * Attribute          | Adherence
@@ -119,9 +124,13 @@ rmw_shutdown(rmw_context_t * context);
 
 /// Finalize a context.
 /**
+ * This function will return early if a logical error, such as `RMW_RET_INVALID_ARGUMENT`
+ * or `RMW_RET_INCORRECT_RMW_IMPLEMENTATION`, ensues, leaving the given context unchanged.
+ * Otherwise, it will proceed despite errors, freeing as much resources as it can and zero
+ * initializing the given context.
+ *
  * \pre The context to be finalized must have been previously initialized with
  *   `rmw_init()`, and then later invalidated with `rmw_shutdown()`.
- * \post Finalized context is zero initialized i.e. it can be initialized again.
  *
  * \remarks If context is zero initialized, then `RMW_RET_INVALID_ARGUMENT` is returned.
  *   If context is initialized and valid (`rmw_shutdown()` was not called on it), then
