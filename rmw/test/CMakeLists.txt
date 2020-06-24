@@ -172,3 +172,12 @@ if(TARGET test_topic_endpoint_info)
   target_link_libraries(test_topic_endpoint_info ${PROJECT_NAME}
   osrf_testing_tools_cpp::memory_tools)
 endif()
+
+ament_add_gmock(test_impl_cpp_atexit
+  impl/cpp/test_atexit.cpp
+  # Append the directory of librmw so it is found at test time.
+  APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+)
+if(TARGET test_impl_cpp_atexit)
+  target_link_libraries(test_impl_cpp_atexit ${PROJECT_NAME})
+endif()
