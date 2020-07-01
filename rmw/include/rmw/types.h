@@ -166,6 +166,9 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_t
 
   /// Indicates whether this subscription can loan messages
   bool can_loan_messages;
+
+  /// Indicates whether this subscription can support ContentFilteredTopic.
+  bool is_cft_supported;
 } rmw_subscription_t;
 
 /// A handle to an rmw service
