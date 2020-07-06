@@ -71,7 +71,7 @@ if(BUILD_TESTING)
   add_subdirectory(test)
 endif()
 
-ament_export_development_version_if_higher_than_manifest("0.8.2-dev")
+ament_export_development_version_if_higher_than_manifest("1.1.1-dev")
 ament_package(CONFIG_EXTRAS "rmw-extras.cmake")
 
 install(
