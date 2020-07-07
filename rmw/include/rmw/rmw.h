@@ -133,14 +133,13 @@ rmw_get_serialization_format(void);
 /// Create a node and return a handle to that node.
 /**
  * This function can fail, and therefore return `NULL`, if:
+ *   - name is not a valid non-null node name
+ *   - namespace is not a valid non-null namespace
  *   - context is not valid i.e. it has been initialized
  *     by `rmw_init()` but not yet invalidated by
  *     `rmw_shutdown()`
  *   - memory allocation fails during node creation
  *   - an unspecified error occurs
- *
- * \pre The given name must be a valid non-null node name.
- * \pre The given namespace_ must be a valid non-null node namespace.
  *
  * <hr>
  * Attribute          | Adherence
@@ -171,11 +170,10 @@ rmw_create_node(
 
 /// Finalize a given node handle, reclaim the resources, and deallocate the node handle.
 /**
- * The function may assume - but should verify - that all publishers, subscribers,
- * services, and clients created from this node have already been destroyed.
- * If the rmw implementation chooses to verify instead of assume, it should
- * return `RMW_RET_ERROR` and set a human readable error message if any entity
- * created from this node has not yet been destroyed.
+ * \pre All publishers, subscribers, services, and clients created from this node must
+ *   have been destroyed upon call. Some rmw implementations may choose to verify this,
+ *   returning `RMW_RET_ERROR` and setting a human readable error message if any entity
+ *   created from this node has not yet been destroyed.
  *
  * \param[in] node the node handle to be destroyed
  * \return `RMW_RET_OK` if successful, or
