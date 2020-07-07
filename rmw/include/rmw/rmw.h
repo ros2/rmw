@@ -134,7 +134,7 @@ rmw_get_serialization_format(void);
 /**
  * This function can fail, and therefore return `NULL`, if:
  *   - name is not a valid non-null node name
- *   - namespace is not a valid non-null namespace
+ *   - namespace_ is not a valid non-null namespace
  *   - context is not valid i.e. it is zero-initialized, or
  *     its implementation identifier does not match that of
  *     this API implementation, or has been invalidated by
