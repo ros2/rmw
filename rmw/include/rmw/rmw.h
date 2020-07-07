@@ -135,8 +135,9 @@ rmw_get_serialization_format(void);
  * This function can fail, and therefore return `NULL`, if:
  *   - name is not a valid non-null node name
  *   - namespace is not a valid non-null namespace
- *   - context is not valid i.e. it has been initialized
- *     by `rmw_init()` but not yet invalidated by
+ *   - context is not valid i.e. it is zero-initialized, or
+ *     its implementation identifier does not match that of
+ *     this API implementation, or has been invalidated by
  *     `rmw_shutdown()`
  *   - memory allocation fails during node creation
  *   - an unspecified error occurs
@@ -155,9 +156,6 @@ rmw_get_serialization_format(void);
  * \param[in] context init context that this node should be associated with
  * \param[in] name the node name
  * \param[in] namespace_ the node namespace
- * \param[in] domain_id the id of the domain that the node should join
- * \param[in] localhost_only whenever to use loopback only for communication or
- *   default network interfaces.
  * \return rmw node handle, or `NULL` if there was an error
  */
 RMW_PUBLIC
@@ -171,9 +169,10 @@ rmw_create_node(
 /// Finalize a given node handle, reclaim the resources, and deallocate the node handle.
 /**
  * \pre All publishers, subscribers, services, and clients created from this node must
- *   have been destroyed upon call. Some rmw implementations may choose to verify this,
+ *   have been destroyed prior to this call. Some rmw implementations may verify this,
  *   returning `RMW_RET_ERROR` and setting a human readable error message if any entity
- *   created from this node has not yet been destroyed.
+ *   created from this node has not yet been destroyed. However, this is not guaranteed
+ *   and so callers should ensure that this is the case before calling this function.
  *
  * \param[in] node the node handle to be destroyed
  * \return `RMW_RET_OK` if successful, or
