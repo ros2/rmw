@@ -60,12 +60,15 @@ rmw_get_zero_initialized_context(void);
  * guard conditions, and is also required to properly call `rmw_shutdown()`.
  *
  * \pre The given options must have been initialized
- *   i.e. `rmw_init_options_init()` called on it.
+ *   i.e. `rmw_init_options_init()` called on it and
+ *   an enclave set.
  * \pre The given context must be zero initialized.
  *
  * \post If initialization fails, context will remain zero initialized.
  *
  * \remarks If options are zero-initialized, then `RMW_RET_INVALID_ARGUMENT` is returned.
+ *   If options are initialized but no enclave is provided, then `RMW_RET_INVALID_ARGUMENT`
+ *   is returned.
  *   If context has been already initialized (`rmw_init()` was called on it), then
  *   `RMW_RET_INVALID_ARGUMENT` is returned.
  *
