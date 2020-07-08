@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.0.0 (2020-07-08)
+------------------
 * Remove domain_id and localhost_only from node API (`#248 <https://github.com/ros2/rmw/issues/248>`_)
 * Require enclave upon rmw_init() call. (`#247 <https://github.com/ros2/rmw/issues/247>`_)
 * Update init/shutdown API documentation. (`#243 <https://github.com/ros2/rmw/issues/243>`_)
