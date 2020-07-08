@@ -2,6 +2,14 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Remove domain_id and localhost_only from node API (`#248 <https://github.com/ros2/rmw/issues/248>`_)
+* Require enclave upon rmw_init() call. (`#247 <https://github.com/ros2/rmw/issues/247>`_)
+* Update init/shutdown API documentation. (`#243 <https://github.com/ros2/rmw/issues/243>`_)
+* Update init options API documentation. (`#244 <https://github.com/ros2/rmw/issues/244>`_)
+* Contributors: Ivan Santiago Paunovic, Michel Hidalgo
+
 1.1.0 (2020-06-18)
 ------------------
 * Add message lost subscription event (`#232 <https://github.com/ros2/rmw/issues/232>`_)
