@@ -59,7 +59,7 @@ rmw_get_subscriber_names_and_types_by_node(
   rcutils_allocator_t * allocator,
   const char * node_name,
   const char * node_namespace,
-  bool demangle,
+  bool no_demangle,
   rmw_names_and_types_t * topics_names_and_types);
 
 /// Return a list of published topic names and their types.
@@ -96,7 +96,7 @@ rmw_get_publisher_names_and_types_by_node(
   rcutils_allocator_t * allocator,
   const char * node_name,
   const char * node_namespace,
-  bool demangle,
+  bool no_demangle,
   rmw_names_and_types_t * topic_names_and_types);
 
 /// Return a list of service topic names and their types.
