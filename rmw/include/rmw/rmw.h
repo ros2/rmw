@@ -170,7 +170,7 @@ rmw_create_node(
 /**
  * This function will return early if a logical error, such as `RMW_RET_INVALID_ARGUMENT`
  * or `RMW_RET_INCORRECT_RMW_IMPLEMENTATION`, ensues, leaving the given node handle unchanged.
- * Otherwise, it will proceed despite errors, freeing as much resources as it can, including
+ * Otherwise, it will proceed despite errors, freeing as many resources as it can, including
  * the node handle. Usage of a deallocated node handle is undefined behavior.
  *
  * \pre All publishers, subscribers, services, and clients created from this node must
