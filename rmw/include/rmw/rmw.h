@@ -133,23 +133,14 @@ rmw_get_serialization_format(void);
 /// Create a node and return a handle to that node.
 /**
  * This function can fail, and therefore return `NULL`, if:
- *   - context, name, namespace_, or security_options is `NULL`
- *   - context, security_options is invalid
+ *   - name is not a valid non-null node name
+ *   - namespace_ is not a valid non-null namespace
+ *   - context is not valid i.e. it is zero-initialized, or
+ *     its implementation identifier does not match that of
+ *     this API implementation, or has been invalidated by
+ *     `rmw_shutdown()`
  *   - memory allocation fails during node creation
  *   - an unspecified error occurs
- *
- * The context must be non-null and valid, i.e. it has been initialized
- * by `rmw_init()` and has not been finalized by `rmw_shutdown()`.
- *
- * The name and namespace_ should be valid node name and namespace,
- * and this should be asserted by the caller (e.g. `rcl`).
- *
- * The domain ID should be used to physically separate nodes at the
- * communication graph level by the middleware.
- * For RTPS/DDS this maps naturally to their concept of domain id.
- *
- * The security options should always be non-null and encapsulate the
- * essential security configurations for the node and its entities.
  *
  * <hr>
  * Attribute          | Adherence
@@ -165,11 +156,7 @@ rmw_get_serialization_format(void);
  * \param[in] context init context that this node should be associated with
  * \param[in] name the node name
  * \param[in] namespace_ the node namespace
- * \param[in] domain_id the id of the domain that the node should join
- * \param[in] security_options the security configurations for the node
- * \param[in] localhost_only whenever to use loopback only for communication or default
- * network interfaces.
- * \return rmw node handle or `NULL` if there was an error
+ * \return rmw node handle, or `NULL` if there was an error
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -181,15 +168,22 @@ rmw_create_node(
 
 /// Finalize a given node handle, reclaim the resources, and deallocate the node handle.
 /**
- * The method may assume - but should verify - that all publishers, subscribers,
- * services, and clients created from this node have already been destroyed.
- * If the rmw implementation chooses to verify instead of assume, it should
- * return `RMW_RET_ERROR` and set a human readable error message if any entity
- * created from this node has not yet been destroyed.
+ * This function will return early if a logical error, such as `RMW_RET_INVALID_ARGUMENT`
+ * or `RMW_RET_INCORRECT_RMW_IMPLEMENTATION`, ensues, leaving the given node handle unchanged.
+ * Otherwise, it will proceed despite errors, freeing as many resources as it can, including
+ * the node handle. Usage of a deallocated node handle is undefined behavior.
+ *
+ * \pre All publishers, subscribers, services, and clients created from this node must
+ *   have been destroyed prior to this call. Some rmw implementations may verify this,
+ *   returning `RMW_RET_ERROR` and setting a human readable error message if any entity
+ *   created from this node has not yet been destroyed. However, this is not guaranteed
+ *   and so callers should ensure that this is the case before calling this function.
  *
  * \param[in] node the node handle to be destroyed
  * \return `RMW_RET_OK` if successful, or
- * \return `RMW_RET_INVALID_ARGUMENT` if node is null, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if node is invalid, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the implementation
+ *   identifier does not match, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
