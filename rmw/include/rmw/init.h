@@ -42,6 +42,8 @@ typedef struct RMW_PUBLIC_TYPE rmw_context_t
   const char * implementation_identifier;
   /// Options used to initialize the context.
   rmw_init_options_t options;
+  /// Domain id that is being used.
+  size_t actual_domain_id;
   /// Implementation defined context information.
   /** May be NULL if there is no implementation defined context information. */
   rmw_context_impl_t * impl;
