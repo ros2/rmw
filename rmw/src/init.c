@@ -30,7 +30,7 @@ rmw_get_zero_initialized_context(void)
            .instance_id = 0,
            .implementation_identifier = NULL,
            .options = rmw_get_zero_initialized_init_options(),
-           .actual_domain_id = RMW_DEFAULT_DOMAIN_ID,
+           .actual_domain_id = 0u,
            .impl = NULL
   };  // NOLINT(readability/braces): false positive
 }

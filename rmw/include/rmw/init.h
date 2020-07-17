@@ -67,6 +67,9 @@ rmw_get_zero_initialized_context(void);
  * \pre The given context must be zero initialized.
  *
  * \post If initialization fails, context will remain zero initialized.
+ * \post `context->actual_domain_id` will be set with the domain id the rmw implementation is using.
+ *  This matches `options->domain_id` if it is not RMW_DEFAULT_DOMAIN_ID.
+ *  In other case, the value is rmw implementation dependent.
  *
  * \remarks If options are zero-initialized, then `RMW_RET_INVALID_ARGUMENT` is returned.
  *   If options are initialized but no enclave is provided, then `RMW_RET_INVALID_ARGUMENT`
