@@ -61,6 +61,20 @@ static const rmw_qos_profile_t rmw_qos_profile_default =
   false
 };
 
+static const rmw_qos_profile_t rmw_rosout_qos_profile_default =
+{
+  RMW_QOS_POLICY_HISTORY_KEEP_LAST,
+  1000,
+  RMW_QOS_POLICY_RELIABILITY_RELIABLE,
+  RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL,
+  RMW_QOS_DEADLINE_DEFAULT,
+  RMW_ROSOUT_QOS_LIFESPAN_DEFAULT,
+  RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT,
+  RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT,
+  false
+};
+
+
 static const rmw_qos_profile_t rmw_qos_profile_services_default =
 {
   RMW_QOS_POLICY_HISTORY_KEEP_LAST,

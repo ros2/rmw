@@ -430,6 +430,9 @@ enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_t
 /// QoS Lifespan default, 0s indicate lifespan policies are not tracked or enforced
 #define RMW_QOS_LIFESPAN_DEFAULT {0, 0}
 
+/// Rosout QoS Lifespan default, 10s indicate lifespan policies are tracked
+#define RMW_ROSOUT_QOS_LIFESPAN_DEFAULT {10, 0}
+
 /// QoS Liveliness lease duration default, 0s indicate lease durations are not tracked or enforced
 #define RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT {0, 0}
 
