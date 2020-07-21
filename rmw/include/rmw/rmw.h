@@ -280,7 +280,7 @@ rmw_get_default_publisher_options(void);
 /**
  * This function can fail, and therefore return `NULL`, if:
  *   - node is not a valid non-null handle for this rmw implementation,
- *     as returned by `rmw_create_node()`, or it is associated to a shutdown context
+ *     as returned by `rmw_create_node()`
  *   - type_support is a not valid non-null message type support, as returned by
  *     `ROSIDL_GET_MSG_TYPE_SUPPORT()`
  *   - topic_name is not a valid non-null topic name, according to
