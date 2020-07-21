@@ -281,11 +281,11 @@ rmw_get_default_publisher_options(void);
  * This function can fail, and therefore return `NULL`, if:
  *   - node is not a valid non-null handle for this rmw implementation,
  *     as returned by `rmw_create_node()`, or it is associated to a shutdown context
- *   - type_support is a valid non-null message type support, as returned by
+ *   - type_support is a not valid non-null message type support, as returned by
  *     `ROSIDL_GET_MSG_TYPE_SUPPORT()`
  *   - topic_name is not a valid non-null topic name, according to
  *     `rmw_validate_full_topic_name()`
- *   - qos_profile is a fully specified non-null profile i.e. no UNKNOWN policies
+ *   - qos_profile is not a fully specified non-null profile i.e. no UNKNOWN policies
  *   - publisher_options is not a valid non-null option set, as returned by
  *     `rmw_get_default_publisher_options()`
  *   - memory allocation fails during publisher creation
@@ -302,7 +302,7 @@ rmw_get_default_publisher_options(void);
  *
  * \param[in] node Handle to node with which to register this publisher
  * \param[in] type_support Type support for the messages to be published
- * \param[in] topic_name Name of the topic to publish to
+ * \param[in] topic_name Fully qualified name of the topic to publish to
  * \param[in] qos_profile QoS policies for this publisher
  * \param[in] publisher_options Options to configure this publisher
  * \return rmw publisher handle, or `NULL` if there was an error
@@ -338,7 +338,7 @@ rmw_create_publisher(
  * \param[in] node Handle to node with which the given publisher is registered
  * \param[in] publisher Handle to publisher to be finalized
  * \return `RMW_RET_OK` if successful, or
- * \return `RMW_RET_INVALID_ARGUMENT` if node or publisher is null, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if node or publisher is `NULL`, or
  * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if node or publisher
  *   implementation identifier does not match, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
