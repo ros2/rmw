@@ -302,7 +302,9 @@ rmw_get_default_publisher_options(void);
  *
  * \param[in] node Handle to node with which to register this publisher
  * \param[in] type_support Type support for the messages to be published
- * \param[in] topic_name Fully qualified name of the topic to publish to
+ * \param[in] topic_name Name of the topic to publish to, often a fully qualified
+ *   topic name unless `qos_profile` is configured to avoid ROS namespace conventions
+ *   i.e. to create a native topic publisher
  * \param[in] qos_profile QoS policies for this publisher
  * \param[in] publisher_options Options to configure this publisher
  * \return rmw publisher handle, or `NULL` if there was an error
