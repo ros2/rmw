@@ -14,7 +14,9 @@
 
 #include <stddef.h>
 
+#include "rmw/domain_id.h"
 #include "rmw/init.h"
+#include "rmw/init_options.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -26,6 +28,9 @@ rmw_get_zero_initialized_context(void)
 {
   return (const rmw_context_t) {
            .instance_id = 0,
+           .implementation_identifier = NULL,
+           .options = rmw_get_zero_initialized_init_options(),
+           .actual_domain_id = 0u,
            .impl = NULL
   };  // NOLINT(readability/braces): false positive
 }
