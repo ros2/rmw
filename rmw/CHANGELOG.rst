@@ -2,6 +2,13 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add actual domain id to rmw_context_t (`#251 <https://github.com/ros2/rmw/issues/251>`_)
+* Update node creation/destruction API documentation. (`#249 <https://github.com/ros2/rmw/issues/249>`_)
+* Correct parameter names to match documentation (`#250 <https://github.com/ros2/rmw/issues/250>`_)
+* Contributors: Geoffrey Biggs, Ivan Santiago Paunovic, Michel Hidalgo
+
 2.0.0 (2020-07-08)
 ------------------
 * Remove domain_id and localhost_only from node API (`#248 <https://github.com/ros2/rmw/issues/248>`_)
