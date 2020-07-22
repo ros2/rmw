@@ -14,6 +14,7 @@
 
 #include "rmw/topic_endpoint_info.h"
 
+#include "rcutils/macros.h"
 #include "rcutils/strdup.h"
 #include "rmw/error_handling.h"
 #include "rmw/types.h"
@@ -71,6 +72,8 @@ rmw_topic_endpoint_info_fini(
   rmw_topic_endpoint_info_t * topic_endpoint_info,
   rcutils_allocator_t * allocator)
 {
+  RCUTILS_CAN_RETURN_WITH_ERROR_OF(RMW_RET_INVALID_ARGUMENT);
+
   if (!topic_endpoint_info) {
     RMW_SET_ERROR_MSG("topic_endpoint_info is null");
     return RMW_RET_INVALID_ARGUMENT;
@@ -105,6 +108,8 @@ _rmw_topic_endpoint_info_copy_str(
   const char * str,
   rcutils_allocator_t * allocator)
 {
+  RCUTILS_CAN_RETURN_WITH_ERROR_OF(RMW_RET_INVALID_ARGUMENT);
+
   if (!str) {
     RMW_SET_ERROR_MSG("str is null");
     return RMW_RET_INVALID_ARGUMENT;
@@ -134,6 +139,8 @@ rmw_topic_endpoint_info_set_topic_type(
   const char * topic_type,
   rcutils_allocator_t * allocator)
 {
+  RCUTILS_CAN_RETURN_WITH_ERROR_OF(RMW_RET_INVALID_ARGUMENT);
+
   if (!topic_endpoint_info) {
     RMW_SET_ERROR_MSG("topic_endpoint_info is null");
     return RMW_RET_INVALID_ARGUMENT;
@@ -147,6 +154,8 @@ rmw_topic_endpoint_info_set_node_name(
   const char * node_name,
   rcutils_allocator_t * allocator)
 {
+  RCUTILS_CAN_RETURN_WITH_ERROR_OF(RMW_RET_INVALID_ARGUMENT);
+
   if (!topic_endpoint_info) {
     RMW_SET_ERROR_MSG("topic_endpoint_info is null");
     return RMW_RET_INVALID_ARGUMENT;
@@ -160,6 +169,8 @@ rmw_topic_endpoint_info_set_node_namespace(
   const char * node_namespace,
   rcutils_allocator_t * allocator)
 {
+  RCUTILS_CAN_RETURN_WITH_ERROR_OF(RMW_RET_INVALID_ARGUMENT);
+
   if (!topic_endpoint_info) {
     RMW_SET_ERROR_MSG("topic_endpoint_info is null");
     return RMW_RET_INVALID_ARGUMENT;
@@ -175,6 +186,8 @@ rmw_topic_endpoint_info_set_endpoint_type(
   rmw_topic_endpoint_info_t * topic_endpoint_info,
   rmw_endpoint_type_t type)
 {
+  RCUTILS_CAN_RETURN_WITH_ERROR_OF(RMW_RET_INVALID_ARGUMENT);
+
   if (!topic_endpoint_info) {
     RMW_SET_ERROR_MSG("topic_endpoint_info is null");
     return RMW_RET_INVALID_ARGUMENT;
@@ -191,6 +204,8 @@ rmw_topic_endpoint_info_set_gid(
   const uint8_t gid[],
   size_t size)
 {
+  RCUTILS_CAN_RETURN_WITH_ERROR_OF(RMW_RET_INVALID_ARGUMENT);
+
   if (!topic_endpoint_info) {
     RMW_SET_ERROR_MSG("topic_endpoint_info is null");
     return RMW_RET_INVALID_ARGUMENT;
@@ -209,6 +224,8 @@ rmw_topic_endpoint_info_set_qos_profile(
   rmw_topic_endpoint_info_t * topic_endpoint_info,
   const rmw_qos_profile_t * qos_profile)
 {
+  RCUTILS_CAN_RETURN_WITH_ERROR_OF(RMW_RET_INVALID_ARGUMENT);
+
   if (!topic_endpoint_info) {
     RMW_SET_ERROR_MSG("topic_endpoint_info is null");
     return RMW_RET_INVALID_ARGUMENT;
