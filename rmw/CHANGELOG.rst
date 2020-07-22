@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.1.0 (2020-07-22)
+------------------
 * Add actual domain id to rmw_context_t (`#251 <https://github.com/ros2/rmw/issues/251>`_)
 * Update node creation/destruction API documentation. (`#249 <https://github.com/ros2/rmw/issues/249>`_)
 * Correct parameter names to match documentation (`#250 <https://github.com/ros2/rmw/issues/250>`_)
