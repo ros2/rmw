@@ -296,8 +296,8 @@ rmw_get_default_publisher_options(void);
  * ------------------ | -------------
  * Allocates Memory   | Yes
  * Thread-Safe        | No
- * Uses Atomics       | No [1]
- * Lock-Free          | No [1]
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
  * <i>[1] rmw implementation defined, check the implementation documentation</i>
  *
  * \param[in] node Handle to node with which to register this publisher
@@ -333,8 +333,8 @@ rmw_create_publisher(
  * ------------------ | -------------
  * Allocates Memory   | No
  * Thread-Safe        | No
- * Uses Atomics       | No [1]
- * Lock-Free          | No [1]
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
  * <i>[1] rmw implementation defined, check the implementation documentation</i>
  *
  * \param[in] node Handle to node with which the given publisher is registered
