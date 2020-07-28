@@ -276,14 +276,38 @@ RMW_WARN_UNUSED
 rmw_publisher_options_t
 rmw_get_default_publisher_options(void);
 
-/// Create and return an rmw publisher.
+/// Create a publisher and return a handle to that publisher.
 /**
- * \TODO(wjwwood): add detailed documentation, adding a not about one of the
- *   arguments for now.
+ * This function can fail, and therefore return `NULL`, if:
+ *   - node is not a valid non-null handle for this rmw implementation,
+ *     as returned by `rmw_create_node()`
+ *   - type_support is a not valid non-null message type support, as returned by
+ *     `ROSIDL_GET_MSG_TYPE_SUPPORT()`
+ *   - topic_name is not a valid non-null topic name, according to
+ *     `rmw_validate_full_topic_name()`
+ *   - qos_profile is not a fully specified non-null profile i.e. no UNKNOWN policies
+ *   - publisher_options is not a valid non-null option set, as returned by
+ *     `rmw_get_default_publisher_options()`
+ *   - memory allocation fails during publisher creation
+ *   - an unspecified error occurs
  *
- * The argument `publisher_options` must not be nullptr.
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Yes
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
  *
- * \param[in] publisher_options options for configuring the publisher
+ * \param[in] node Handle to node with which to register this publisher
+ * \param[in] type_support Type support for the messages to be published
+ * \param[in] topic_name Name of the topic to publish to, often a fully qualified
+ *   topic name unless `qos_profile` is configured to avoid ROS namespace conventions
+ *   i.e. to create a native topic publisher
+ * \param[in] qos_profile QoS policies for this publisher
+ * \param[in] publisher_options Options to configure this publisher
+ * \return rmw publisher handle, or `NULL` if there was an error
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -292,9 +316,35 @@ rmw_create_publisher(
   const rmw_node_t * node,
   const rosidl_message_type_support_t * type_support,
   const char * topic_name,
-  const rmw_qos_profile_t * qos_policies,
+  const rmw_qos_profile_t * qos_profile,
   const rmw_publisher_options_t * publisher_options);
 
+/// Finalize a given publisher handle, reclaim the resources, and deallocate the publisher handle.
+/**
+ * This function will return early if a logical error, such as `RMW_RET_INVALID_ARGUMENT`
+ * or `RMW_RET_INCORRECT_RMW_IMPLEMENTATION`, ensues, leaving the given publisher handle unchanged.
+ * Otherwise, it will proceed despite errors, freeing as many resources as it can, including
+ * the publisher handle. Usage of a deallocated publisher handle is undefined behavior.
+ *
+ * \pre Given node must be the one the publisher was registered with.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
+ *
+ * \param[in] node Handle to node with which the given publisher is registered
+ * \param[in] publisher Handle to publisher to be finalized
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if node or publisher is `NULL`, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if node or publisher
+ *   implementation identifier does not match, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
