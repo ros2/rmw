@@ -746,6 +746,8 @@ rmw_subscription_count_matched_publishers(
  * \param[out] qos the actual qos settings
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if either argument is null, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if subscription
+ *   implementation identifier does not match, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
