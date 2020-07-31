@@ -680,10 +680,12 @@ rmw_create_subscription(
   const rmw_qos_profile_t * qos_policies,
   const rmw_subscription_options_t * subscription_options);
 
-/// Finalize a given subscription handle, reclaim the resources, and deallocate the subscription handle.
+/// Finalize a given subscription handle, reclaim the resources, and deallocate the subscription
+/// handle.
 /**
  * This function will return early if a logical error, such as `RMW_RET_INVALID_ARGUMENT`
- * or `RMW_RET_INCORRECT_RMW_IMPLEMENTATION`, ensues, leaving the given subscription handle unchanged.
+ * or `RMW_RET_INCORRECT_RMW_IMPLEMENTATION`, ensues, leaving the given subscription handle
+ * unchanged.
  * Otherwise, it will proceed despite errors, freeing as many resources as it can, including
  * the subscription handle. Usage of a deallocated subscription handle is undefined behavior.
  *
