@@ -645,10 +645,10 @@ rmw_fini_subscription_allocation(
  *   - type_support is a not valid non-null message type support, as returned by
  *     `ROSIDL_GET_MSG_TYPE_SUPPORT()`
  *   - topic_name is not a valid non-null topic name, according to
- *     `rmw_validate_full_topic_name()`
+ *     `rmw_validate_full_topic_name()` if ROS namespace conventions apply
  *   - qos_profile is not a fully specified non-null profile i.e. no UNKNOWN policies
- *   - subscription_options is not a valid non-null option set, as returned by
- *     `rmw_get_default_subscription_options()`
+ *   - subscription_options is not a valid non-null option set, such as the one
+ *     returned by `rmw_get_default_subscription_options()`
  *   - memory allocation fails during subscription creation
  *   - an unspecified error occurs
  *
@@ -683,7 +683,7 @@ rmw_create_subscription(
 /// Finalize a given subscription handle, reclaim the resources, and deallocate the subscription
 /// handle.
 /**
- * This function will return early if a logical error, such as `RMW_RET_INVALID_ARGUMENT`
+ * This function will return early if a logical error, namely `RMW_RET_INVALID_ARGUMENT`
  * or `RMW_RET_INCORRECT_RMW_IMPLEMENTATION`, ensues, leaving the given subscription handle
  * unchanged.
  * Otherwise, it will proceed despite errors, freeing as many resources as it can, including
