@@ -687,7 +687,8 @@ rmw_create_subscription(
  * or `RMW_RET_INCORRECT_RMW_IMPLEMENTATION`, ensues, leaving the given subscription handle
  * unchanged.
  * Otherwise, it will proceed despite errors, freeing as many resources as it can, including
- * the subscription handle. Usage of a deallocated subscription handle is undefined behavior.
+ * the subscription handle, and return `RMW_RET_ERROR`. Usage of a deallocated subscription
+ * handle is undefined behavior.
  *
  * \pre Given node must be the one the subscription was registered with.
  *
