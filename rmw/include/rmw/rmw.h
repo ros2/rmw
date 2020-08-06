@@ -639,14 +639,38 @@ rmw_ret_t
 rmw_fini_subscription_allocation(
   rmw_subscription_allocation_t * allocation);
 
-/// Create and return an rmw subscription.
+/// Create a subscription and return a handle to that subscription.
 /**
- * \TODO(wjwwood): add detailed documentation, adding a not about one of the
- *   arguments for now.
+ * This function can fail, and therefore return `NULL`, if:
+ *   - node is not a valid non-null handle for this rmw implementation,
+ *     as returned by `rmw_create_node()`
+ *   - type_support is a not valid non-null message type support, as returned by
+ *     `ROSIDL_GET_MSG_TYPE_SUPPORT()`
+ *   - topic_name is not a valid non-null topic name, according to
+ *     `rmw_validate_full_topic_name()` if ROS namespace conventions apply
+ *   - qos_profile is not a fully specified non-null profile i.e. no UNKNOWN policies
+ *   - subscription_options is not a valid non-null option set, such as the one
+ *     returned by `rmw_get_default_subscription_options()`
+ *   - memory allocation fails during subscription creation
+ *   - an unspecified error occurs
  *
- * The argument `subscription_options` must not be nullptr.
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Yes
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
  *
- * \param[in] subscription_options options for configuring the subscription
+ * \param[in] node Handle to node with which to register this subscription
+ * \param[in] type_support Type support for the messages to be subscribed to
+ * \param[in] topic_name Name of the topic to subscribe to, often a fully qualified
+ *   topic name unless `qos_profile` is configured to avoid ROS namespace conventions
+ *   i.e. to create a native topic subscription
+ * \param[in] qos_profile QoS policies for this subscription
+ * \param[in] subscription_options Options for configuring this subscription
+ * \return rmw subscription handle, or `NULL` if there was an error
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -658,6 +682,35 @@ rmw_create_subscription(
   const rmw_qos_profile_t * qos_policies,
   const rmw_subscription_options_t * subscription_options);
 
+/// Finalize a given subscription handle, reclaim the resources, and deallocate the subscription
+/// handle.
+/**
+ * This function will return early if a logical error, namely `RMW_RET_INVALID_ARGUMENT`
+ * or `RMW_RET_INCORRECT_RMW_IMPLEMENTATION`, ensues, leaving the given subscription handle
+ * unchanged.
+ * Otherwise, it will proceed despite errors, freeing as many resources as it can, including
+ * the subscription handle, and return `RMW_RET_ERROR`. Usage of a deallocated subscription
+ * handle is undefined behavior.
+ *
+ * \pre Given node must be the one the subscription was registered with.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
+ *
+ * \param[in] node Handle to node with which the given subscription is registered
+ * \param[in] subscription Handle to subscription to be finalized
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if node or subscription is `NULL`, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if node or subscription
+ *   implementation identifier does not match, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -698,6 +751,8 @@ rmw_subscription_count_matched_publishers(
  * \param[out] qos the actual qos settings
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if either argument is null, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if subscription
+ *   implementation identifier does not match, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
