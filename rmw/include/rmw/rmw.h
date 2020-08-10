@@ -556,7 +556,14 @@ rmw_publisher_assert_liveliness(const rmw_publisher_t * publisher);
 /**
  * The ROS message is serialized into a byte stream contained within the
  * rmw_serialized_message_t structure.
- * The serialization format depends on the underlying middleware.
+ * The serialization format depends on the underlying implementation.
+ *
+ * \pre Given ROS message must be a valid non-null instance, initialized
+ *   by the caller and matching the provided typesupport.
+ * \pre Given typesupport must be a valid non-null instance, as provided
+ *   by `rosidl` APIs.
+ * \pre Given serialized message must be a valid non-null instance, initialized
+ *   by the caller.
  *
  * \param[in] ros_message the typed ROS message
  * \param[in] type_support the typesupport for the ROS message
@@ -577,10 +584,16 @@ rmw_serialize(
 /**
  * The given rmw_serialized_message_t's internal byte stream buffer is deserialized
  * into the given ROS message.
- * The ROS message must already be allocated and initialized, and must match
- * the given typesupport structure.
  * The serialization format expected in the rmw_serialized_message_t depends on the
- * underlying middleware.
+ * underlying implementation.
+ *
+ * \pre Given serialized message must be a valid non-null instance, such
+ *   as that returned by `rmw_serialize()`, matching provided typesupport
+ *   and ROS message.
+ * \pre Given typesupport must be a valid non-null instance, as provided
+ *   by `rosidl` APIs.
+ * \pre Given ROS message must be a valid non-null instance, initialized
+ *   by the caller.
  *
  * \param[in] serialized_message the serialized message holding the byte stream
  * \param[in] type_support the typesupport for the typed ros message
