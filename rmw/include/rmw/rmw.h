@@ -565,6 +565,18 @@ rmw_publisher_assert_liveliness(const rmw_publisher_t * publisher);
  * \pre Given serialized message must be a valid non-null instance, initialized
  *   by the caller.
  *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe [1]
+ * Thread-Safe        | Yes [2]
+ * Uses Atomics       | Yes
+ * Lock-Free          | Yes
+ * <i>[1] if the given serialized message does not have enough capacity to hold
+ *        the ROS message serialization</i>
+ * <i>[2] as long as no two concurrent calls make use of the same `serialized_message`
+ *        object and a given `serialized_message` allocator is thread-safe as well </i>
+ *
  * \param[in] ros_message the typed ROS message
  * \param[in] type_support the typesupport for the ROS message
  * \param[out] serialized_message the destination for the serialize ROS message
@@ -594,6 +606,16 @@ rmw_serialize(
  *   by `rosidl` APIs.
  * \pre Given ROS message must be a valid non-null instance, initialized
  *   by the caller.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe [1]
+ * Thread-Safe        | Yes [2]
+ * Uses Atomics       | Yes
+ * Lock-Free          | Yes
+ * <i>[1] if the given ROS message contains unbounded fields</i>
+ * <i>[2] as long as no two concurrent calls make use of the same `ros_message` object </i>
  *
  * \param[in] serialized_message the serialized message holding the byte stream
  * \param[in] type_support the typesupport for the typed ros message
