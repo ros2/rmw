@@ -22,9 +22,18 @@ extern "C"
 
 #include "rcutils/types/uint8_array.h"
 
-// aliases for rcutils_uint8_array_t
-/*
- * For now this is a simple aliasing from a serialized message to a uint8 array.
+/**
+ * \struct rmw_serialized_message_t
+ *
+ * \brief Serialized message as a string of bytes.
+ *
+ * It includes (but it is not limited to) the following members:
+ *   \i \c buffer the reference to internal storage, as a pointer
+ *   \i \c buffer_length the size of stored contents, as an unsigned integer
+ *   \i \c buffer_capacity the capacity of internal storage, as an unsigned integer
+ */
+
+/* For now this is a simple aliasing from a serialized message to a uint8 array.
  * However, in future developments this serialized message can become something
  * more complex and is therefore aliased.
  */
@@ -69,7 +78,12 @@ typedef rcutils_uint8_array_t rmw_serialized_message_t;
  * If the new size is smaller than the current capacity, then the memory is
  * truncated.
  *
- * \remarks Be aware that this might deallocate the memory and therefore
+ * \pre Given serialized message must have been initialized with `rmw_serialized_message_init()`.
+ *
+ * \remarks If serialized message is zero initialized, then `RMW_RET_INVALID_ARGUMENT`
+ *   is returned.
+ *
+ * \warning Be aware that this might deallocate the memory and therefore
  *   invalidate any pointers to the internal buffer.
  *
  * \param[inout] serialized_message pointer to the serialized message
