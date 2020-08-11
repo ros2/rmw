@@ -35,44 +35,54 @@ typedef rcutils_uint8_array_t rmw_serialized_message_t;
 
 /// Initialize a serialized message, zero initializing its contents.
 /**
+ * \pre Given serialized message must have been zero initialized.
+ *
  * \param[inout] serialized_message a pointer to the serialized message to initialize
  * \param[in] message_capacity the size of the memory to allocate
  * \param[in] allocator the allocator to use for the memory allocation
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if any arguments are invalid, or
- * \return 'RMW_RET_BAD_ALLOC` if no memory could be allocated correctly
+ * \return 'RMW_RET_BAD_ALLOC` if no memory could be allocated correctly, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs
  */
-#define rmw_serialized_message_init rcutils_uint8_array_init
+#define rmw_serialized_message_init(serialized_message, message_capacity, allocator) \
+  rcutils_uint8_array_init(serialized_message, message_capacity, allocator)
 
 /// Finalize a serialized message.
 /**
- * Passing an uninitialized instance to this function leads to undefined
- * behavior.
+ * \pre Given serialized message must have been initialized with `rmw_serialized_message_init()`.
+ *
+ * \remarks If serialized message is zero initialized, then `RMW_RET_INVALID_ARGUMENT` is returned.
  *
  * \param[in] serialized_message pointer to the serialized message to be cleaned up
  * \return `RMW_RET_OK` if successful, or
- * \return `RMW_RET_INVALID_ARGUMENT` if the serialized_message argument is invalid
+ * \return `RMW_RET_INVALID_ARGUMENT` if serialized_message is invalid, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs
  */
-#define rmw_serialized_message_fini rcutils_uint8_array_fini
+#define rmw_serialized_message_fini(serialized_message) \
+  rcutils_uint8_array_fini(serialized_message)
 
 /// Resize the internal buffer of the serialized message.
 /**
- * The internal buffer of the serialized message can be resized dynamically if needed.
+ * The internal buffer of the serialized message can be resized dynamically
+ * if needed.
  * If the new size is smaller than the current capacity, then the memory is
  * truncated.
- * Be aware, that this might deallocate the memory and therefore invalidates any
- * pointers to this storage.
  *
- * \param[inout] serialized_message pointer to the serialized message to be resized
+ * \remarks Be aware that this might deallocate the memory and therefore
+ *   invalidate any pointers to the internal buffer.
+ *
+ * \param[inout] serialized_message pointer to the serialized message
+ *   to be resized
  * \param[in] new_size the new size of the internal buffer
  * \return `RMW_RET_OK` if successful, or
- * \return `RMW_RET_INVALID_ARGUMENT` if new_size is set to zero
+ * \return `RMW_RET_INVALID_ARGUMENT` if serialized_message is invalid
+ *   or new_size is set to zero, or
  * \return `RMW_RET_BAD_ALLOC` if memory allocation failed, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs
  */
-#define rmw_serialized_message_resize rcutils_uint8_array_resize
+#define rmw_serialized_message_resize(serialized_message, new_size) \
+  rcutils_uint8_array_resize(serialized_message, new_size)
 
 #if __cplusplus
 }
