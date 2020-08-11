@@ -570,12 +570,13 @@ rmw_publisher_assert_liveliness(const rmw_publisher_t * publisher);
  * ------------------ | -------------
  * Allocates Memory   | Maybe [1]
  * Thread-Safe        | Yes [2]
- * Uses Atomics       | Yes
- * Lock-Free          | Yes
+ * Uses Atomics       | Maybe [3]
+ * Lock-Free          | Maybe [3]
  * <i>[1] if the given serialized message does not have enough capacity to hold
  *        the ROS message serialization</i>
  * <i>[2] as long as no two concurrent calls make use of the same `serialized_message`
  *        object and a given `serialized_message` allocator is thread-safe as well </i>
+ * <i>[3] rmw implementation defined, check the implementation documentation</i>
  *
  * \param[in] ros_message the typed ROS message
  * \param[in] type_support the typesupport for the ROS message
@@ -612,10 +613,11 @@ rmw_serialize(
  * ------------------ | -------------
  * Allocates Memory   | Maybe [1]
  * Thread-Safe        | Yes [2]
- * Uses Atomics       | Yes
- * Lock-Free          | Yes
+ * Uses Atomics       | Maybe [3]
+ * Lock-Free          | Maybe [3]
  * <i>[1] if the given ROS message contains unbounded fields</i>
  * <i>[2] as long as no two concurrent calls make use of the same `ros_message` object </i>
+ * <i>[3] rmw implementation defined, check the implementation documentation</i>
  *
  * \param[in] serialized_message the serialized message holding the byte stream
  * \param[in] type_support the typesupport for the typed ros message
