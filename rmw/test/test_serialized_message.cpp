@@ -124,7 +124,7 @@ TEST(test_serialized_message, init_resize_fini) {
   rmw_serialized_message_t serialized_message =
     rmw_get_zero_initialized_serialized_message();
   rcutils_allocator_t default_allocator = rcutils_get_default_allocator();
-  size_t serialized_message_size = 5lu;
+  constexpr size_t serialized_message_size = 5lu;
 
   rmw_ret_t ret = rmw_serialized_message_init(
     &serialized_message, serialized_message_size, &default_allocator);
@@ -152,7 +152,7 @@ TEST(test_serialized_message, init_resize_fini) {
     EXPECT_EQ(1u << i, serialized_message.buffer[i]);
   }
 
-  size_t serialized_message_new_size = 2 * serialized_message_size;
+  constexpr size_t serialized_message_new_size = 2 * serialized_message_size;
   ret = rmw_serialized_message_resize(&serialized_message, serialized_message_new_size);
   EXPECT_EQ(RMW_RET_OK, ret) << rmw_get_error_string().str;
   EXPECT_EQ(serialized_message_new_size, serialized_message.buffer_capacity);
