@@ -461,7 +461,7 @@ rmw_publish_loaned_message(
  * \param[out] subscription_count the number of subscriptions matched
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if either argument is null, or
- * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if node or publisher
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if publisher
  *   implementation identifier does not match, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
