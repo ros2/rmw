@@ -448,10 +448,21 @@ rmw_publish_loaned_message(
  * Query the underlying middleware to determine how many subscriptions are
  * matched to a given publisher.
  *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
+ *
  * \param[in] publisher the publisher object to inspect
  * \param[out] subscription_count the number of subscriptions matched
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if either argument is null, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if node or publisher
+ *   implementation identifier does not match, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
@@ -753,10 +764,21 @@ rmw_destroy_subscription(rmw_node_t * node, rmw_subscription_t * subscription);
  * Query the underlying middleware to determine how many publishers are
  * matched to a given subscription.
  *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
+ *
  * \param[in] subscription the subscription object to inspect
  * \param[out] publisher_count the number of publishers matched
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if either argument is null, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if subscription
+ *   implementation identifier does not match, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
