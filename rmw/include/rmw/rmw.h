@@ -472,14 +472,26 @@ rmw_publisher_count_matched_subscriptions(
  * depends on the underlying rmw implementation.
  * If the underlying setting in use can't be represented in ROS terms,
  * it will be set to RMW_*_UNKNOWN.
- * The value of avoid_ros_namespace_conventions field is not resolved
- * with this function. The rcl function rcl_publisher_get_actual_qos
- * resolves it.
+ *
+ * \note The value of avoid_ros_namespace_conventions field is not resolved
+ *   with this function. The rcl function `rcl_publisher_get_actual_qos()`
+ *   resolves it.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe [1]
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
  *
  * \param[in] publisher the publisher object to inspect
  * \param[out] qos the actual qos settings
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if either argument is null, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if publisher
+ *   implementation identifier does not match, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
@@ -777,9 +789,19 @@ rmw_subscription_count_matched_publishers(
  * depends on the underlying rmw implementation.
  * If the underlying setting in use can't be represented in ROS terms,
  * it will be set to RMW_*_UNKNOWN.
- * The value of avoid_ros_namespace_conventions field is not resolved
- * with this function. The rcl function rcl_subscription_get_actual_qos
- * resolves it.
+ *
+ * \note The value of avoid_ros_namespace_conventions field is not resolved
+ *   with this function. The rcl function `rcl_subscription_get_actual_qos()`
+ *   resolves it.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe [1]
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
  *
  * \param[in] subscription the subscription object to inspect
  * \param[out] qos the actual qos settings
