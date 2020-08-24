@@ -478,7 +478,7 @@ rmw_publisher_count_matched_subscriptions(
  * <hr>
  * Attribute          | Adherence
  * ------------------ | -------------
- * Allocates Memory   | No
+ * Allocates Memory   | Maybe [1]
  * Thread-Safe        | No
  * Uses Atomics       | Maybe [1]
  * Lock-Free          | Maybe [1]
@@ -795,7 +795,7 @@ rmw_subscription_count_matched_publishers(
  * <hr>
  * Attribute          | Adherence
  * ------------------ | -------------
- * Allocates Memory   | No
+ * Allocates Memory   | Maybe [1]
  * Thread-Safe        | No
  * Uses Atomics       | Maybe [1]
  * Lock-Free          | Maybe [1]
