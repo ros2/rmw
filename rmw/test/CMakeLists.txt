@@ -34,7 +34,7 @@ ament_add_gmock(test_validate_namespace
 )
 if(TARGET test_validate_namespace)
   target_link_libraries(test_validate_namespace ${PROJECT_NAME})
-  if(UNIX AND NOT APPLE)
+  if(UNIX AND NOT APPLE AND NOT ANDROID)
     target_link_libraries(test_validate_namespace pthread)
   endif()
   if(NOT WIN32)
