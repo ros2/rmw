@@ -109,6 +109,7 @@ _rmw_topic_endpoint_info_copy_str(
   rcutils_allocator_t * allocator)
 {
   RCUTILS_CAN_RETURN_WITH_ERROR_OF(RMW_RET_INVALID_ARGUMENT);
+  RCUTILS_CAN_RETURN_WITH_ERROR_OF(RMW_RET_BAD_ALLOC);
 
   if (!str) {
     RMW_SET_ERROR_MSG("str is null");
