@@ -82,6 +82,7 @@ rmw_topic_endpoint_info_fini(
  * \param[in] allocator the allocator that will be used to allocate memory
  * \returns `RMW_RET_OK` on successfully setting the topic_type, or
  * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
+ * \returns `RMW_RET_BAD_ALLOC` if allocation for string duplication fails, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
  */
 RMW_PUBLIC
@@ -104,6 +105,7 @@ rmw_topic_endpoint_info_set_topic_type(
  * \param[in] allocator the allocator that will be used to allocate memory
  * \returns `RMW_RET_OK` on successfully setting the node_name, or
  * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
+ * \returns `RMW_RET_BAD_ALLOC` if allocation for string duplication fails, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
  */
 RMW_PUBLIC
@@ -126,6 +128,7 @@ rmw_topic_endpoint_info_set_node_name(
  * \param[in] allocator the allocator that will be used to allocate memory
  * \returns `RMW_RET_OK` on successfully setting the node_namespace, or
  * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
+ * \returns `RMW_RET_BAD_ALLOC` if allocation for string duplication fails, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
  */
 RMW_PUBLIC
@@ -148,6 +151,7 @@ rmw_topic_endpoint_info_set_node_namespace(
  * \returns `RMW_RET_OK` on successfully setting the gid, or
  * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
  * \returns `RMW_RET_INVALID_ARGUMENT` size is greater than RMW_GID_STORAGE_SIZE, or
+ * \returns `RMW_RET_BAD_ALLOC` if allocation for string duplication fails, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
  */
 RMW_PUBLIC

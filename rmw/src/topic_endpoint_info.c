@@ -121,6 +121,9 @@ _rmw_topic_endpoint_info_copy_str(
   }
 
   *topic_endpoint_info_str = rcutils_strdup(str, *allocator);
+  if (NULL == *topic_endpoint_info_str) {
+    return RMW_RET_BAD_ALLOC;
+  }
 
   return RMW_RET_OK;
 }
