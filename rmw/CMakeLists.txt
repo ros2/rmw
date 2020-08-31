@@ -47,6 +47,11 @@ add_library(${PROJECT_NAME} ${rmw_sources})
 target_include_directories(${PROJECT_NAME} PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include>")
+
+if(BUILD_TESTING AND NOT RCUTILS_DISABLE_FAULT_INJECTION)
+  target_compile_definitions(${PROJECT_NAME} PUBLIC RCUTILS_ENABLE_FAULT_INJECTION)
+endif()
+
 ament_target_dependencies(${PROJECT_NAME}
   "rcutils"
   "rosidl_runtime_c"
