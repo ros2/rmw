@@ -407,16 +407,6 @@ rmw_return_loaned_message_from_publisher(
  * \pre If not NULL, given allocation must be a valid publisher allocation initialized
  *   with rmw_publisher_allocation_init().
  *
- * <hr>
- * Attribute          | Adherence
- * ------------------ | -------------
- * Allocates Memory   | Maybe [1]
- * Thread-Safe        | No
- * Uses Atomics       | Maybe [2]
- * Lock-Free          | Maybe [2]
- * <i>[1] if no publisher allocation is given, otherwise it will not</i>
- * <i>[2] rmw implementation defined, check the implementation documentation</i>
- *
  * \param[in] publisher Publisher to be used to send message.
  * \param[in] ros_message Type erased ROS message to be sent.
  * \param[in] allocation Pre-allocated memory to be used. May be NULL.
@@ -425,6 +415,33 @@ rmw_return_loaned_message_from_publisher(
  * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if publisher implementation
  *   identifier does not match, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ *
+ * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Memory allocation
+ *   It is implementation defined whether memory will be allocated on publish or not.
+ *   Even if a publisher allocation is provided, the given ROS message may contain
+ *   unbounded, dynamically sized fields requiring additional memory allocations.
+ *   An implementation may also ignore said publisher allocation.
+ *   Check the implementation documentation to learn about support and memory
+ *   allocation guarantees when using publisher allocations.
+ *
+ * \par Thread-safety
+ *   Publishers are thread-safe objects, and so are all operations on them except for finalization.
+ *   Therefore, it is safe to publish using the same publisher concurrently.
+ *   However, when publishing regular ROS messages:
+ *   - ROS message access is read-only but it is not synchronized.
+ *     Concurrent reads are safe, but concurrent reads and writes are not.
+ *   - Publisher allocation reuse may be thread-safe, but it is not required to.
+ *     Check the implementation documentation to learn about publisher allocations' thread-safety.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -451,16 +468,6 @@ rmw_publish(
  * \pre If not NULL, given allocation must be a valid publisher allocation initialized
  *   with rmw_publisher_allocation_init().
  *
- * <hr>
- * Attribute          | Adherence
- * ------------------ | -------------
- * Allocates Memory   | Maybe [1]
- * Thread-Safe        | No
- * Uses Atomics       | Maybe [2]
- * Lock-Free          | Maybe [2]
- * <i>[1] if no publisher allocation is given, otherwise it will not</i>
- * <i>[2] rmw implementation defined, check the implementation documentation</i>
- *
  * \param[in] publisher Publisher to be used to send message.
  * \param[in] ros_message Type erased ROS message to be sent.
  * \param[in] allocation Pre-allocated memory to be used. May be NULL.
@@ -471,6 +478,32 @@ rmw_publish(
  * \return `RMW_RET_UNSUPPORTED` if the implementation does not support
  *   message loaning, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] implementation defined, check the implementation documentation.</i>
+ *
+ * \par Memory allocation
+ *   It is implementation defined whether memory will be allocated on publish or not.
+ *   Even if a publisher allocation is provided, the given ROS message may contain unbounded,
+ *   dynamically sized fields requiring additional memory allocations.
+ *   An implementation may also ignore said publisher allocation.
+ *   Check the implementation documentation to learn about support and memory allocation
+ *   guarantees when using publisher allocations.
+ *
+ * \par Thread-safety
+ *   Publishers are thread-safe objects, and so are all operations on them except for finalization.
+ *   Therefore, it is safe to publish using the same publisher concurrently.
+ *   However, when publishing loaned ROS messages:
+ *   - Ownership of the loaned ROS message is transferred, and this operation is not thread-safe.
+ *     Loaned ROS messages cannot be reused.
+ *   - Publisher allocation reuse may be thread-safe, but it is not required to.
+ *     Check the implementation documentation to learn about publisher allocations' thread-safety.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -561,16 +594,6 @@ rmw_publisher_get_actual_qos(
  * \pre If not NULL, given allocation must be a valid publisher allocation initialized
  *   with rmw_publisher_allocation_init().
  *
- * <hr>
- * Attribute          | Adherence
- * ------------------ | -------------
- * Allocates Memory   | Maybe [1]
- * Thread-Safe        | No
- * Uses Atomics       | Maybe [2]
- * Lock-Free          | Maybe [2]
- * <i>[1] if no publisher allocation is given, otherwise it will not</i>
- * <i>[2] rmw implementation defined, check the implementation documentation</i>
- *
  * \param[in] publisher Publisher to be used to send message.
  * \param[in] ros_message Serialized ROS message to be sent.
  * \param[in] allocation Pre-allocated memory to be used. May be NULL.
@@ -579,6 +602,30 @@ rmw_publisher_get_actual_qos(
  * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if publisher implementation
  *   identifier does not match, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] implementation defined, check the implementation documentation.</i>
+ *
+ * \par Memory allocation
+ *   It is implementation defined whether memory will be allocated on publish or not.
+ *   Even if a publisher allocation is provided, an implementation may ignore it.
+ *   Check the implementation documentation to learn about support and memory allocation
+ *   guarantees when using publisher allocations.
+ *
+ * \par Thread-safety
+ *   Publishers are thread-safe objects, and so are all operations on them except for finalization.
+ *   Therefore, it is safe to publish using the same publisher concurrently.
+ *   However, when publishing serialized ROS messages:
+ *   - ROS message access is read-only but it is not synchronized.
+ *     Concurrent reads are safe, but concurrent reads and writes are not.
+ *   - Publisher allocation reuse may be thread-safe, but it is not required to.
+ *     Check the implementation documentation to learn about publisher allocations' thread-safety.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
