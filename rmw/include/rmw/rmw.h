@@ -397,15 +397,33 @@ rmw_return_loaned_message_from_publisher(
   const rmw_publisher_t * publisher,
   void * loaned_message);
 
-/// Publish a given ros_message
+/// Publish a ROS message.
 /**
  * Publish a given ROS message via a publisher.
  *
+ * \pre Given publisher must be a valid publisher, as returned by rmw_create_publisher().
+ * \pre Given ROS message must match the message type support the publisher
+ *   was registered with on creation.
+ * \pre If not NULL, given allocation must be a valid publisher allocation initialized
+ *   with rmw_publisher_allocation_init().
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe [1]
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [2]
+ * Lock-Free          | Maybe [2]
+ * <i>[1] if no publisher allocation is given, otherwise it will not</i>
+ * <i>[2] rmw implementation defined, check the implementation documentation</i>
+ *
  * \param[in] publisher Publisher to be used to send message.
- * \param[in] ros_message Message to be sent.
- * \param[in] allocation Specify preallocated memory to use (may be NULL).
+ * \param[in] ros_message Type erased ROS message to be sent.
+ * \param[in] allocation Pre-allocated memory to be used. May be NULL.
  * \return `RMW_RET_OK` if successful, or
- * \return `RMW_RET_INVALID_ARGUMENT` if publisher or ros_message is null, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if publisher or ros_message is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if publisher implementation
+ *   identifier does not match, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
@@ -416,23 +434,42 @@ rmw_publish(
   const void * ros_message,
   rmw_publisher_allocation_t * allocation);
 
-/// Publish a loaned ros_message.
+/// Publish a loaned ROS message.
 /**
  * Publish a loaned ROS message via a publisher and return ownership of the loaned message
  * back to the middleware.
  *
- * In contrast to \sa `rmw_publish` the ownership of the ros message is being transferred to the
+ * In contrast to rmw_publish(), the ownership of the ros message is transferred to the
  * middleware which might deallocate the memory for it.
- * Similar to \sa `rmw_return_loaned_message_from_publisher` the passed in ros message might
- * not be valid after this call and thus should only be called with messages previously loaned with
- * a call to \sa `rmw_borrow_loaned_message`.
+ * Similar to rmw_return_loaned_message_from_publisher(), the passed in ROS message might
+ * not be valid after this call, and thus this function should only be called with messages
+ * previously loaned with a call to rmw_borrow_loaned_message().
+ *
+ * \pre Given publisher must be a valid publisher, as returned by rmw_create_publisher().
+ * \pre Given ROS message must have been borrowed from the same publisher using
+ *   rmw_borrow_loaned_message().
+ * \pre If not NULL, given allocation must be a valid publisher allocation initialized
+ *   with rmw_publisher_allocation_init().
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe [1]
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [2]
+ * Lock-Free          | Maybe [2]
+ * <i>[1] if no publisher allocation is given, otherwise it will not</i>
+ * <i>[2] rmw implementation defined, check the implementation documentation</i>
  *
  * \param[in] publisher Publisher to be used to send message.
- * \param[in] ros_message Message to be sent.
- * \param[in] allocation Specify preallocated memory to use (may be NULL).
+ * \param[in] ros_message Type erased ROS message to be sent.
+ * \param[in] allocation Pre-allocated memory to be used. May be NULL.
  * \return `RMW_RET_OK` if successful, or
- * \return `RMW_RET_INVALID_ARGUMENT` if publisher or ros_message is null, or
- * \return `RMW_RET_UNSUPPORTED` if the rmw_implementation does not support loaned_message, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if publisher or ros_message is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if publisher implementation
+ *   identifier does not match, or
+ * \return `RMW_RET_UNSUPPORTED` if the implementation does not support
+ *   message loaning, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
@@ -510,18 +547,37 @@ rmw_publisher_get_actual_qos(
   const rmw_publisher_t * publisher,
   rmw_qos_profile_t * qos);
 
-/// Publish an already serialized message.
+/// Publish an already serialized ROS message.
 /**
- * The publisher must already be registered with the correct message type
- * support so that it can send serialized data corresponding to that type.
+ * Publish an already serialized ROS message via a publisher, skipping serialization.
+ *
  * This function sends the serialized byte stream directly over the wire without
  * having to serialize the message first.
  * A ROS message can be serialized manually using the rmw_serialize() function.
  *
- * \param[in] publisher The publisher object registered to send the message.
- * \param[in] serialized_message The serialized message holding the byte stream.
- * \param[in] allocation Specify preallocated memory to use (may be NULL).
+ * \pre Given publisher must be a valid publisher, as returned by rmw_create_publisher().
+ * \pre Given serialized ROS message must match the message type support the publisher
+ *   was registered with on creation.
+ * \pre If not NULL, given allocation must be a valid publisher allocation initialized
+ *   with rmw_publisher_allocation_init().
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe [1]
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [2]
+ * Lock-Free          | Maybe [2]
+ * <i>[1] if no publisher allocation is given, otherwise it will not</i>
+ * <i>[2] rmw implementation defined, check the implementation documentation</i>
+ *
+ * \param[in] publisher Publisher to be used to send message.
+ * \param[in] ros_message Serialized ROS message to be sent.
+ * \param[in] allocation Pre-allocated memory to be used. May be NULL.
  * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if publisher or serialized_message is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if publisher implementation
+ *   identifier does not match, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
