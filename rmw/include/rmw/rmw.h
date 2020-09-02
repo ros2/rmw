@@ -481,7 +481,7 @@ rmw_return_loaned_message_from_publisher(
  * \pre Given `publisher` must be a valid publisher, as returned by rmw_create_publisher().
  * \pre Given `ros_message` must be a valid message, whose type matches the message type
  *   support the `publisher` was registered with on creation.
- * \pre If not NULL, given `allocation` must be a valid publisher allocation initialized
+ * \pre If not NULL, given `allocation` must be a valid publisher allocation, initialized
  *   with rmw_publisher_allocation_init() with a message type support that matches the
  *   one registered with `publisher` on creation.
  *
@@ -634,8 +634,8 @@ rmw_publisher_get_actual_qos(
 
 /// Publish an already serialized ROS message.
 /**
- * Send a ROS message serialized in a byte stream directly over the wire to
- * all subscriptions with matching QoS policies using the given publisher.
+ * Send a ROS message serialized as a byte stream to all subscriptions with
+ * matching QoS policies using the given publisher.
  * A ROS message can be serialized manually using rmw_serialize().
  *
  * <hr>
@@ -668,7 +668,7 @@ rmw_publisher_get_actual_qos(
  * \pre Given `serialized_message` must be a valid serialized message, initialized by
  *   rmw_serialized_message_init() and containing the serialization of a ROS message whose
  *   type matches the message type support the `publisher` was registered with on creation.
- * \pre If not NULL, given `allocation` must be a valid publisher allocation initialized
+ * \pre If not NULL, given `allocation` must be a valid publisher allocation, initialized
  *   with rmw_publisher_allocation_init() with a message type support that matches the
  *   one registered with `publisher` on creation.
  *
