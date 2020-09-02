@@ -448,7 +448,7 @@ rmw_return_loaned_message_from_publisher(
 
 /// Publish a ROS message.
 /**
- * Serialize a given ROS message and send it over the wire using the given publisher.
+ * Send a ROS message to all subscriptions with matching QoS policies using the given publisher.
  *
  * <hr>
  * Attribute          | Adherence
@@ -462,13 +462,12 @@ rmw_return_loaned_message_from_publisher(
  *
  * \par Memory allocation
  *   It is implementation defined whether memory will be allocated on publish or not.
- *   ROS messages that contain unbounded, dynamically-sized fields may require memory
- *   allocation on serialization before publish.
- *   ROS messages with bounded, fixed-size fields may or may not require memory
- *   allocation on serialization before publish.
+ *   For instance, implementations that serialize ROS messages to send it over the
+ *   wire may need to perform additional memory allocations when dealing with
+ *   unbounded, dynamically-sized fields.
  *   A publisher allocation, if provided, may or may not be used.
  *   Check the implementation documentation to learn about memory allocation
- *   guarantees when publishing fixed-size ROS messages using publisher allocations.
+ *   guarantees when publishing ROS messages with and without publisher allocations.
  *
  * \par Thread-safety
  *   Publishers are thread-safe objects, and so are all operations on them except for finalization.
@@ -506,8 +505,8 @@ rmw_publish(
 
 /// Publish a loaned ROS message.
 /**
- * Serialize a given ROS message and send it over the wire using the given publisher,
- * then return ownership of the ROS message back to the middleware.
+ * Send a previously borrowed ROS message to all subscriptions with matching QoS policies
+ * using the given publisher, then return ROS message ownership to the middleware.
  * It is up to the middleware what will be made of the returned ROS message.
  * It is undefined behavior to use a loaned ROS message after publishing it.
  *
@@ -523,13 +522,12 @@ rmw_publish(
  *
  * \par Memory allocation
  *   It is implementation defined whether memory will be allocated on publish or not.
- *   ROS messages that contain unbounded, dynamically-sized fields may require memory
- *   allocation on serialization before publish.
- *   ROS messages with bounded, fixed-size fields may or may not require memory
- *   allocation on serialization before publish.
+ *   For instance, implementations that serialize ROS messages to send it over the
+ *   wire may need to perform additional memory allocations when dealing with
+ *   unbounded (dynamically-sized) fields.
  *   A publisher allocation, if provided, may or may not be used.
  *   Check the implementation documentation to learn about memory allocation
- *   guarantees when publishing fixed-size loaned ROS messages using publisher allocations.
+ *   guarantees when publishing loaned ROS messages with and without publisher allocations.
  *
  * \par Thread-safety
  *   Publishers are thread-safe objects, and so are all operations on them except for finalization.
@@ -636,16 +634,9 @@ rmw_publisher_get_actual_qos(
 
 /// Publish an already serialized ROS message.
 /**
- * Send the already serialized byte stream directly over the wire using the given publisher.
+ * Send a ROS message serialized in a byte stream directly over the wire to
+ * all subscriptions with matching QoS policies using the given publisher.
  * A ROS message can be serialized manually using rmw_serialize().
- *
- * \pre Given `publisher` must be a valid publisher, as returned by rmw_create_publisher().
- * \pre Given `serialized_message` must be a valid serialized message, initialized by
- *   rmw_serialized_message_init() and containing the serialization of a ROS message whose
- *   type matches the message type support the `publisher` was registered with on creation.
- * \pre If not NULL, given `allocation` must be a valid publisher allocation initialized
- *   with rmw_publisher_allocation_init() with a message type support that matches the
- *   one registered with `publisher` on creation.
  *
  * <hr>
  * Attribute          | Adherence
@@ -661,7 +652,7 @@ rmw_publisher_get_actual_qos(
  *   It is implementation defined whether memory will be allocated on publish or not.
  *   Even if a publisher allocation is provided, an implementation may ignore it.
  *   Check the implementation documentation to learn about memory allocation
- *   guarantees when publishing serialized messages using publisher allocations.
+ *   guarantees when publishing serialized messages with and without publisher allocations.
  *
  * \par Thread-safety
  *   Publishers are thread-safe objects, and so are all operations on them except for finalization.
@@ -672,6 +663,14 @@ rmw_publisher_get_actual_qos(
  *   - Access to publisher allocations may be synchronized, but it is not required to.
  *     Check the implementation documentation to learn about publisher allocations'
  *     thread-safety.
+ *
+ * \pre Given `publisher` must be a valid publisher, as returned by rmw_create_publisher().
+ * \pre Given `serialized_message` must be a valid serialized message, initialized by
+ *   rmw_serialized_message_init() and containing the serialization of a ROS message whose
+ *   type matches the message type support the `publisher` was registered with on creation.
+ * \pre If not NULL, given `allocation` must be a valid publisher allocation initialized
+ *   with rmw_publisher_allocation_init() with a message type support that matches the
+ *   one registered with `publisher` on creation.
  *
  * \param[in] publisher Publisher to be used to send message.
  * \param[in] ros_message Serialized ROS message to be sent.
