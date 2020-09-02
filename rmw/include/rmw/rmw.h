@@ -840,8 +840,8 @@ rmw_subscription_get_actual_qos(
 
 /// Take an incoming ROS message.
 /**
- * Read a ROS message received by the given subscription, removing it from internal queues.
- * This function will succeed even if no ROS message was received.
+ * Take a ROS message received by the given subscription, removing it from internal queues.
+ * This function will succeed even if no ROS message was received, but `taken` will be false.
  *
  * \remarks The same ROS message cannot be taken twice.
  *   Callers do not have to deal with duplicates.
@@ -874,7 +874,9 @@ rmw_subscription_get_actual_qos(
  *     It is not safe to read or write `ros_message` while rmw_take() uses it.
  *   - Access to primitive data-types is not synchronized.
  *     It is not safe to read or write `taken` while rmw_take() uses it.
- *   - Access to subscription allocations may be synchronized, but it is not required to.
+ *   - Access to subscription allocations is not synchronized, unless specifically stated
+ *     otherwise by the implementation.
+ *     Thus, it is generally not safe to read or write `allocation` while rmw_take() uses it.
  *     Check the implementation documentation to learn about subscription allocations'
  *     thread-safety.
  *
@@ -943,7 +945,10 @@ rmw_take(
  *     It is not safe to read or write `taken` while rmw_take_with_info() uses it.
  *   - Access to ROS messages' metadata is not synchronized.
  *     It is not safe to read or write `message_info` while rmw_take_with_info() uses it.
- *   - Access to subscription allocations may be synchronized, but it is not required to.
+ *   - Access to subscription allocations is not synchronized, unless specifically stated
+ *     otherwise by the implementation.
+ *     Thus, it is generally not safe to read or write `allocation` while rmw_take_with_info()
+ *     uses it.
  *     Check the implementation documentation to learn about subscription allocations'
  *     thread-safety.
  *
@@ -984,7 +989,7 @@ rmw_take_with_info(
 
 /// Take multiple incoming ROS messages with their metadata.
 /**
- * Read a sequence of ROS messages received by the given subscription, removing
+ * Take a sequence of ROS messages received by the given subscription, removing
  * them from internal queues.
  * While `count` ROS messages may be requested, fewer messages may have been
  * received by the subscription.
@@ -1025,7 +1030,10 @@ rmw_take_with_info(
  *     It is not safe to read or write `message_info_sequence` while rmw_take_sequence() uses it.
  *   - Access to primtive data-types is not synchronized.
  *     It is not safe to read or write `taken` while rmw_take_sequence() uses it.
- *   - Access to subscription allocations may be synchronized, but it is not required to.
+ *   - Access to subscription allocations is not synchronized, unless specifically stated
+ *     otherwise by the implementation.
+ *     Thus, it is generally not safe to read or write `allocation` while rmw_take_sequence()
+ *     uses it.
  *     Check the implementation documentation to learn about subscription allocations'
  *     thread-safety.
  *
@@ -1079,9 +1087,10 @@ rmw_take_sequence(
   size_t * taken,
   rmw_subscription_allocation_t * allocation);
 
-/// Take an incoming ROS message without deserializing it.
+/// Take an incoming ROS message as a byte stream.
 /**
- * Read a ROS message received by the given subscription, removing it from internal queues.
+ * Take a ROS message received by the given subscription, removing it from internal queues.
+ * This function will succeed even if no ROS message was received, but `taken` will be false.
  * Unlike rmw_take(), the ROS message is taken in its serialized form, as a byte stream.
  * If needed, this byte stream can then be deserialized into a ROS message with rmw_deserialize().
  *
@@ -1123,7 +1132,10 @@ rmw_take_sequence(
  *     rmw_take_serialized_message() uses it.
  *   - Access to primitive data-types is not synchronized.
  *     It is not safe to read or write `taken` while rmw_take_serialized_message() uses it.
- *   - Access to subscription allocations may be synchronized, but it is not required to.
+ *   - Access to subscription allocations is not synchronized, unless specifically stated
+ *     otherwise by the implementation.
+ *     Thus, it is generally not safe to read or write `allocation` while
+ *     rmw_take_serialized_message() uses it.
  *     Check the implementation documentation to learn about subscription allocations'
  *     thread-safety.
  *
@@ -1159,7 +1171,7 @@ rmw_take_serialized_message(
   bool * taken,
   rmw_subscription_allocation_t * allocation);
 
-/// Take an incoming ROS message with its metadata without deserializing it.
+/// Take an incoming ROS message as a byte stream with its metadata.
 /**
  * Same as rmw_take_serialized_message(), except it also takes ROS message metadata.
  *
@@ -1200,8 +1212,12 @@ rmw_take_serialized_message(
  *     It is not safe to read or write `message_info` while
  *     rmw_take_serialized_message_with_info() uses it.
  *   - Access to primitive data-types is not synchronized.
- *     It is not safe to read or write `taken` while rmw_take_loaned_message() uses it.
- *   - Access to subscription allocations may be synchronized, but it is not required to.
+ *     It is not safe to read or write `taken` while rmw_take_serialized_message_with_info()
+ *     uses it.
+ *   - Access to subscription allocations is not synchronized, unless specifically stated
+ *     otherwise by the implementation.
+ *     Thus, it is generally not safe to read or write `allocation` while
+ *     rmw_take_serialized_message_with_info() uses it.
  *     Check the implementation documentation to learn about subscription allocations'
  *     thread-safety.
  *
@@ -1240,10 +1256,9 @@ rmw_take_serialized_message_with_info(
 
 /// Take an incoming ROS message, loaned by the middleware.
 /**
- * Read a ROS message received by the given subscription, removing it from internal queues.
- * This function will succeed even if no ROS message was received.
- * If a ROS message was received available, it will be loaned on take.
- * This loaned ROS message is owned by the middleware, which will keep it alive (i.e. in valid
+ * Take a ROS message received by the given subscription, removing it from internal queues.
+ * This function will succeed even if no ROS message was received, but `taken` will be false.
+ * The loaned ROS message is owned by the middleware, which will keep it alive (i.e. in valid
  * memory space) until the caller returns it using rmw_return_loaned_message_from_subscription().
  *
  * \remarks The same ROS message, loaned or not, cannot be taken twice.
@@ -1276,7 +1291,10 @@ rmw_take_serialized_message_with_info(
  *   - Access to primitive data-types is not synchronized.
  *     It is not safe to read or write `taken` nor `loaned_message`
  *     while rmw_take_loaned_message() uses them.
- *   - Access to subscription allocations may be synchronized, but it is not required to.
+ *   - Access to subscription allocations is not synchronized, unless specifically stated
+ *     otherwise by the implementation.
+ *     Thus, it is generally not safe to read or write `allocation` while
+ *     rmw_take_loaned_message() uses it.
  *     Check the implementation documentation to learn about subscription allocations'
  *     thread-safety.
  *
@@ -1345,7 +1363,10 @@ rmw_take_loaned_message(
  *   - Access to ROS message metadata is not synchronized.
  *     It is not safe to read or write `message_info` while
  *     rmw_take_loaned_message_with_info() uses it.
- *   - Access to subscription allocations may be synchronized, but it is not required to.
+ *   - Access to subscription allocations is not synchronized, unless specifically stated
+ *     otherwise by the implementation.
+ *     Thus, it is generally not safe to read or write `allocation` while
+ *     rmw_take_loaned_message_with_info() uses it.
  *     Check the implementation documentation to learn about subscription allocations'
  *     thread-safety.
  *
