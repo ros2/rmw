@@ -464,7 +464,7 @@ rmw_return_loaned_message_from_publisher(
  *   It is implementation defined whether memory will be allocated on publish or not.
  *   For instance, implementations that serialize ROS messages to send it over the
  *   wire may need to perform additional memory allocations when dealing with
- *   unbounded, dynamically-sized fields.
+ *   unbounded (dynamically-sized) fields.
  *   A publisher allocation, if provided, may or may not be used.
  *   Check the implementation documentation to learn about memory allocation
  *   guarantees when publishing ROS messages with and without publisher allocations.
