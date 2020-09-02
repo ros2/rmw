@@ -886,8 +886,10 @@ rmw_subscription_get_actual_qos(
  * \pre If not NULL, given `allocation` must be a valid subscription allocation initialized
  *   with rmw_subscription_allocation_init() with a message type support that matches the
  *   one registered with the `subscription` on creation.
- * \post If rmw_take() fails or `taken` is false, `ros_message` will be left in a valid
- *   but unknown state.
+ * \post Given `ros_message` will remain a valid message.
+ *   It will be left unchanged if this function fails early due to a logical error, such as an
+ *   invalid argument, or in an unknown yet valid state if it fails due to a runtime error.
+ *   It will also be left unchanged if this function succeeds but `taken` is false.
  *
  * \param[in] subscription Subscription to take message from.
  * \param[out] ros_message Type erased ROS message to write to.
@@ -959,8 +961,11 @@ rmw_take(
  * \pre If not NULL, given `allocation` must be a valid subscription allocation
  *   initialized with rmw_subscription_allocation_init() with a message type support
  *   that matches the one registered with the `subscription` on creation.
- * \post If rmw_take_with_info() fails or `taken` is false, both `ros_message` and
- *   `message_info` will be left in a valid but unknown state.
+ * \post Given `ros_message` will remain a valid message, and
+ *   `message_info`, valid message metadata.
+ *   Both will be left unchanged if this function fails early due to a logical error, such as
+ *   an invalid argument, or in an unknown yet valid state if it fails due to a runtime error.
+ *   Both will also be left unchanged if this function succeeds but `taken` is false.
  *
  * \param[in] subscription Subscription to take ROS message from.
  * \param[out] ros_message Type erased ROS message to write to.
@@ -989,11 +994,12 @@ rmw_take_with_info(
 
 /// Take multiple incoming ROS messages with their metadata.
 /**
- * Take a sequence of ROS messages received by the given subscription, removing
- * them from internal queues.
+ * Take a sequence of consecutive ROS messages received by the given subscription,
+ * removing them from internal queues.
  * While `count` ROS messages may be requested, fewer messages may have been
  * received by the subscription.
- * This function will succeed even if fewer (or zero) messages were received.
+ * This function will only take what has been already received, and it will
+ * succeed even if fewer (or zero) messages were received.
  * In this case, only currently available messages will be returned.
  * The `taken` flag indicates the number of ROS messages actually taken.
  *
@@ -1023,6 +1029,8 @@ rmw_take_with_info(
  *   Subscriptions are thread-safe objects, and so are all operations on them except for
  *   finalization.
  *   Therefore, it is safe to take from the same subscription concurrently.
+ *   Moreover, the sequence of ROS messages taken is guaranteed to be consecutive and to
+ *   preserve the order in the subscription queues, despite any concurrent takes.
  *   However, when taking a sequence of ROS messages with metadata:
  *   - Access to ROS message sequences is not synchronized.
  *     It is not safe to read or write `message_sequence` while rmw_take_sequence() uses it.
@@ -1048,8 +1056,11 @@ rmw_take_with_info(
  * \pre If not NULL, given `allocation` must be a valid subscription allocation initialized
  *   with rmw_subscription_allocation_init() with a message type support that matches the
  *   one registered with `subscription` on creation.
- * \post If rmw_take_sequence() fails or `taken` is false, both `message_sequence` and
- *   `message_info_sequence` will be left in a valid but unknown state.
+ * \post Given `message_sequence` will remain a valid message sequence, and
+ *   `message_info_sequence`, a valid message metadata sequence.
+ *   Both will be left unchanged if this function fails early due to a logical error, such as
+ *   an invalid argument, or in an unknown yet valid state if it fails due to a runtime error.
+ *   Both will also be left unchanged if this function succeeds but `taken` is false.
  *
  * \param[in] subscription Subscription to take ROS message from.
  * \param[in] count Number of messages to attempt to take.
@@ -1146,8 +1157,11 @@ rmw_take_sequence(
  * \pre If not NULL, given `allocation` must be a valid subscription allocation initialized
  *   with rmw_subscription_allocation_init() with a message type support that matches the
  *   one registered with `subscription` on creation.
- * \post If rmw_take_serialized_message() fails or `taken` is false, `serialized_message`
- *   will be left in a valid but unknown state.
+ * \post Given `serialized_message` will remain a valid serialized message.
+ *   It will be left unchanged if this function fails early due to a logical error,
+ *   such as an invalid argument, or in an unknown yet valid state if it fails due to a
+ *   runtime error.
+ *   It will also be left unchanged if this function succeeds but `taken` is false.
  *
  * \param[in] subscription Subscription to take ROS message from.
  * \param[out] serialized_message Byte stream to write to.
@@ -1226,8 +1240,12 @@ rmw_take_serialized_message(
  * \pre If not NULL, given `allocation` must be a valid subscription allocation initialized
  *   with rmw_subscription_allocation_init() with a message type support that matches the
  *   one registered with `subscription` on creation.
- * \post If rmw_take_serialized_message_with_info() fails or `taken` is false, both
- *   `serialized_message` and `message_info` will be left in a valid but unknown state.
+ * \post Given `serialized_message` will remain a valid serialized message, and `message_info`,
+ *   valid message metadata.
+ *   Both will be left unchanged if this function fails early due to a logical error,
+ *   such as an invalid argument, or in an unknown yet valid state if it fails due to a
+ *   runtime error.
+ *   It will also be left unchanged if this function succeeds but `taken` is false.
  *
  * \param[in] subscription Subscription to take ROS message from.
  * \param[out] serialized_message Byte stream to write to.
@@ -1303,6 +1321,8 @@ rmw_take_serialized_message_with_info(
  * \pre If not NULL, given `allocation` must be a valid subscription allocation initialized
  *   with rmw_subscription_allocation_init() with a message type support that matches the
  *   one registered with `subscription` on creation.
+ * \post Given `loaned_message` will remain unchanged, or point to a valid message if
+ *   this function was successful and `taken` is true.
  *
  * \param[in] subscription Subscription to take ROS message from.
  * \param[inout] loaned_message Pointer to type erased ROS message taken
@@ -1370,6 +1390,19 @@ rmw_take_loaned_message(
  *     Check the implementation documentation to learn about subscription allocations'
  *     thread-safety.
  *
+ * \pre Given `subscription` must be a valid subscription, as returned
+ *   by rmw_create_subscription().
+ * \pre If not NULL, given `allocation` must be a valid subscription allocation initialized
+ *   with rmw_subscription_allocation_init() with a message type support that matches the
+ *   one registered with `subscription` on creation.
+ * \post Given `loaned_message` will remain unchanged, or point to a valid message if
+ *   this function was successful and `taken` is true.
+ * \post Given `message_info` will remain valid message metadata.
+ *   It will be left unchanged if this function fails early due to a logical error,
+ *   such as an invalid argument, or in an unknown yet valid state if it fails due to a
+ *   runtime error.
+ *   It will also be left unchanged if this function succeeds but `taken` is false.
+ *
  * \param[in] subscription Subscription to take ROS message from.
  * \param[inout] loaned_message Pointer to type erased ROS message taken
  *   and loaned by the middleware.
@@ -1401,7 +1434,9 @@ rmw_take_loaned_message_with_info(
 /// Return a loaned ROS message previously taken from a subscription.
 /**
  * Tells the middleware that previously loaned ROS message is no longer needed by the caller.
- * Ownership of the ROS message is given back to the middleware.
+ * If this function fails early due to a logical error, such as an invalid argument,
+ * the loaned ROS message will be left unchanged.
+ * Otherwise, ownership of the ROS message will be given back to the middleware.
  * It is up to the middleware what will be made of the returned ROS message.
  * It is undefined behavior to use a loaned ROS message after returning it.
  *
