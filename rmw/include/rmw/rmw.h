@@ -483,7 +483,8 @@ rmw_return_loaned_message_from_publisher(
  * \pre Given `ros_message` must be a valid message, whose type matches the message type
  *   support the `publisher` was registered with on creation.
  * \pre If not NULL, given `allocation` must be a valid publisher allocation initialized
- *   with rmw_publisher_allocation_init().
+ *   with rmw_publisher_allocation_init() with a message type support that matches the
+ *   one registered with `publisher` on creation.
  *
  * \param[in] publisher Publisher to be used to send message.
  * \param[in] ros_message Type erased ROS message to be sent.
@@ -544,7 +545,8 @@ rmw_publish(
  * \pre Given `ros_message` must be a valid message, borrowed from the same publisher using
  *   rmw_borrow_loaned_message().
  * \pre If not NULL, given `allocation` must be a valid publisher allocation, initialized
- *   with rmw_publisher_allocation_init().
+ *   with rmw_publisher_allocation_init() with a message type support that matches the
+ *   one registered with `publisher` on creation.
  *
  * \param[in] publisher Publisher to be used to send message.
  * \param[in] ros_message Loaned type erased ROS message to be sent.
@@ -642,7 +644,8 @@ rmw_publisher_get_actual_qos(
  *   rmw_serialized_message_init() and containing the serialization of a ROS message whose
  *   type matches the message type support the `publisher` was registered with on creation.
  * \pre If not NULL, given `allocation` must be a valid publisher allocation initialized
- *   with rmw_publisher_allocation_init().
+ *   with rmw_publisher_allocation_init() with a message type support that matches the
+ *   one registered with `publisher` on creation.
  *
  * <hr>
  * Attribute          | Adherence
