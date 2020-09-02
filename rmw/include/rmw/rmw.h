@@ -473,9 +473,9 @@ rmw_return_loaned_message_from_publisher(
  *   Publishers are thread-safe objects, and so are all operations on them except for finalization.
  *   Therefore, it is safe to publish using the same publisher concurrently.
  *   However, when publishing regular ROS messages:
- *   - Access to ROS messages is read-only but it is not synchronized.
+ *   - Access to the ROS message is read-only but it is not synchronized.
  *     Concurrent `ros_message` reads are safe, but concurrent reads and writes are not.
- *   - Access to publisher allocations may be synchronized, but it is not required to.
+ *   - Access to the publisher allocation may be synchronized, but it is not required to.
  *     Check the implementation documentation to learn about publisher allocations' thread-safety.
  *
  * \pre Given `publisher` must be a valid publisher, as returned by rmw_create_publisher().
@@ -536,7 +536,7 @@ rmw_publish(
  *   - Ownership of the loaned ROS message is given back to the middleware.
  *     This transfer is not synchronized, and thus it is not safe to publish the
  *     same loaned ROS message concurrently.
- *   - Access to publisher allocations may be synchronized, but it is not required to.
+ *   - Access to the publisher allocation may be synchronized, but it is not required to.
  *     Check the implementation documentation to learn about publisher allocations' thread-safety.
  *
  * \pre Given `publisher` must be a valid publisher, as returned by rmw_create_publisher().
@@ -658,9 +658,9 @@ rmw_publisher_get_actual_qos(
  *   Publishers are thread-safe objects, and so are all operations on them except for finalization.
  *   Therefore, it is safe to publish using the same publisher concurrently.
  *   However, when publishing serialized ROS messages:
- *   - Access to byte streams is read-only but it is not synchronized.
+ *   - Access to the byte stream is read-only but it is not synchronized.
  *     Concurrent `serialized_message` reads are safe, but concurrent reads and writes are not.
- *   - Access to publisher allocations may be synchronized, but it is not required to.
+ *   - Access to the publisher allocation may be synchronized, but it is not required to.
  *     Check the implementation documentation to learn about publisher allocations'
  *     thread-safety.
  *
