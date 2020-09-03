@@ -880,7 +880,8 @@ rmw_subscription_get_actual_qos(
  *     Check the implementation documentation to learn about subscription allocations'
  *     thread-safety.
  *
- * \pre Given `subscription` must be a valid publisher, as returned by rmw_create_subscription().
+ * \pre Given `subscription` must be a valid subscription, as returned
+ *   by rmw_create_subscription().
  * \pre Given `ros_message` must be a valid message, whose type matches the message type support
  *   registered with the `subscription` on creation.
  * \pre If not NULL, given `allocation` must be a valid subscription allocation initialized
