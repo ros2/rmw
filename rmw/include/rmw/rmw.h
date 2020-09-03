@@ -840,7 +840,7 @@ rmw_subscription_get_actual_qos(
 
 /// Take an incoming ROS message.
 /**
- * Take a ROS message received by the given subscription, removing it from internal queues.
+ * Take a ROS message already received by the given subscription, removing it from internal queues.
  * This function will succeed even if no ROS message was received, but `taken` will be false.
  *
  * \remarks The same ROS message cannot be taken twice.
@@ -855,6 +855,14 @@ rmw_subscription_get_actual_qos(
  * Lock-Free          | Maybe [1]
  *
  * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   To take a ROS message is a synchronous operation.
+ *   It is also non-blocking, to the extent it will not wait for new ROS messages to arrive,
+ *   but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
  *
  * \par Memory allocation
  *   It is implementation defined whether memory will be allocated on take or not.
@@ -928,6 +936,14 @@ rmw_take(
  *
  * <i>[1] implementation defined, check implementation documentation.</i>
  *
+ * \par Runtime behavior
+ *   To take a ROS message with its metadata is a synchronous operation.
+ *   It is also non-blocking, to the extent it will not wait for new ROS messages to arrive,
+ *   but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
+ *
  * \par Memory allocation
  *   It is implementation defined whether memory will be allocated on take or not.
  *   For instance, implementations that deserialize ROS messages received over
@@ -995,8 +1011,8 @@ rmw_take_with_info(
 
 /// Take multiple incoming ROS messages with their metadata.
 /**
- * Take a sequence of consecutive ROS messages received by the given subscription,
- * removing them from internal queues.
+ * Take a sequence of consecutive ROS messages already received by the given
+ * subscription, removing them from internal queues.
  * While `count` ROS messages may be requested, fewer messages may have been
  * received by the subscription.
  * This function will only take what has been already received, and it will
@@ -1016,6 +1032,14 @@ rmw_take_with_info(
  * Lock-Free          | Maybe [1]
  *
  * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   To take a sequence of ROS messages is a synchronous operation.
+ *   It is also non-blocking, to the extent it will not wait for new ROS messages to arrive,
+ *   but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
  *
  * \par Memory allocation
  *   It is implementation defined whether memory will be allocated on take or not.
@@ -1101,7 +1125,7 @@ rmw_take_sequence(
 
 /// Take an incoming ROS message as a byte stream.
 /**
- * Take a ROS message received by the given subscription, removing it from internal queues.
+ * Take a ROS message already received by the given subscription, removing it from internal queues.
  * This function will succeed even if no ROS message was received, but `taken` will be false.
  * Unlike rmw_take(), the ROS message is taken in its serialized form, as a byte stream.
  * If needed, this byte stream can then be deserialized into a ROS message with rmw_deserialize().
@@ -1118,6 +1142,14 @@ rmw_take_sequence(
  * Lock-Free          | Maybe [1]
  *
  * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   To take a ROS message a byte stream is a synchronous operation.
+ *   It is also non-blocking, to the extent it will not wait for new ROS messages to arrive,
+ *   but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
  *
  * \par Memory allocation
  *   It is implementation defined whether memory will be allocated on take or not.
@@ -1200,6 +1232,14 @@ rmw_take_serialized_message(
  *
  * <i>[1] implementation defined, check implementation documentation.</i>
  *
+ * \par Runtime behavior
+ *   To take a ROS message a byte stream with its metadata is a synchronous operation.
+ *   It is also non-blocking, to the extent it will not wait for new ROS messages to arrive,
+ *   but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
+ *
  * \par Memory allocation
  *   It is implementation defined whether memory will be allocated on take or not.
  *   For instance, implementations may have to perform additional memory allocations
@@ -1275,7 +1315,7 @@ rmw_take_serialized_message_with_info(
 
 /// Take an incoming ROS message, loaned by the middleware.
 /**
- * Take a ROS message received by the given subscription, removing it from internal queues.
+ * Take a ROS message already received by the given subscription, removing it from internal queues.
  * This function will succeed even if no ROS message was received, but `taken` will be false.
  * The loaned ROS message is owned by the middleware, which will keep it alive (i.e. in valid
  * memory space) until the caller returns it using rmw_return_loaned_message_from_subscription().
@@ -1292,6 +1332,15 @@ rmw_take_serialized_message_with_info(
  * Lock-Free          | Maybe [1]
  *
  * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   To take a loaned ROS message is a synchronous operation.
+ *   It is also non-blocking, to the extent it will not wait for new ROS messages to arrive
+ *   nor for internal memory loaning pools, if any, to be replenished, but it is not
+ *   guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
  *
  * \par Memory allocation
  *   It is implementation defined whether memory will be allocated on take or not.
@@ -1363,6 +1412,15 @@ rmw_take_loaned_message(
  * Lock-Free          | Maybe [1]
  *
  * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   To take a loaned ROS message with its metadata is a synchronous operation.
+ *   It is also non-blocking, to the extent it will not wait for new ROS messages to arrive
+ *   nor for internal memory loaning pools, if any, to be replenished, but it is not
+ *   guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
  *
  * \par Memory allocation
  *   It is implementation defined whether memory will be allocated on take or not.
@@ -1450,6 +1508,13 @@ rmw_take_loaned_message_with_info(
  * Lock-Free          | Maybe [1]
  *
  * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   To return a loaned ROS message is a synchronous operation.
+ *   It is also non-blocking, but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
  *
  * \par Thread-safety
  *   Subscriptions are thread-safe objects, and so are all operations on them except for
