@@ -366,6 +366,13 @@ rmw_destroy_publisher(rmw_node_t * node, rmw_publisher_t * publisher);
  *
  * <i>[1] implementation defined, check implementation documentation.</i>
  *
+ * \par Runtime behavior
+ *   To borrow a ROS message is a synchronous operation.
+ *   It is also non-blocking, but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
+ *
  * \par Memory allocation
  *   It is implementation defined whether memory will be allocated on borrow or not.
  *   Check the implementation documentation to learn about memory allocation
@@ -377,7 +384,7 @@ rmw_destroy_publisher(rmw_node_t * node, rmw_publisher_t * publisher);
  *
  * \pre Given `publisher` must be a valid publisher, as returned by rmw_create_publisher().
  * \pre Given `type_support` must be a valid `rosidl` message type support, matching the
- *   one the `publisher` was registered with on creation.
+ *   one registered with the `publisher` on creation.
  *
  * \param[in] publisher Publisher to which the loaned ROS message will be associated.
  * \param[in] type_support Message type support of the loaned ROS message.
@@ -405,6 +412,9 @@ rmw_borrow_loaned_message(
 /**
  * Tells the middleware that a borrowed ROS message is no longer needed by the caller.
  * Ownership of the ROS message is given back to the middleware.
+ * If this function fails early due to a logical error, such as an invalid argument,
+ * the loaned ROS message will be left unchanged.
+ * Otherwise, ownership of the ROS message will be given back to the middleware.
  * It is up to the middleware what will be made of the returned ROS message.
  * It is undefined behavior to use a loaned ROS message after returning it.
  *
@@ -417,6 +427,13 @@ rmw_borrow_loaned_message(
  * Lock-Free          | Maybe [1]
  *
  * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   To return a ROS message is a synchronous operation.
+ *   It is also non-blocking, but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
  *
  * \par Thread-safety
  *   Publishers are thread-safe objects, and so are all operations on them except for finalization.
@@ -459,6 +476,13 @@ rmw_return_loaned_message_from_publisher(
  * Lock-Free          | Maybe [1]
  *
  * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   It is implementation defined whether to publish a ROS message is a
+ *   synchronous or asynchronous, blocking or non-blocking operation.
+ *   However, asynchronous implementations are not allowed to access the
+ *   given ROS message after this function returns.
+ *   Check the implementation documentation to learn about publish behavior.
  *
  * \par Memory allocation
  *   It is implementation defined whether memory will be allocated on publish or not.
@@ -509,6 +533,10 @@ rmw_publish(
 /**
  * Send a previously borrowed ROS message to all subscriptions with matching QoS policies
  * using the given publisher, then return ROS message ownership to the middleware.
+ *
+ * If this function fails early due to a logical error, such as an invalid argument,
+ * the loaned ROS message will be left unchanged.
+ * Otherwise, ownership of the ROS message will be given back to the middleware.
  * It is up to the middleware what will be made of the returned ROS message.
  * It is undefined behavior to use a loaned ROS message after publishing it.
  *
@@ -521,6 +549,11 @@ rmw_publish(
  * Lock-Free          | Maybe [1]
  *
  * <i>[1] implementation defined, check the implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   It is implementation defined whether to publish a loaned ROS message is a
+ *   synchronous or asynchronous, blocking or non-blocking operation.
+ *   Check the implementation documentation to learn about publish behavior.
  *
  * \par Memory allocation
  *   It is implementation defined whether memory will be allocated on publish or not.
@@ -636,7 +669,7 @@ rmw_publisher_get_actual_qos(
   const rmw_publisher_t * publisher,
   rmw_qos_profile_t * qos);
 
-/// Publish an already serialized ROS message.
+/// Publish a ROS message as a byte stream.
 /**
  * Send a ROS message serialized as a byte stream to all subscriptions with
  * matching QoS policies using the given publisher.
@@ -651,6 +684,13 @@ rmw_publisher_get_actual_qos(
  * Lock-Free          | Maybe [1]
  *
  * <i>[1] implementation defined, check the implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   It is implementation defined whether to publish a loaned ROS message is a
+ *   synchronous or asynchronous, blocking or non-blocking operation.
+ *   However, asynchronous implementations are not allowed to access the
+ *   given byte stream after this function returns.
+ *   Check the implementation documentation to learn about publish behavior.
  *
  * \par Memory allocation
  *   It is implementation defined whether memory will be allocated on publish or not.
