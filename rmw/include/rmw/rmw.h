@@ -350,23 +350,54 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_publisher(rmw_node_t * node, rmw_publisher_t * publisher);
 
-/// Borrow a loaned message.
+/// Borrow a loaned ROS message.
 /**
- * The memory allocated for the ros message belongs to the middleware and must not be deallocated.
- * A call to \sa rmw_publish_loned_message as well as \sa rmw_return_loaned_message_from_publisher`
- * will return ownership of the loaned message back to the middleware.
+ * This ROS message is owned by the middleware, that will keep it alive (i.e. in valid
+ * memory space) until the caller publishes it using rmw_publish_loaned_message() or
+ * returns it using rmw_return_loaned_message_from_publisher().
  *
- * In order to react to failures, the ros message is passed by pointer as an output parameter.
- * Therefore, the pointer to the ros message has to be `null` and not previously allocated or
- * else that memory is lost.
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
  *
- * \param[in] publisher Publisher to which the allocated message is associated.
- * \param[in] type_support Typesupport to which the internal ros message is allocated.
- * \param[out] ros_message The pointer to be filled with a valid ros message by the middleware.
- * \return `RMW_RET_OK` if the ros message was correctly initialized, or
- * \return `RMW_RET_INVALID_ARGUMENT` if an argument other than the ros message is null, or
- * \return `RMW_RET_BAD_ALLOC` if the ros message could not be correctly created, or
- * \return `RMW_RET_UNSUPPORTED` if the rmw_implementation does not support loaned_message, or
+ * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   To borrow a ROS message is a synchronous operation.
+ *   It is also non-blocking, but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
+ *
+ * \par Memory allocation
+ *   It is implementation defined whether memory will be allocated on borrow or not.
+ *   Check the implementation documentation to learn about memory allocation
+ *   guarantees when using ROS message loaning support.
+ *
+ * \par Thread-safety
+ *   Publishers are thread-safe objects, and so are all operations on them except for finalization.
+ *   Therefore, it is safe to borrow ROS messages from the same publisher concurrently.
+ *
+ * \pre Given `publisher` must be a valid publisher, as returned by rmw_create_publisher().
+ * \pre Given `type_support` must be a valid `rosidl` message type support, matching the
+ *   one registered with the `publisher` on creation.
+ *
+ * \param[in] publisher Publisher to which the loaned ROS message will be associated.
+ * \param[in] type_support Message type support of the loaned ROS message.
+ * \param[out] ros_message Pointer to type erased ROS message loaned by the middleware.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `publisher` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `type_support` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `ros_message` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `*ros_message` is not NULL (to prevent leaks), or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if `publisher` implementation identifier
+ *   does not match this implementation, or
+ * \return `RMW_RET_UNSUPPORTED` if the implementation does not support ROS message loaning, or
  * \return `RMW_RET_ERROR` if an unexpected error occured.
  */
 RMW_PUBLIC
@@ -377,17 +408,52 @@ rmw_borrow_loaned_message(
   const rosidl_message_type_support_t * type_support,
   void ** ros_message);
 
-/// Return a loaned message previously borrow from a publisher.
+/// Return a loaned message previously borrowed from a publisher.
 /**
- * The ownership of the passed in ros message will be transferred back to the middleware.
- * The middleware might deallocate and destroy the message so that the pointer is no longer
- * guaranteed to be valid after this call.
+ * Tells the middleware that a borrowed ROS message is no longer needed by the caller.
+ * Ownership of the ROS message is given back to the middleware.
+ * If this function fails early due to a logical error, such as an invalid argument,
+ * the loaned ROS message will be left unchanged.
+ * Otherwise, ownership of the ROS message will be given back to the middleware.
+ * It is up to the middleware what will be made of the returned ROS message.
+ * It is undefined behavior to use a loaned ROS message after returning it.
  *
- * \param[in] publisher Publisher to which the loaned message is associated.
- * \param[in] loaned_message Loaned message to be returned.
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ *
+ * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   To return a ROS message is a synchronous operation.
+ *   It is also non-blocking, but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
+ *
+ * \par Thread-safety
+ *   Publishers are thread-safe objects, and so are all operations on them except for finalization.
+ *   Therefore, it is safe to return borrowed ROS messages to the same publisher concurrently.
+ *   However, since ownership of the loaned ROS message is given back to the middleware and
+ *   this transfer is not synchronized, it is not safe to return the same loaned ROS message
+ *   concurrently.
+ *
+ * \pre Given `publisher` must be a valid publisher, as returned by rmw_create_publisher().
+ * \pre Given `loaned_message` must have been previously borrowed from the same publisher
+ *   using rmw_borrow_loaned_message().
+ *
+ * \param[in] publisher Publisher to which the loaned ROS message is associated.
+ * \param[in] loaned_message Type erased loaned ROS message to be returned.
  * \return `RMW_RET_OK` if successful, or
- * \return `RMW_RET_INVALID_ARGUMENT` if an argument is null, or
- * \return `RMW_RET_UNSUPPORTED` if the rmw_implementation does not support loaned_message, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `publisher` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `loaned_message` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if `publisher` implementation identifier
+ *   does not match this implementation, or
+ * \return `RMW_RET_UNSUPPORTED` if the implementation does not support ROS message loaning, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs and no message can be initialized.
  */
 RMW_PUBLIC
@@ -397,15 +463,62 @@ rmw_return_loaned_message_from_publisher(
   const rmw_publisher_t * publisher,
   void * loaned_message);
 
-/// Publish a given ros_message
+/// Publish a ROS message.
 /**
- * Publish a given ROS message via a publisher.
+ * Send a ROS message to all subscriptions with matching QoS policies using the given publisher.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ *
+ * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   It is implementation defined whether to publish a ROS message is a
+ *   synchronous or asynchronous, blocking or non-blocking operation.
+ *   However, asynchronous implementations are not allowed to access the
+ *   given ROS message after this function returns.
+ *   Check the implementation documentation to learn about publish behavior.
+ *
+ * \par Memory allocation
+ *   It is implementation defined whether memory will be allocated on publish or not.
+ *   For instance, implementations that serialize ROS messages to send it over the
+ *   wire may need to perform additional memory allocations when dealing with
+ *   unbounded (dynamically-sized) fields.
+ *   A publisher allocation, if provided, may or may not be used.
+ *   Check the implementation documentation to learn about memory allocation
+ *   guarantees when publishing ROS messages with and without publisher allocations.
+ *
+ * \par Thread-safety
+ *   Publishers are thread-safe objects, and so are all operations on them except for finalization.
+ *   Therefore, it is safe to publish using the same publisher concurrently.
+ *   However, when publishing regular ROS messages:
+ *   - Access to the ROS message is read-only but it is not synchronized.
+ *     Concurrent `ros_message` reads are safe, but concurrent reads and writes are not.
+ *   - Access to the publisher allocation is not synchronized, unless specifically stated
+ *     otherwise by the implementation.
+ *     Thus, it is generally not safe to read or write `allocation` while rmw_publish() uses it.
+ *     Check the implementation documentation to learn about publisher allocations' thread-safety.
+ *
+ * \pre Given `publisher` must be a valid publisher, as returned by rmw_create_publisher().
+ * \pre Given `ros_message` must be a valid message, whose type matches the message type
+ *   support the `publisher` was registered with on creation.
+ * \pre If not NULL, given `allocation` must be a valid publisher allocation, initialized
+ *   with rmw_publisher_allocation_init() with a message type support that matches the
+ *   one registered with `publisher` on creation.
  *
  * \param[in] publisher Publisher to be used to send message.
- * \param[in] ros_message Message to be sent.
- * \param[in] allocation Specify preallocated memory to use (may be NULL).
+ * \param[in] ros_message Type erased ROS message to be sent.
+ * \param[in] allocation Pre-allocated memory to be used. May be NULL.
  * \return `RMW_RET_OK` if successful, or
- * \return `RMW_RET_INVALID_ARGUMENT` if publisher or ros_message is null, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `publisher` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `ros_message` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if `publisher` implementation
+ *   identifier does not match this implementation, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
@@ -416,23 +529,69 @@ rmw_publish(
   const void * ros_message,
   rmw_publisher_allocation_t * allocation);
 
-/// Publish a loaned ros_message.
+/// Publish a loaned ROS message.
 /**
- * Publish a loaned ROS message via a publisher and return ownership of the loaned message
- * back to the middleware.
+ * Send a previously borrowed ROS message to all subscriptions with matching QoS policies
+ * using the given publisher, then return ROS message ownership to the middleware.
  *
- * In contrast to \sa `rmw_publish` the ownership of the ros message is being transferred to the
- * middleware which might deallocate the memory for it.
- * Similar to \sa `rmw_return_loaned_message_from_publisher` the passed in ros message might
- * not be valid after this call and thus should only be called with messages previously loaned with
- * a call to \sa `rmw_borrow_loaned_message`.
+ * If this function fails early due to a logical error, such as an invalid argument,
+ * the loaned ROS message will be left unchanged.
+ * Otherwise, ownership of the ROS message will be given back to the middleware.
+ * It is up to the middleware what will be made of the returned ROS message.
+ * It is undefined behavior to use a loaned ROS message after publishing it.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ *
+ * <i>[1] implementation defined, check the implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   It is implementation defined whether to publish a loaned ROS message is a
+ *   synchronous or asynchronous, blocking or non-blocking operation.
+ *   Check the implementation documentation to learn about publish behavior.
+ *
+ * \par Memory allocation
+ *   It is implementation defined whether memory will be allocated on publish or not.
+ *   For instance, implementations that serialize ROS messages to send it over the
+ *   wire may need to perform additional memory allocations when dealing with
+ *   unbounded (dynamically-sized) fields.
+ *   A publisher allocation, if provided, may or may not be used.
+ *   Check the implementation documentation to learn about memory allocation
+ *   guarantees when publishing loaned ROS messages with and without publisher allocations.
+ *
+ * \par Thread-safety
+ *   Publishers are thread-safe objects, and so are all operations on them except for finalization.
+ *   Therefore, it is safe to publish using the same publisher concurrently.
+ *   However, when publishing loaned ROS messages:
+ *   - Ownership of the loaned ROS message is given back to the middleware.
+ *     This transfer is not synchronized, and thus it is not safe to publish the
+ *     same loaned ROS message concurrently.
+ *   - Access to the publisher allocation is not synchronized, unless specifically stated
+ *     otherwise by the implementation.
+ *     Thus, it is generally not safe to read or write `allocation` while rmw_publish() uses it.
+ *     Check the implementation documentation to learn about publisher allocations' thread-safety.
+ *
+ * \pre Given `publisher` must be a valid publisher, as returned by rmw_create_publisher().
+ * \pre Given `ros_message` must be a valid message, borrowed from the same publisher using
+ *   rmw_borrow_loaned_message().
+ * \pre If not NULL, given `allocation` must be a valid publisher allocation, initialized
+ *   with rmw_publisher_allocation_init() with a message type support that matches the
+ *   one registered with `publisher` on creation.
  *
  * \param[in] publisher Publisher to be used to send message.
- * \param[in] ros_message Message to be sent.
- * \param[in] allocation Specify preallocated memory to use (may be NULL).
+ * \param[in] ros_message Loaned type erased ROS message to be sent.
+ * \param[in] allocation Pre-allocated memory to be used. May be NULL.
  * \return `RMW_RET_OK` if successful, or
- * \return `RMW_RET_INVALID_ARGUMENT` if publisher or ros_message is null, or
- * \return `RMW_RET_UNSUPPORTED` if the rmw_implementation does not support loaned_message, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `publisher` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `ros_message` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if `publisher` implementation
+ *   identifier does not match this implementation, or
+ * \return `RMW_RET_UNSUPPORTED` if the implementation does not support ROS message loaning, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
@@ -510,18 +669,62 @@ rmw_publisher_get_actual_qos(
   const rmw_publisher_t * publisher,
   rmw_qos_profile_t * qos);
 
-/// Publish an already serialized message.
+/// Publish a ROS message as a byte stream.
 /**
- * The publisher must already be registered with the correct message type
- * support so that it can send serialized data corresponding to that type.
- * This function sends the serialized byte stream directly over the wire without
- * having to serialize the message first.
- * A ROS message can be serialized manually using the rmw_serialize() function.
+ * Send a ROS message serialized as a byte stream to all subscriptions with
+ * matching QoS policies using the given publisher.
+ * A ROS message can be serialized manually using rmw_serialize().
  *
- * \param[in] publisher The publisher object registered to send the message.
- * \param[in] serialized_message The serialized message holding the byte stream.
- * \param[in] allocation Specify preallocated memory to use (may be NULL).
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ *
+ * <i>[1] implementation defined, check the implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   It is implementation defined whether to publish a loaned ROS message is a
+ *   synchronous or asynchronous, blocking or non-blocking operation.
+ *   However, asynchronous implementations are not allowed to access the
+ *   given byte stream after this function returns.
+ *   Check the implementation documentation to learn about publish behavior.
+ *
+ * \par Memory allocation
+ *   It is implementation defined whether memory will be allocated on publish or not.
+ *   Even if a publisher allocation is provided, an implementation may ignore it.
+ *   Check the implementation documentation to learn about memory allocation
+ *   guarantees when publishing serialized messages with and without publisher allocations.
+ *
+ * \par Thread-safety
+ *   Publishers are thread-safe objects, and so are all operations on them except for finalization.
+ *   Therefore, it is safe to publish using the same publisher concurrently.
+ *   However, when publishing serialized ROS messages:
+ *   - Access to the byte stream is read-only but it is not synchronized.
+ *     Concurrent `serialized_message` reads are safe, but concurrent reads and writes are not.
+ *   - Access to the publisher allocation is not synchronized, unless specifically stated
+ *     otherwise by the implementation.
+ *     Thus, it is generally not safe to read or write `allocation` while rmw_publish() uses it.
+ *     Check the implementation documentation to learn about publisher allocations' thread-safety.
+ *
+ * \pre Given `publisher` must be a valid publisher, as returned by rmw_create_publisher().
+ * \pre Given `serialized_message` must be a valid serialized message, initialized by
+ *   rmw_serialized_message_init() and containing the serialization of a ROS message whose
+ *   type matches the message type support the `publisher` was registered with on creation.
+ * \pre If not NULL, given `allocation` must be a valid publisher allocation, initialized
+ *   with rmw_publisher_allocation_init() with a message type support that matches the
+ *   one registered with `publisher` on creation.
+ *
+ * \param[in] publisher Publisher to be used to send message.
+ * \param[in] ros_message Serialized ROS message to be sent.
+ * \param[in] allocation Pre-allocated memory to be used. May be NULL.
  * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `publisher` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `serialized_message` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if `publisher` implementation
+ *   identifier does not match this implementation, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
