@@ -1041,15 +1041,79 @@ rmw_subscription_get_actual_qos(
   const rmw_subscription_t * subscription,
   rmw_qos_profile_t * qos);
 
-/// Take an incoming message from a subscription.
+/// Take an incoming ROS message.
 /**
- * Take an incoming ROS message from a given subscription.
+ * Take a ROS message already received by the given subscription, removing it from internal queues.
+ * This function will succeed even if no ROS message was received, but `taken` will be false.
  *
- * \param[in] subscription The subscription object to take from.
- * \param[out] ros_message The ROS message data on success.
- * \param[out] taken Boolean flag indicating if a message was taken or not.
- * \param[in] allocation Preallocated buffer to use (may be NULL).
+ * \remarks The same ROS message cannot be taken twice.
+ *   Callers do not have to deal with duplicates.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ *
+ * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   To take a ROS message is a synchronous operation.
+ *   It is also non-blocking, to the extent it will not wait for new ROS messages to arrive,
+ *   but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
+ *
+ * \par Memory allocation
+ *   It is implementation defined whether memory will be allocated on take or not.
+ *   For instance, implementations that deserialize ROS messages received over
+ *   the wire may need to perform additional memory allocations when dealing with
+ *   unbounded (dynamically-sized) fields.
+ *   A subscription allocation, if provided, may or may not be used.
+ *   Check the implementation documentation to learn about memory allocation
+ *   guarantees when taking ROS messages with and without subscription allocations.
+ *
+ * \par Thread-safety
+ *   Subscriptions are thread-safe objects, and so are all operations on them except for
+ *   finalization.
+ *   Therefore, it is safe to take from the same subscription concurrently.
+ *   However, when taking regular ROS messages:
+ *   - Access to the given ROS message is not synchronized.
+ *     It is not safe to read or write `ros_message` while rmw_take() uses it.
+ *   - Access to given primitive data-type arguments is not synchronized.
+ *     It is not safe to read or write `taken` while rmw_take() uses it.
+ *   - Access to the given subscription allocation is not synchronized,
+ *     unless specifically stated otherwise by the implementation.
+ *     Thus, it is generally not safe to read or write `allocation` while rmw_take() uses it.
+ *     Check the implementation documentation to learn about subscription allocations'
+ *     thread-safety.
+ *
+ * \pre Given `subscription` must be a valid subscription, as returned
+ *   by rmw_create_subscription().
+ * \pre Given `ros_message` must be a valid message, whose type matches the message type support
+ *   registered with the `subscription` on creation.
+ * \pre If not NULL, given `allocation` must be a valid subscription allocation initialized
+ *   with rmw_subscription_allocation_init() with a message type support that matches the
+ *   one registered with the `subscription` on creation.
+ * \post Given `ros_message` will remain a valid message.
+ *   It will be left unchanged if this function fails early due to a logical error, such as an
+ *   invalid argument, or in an unknown yet valid state if it fails due to a runtime error.
+ *   It will also be left unchanged if this function succeeds but `taken` is false.
+ *
+ * \param[in] subscription Subscription to take message from.
+ * \param[out] ros_message Type erased ROS message to write to.
+ * \param[out] taken Boolean flag indicating if a ROS message was taken or not.
+ * \param[in] allocation Pre-allocated memory to be used. May be NULL.
  * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `subscription` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `ros_message` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `taken` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `subscription`
+ *   implementation identifier does not match this implementation, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
@@ -1061,16 +1125,81 @@ rmw_take(
   bool * taken,
   rmw_subscription_allocation_t * allocation);
 
-/// Take an incoming message from a subscription with additional metadata.
+/// Take an incoming ROS message with its metadata.
 /**
- * Take an incoming ROS message from a given subscription.
+ * Same as rmw_take(), except it also takes ROS message metadata.
  *
- * \param[in] subscription The subscription object to take from.
- * \param[out] ros_message The ROS message data on success.
- * \param[out] taken Boolean flag indicating if a message was taken or not.
- * \param[out] message_info Additional message metadata.
- * \param[in] allocation Preallocated buffer to use (may be NULL).
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ *
+ * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   To take a ROS message with its metadata is a synchronous operation.
+ *   It is also non-blocking, to the extent it will not wait for new ROS messages to arrive,
+ *   but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
+ *
+ * \par Memory allocation
+ *   It is implementation defined whether memory will be allocated on take or not.
+ *   For instance, implementations that deserialize ROS messages received over
+ *   the wire may need to perform additional memory allocations when dealing with
+ *   unbounded (dynamically-sized) fields.
+ *   A subscription allocation, if provided, may or may not be used.
+ *   Check the implementation documentation to learn about memory allocation
+ *   guarantees when taking ROS messages with and without subscription allocations.
+ *
+ * \par Thread-safety
+ *   Subscriptions are thread-safe objects, and so are all operations on them except for
+ *   finalization.
+ *   Therefore, it is safe to take from the same subscription concurrently.
+ *   However, when taking regular ROS messages with metadata:
+ *   - Access to the given ROS message is not synchronized.
+ *     It is not safe to read or write `ros_message` while rmw_take_with_info() uses it.
+ *   - Access to given primitive data-type arguments is not synchronized.
+ *     It is not safe to read or write `taken` while rmw_take_with_info() uses it.
+ *   - Access to the given ROS message metadata is not synchronized.
+ *     It is not safe to read or write `message_info` while rmw_take_with_info() uses it.
+ *   - Access to the given subscription allocation is not synchronized,
+ *     unless specifically stated otherwise by the implementation.
+ *     Thus, it is generally not safe to read or write `allocation` while rmw_take_with_info()
+ *     uses it.
+ *     Check the implementation documentation to learn about subscription allocations'
+ *     thread-safety.
+ *
+ * \pre Given `subscription` must be a valid subscription, as returned
+ *   by rmw_create_subscription().
+ * \pre Given `ros_message` must be a valid message, whose type matches
+ *   the message type support registered with the `subscription` on creation.
+ * \pre If not NULL, given `allocation` must be a valid subscription allocation
+ *   initialized with rmw_subscription_allocation_init() with a message type support
+ *   that matches the one registered with the `subscription` on creation.
+ * \post Given `ros_message` will remain a valid message, and
+ *   `message_info`, valid message metadata.
+ *   Both will be left unchanged if this function fails early due to a logical error, such as
+ *   an invalid argument, or in an unknown yet valid state if it fails due to a runtime error.
+ *   Both will also be left unchanged if this function succeeds but `taken` is false.
+ *
+ * \param[in] subscription Subscription to take ROS message from.
+ * \param[out] ros_message Type erased ROS message to write to.
+ * \param[out] taken Boolean flag indicating if a ROS message was taken or not.
+ * \param[out] message_info Taken ROS message metadata.
+ * \param[in] allocation Pre-allocated memory to be used. May be NULL.
  * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `subscription` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `ros_message` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `taken` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `message_info` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `subscription`
+ *   implementation identifier does not match this implementation, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
@@ -1083,31 +1212,107 @@ rmw_take_with_info(
   rmw_message_info_t * message_info,
   rmw_subscription_allocation_t * allocation);
 
-/// Take multiple incoming messages from a subscription with additional metadata.
+/// Take multiple incoming ROS messages with their metadata.
 /**
- * Take a sequence of ROS messgages from a given subscription.
+ * Take a sequence of consecutive ROS messages already received by the given
+ * subscription, removing them from internal queues.
+ * While `count` ROS messages may be requested, fewer messages may have been
+ * received by the subscription.
+ * This function will only take what has been already received, and it will
+ * succeed even if fewer (or zero) messages were received.
+ * In this case, only currently available messages will be returned.
+ * The `taken` flag indicates the number of ROS messages actually taken.
  *
- * While `count` messages may be requested, fewer messages may be available on the subscription.
- * In this case, only the currently available messages will be returned.
- * The `taken` flag indicates the number of messages actually taken.
- * The method will return `RMW_RET_OK` even in the case that fewer (or zero) messages were retrieved.
- * from the subscription, and will `RMW_RET_ERROR` in the case of unexpected errors.
- * In the case that `count` is zero, the function will return `RMW_RET_INVALID_ARGUMENT`.
+ * \remarks Once taken, ROS messages in the sequence cannot be taken again.
+ *   Callers do not have to deal with duplicates.
  *
- * `message_sequence` and `message_info_sequence` should be initialized and have sufficient capacity.
- * It is not critical that the sequence sizes match, and they may be reused from previous calls.
- * Both must be valid (not NULL) for the method to run successfully.
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
  *
- * \param[in] subscription The subscription object to take from.
+ * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   To take a sequence of ROS messages is a synchronous operation.
+ *   It is also non-blocking, to the extent it will not wait for new ROS messages to arrive,
+ *   but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
+ *
+ * \par Memory allocation
+ *   It is implementation defined whether memory will be allocated on take or not.
+ *   For instance, implementations that deserialize ROS messages received over
+ *   the wire may need to perform additional memory allocations when dealing with
+ *   unbounded (dynamically-sized) fields.
+ *   A subscription allocation, if provided, may or may not be used.
+ *   Check the implementation documentation to learn about memory allocation
+ *   guarantees when taking ROS messages with and without subscription allocations.
+ *
+ * \par Thread-safety
+ *   Subscriptions are thread-safe objects, and so are all operations on them except for
+ *   finalization.
+ *   Therefore, it is safe to take from the same subscription concurrently.
+ *   Moreover, the sequence of ROS messages taken is guaranteed to be consecutive and to
+ *   preserve the order in the subscription queues, despite any concurrent takes.
+ *   However, when taking a sequence of ROS messages with metadata:
+ *   - Access to the given ROS message sequence is not synchronized.
+ *     It is not safe to read or write `message_sequence` while rmw_take_sequence() uses it.
+ *   - Access to the given ROS message metadata sequence is not synchronized.
+ *     It is not safe to read or write `message_info_sequence` while rmw_take_sequence() uses it.
+ *   - Access to given primitive data-type arguments is not synchronized.
+ *     It is not safe to read or write `taken` while rmw_take_sequence() uses it.
+ *   - Access to the given subscription allocation is not synchronized,
+ *     unless specifically stated otherwise by the implementation.
+ *     Thus, it is generally not safe to read or write `allocation` while rmw_take_sequence()
+ *     uses it.
+ *     Check the implementation documentation to learn about subscription allocations'
+ *     thread-safety.
+ *
+ * \pre Given `subscription` must be a valid subscription, as returned
+ *   by rmw_create_subscription().
+ * \pre Given `message_sequence` must be a valid message sequence, initialized
+ *   by rmw_message_sequence_init() and populated with ROS messages whose
+ *   type matches the message type support registered with the `subscription`
+ *   on creation.
+ * \pre Given `message_info_sequence` must be a valid message metadata sequence,
+ *   initialized by rmw_message_info_sequence_init().
+ * \pre If not NULL, given `allocation` must be a valid subscription allocation initialized
+ *   with rmw_subscription_allocation_init() with a message type support that matches the
+ *   one registered with `subscription` on creation.
+ * \post Given `message_sequence` will remain a valid message sequence, and
+ *   `message_info_sequence`, a valid message metadata sequence.
+ *   Both will be left unchanged if this function fails early due to a logical error, such as
+ *   an invalid argument, or in an unknown yet valid state if it fails due to a runtime error.
+ *   Both will also be left unchanged if this function succeeds but `taken` is false.
+ *
+ * \param[in] subscription Subscription to take ROS message from.
  * \param[in] count Number of messages to attempt to take.
- * \param[out] message_sequence The sequence of ROS message data on success.
- * \param[out] message_info_sequence The sequence of additional message metadata on success.
+ * \param[out] message_sequence Sequence of type erase ROS messages to write to.
+ *   Message sequence capacity has to be enough to hold all requested messages
+ *   i.e. capacity has to be equal or greater than `count`.
+ *   It does not have to match that of `message_info_sequence`.
+ * \param[out] message_info_sequence Sequence of additional message metadata.
+ *   Message info sequence capacity has to be enough to hold all requested messages
+ *   metadata i.e. capacity has to be equal or greater than `count`.
+ *   It does not have to match that of `message_sequence`.
  * \param[out] taken Number of messages actually taken from subscription.
- * \param[in] allocation Preallocated buffer to use (may be NULL).
+ * \param[in] allocation Pre-allocated memory to use. May be NULL.
  * \return `RMW_RET_OK` if successful, or
- * \return `RMW_RET_INVALID_ARGUMENT` if an argument is invalid, or
- * \return `RMW_RET_BAD_ALLOC` if memory allocation failed, or
- * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the rmw implementation does not match, or
+ * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `subscription` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `message_sequence` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `message_info_sequence` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `taken` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `count` is 0, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `message_sequence` capacity is less than `count`, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `message_info_sequence` capacity is less than `count`, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `subscription` implementation
+ *   identifier does not match this implementation, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
@@ -1121,21 +1326,90 @@ rmw_take_sequence(
   size_t * taken,
   rmw_subscription_allocation_t * allocation);
 
-/// Take a message without deserializing it.
+/// Take an incoming ROS message as a byte stream.
 /**
- * The message is taken in its serialized form. In contrast to rmw_take, the message
- * is not deserialized in its ROS type but rather returned as a byte stream.
- * The subscriber has to be registered for a specific type. But instead of receiving
- * the message as its corresponding message type, it is taken as a byte stream.
- * If needed, this byte stream can then be deserialized in a ROS message with a call to
- * rmw_deserialize.
+ * Take a ROS message already received by the given subscription, removing it from internal queues.
+ * This function will succeed even if no ROS message was received, but `taken` will be false.
+ * Unlike rmw_take(), the ROS message is taken in its serialized form, as a byte stream.
+ * If needed, this byte stream can then be deserialized into a ROS message with rmw_deserialize().
  *
- * \param[in] subscription Subscription object to take from.
- * \param[out] serialized_message The destination in which to store the serialized message.
- * \param[out] taken Boolean flag indicating if a message was taken or not.
- * \param[in] allocation Preallocated buffer to use (may be NULL).
+ * \remarks The same ROS message, serialized or not, cannot be taken twice.
+ *   Callers do not have to deal with duplicates.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ *
+ * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   To take a ROS message a byte stream is a synchronous operation.
+ *   It is also non-blocking, to the extent it will not wait for new ROS messages to arrive,
+ *   but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
+ *
+ * \par Memory allocation
+ *   It is implementation defined whether memory will be allocated on take or not.
+ *   For instance, implementations may have to perform additional memory allocations
+ *   when dealing with ROS messages that contain unbounded (dynamically-sized) fields
+ *   i.e. these implementations may have to resize the given byte stream.
+ *   A subscription allocation, if provided, may or may not be used.
+ *   Check the implementation documentation to learn about memory allocation guarantees
+ *   when taking serialized ROS messages with and without subscription allocations.
+ * \par
+ *   For ROS messages that only contain bounded (fixed-size) fields, callers can query
+ *   their size using rmw_get_serialized_message_size() and resize `serialized_message`
+ *   using rmw_serialized_message_resize() accordingly to prevent byte stream resizing
+ *   on take.
+ *   Nonetheless, byte stream resizing is not guaranteed to be the sole memory operation.
+ *
+ * \par Thread-safety
+ *   Subscriptions are thread-safe objects, and so are all operations on them except for
+ *   finalization.
+ *   Therefore, it is safe to take from the same subscription concurrently.
+ *   However, when taking serialized ROS messages:
+ *   - Access to the given byte stream for serialized ROS messages is not synchronized.
+ *     It is not safe to read or write `serialized_message` while
+ *     rmw_take_serialized_message() uses it.
+ *   - Access to given primitive data-type arguments is not synchronized.
+ *     It is not safe to read or write `taken` while rmw_take_serialized_message() uses it.
+ *   - Access to the given subscription allocation is not synchronized,
+ *     unless specifically stated otherwise by the implementation.
+ *     Thus, it is generally not safe to read or write `allocation` while
+ *     rmw_take_serialized_message() uses it.
+ *     Check the implementation documentation to learn about subscription allocations'
+ *     thread-safety.
+ *
+ * \pre Given `subscription` must be a valid subscription, as returned by
+ *   rmw_create_subscription().
+ * \pre Given `serialized_message` must be a valid serialized message, initialized by
+ *   rmw_serialized_message_init().
+ * \pre If not NULL, given `allocation` must be a valid subscription allocation initialized
+ *   with rmw_subscription_allocation_init() with a message type support that matches the
+ *   one registered with `subscription` on creation.
+ * \post Given `serialized_message` will remain a valid serialized message.
+ *   It will be left unchanged if this function fails early due to a logical error,
+ *   such as an invalid argument, or in an unknown yet valid state if it fails due to a
+ *   runtime error.
+ *   It will also be left unchanged if this function succeeds but `taken` is false.
+ *
+ * \param[in] subscription Subscription to take ROS message from.
+ * \param[out] serialized_message Byte stream to write to.
+ * \param[out] taken Boolean flag indicating if a ROS message was taken or not.
+ * \param[in] allocation Pre-allocated memory to use. May be NULL.
  * \return `RMW_RET_OK` if successful, or
- * \return `RMW_RET_BAD_ALLOC` if memory allocation failed, or
+ * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `subscription` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `serialized_message` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `taken` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `subscription` implementation
+ *   identifier does not match this implementation, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
@@ -1147,18 +1421,89 @@ rmw_take_serialized_message(
   bool * taken,
   rmw_subscription_allocation_t * allocation);
 
-/// Take a message without deserializing it and with its additional message information.
+/// Take an incoming ROS message as a byte stream with its metadata.
 /**
- * The same as rmw_take_serialized_message(), except it also includes the
- * rmw_message_info_t.
+ * Same as rmw_take_serialized_message(), except it also takes ROS message metadata.
  *
- * \param[in] subscription Subscription object to take from.
- * \param[out] serialized_message The destination in which to store the serialized message.
- * \param[out] taken Boolean flag indicating if a message was taken or not.
- * \param[out] message_info A structure containing meta information about the taken message.
- * \param[in] allocation Preallocated buffer to use (may be NULL).
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ *
+ * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   To take a ROS message a byte stream with its metadata is a synchronous operation.
+ *   It is also non-blocking, to the extent it will not wait for new ROS messages to arrive,
+ *   but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
+ *
+ * \par Memory allocation
+ *   It is implementation defined whether memory will be allocated on take or not.
+ *   For instance, implementations may have to perform additional memory allocations
+ *   when dealing with ROS messages that contain unbounded (dynamically-sized) fields
+ *   i.e. these implementations may have to resize the given byte stream.
+ *   A subscription allocation, if provided, may or may not be used.
+ *   Check the implementation documentation to learn about memory allocation guarantees
+ *   when taking serialized ROS messages with and without subscription allocations.
+ * \par
+ *   For ROS messages that only contain bounded (fixed-size) fields, callers can query
+ *   their size using rmw_get_serialized_message_size() and resize `serialized_message`
+ *   using rmw_serialized_message_resize() accordingly to prevent byte stream resizing
+ *   on take.
+ *   Nonetheless, byte stream resizing is not guaranteed to be the sole memory operation.
+ *
+ * \par Thread-safety
+ *   Subscriptions are thread-safe objects, and so are all operations on them except for
+ *   finalization.
+ *   Therefore, it is safe to take from the same subscription concurrently.
+ *   However, when taking serialized ROS messages with metadata:
+ *   - Access to the given byte stream for serialized ROS messages is not synchronized.
+ *     It is not safe to read or write `serialized_message` while
+ *     rmw_take_serialized_message_with_info() uses it.
+ *   - Access to the given ROS message metadata is not synchronized.
+ *     It is not safe to read or write `message_info` while
+ *     rmw_take_serialized_message_with_info() uses it.
+ *   - Access to given primitive data-type arguments is not synchronized.
+ *     It is not safe to read or write `taken` while rmw_take_serialized_message_with_info()
+ *     uses it.
+ *   - Access to the given subscription allocation is not synchronized,
+ *     unless specifically stated otherwise by the implementation.
+ *     Thus, it is generally not safe to read or write `allocation` while
+ *     rmw_take_serialized_message_with_info() uses it.
+ *     Check the implementation documentation to learn about subscription allocations'
+ *     thread-safety.
+ *
+ * \pre Given `serialized_message` must be a valid serialized message, initialized by
+ *   rmw_serialized_message_init().
+ * \pre If not NULL, given `allocation` must be a valid subscription allocation initialized
+ *   with rmw_subscription_allocation_init() with a message type support that matches the
+ *   one registered with `subscription` on creation.
+ * \post Given `serialized_message` will remain a valid serialized message, and `message_info`,
+ *   valid message metadata.
+ *   Both will be left unchanged if this function fails early due to a logical error,
+ *   such as an invalid argument, or in an unknown yet valid state if it fails due to a
+ *   runtime error.
+ *   It will also be left unchanged if this function succeeds but `taken` is false.
+ *
+ * \param[in] subscription Subscription to take ROS message from.
+ * \param[out] serialized_message Byte stream to write to.
+ * \param[out] taken Boolean flag indicating if a ROS message was taken or not.
+ * \param[out] message_info Taken ROS message metadata.
+ * \param[in] allocation Pre-allocated memory to use. May be NULL.
  * \return `RMW_RET_OK` if successful, or
- * \return `RMW_RET_BAD_ALLOC` if memory allocation failed, or
+ * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `subscription` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `serialized_message` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `taken` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `message_info` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `subscription` implementation
+ *   identifier does not match this implementation, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
@@ -1171,19 +1516,81 @@ rmw_take_serialized_message_with_info(
   rmw_message_info_t * message_info,
   rmw_subscription_allocation_t * allocation);
 
-/// Take a loaned message.
+/// Take an incoming ROS message, loaned by the middleware.
 /**
- * If capable, the middleware can loan messages containing incoming messages.
- * The message is owned by the middleware and thus has to be returned
- * with a call to \sa rmw_return_loaned_message_from_subscription.
+ * Take a ROS message already received by the given subscription, removing it from internal queues.
+ * This function will succeed even if no ROS message was received, but `taken` will be false.
+ * The loaned ROS message is owned by the middleware, which will keep it alive (i.e. in valid
+ * memory space) until the caller returns it using rmw_return_loaned_message_from_subscription().
  *
- * \param[in] subscription Subscription object to take from.
- * \param[inout] loaned_message The destination in which to store the loaned message.
- * \param[out] taken Boolean flag indicating if a message was taken or not.
- * \param[in] allocation Preallocated buffer to use (may be NULL).
+ * \remarks The same ROS message, loaned or not, cannot be taken twice.
+ *   Callers do not have to deal with duplicates.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ *
+ * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   To take a loaned ROS message is a synchronous operation.
+ *   It is also non-blocking, to the extent it will not wait for new ROS messages to arrive
+ *   nor for internal memory loaning pools, if any, to be replenished, but it is not
+ *   guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
+ *
+ * \par Memory allocation
+ *   It is implementation defined whether memory will be allocated on take or not.
+ *   For instance, implementations that deserialize ROS messages received over
+ *   the wire may need to perform additional memory allocations when dealing with
+ *   unbounded (dynamically-sized) fields.
+ *   A subscription allocation, if provided, may or may not be used.
+ *   Check the implementation documentation to learn about memory allocation
+ *   guarantees when taking loaned ROS messages with and without subscription allocations.
+ *
+ * \par Thread-safety
+ *   Subscriptions are thread-safe objects, and so are all operations on them except for
+ *   finalization.
+ *   Therefore, it is safe to take from the same subscription concurrently.
+ *   However, when taking loaned ROS messages:
+ *   - Access to given primitive data-type arguments is not synchronized.
+ *     It is not safe to read or write `taken` nor `loaned_message`
+ *     while rmw_take_loaned_message() uses them.
+ *   - Access to the given subscription allocation is not synchronized,
+ *     unless specifically stated otherwise by the implementation.
+ *     Thus, it is generally not safe to read or write `allocation` while
+ *     rmw_take_loaned_message() uses it.
+ *     Check the implementation documentation to learn about subscription allocations'
+ *     thread-safety.
+ *
+ * \pre Given `subscription` must be a valid subscription, as returned
+ *   by rmw_create_subscription().
+ * \pre If not NULL, given `allocation` must be a valid subscription allocation initialized
+ *   with rmw_subscription_allocation_init() with a message type support that matches the
+ *   one registered with `subscription` on creation.
+ * \post Given `loaned_message` will remain unchanged, or point to a valid message if
+ *   this function was successful and `taken` is true.
+ *
+ * \param[in] subscription Subscription to take ROS message from.
+ * \param[inout] loaned_message Pointer to type erased ROS message taken
+ *   and loaned by the middleware.
+ * \param[out] taken Boolean flag indicating if a ROS message was taken or not.
+ * \param[in] allocation Pre-allocated memory to use. May be NULL.
  * \return `RMW_RET_OK` if successful, or
- * \return `RMW_RET_BAD_ALLOC` if memory allocation failed, or
- * \return `RMW_RET_UNSUPPORTED` if the rmw_implementation does not support loaned_message, or
+ * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `subscription` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `loaned_message` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `*loaned_message` is not NULL (to prevent leaks), or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `taken` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `subscription` implementation
+ *   identifier does not match this implementation, or
+ * \return `RMW_RET_UNSUPPORTED` if the implementation does not support loaned ROS messages, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
@@ -1197,18 +1604,83 @@ rmw_take_loaned_message(
 
 /// Take a loaned message and with its additional message information.
 /**
- * If capable, the middleware can loan messages containing incoming messages.
- * The message is owned by the middleware and thus has to be returned
- * with a call to \sa rmw_release_loaned_message.
+ * Same as rmw_take_loaned_message(), except it also takes ROS message metadata.
  *
- * \param[in] subscription Subscription object to take from.
- * \param[inout] loaned_message The destination in which to store the loaned message.
- * \param[out] taken Boolean flag indicating if a message was taken or not.
- * \param[out] message_info A structure containing meta information about the taken message.
- * \param[in] allocation Preallocated buffer to use (may be NULL).
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ *
+ * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   To take a loaned ROS message with its metadata is a synchronous operation.
+ *   It is also non-blocking, to the extent it will not wait for new ROS messages to arrive
+ *   nor for internal memory loaning pools, if any, to be replenished, but it is not
+ *   guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
+ *
+ * \par Memory allocation
+ *   It is implementation defined whether memory will be allocated on take or not.
+ *   For instance, implementations that deserialize ROS messages received over
+ *   the wire may need to perform additional memory allocations when dealing with
+ *   unbounded (dynamically-sized) fields.
+ *   A subscription allocation, if provided, may or may not be used.
+ *   Check the implementation documentation to learn about memory allocation
+ *   guarantees when taking loaned ROS messages with and without subscription allocations.
+ *
+ * \par Thread-safety
+ *   Subscriptions are thread-safe objects, and so are all operations on them except for
+ *   finalization.
+ *   Therefore, it is safe to take from the same subscription concurrently.
+ *   However, when taking loaned ROS messages with metadata:
+ *   - Access to given primitive data-type arguments is not synchronized.
+ *     It is not safe to read or write `taken` nor `loaned_message`
+ *     while rmw_take_loaned_message_with_info() uses them.
+ *   - Access to the given ROS message metadata is not synchronized.
+ *     It is not safe to read or write `message_info` while
+ *     rmw_take_loaned_message_with_info() uses it.
+ *   - Access to the given subscription allocation is not synchronized,
+ *     unless specifically stated otherwise by the implementation.
+ *     Thus, it is generally not safe to read or write `allocation` while
+ *     rmw_take_loaned_message_with_info() uses it.
+ *     Check the implementation documentation to learn about subscription allocations'
+ *     thread-safety.
+ *
+ * \pre Given `subscription` must be a valid subscription, as returned
+ *   by rmw_create_subscription().
+ * \pre If not NULL, given `allocation` must be a valid subscription allocation initialized
+ *   with rmw_subscription_allocation_init() with a message type support that matches the
+ *   one registered with `subscription` on creation.
+ * \post Given `loaned_message` will remain unchanged, or point to a valid message if
+ *   this function was successful and `taken` is true.
+ * \post Given `message_info` will remain valid message metadata.
+ *   It will be left unchanged if this function fails early due to a logical error,
+ *   such as an invalid argument, or in an unknown yet valid state if it fails due to a
+ *   runtime error.
+ *   It will also be left unchanged if this function succeeds but `taken` is false.
+ *
+ * \param[in] subscription Subscription to take ROS message from.
+ * \param[inout] loaned_message Pointer to type erased ROS message taken
+ *   and loaned by the middleware.
+ * \param[out] taken Boolean flag indicating if a ROS message was taken or not.
+ * \param[out] message_info Taken ROS message metadata.
+ * \param[in] allocation Pre-allocated memory to use. May be NULL.
  * \return `RMW_RET_OK` if successful, or
- * \return `RMW_RET_BAD_ALLOC` if memory allocation failed, or
- * \return `RMW_RET_UNSUPPORTED` if the rmw_implementation does not support loaned_message, or
+ * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `subscription` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `loaned_message` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `*loaned_message` is not NULL to prevent leaks, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `taken` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `message_info` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `subscription` implementation
+ *   identifier does not match this implementation, or
+ * \return `RMW_RET_UNSUPPORTED` if the implementation does not support loaned ROS messages, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
@@ -1221,16 +1693,54 @@ rmw_take_loaned_message_with_info(
   rmw_message_info_t * message_info,
   rmw_subscription_allocation_t * allocation);
 
-/// Return a loaned message previously taken from a subscription.
+/// Return a loaned ROS message previously taken from a subscription.
 /**
- * After the taking a loaned message from the middleware, the middleware has to keep the memory
- * for the loaned message alive and valid as long as the user is working with that loan.
- * In order to indicate that the loaned message is no longer needed, the call to
- * \sa rmw_return_loaned_message_from_subscription tells the middleware that memory can be
- * deallocated/destroyed.
+ * Tells the middleware that previously loaned ROS message is no longer needed by the caller.
+ * If this function fails early due to a logical error, such as an invalid argument,
+ * the loaned ROS message will be left unchanged.
+ * Otherwise, ownership of the ROS message will be given back to the middleware.
+ * It is up to the middleware what will be made of the returned ROS message.
+ * It is undefined behavior to use a loaned ROS message after returning it.
  *
- * \param[in] subscription The subscription instance which loaned the message.
- * \param[in] loaned_message The message to be released.
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ *
+ * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   To return a loaned ROS message is a synchronous operation.
+ *   It is also non-blocking, but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
+ *
+ * \par Thread-safety
+ *   Subscriptions are thread-safe objects, and so are all operations on them except for
+ *   finalization.
+ *   Therefore, it is safe to return loaned ROS messages to the same subscription concurrently.
+ *   However, since ownership of the loaned ROS message is given back to middleware and this
+ *   transfer is not synchronized, it is not safe to return the same loaned ROS message
+ *   concurrently.
+ *
+ * \pre Given `subscription` must be a valid subscription, as returned
+ *   by rmw_create_subscription().
+ * \pre Given `loaned_message` must be a loaned ROS message, previously taken from
+ *   `subscription` using rmw_take_loaned_message() or rmw_take_loaned_message_with_info().
+ *
+ * \param[in] subscription Subscription the ROS message was taken and loaned from.
+ * \param[in] loaned_message Loaned type erased ROS message to be returned to the middleware.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `subscription` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `loaned_message` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `subscription` implementation
+ *   identifier does not match this implementation, or
+ * \return `RMW_RET_UNSUPPORTED` if the implementation does not support loaned ROS messages, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
