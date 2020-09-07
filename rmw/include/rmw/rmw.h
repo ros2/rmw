@@ -878,12 +878,12 @@ rmw_subscription_get_actual_qos(
  *   finalization.
  *   Therefore, it is safe to take from the same subscription concurrently.
  *   However, when taking regular ROS messages:
- *   - Access to ROS messages is not synchronized.
+ *   - Access to the given ROS message is not synchronized.
  *     It is not safe to read or write `ros_message` while rmw_take() uses it.
- *   - Access to primitive data-types is not synchronized.
+ *   - Access to given primitive data-type arguments is not synchronized.
  *     It is not safe to read or write `taken` while rmw_take() uses it.
- *   - Access to subscription allocations is not synchronized, unless specifically stated
- *     otherwise by the implementation.
+ *   - Access to the given subscription allocation is not synchronized,
+ *     unless specifically stated otherwise by the implementation.
  *     Thus, it is generally not safe to read or write `allocation` while rmw_take() uses it.
  *     Check the implementation documentation to learn about subscription allocations'
  *     thread-safety.
@@ -958,14 +958,14 @@ rmw_take(
  *   finalization.
  *   Therefore, it is safe to take from the same subscription concurrently.
  *   However, when taking regular ROS messages with metadata:
- *   - Access to ROS messages is not synchronized.
+ *   - Access to the given ROS message is not synchronized.
  *     It is not safe to read or write `ros_message` while rmw_take_with_info() uses it.
- *   - Access to primitive data-types is not synchronized.
+ *   - Access to given primitive data-type arguments is not synchronized.
  *     It is not safe to read or write `taken` while rmw_take_with_info() uses it.
- *   - Access to ROS messages' metadata is not synchronized.
+ *   - Access to the given ROS message metadata is not synchronized.
  *     It is not safe to read or write `message_info` while rmw_take_with_info() uses it.
- *   - Access to subscription allocations is not synchronized, unless specifically stated
- *     otherwise by the implementation.
+ *   - Access to the given subscription allocation is not synchronized,
+ *     unless specifically stated otherwise by the implementation.
  *     Thus, it is generally not safe to read or write `allocation` while rmw_take_with_info()
  *     uses it.
  *     Check the implementation documentation to learn about subscription allocations'
@@ -1057,14 +1057,14 @@ rmw_take_with_info(
  *   Moreover, the sequence of ROS messages taken is guaranteed to be consecutive and to
  *   preserve the order in the subscription queues, despite any concurrent takes.
  *   However, when taking a sequence of ROS messages with metadata:
- *   - Access to ROS message sequences is not synchronized.
+ *   - Access to the given ROS message sequence is not synchronized.
  *     It is not safe to read or write `message_sequence` while rmw_take_sequence() uses it.
- *   - Access to ROS message metadata sequences is not synchronized.
+ *   - Access to the given ROS message metadata sequence is not synchronized.
  *     It is not safe to read or write `message_info_sequence` while rmw_take_sequence() uses it.
- *   - Access to primtive data-types is not synchronized.
+ *   - Access to given primitive data-type arguments is not synchronized.
  *     It is not safe to read or write `taken` while rmw_take_sequence() uses it.
- *   - Access to subscription allocations is not synchronized, unless specifically stated
- *     otherwise by the implementation.
+ *   - Access to the given subscription allocation is not synchronized,
+ *     unless specifically stated otherwise by the implementation.
  *     Thus, it is generally not safe to read or write `allocation` while rmw_take_sequence()
  *     uses it.
  *     Check the implementation documentation to learn about subscription allocations'
@@ -1171,13 +1171,13 @@ rmw_take_sequence(
  *   finalization.
  *   Therefore, it is safe to take from the same subscription concurrently.
  *   However, when taking serialized ROS messages:
- *   - Access to byte streams for serialized ROS messages is not synchronized.
+ *   - Access to the given byte stream for serialized ROS messages is not synchronized.
  *     It is not safe to read or write `serialized_message` while
  *     rmw_take_serialized_message() uses it.
- *   - Access to primitive data-types is not synchronized.
+ *   - Access to given primitive data-type arguments is not synchronized.
  *     It is not safe to read or write `taken` while rmw_take_serialized_message() uses it.
- *   - Access to subscription allocations is not synchronized, unless specifically stated
- *     otherwise by the implementation.
+ *   - Access to the given subscription allocation is not synchronized,
+ *     unless specifically stated otherwise by the implementation.
  *     Thus, it is generally not safe to read or write `allocation` while
  *     rmw_take_serialized_message() uses it.
  *     Check the implementation documentation to learn about subscription allocations'
@@ -1260,17 +1260,17 @@ rmw_take_serialized_message(
  *   finalization.
  *   Therefore, it is safe to take from the same subscription concurrently.
  *   However, when taking serialized ROS messages with metadata:
- *   - Access to byte streams for serialized ROS messages is not synchronized.
+ *   - Access to the given byte stream for serialized ROS messages is not synchronized.
  *     It is not safe to read or write `serialized_message` while
  *     rmw_take_serialized_message_with_info() uses it.
- *   - Access to ROS message metadata is not synchronized.
+ *   - Access to the given ROS message metadata is not synchronized.
  *     It is not safe to read or write `message_info` while
  *     rmw_take_serialized_message_with_info() uses it.
- *   - Access to primitive data-types is not synchronized.
+ *   - Access to given primitive data-type arguments is not synchronized.
  *     It is not safe to read or write `taken` while rmw_take_serialized_message_with_info()
  *     uses it.
- *   - Access to subscription allocations is not synchronized, unless specifically stated
- *     otherwise by the implementation.
+ *   - Access to the given subscription allocation is not synchronized,
+ *     unless specifically stated otherwise by the implementation.
  *     Thus, it is generally not safe to read or write `allocation` while
  *     rmw_take_serialized_message_with_info() uses it.
  *     Check the implementation documentation to learn about subscription allocations'
@@ -1356,11 +1356,11 @@ rmw_take_serialized_message_with_info(
  *   finalization.
  *   Therefore, it is safe to take from the same subscription concurrently.
  *   However, when taking loaned ROS messages:
- *   - Access to primitive data-types is not synchronized.
+ *   - Access to given primitive data-type arguments is not synchronized.
  *     It is not safe to read or write `taken` nor `loaned_message`
  *     while rmw_take_loaned_message() uses them.
- *   - Access to subscription allocations is not synchronized, unless specifically stated
- *     otherwise by the implementation.
+ *   - Access to the given subscription allocation is not synchronized,
+ *     unless specifically stated otherwise by the implementation.
  *     Thus, it is generally not safe to read or write `allocation` while
  *     rmw_take_loaned_message() uses it.
  *     Check the implementation documentation to learn about subscription allocations'
@@ -1436,14 +1436,14 @@ rmw_take_loaned_message(
  *   finalization.
  *   Therefore, it is safe to take from the same subscription concurrently.
  *   However, when taking loaned ROS messages with metadata:
- *   - Access to primitive data-types is not synchronized.
+ *   - Access to given primitive data-type arguments is not synchronized.
  *     It is not safe to read or write `taken` nor `loaned_message`
  *     while rmw_take_loaned_message_with_info() uses them.
- *   - Access to ROS message metadata is not synchronized.
+ *   - Access to the given ROS message metadata is not synchronized.
  *     It is not safe to read or write `message_info` while
  *     rmw_take_loaned_message_with_info() uses it.
- *   - Access to subscription allocations is not synchronized, unless specifically stated
- *     otherwise by the implementation.
+ *   - Access to the given subscription allocation is not synchronized,
+ *     unless specifically stated otherwise by the implementation.
  *     Thus, it is generally not safe to read or write `allocation` while
  *     rmw_take_loaned_message_with_info() uses it.
  *     Check the implementation documentation to learn about subscription allocations'
