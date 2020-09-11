@@ -17,7 +17,7 @@
 
 #ifdef __cplusplus
 extern "C"
-
+{
 #endif
 
 #include "rmw/macros.h"
