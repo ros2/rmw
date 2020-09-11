@@ -24,8 +24,9 @@ extern "C"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
 
-/// A structure that encapsulates the name, namespace, topic_type, gid and qos_profile
-/// of publishers and subscriptions for a topic.
+/// A data structure that encapsulates the node name, node namespace,
+/// topic_type, gid, and qos_profile of publishers and subscriptions
+/// for a topic.
 typedef struct RMW_PUBLIC_TYPE rmw_topic_endpoint_info_t
 {
   /// Name of the node
@@ -42,26 +43,44 @@ typedef struct RMW_PUBLIC_TYPE rmw_topic_endpoint_info_t
   rmw_qos_profile_t qos_profile;
 } rmw_topic_endpoint_info_t;
 
-/// Return a rmw_topic_endpoint_info_t struct with members initialized to `NULL`.
+/// Return zero initialized topic endpoint info data structure.
+/**
+ * Endpoint type will be invalid.
+ * Endpoint QoS profile will be the system default.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_topic_endpoint_info_t
 rmw_get_zero_initialized_topic_endpoint_info(void);
 
-/// Finalize a rmw_topic_endpoint_info_t object.
+/// Finalize a topic endpoint info data structure.
 /**
- * The rmw_topic_endpoint_info_t struct has members which require memory to be allocated to them before
- * setting values.
- * This function reclaims any allocated resources within the object and zeroes out all other
- * members.
+ * This function will return early if a logical error, such as `RMW_RET_INVALID_ARGUMENT`,
+ * ensues, leaving the given data structure unchanged.
+ * Otherwise, it will proceed despite errors, freeing as much resources as it can and zero
+ * initializing the given data structure.
  *
- * If a non RMW_RET_OK return value is returned, the RMW error message will be set
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | No
+ * Uses Atomics       | No
+ * Lock-Free          | Yes
  *
- * \param[inout] topic_endpoint_info object to be finalized
- * \param[in] allocator the allocator used to allocate memory to the object
- * \returns `RMW_RET_OK` on successfully reclaiming memory, or
- * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
+ * \par Thread-safety
+ *   Finalization is a reentrant procedure, but access to the
+ *   topic endpoint info data structure is not synchronized.
+ *   It is not safe to read or write `topic_endpoint` during finalization.
+ *
+ * \param[inout] topic_endpoint_info Data structure to be finalized.
+ * \param[in] allocator Allocator used to populate the given `topic_endpoint_info`.
+ * \returns `RMW_RET_OK` if successful, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `topic_endpoint_info` is NULL, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `allocator` is invalid,
+ *   by rcutils_allocator_is_valid() definition, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
+ * \remark This function sets the RMW error state on failure.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -70,20 +89,36 @@ rmw_topic_endpoint_info_fini(
   rmw_topic_endpoint_info_t * topic_endpoint_info,
   rcutils_allocator_t * allocator);
 
-/// Set the topic_type in rmw_topic_endpoint_info_t.
+/// Set the topic type in the given topic endpoint info data structure.
 /**
- * rmw_topic_endpoint_info_t has a member topic_type of type const char *;
- * this function allocates memory and copies the value of param passed to it.
+ * This functions allocates memory and copies the value of the `topic_type`
+ * argument to set the data structure `topic_type` member.
  *
- * If a non RMW_RET_OK return value is returned, the RMW error message will be set
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Yes
+ * Thread-Safe        | No
+ * Uses Atomics       | No
+ * Lock-Free          | Yes
  *
- * \param[inout] topic_endpoint_info pointer to an initialized instance of rmw_topic_endpoint_info_t
- * \param[in] topic_type the topic_type value to set in rmw_topic_endpoint_info_t
- * \param[in] allocator the allocator that will be used to allocate memory
- * \returns `RMW_RET_OK` on successfully setting the topic_type, or
- * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
- * \returns `RMW_RET_BAD_ALLOC` if allocation for string duplication fails, or
+ * \par Thread-safety
+ *   Setting a member is a reentrant procedure, but access to the
+ *   topic endpoint info data structure is not synchronized.
+ *   It is not safe to read or write the `topic_type` member of the
+ *   given `topic_endpoint` while setting it.
+ *
+ * \pre Given `topic_type` is a valid C-style string i.e. NULL terminated.
+ *
+ * \param[inout] topic_endpoint_info Data structure to be populated.
+ * \param[in] topic_type Type name to be set.
+ * \param[in] allocator Allocator to be used.
+ * \returns `RMW_RET_OK` if successful, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `topic_endpoint_info` is NULL, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `topic_type` is NULL, or
+ * \returns `RMW_RET_BAD_ALLOC` if memory allocation fails, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
+ * \remark This function sets the RMW error state on failure.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -93,20 +128,36 @@ rmw_topic_endpoint_info_set_topic_type(
   const char * topic_type,
   rcutils_allocator_t * allocator);
 
-/// Set the node_name in rmw_topic_endpoint_info_t.
+/// Set the node name in the given topic endpoint info data structure.
 /**
- * rmw_topic_endpoint_info_t has a member node_name of type const char *;
- * this function allocates memory and copies the value of param passed to it.
+ * This functions allocates memory and copies the value of the `node_name`
+ * argument to set the data structure `node_name` member.
  *
- * If a non RMW_RET_OK return value is returned, the RMW error message will be set
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Yes
+ * Thread-Safe        | No
+ * Uses Atomics       | No
+ * Lock-Free          | Yes
  *
- * \param[inout] topic_endpoint_info pointer to an initialized instance of rmw_topic_endpoint_info_t
- * \param[in] node_name the node_name value to set in rmw_topic_endpoint_info_t
- * \param[in] allocator the allocator that will be used to allocate memory
- * \returns `RMW_RET_OK` on successfully setting the node_name, or
- * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
- * \returns `RMW_RET_BAD_ALLOC` if allocation for string duplication fails, or
+ * \par Thread-safety
+ *   Setting a member is a reentrant procedure, but access to the
+ *   topic endpoint info data structure is not synchronized.
+ *   It is not safe to read or write the `node_name` member of the
+ *   given `topic_endpoint` while setting it.
+ *
+ * \pre Given `node_name` is a valid C-style string i.e. NULL terminated.
+ *
+ * \param[inout] topic_endpoint_info Data structure to be populated.
+ * \param[in] node_name Node name to be set.
+ * \param[in] allocator Allocator to be used.
+ * \returns `RMW_RET_OK` if successful, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `topic_endpoint_info` is NULL, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `node_name` is NULL, or
+ * \returns `RMW_RET_BAD_ALLOC` if memory allocation fails, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
+ * \remark This function sets the RMW error state on failure.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -116,20 +167,36 @@ rmw_topic_endpoint_info_set_node_name(
   const char * node_name,
   rcutils_allocator_t * allocator);
 
-/// Set the node_namespace in rmw_topic_endpoint_info_t.
+/// Set the node namespace in the given topic endpoint info data structure.
 /**
- * rmw_topic_endpoint_info_t has a member node_namespace of type const char *;
- * this function allocates memory and copies the value of param passed to it.
+ * This functions allocates memory and copies the value of the `node_namespace`
+ * argument to set the data structure `node_namespace` member.
  *
- * If a non RMW_RET_OK return value is returned, the RMW error message will be set
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Yes
+ * Thread-Safe        | No
+ * Uses Atomics       | No
+ * Lock-Free          | Yes
  *
- * \param[inout] topic_endpoint_info pointer to an initialized instance of rmw_topic_endpoint_info_t
- * \param[in] node_namespace the node_namespace value to set in rmw_topic_endpoint_info_t
- * \param[in] allocator the allocator that will be used to allocate memory
- * \returns `RMW_RET_OK` on successfully setting the node_namespace, or
- * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
- * \returns `RMW_RET_BAD_ALLOC` if allocation for string duplication fails, or
+ * \par Thread-safety
+ *   Setting a member is a reentrant procedure, but access to the
+ *   topic endpoint info data structure is not synchronized.
+ *   It is not safe to read or write the `node_namespace` member of the
+ *   given `topic_endpoint` while setting it.
+ *
+ * \pre Given `node_namespace` is a valid C-style string i.e. NULL terminated.
+ *
+ * \param[inout] topic_endpoint_info Data structure to be populated.
+ * \param[in] node_namespace Node namespace to be set.
+ * \param[in] allocator Allocator to be used.
+ * \returns `RMW_RET_OK` if successful, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `topic_endpoint_info` is NULL, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `node_namespace` is NULL, or
+ * \returns `RMW_RET_BAD_ALLOC` if memory allocation fails, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
+ * \remark This function sets the RMW error state on failure.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -139,20 +206,31 @@ rmw_topic_endpoint_info_set_node_namespace(
   const char * node_namespace,
   rcutils_allocator_t * allocator);
 
-/// Set the gid in rmw_topic_endpoint_info_t.
+/// Set the endpoint type in the given topic endpoint info data structure.
 /**
- * Copies the values from gid into the gid member inside topic_endpoint_info.
+ * This functions assigns the value of the `type` argument to the data structure
+ * `endpoint_type` member.
  *
- * If a non RMW_RET_OK return value is returned, the RMW error message will be set
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | No
+ * Uses Atomics       | No
+ * Lock-Free          | Yes
  *
- * \param[inout] topic_endpoint_info pointer to an initialized instance of rmw_topic_endpoint_info_t
- * \param[in] gid the gid value to set in rmw_topic_endpoint_info_t
- * \param[in] size the size of the gid param
- * \returns `RMW_RET_OK` on successfully setting the gid, or
- * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
- * \returns `RMW_RET_INVALID_ARGUMENT` size is greater than RMW_GID_STORAGE_SIZE, or
- * \returns `RMW_RET_BAD_ALLOC` if allocation for string duplication fails, or
+ * \par Thread-safety
+ *   Setting a member is a reentrant procedure, but access to the
+ *   topic endpoint info data structure is not synchronized.
+ *   It is not safe to read or write the `endpoint_type` member of the
+ *   given `topic_endpoint` while setting it.
+ *
+ * \param[inout] topic_endpoint_info Data structure to be populated.
+ * \param[in] type Endpoint type to be set.
+ * \returns `RMW_RET_OK` if successful, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `topic_endpoint_info` is NULL, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
+ * \remark This function sets the RMW error state on failure.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -161,19 +239,34 @@ rmw_topic_endpoint_info_set_endpoint_type(
   rmw_topic_endpoint_info_t * topic_endpoint_info,
   rmw_endpoint_type_t type);
 
-/// Set the gid in rmw_topic_endpoint_info_t.
+/// Set the endpoint gid in the given topic endpoint info data structure.
 /**
- * Copies the values from gid into the gid member inside topic_endpoint_info.
+ * This functions copies the value of the `gid` argument to the data structure
+ * `endpoint_gid` member.
  *
- * If a non RMW_RET_OK return value is returned, the RMW error message will be set
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | No
+ * Uses Atomics       | No
+ * Lock-Free          | Yes
  *
- * \param[inout] topic_endpoint_info pointer to an initialized instance of rmw_topic_endpoint_info_t
- * \param[in] gid the gid value to set in rmw_topic_endpoint_info_t
- * \param[in] size the size of the gid param
- * \returns `RMW_RET_OK` on successfully setting the gid, or
- * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
- * \returns `RMW_RET_INVALID_ARGUMENT` size is greater than RMW_GID_STORAGE_SIZE, or
+ * \par Thread-safety
+ *   Setting a member is a reentrant procedure, but access to the
+ *   topic endpoint info data structure is not synchronized.
+ *   It is not safe to read or write the `gid` member of the
+ *   given `topic_endpoint` while setting it.
+ *
+ * \param[inout] topic_endpoint_info Data structure to be populated.
+ * \param[in] gid Endpoint gid to be set.
+ * \param[in] size Size of the given `gid`.
+ * \returns `RMW_RET_OK` if successful, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `topic_endpoint_info` is NULL, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `gid` is NULL, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `size` is greater than RMW_GID_STORAGE_SIZE, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
+ * \remark This function sets the RMW error state on failure.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -183,18 +276,32 @@ rmw_topic_endpoint_info_set_gid(
   const uint8_t gid[],
   size_t size);
 
-/// Set the qos_profile in rmw_topic_endpoint_info_t.
+/// Set the endpoint QoS profile in the given topic endpoint info data structure.
 /**
- * rmw_topic_endpoint_info_t has a member qos_profile of type const rmw_qos_profile_t *.
- * This function assigns the passed qos_profile pointer to the member.
+ * This functions assigns the value of the `qos_profile` argument to the data structure
+ * `qos_profile` member.
  *
- * If a non RMW_RET_OK return value is returned, the RMW error message will be set
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | No
+ * Uses Atomics       | No
+ * Lock-Free          | Yes
  *
- * \param[inout] topic_endpoint_info pointer to an initialized instance of rmw_topic_endpoint_info_t
- * \param[in] qos_profile the qos_profile to set in rmw_topic_endpoint_info_t
- * \returns `RMW_RET_OK` on successfully setting the qos_profile, or
- * \returns `RMW_RET_INVALID_ARGUMENT` if any parameters are NULL, or
+ * \par Thread-safety
+ *   Setting a member is a reentrant procedure, but access to the
+ *   topic endpoint info data structure is not synchronized.
+ *   It is not safe to read or write the `qos_profile` member of the
+ *   given `topic_endpoint` while setting it.
+ *
+ * \param[inout] topic_endpoint_info Data structure to be populated.
+ * \param[in] qos_profile QoS profile to be set.
+ * \returns `RMW_RET_OK` if successful, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `topic_endpoint_info` is NULL, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `qos_profile` is NULL, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
+ * \remark This function sets the RMW error state on failure.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
