@@ -55,10 +55,11 @@ rmw_get_zero_initialized_topic_endpoint_info(void);
 
 /// Finalize a topic endpoint info data structure.
 /**
- * This function will return early if a logical error, such as `RMW_RET_INVALID_ARGUMENT`,
- * ensues, leaving the given data structure unchanged.
- * Otherwise, it will proceed despite errors, freeing as much resources as it can and zero
- * initializing the given data structure.
+ * This function deallocates all allocated members of the given data structure,
+ * and then zero initializes it.
+ * If a logical error, such as `RMW_RET_INVALID_ARGUMENT`, ensues, this function
+ * will return early, leaving the given data structure unchanged.
+ * Otherwise, it will proceed despite errors.
  *
  * <hr>
  * Attribute          | Adherence
@@ -69,9 +70,11 @@ rmw_get_zero_initialized_topic_endpoint_info(void);
  * Lock-Free          | Yes
  *
  * \par Thread-safety
- *   Finalization is a reentrant procedure, but access to the
- *   topic endpoint info data structure is not synchronized.
- *   It is not safe to read or write `topic_endpoint` during finalization.
+ *   Finalization is a reentrant procedure, but:
+ *   - Access to the topic endpoint info data structure is not synchronized.
+ *     It is not safe to read or write `topic_endpoint` during finalization.
+ *   - The default allocators are thread-safe objects, but any custom `allocator` may not be.
+ *     Check your allocator documentation for further reference.
  *
  * \param[inout] topic_endpoint_info Data structure to be finalized.
  * \param[in] allocator Allocator used to populate the given `topic_endpoint_info`.
@@ -103,10 +106,14 @@ rmw_topic_endpoint_info_fini(
  * Lock-Free          | Yes
  *
  * \par Thread-safety
- *   Setting a member is a reentrant procedure, but access to the
- *   topic endpoint info data structure is not synchronized.
- *   It is not safe to read or write the `topic_type` member of the
- *   given `topic_endpoint` while setting it.
+ *   Setting a member is a reentrant procedure, but:
+ *   - Access to the topic endpoint info data structure is not synchronized.
+ *     It is not safe to read or write the `topic_type` member of the given `topic_endpoint`
+ *     while setting it.
+ *   - Access to C-style string arguments is read-only but it is not synchronized.
+ *     Concurrent `topic_type` reads are safe, but concurrent reads and writes are not.
+ *   - The default allocators are thread-safe objects, but any custom `allocator` may not be.
+ *     Check your allocator documentation for further reference.
  *
  * \pre Given `topic_type` is a valid C-style string i.e. NULL terminated.
  *
@@ -142,10 +149,14 @@ rmw_topic_endpoint_info_set_topic_type(
  * Lock-Free          | Yes
  *
  * \par Thread-safety
- *   Setting a member is a reentrant procedure, but access to the
- *   topic endpoint info data structure is not synchronized.
- *   It is not safe to read or write the `node_name` member of the
- *   given `topic_endpoint` while setting it.
+ *   Setting a member is a reentrant procedure, but:
+ *   - Access to the topic endpoint info data structure is not synchronized.
+ *     It is not safe to read or write the `node_name` member of the given `topic_endpoint`
+ *     while setting it.
+ *   - Access to C-style string arguments is read-only but it is not synchronized.
+ *     Concurrent `node_name` reads are safe, but concurrent reads and writes are not.
+ *   - The default allocators are thread-safe objects, but any custom `allocator` may not be.
+ *     Check your allocator documentation for further reference.
  *
  * \pre Given `node_name` is a valid C-style string i.e. NULL terminated.
  *
@@ -181,10 +192,14 @@ rmw_topic_endpoint_info_set_node_name(
  * Lock-Free          | Yes
  *
  * \par Thread-safety
- *   Setting a member is a reentrant procedure, but access to the
- *   topic endpoint info data structure is not synchronized.
- *   It is not safe to read or write the `node_namespace` member of the
- *   given `topic_endpoint` while setting it.
+ *   Setting a member is a reentrant procedure, but:
+ *   - Access to the topic endpoint info data structure is not synchronized.
+ *     It is not safe to read or write the `node_namespace` member of the given `topic_endpoint`
+ *     while setting it.
+ *   - Access to C-style string arguments is read-only but it is not synchronized.
+ *     Concurrent `node_namespace` reads are safe, but concurrent reads and writes are not.
+ *   - The default allocators are thread-safe objects, but any custom `allocator` may not be.
+ *     Check your allocator documentation for further reference.
  *
  * \pre Given `node_namespace` is a valid C-style string i.e. NULL terminated.
  *

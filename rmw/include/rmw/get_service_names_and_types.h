@@ -25,12 +25,11 @@ extern "C"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
 
-/// Return all known services and their types.
+/// Return all service names and types in the ROS graph.
 /**
- * This function returns an array of all service names and types in the ROS graph,
- * as discovered so far by the given local node.
- * For a service to appear in the ROS graph, servers and/or clients must be present
- * in the system.
+ * This function returns an array of all service names and types in the ROS graph
+ * i.e. for which a server and/or client exists, as discovered so far by the given
+ * local node.
  *
  * <hr>
  * Attribute          | Adherence
@@ -50,12 +49,12 @@ extern "C"
  *
  * \par Thread-safety
  *   Nodes are thread-safe objects, and so are all operations on them except for finalization.
- *   Therefore, it is to query the ROS graph using the same node concurrently.
+ *   Therefore, it is safe to query the ROS graph using the same node concurrently.
  *   However, when querying services names and types:
  *   - Access to the array of names and types is not synchronized.
  *     It is not safe to read or write `service_names_and_types`
  *     while rmw_get_service_names_and_types() uses it.
- *   - Allocators are generally thread-safe objects, but the given `allocator` may not be.
+ *   - The default allocators are thread-safe objects, but any custom `allocator` may not be.
  *     Check your allocator documentation for further reference.
  *
  * \pre Given `node` must be a valid node handle, as returned by rmw_create_node().
@@ -64,8 +63,10 @@ extern "C"
  *
  * \param[in] node Node handle to query the ROS graph.
  * \param[in] allocator Allocator to be used when populating the `service_names_and_types` array.
- * \param[out] service_names_and_types Array of service names and their types, populated on success.
- *   It is up to the caller to finalize this array later on, using rmw_names_and_types_fini().
+ * \param[out] service_names_and_types Array of service names and their types,
+ *   populated on success but left unchanged on failure.
+ *   If populated, it is up to the caller to finalize this array later
+ *   on using rmw_names_and_types_fini().
  * \return `RMW_RET_OK` if the query was successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `node` is NULL, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `allocator` is not valid,

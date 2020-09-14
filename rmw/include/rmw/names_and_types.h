@@ -86,7 +86,7 @@ rmw_names_and_types_check_zero(rmw_names_and_types_t * names_and_types);
  *   Initialization is a reentrant procedure, but:
  *   - Access to arrays of names and types is not synchronized.
  *     It is not safe to read or write `names_and_types` during initialization.
- *   - Allocators are generally thread-safe objects, but the given `allocator` may not be.
+ *   - The default allocators are thread-safe objects, but any custom `allocator` may not be.
  *     Check your allocator documentation for further reference.
  *
  * \param[inout] names_and_types Array to be initialized on success,
@@ -113,10 +113,11 @@ rmw_names_and_types_init(
 
 /// Finalize an array of names and types.
 /**
- * This function will return early if a logical error, such as `RMW_RET_INVALID_ARGUMENT`,
- * ensues, leaving the given array unchanged.
- * Otherwise, it will proceed despite errors, freeing as much resources as it can and zero
- * initializing the given array.
+ * This function deallocates the string array of names and the array of string arrays of types,
+ * and zero initializes the given array.
+ * If a logical error, such as `RMW_RET_INVALID_ARGUMENT`, ensues, this function will return
+ * early, leaving the given array unchanged.
+ * Otherwise, it will proceed despite errors.
  *
  * <hr>
  * Attribute          | Adherence

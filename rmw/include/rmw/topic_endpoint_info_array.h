@@ -50,7 +50,7 @@ rmw_get_zero_initialized_topic_endpoint_info_array(void);
  * Lock-Free          | Yes
  *
  * \par Thread-safety
- *   Access to the array of endpoint information is read-only, but it is not synchronized.
+ *   Access to the array of topic endpoint information is read-only, but it is not synchronized.
  *   Concurrent `topic_endpoint_info_array` reads are safe, but concurrent reads
  *   and writes are not.
  *
@@ -81,9 +81,9 @@ rmw_topic_endpoint_info_array_check_zero(
  *
  * \par Thread-safety
  *   Initialization is a reentrant procedure, but:
- *   - Access to arrays of topic endpoint information is not synchronized.
+ *   - Access to the array of topic endpoint information is not synchronized.
  *     It is not safe to read or write `topic_endpoint_info_array` during initialization.
- *   - Allocators are generally thread-safe objects, but the given `allocator` may not be.
+ *   - The default allocators are thread-safe objects, but any custom `allocator` may not be.
  *     Check your allocator documentation for further reference.
  *
  * \param[inout] topic_endpoint_info_array Array to be initialized on success,
@@ -110,10 +110,10 @@ rmw_topic_endpoint_info_array_init_with_size(
 
 /// Finalize an array of topic endpoint information.
 /**
- * This function will return early if a logical error, such as `RMW_RET_INVALID_ARGUMENT`,
- * ensues, leaving the given array unchanged.
- * Otherwise, it will proceed despite errors, freeing as much resources as it can and zero
- * initializing the given array.
+ * This function deallocates the given array storage, and then zero initializes it.
+ * If a logical error, such as `RMW_RET_INVALID_ARGUMENT`, ensues, this function will
+ * return early, leaving the given array unchanged.
+ * Otherwise, it will proceed despite errors.
  *
  * <hr>
  * Attribute          | Adherence
@@ -124,9 +124,11 @@ rmw_topic_endpoint_info_array_init_with_size(
  * Lock-Free          | Yes
  *
  * \par Thread-safety
- *   Finalization is a reentrant procedure, but access to arrays of topic endpoint
- *   information is not synchronized.
- *   It is not safe to read or write `topic_endpoint_info_array` during finalization.
+ *   Finalization is a reentrant procedure, but:
+ *   - Access to the array of topic endpoint information is not synchronized.
+ *     It is not safe to read or write `topic_endpoint_info_array` during finalization.
+ *   - The default allocators are thread-safe objects, but any custom `allocator` may not be.
+ *     Check your allocator documentation for further reference.
  *
  * \pre Given `allocator` must be the same used to initialize the given `topic_endpoint_info_array`.
  *

@@ -1994,7 +1994,7 @@ rmw_wait(
   rmw_wait_set_t * wait_set,
   const rmw_time_t * wait_timeout);
 
-/// Return all known nodes' names and namespaces.
+/// Return the name and namespace of all nodes in the ROS graph.
 /**
  * This function will return an array of node names and an array of node namespaces,
  * as discovered so far by the given node.
@@ -2019,7 +2019,7 @@ rmw_wait(
  *
  * \par Thread-safety
  *   Nodes are thread-safe objects, and so are all operations on them except for finalization.
- *   Therefore, it is to query the ROS graph using the same node concurrently.
+ *   Therefore, it is safe to query the ROS graph using the same node concurrently.
  *   However, access to string arrays is not synchronized.
  *   It is not safe to read or write `node_names` nor `node_namespaces`
  *   while rmw_get_node_names() uses them.
@@ -2058,9 +2058,9 @@ rmw_get_node_names(
   rcutils_string_array_t * node_names,
   rcutils_string_array_t * node_namespaces);
 
-/// Return all known nodes' names, namespaces, and enclave names.
+/// Return the name, namespae, and enclave name of all nodes in the ROS graph.
 /**
- * Similar to rmw_get_node_names(), but it also provides enclave names.
+ * This is similar to rmw_get_node_names(), but it also provides enclave names.
  *
  * <hr>
  * Attribute          | Adherence
@@ -2080,7 +2080,7 @@ rmw_get_node_names(
  *
  * \par Thread-safety
  *   Nodes are thread-safe objects, and so are all operations on them except for finalization.
- *   Therefore, it is to query the ROS graph using the same node concurrently.
+ *   Therefore, it is safe to query the ROS graph using the same node concurrently.
  *   However, access to string arrays is not synchronized.
  *   It is not safe to read or write `node_names`, `node_namespaces`, nor `enclaves`
  *   while rmw_get_node_names_with_enclaves() uses them.

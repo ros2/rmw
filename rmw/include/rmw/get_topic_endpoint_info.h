@@ -49,12 +49,14 @@ extern "C"
  *
  * \par Thread-safety
  *   Nodes are thread-safe objects, and so are all operations on them except for finalization.
- *   Therefore, it is to query the ROS graph using the same node concurrently.
+ *   Therefore, it is safe to query the ROS graph using the same node concurrently.
  *   However, when querying topic names and types:
- *   - Access to the array of endpoints' information is not synchronized.
+ *   - Access to the array of topic endpoint information is not synchronized.
  *     It is not safe to read or write `publishers_info`
  *     while rmw_get_publishers_info_by_topic() uses it.
- *   - Allocators are generally thread-safe objects, but the given `allocator` may not be.
+ *   - Access to C-style string arguments is read-only but it is not synchronized.
+ *     Concurrent `topic_name` reads are safe, but concurrent reads and writes are not.
+ *   - The default allocators are thread-safe objects, but any custom `allocator` may not be.
  *     Check your allocator documentation for further reference.
  *
  * \pre Given `node` must be a valid node handle, as returned by rmw_create_node().
@@ -68,7 +70,7 @@ extern "C"
  * \param[in] no_mangle Whether to mangle the topic name before publisher lookup or not.
  * \param[out] publishers_info Array of publisher information, populated on success,
  *   left unchanged on failure.
- *   It is up to the caller to finalize this array later on,
+ *   If populated, it is up to the caller to finalize this array later on,
  *   using rmw_topic_endpoint_info_array_fini().
  * \return `RMW_RET_OK` if the query was successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `node` is NULL, or
@@ -119,12 +121,12 @@ rmw_get_publishers_info_by_topic(
  *
  * \par Thread-safety
  *   Nodes are thread-safe objects, and so are all operations on them except for finalization.
- *   Therefore, it is to query the ROS graph using the same node concurrently.
+ *   Therefore, it is safe to query the ROS graph using the same node concurrently.
  *   However, when querying subscriptions' information:
- *   - Access to the array of endpoints' information is not synchronized.
+ *   - Access to the array of topic endpoint information is not synchronized.
  *     It is not safe to read or write `subscriptions_info`
  *     while rmw_get_subscriptions_info_by_topic() uses it.
- *   - Allocators are generally thread-safe objects, but the given `allocator` may not be.
+ *   - The default allocators are thread-safe objects, but any custom `allocator` may not be.
  *     Check your allocator documentation for further reference.
  *
  * \pre Given `node` must be a valid node handle, as returned by rmw_create_node().
@@ -138,7 +140,7 @@ rmw_get_publishers_info_by_topic(
  * \param[in] no_mangle Whether to mangle the topic name before subscription lookup or not.
  * \param[out] publishers_info Array of subscription information, populated on success,
  *   left unchanged on failure.
- *   It is up to the caller to finalize this array later on,
+ *   If populated, it is up to the caller to finalize this array later on,
  *   using rmw_topic_endpoint_info_array_fini().
  * \return `RMW_RET_OK` if the query was successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `node` is NULL, or

@@ -25,10 +25,10 @@ extern "C"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
 
-/// Return all topics known to be subscribed by a given node, along with their types.
+/// Return all topic names and types for which a given remote node has subscriptions.
 /**
- * This function returns an array of topic names and types known to be subscribed by a
- * given remote node, as discovered so far by the given local node.
+ * This function returns an array of topic names and types for which a given remote
+ * node has subscriptions, as discovered so far by the given local node.
  *
  * <hr>
  * Attribute          | Adherence
@@ -48,7 +48,7 @@ extern "C"
  *
  * \par Thread-safety
  *   Nodes are thread-safe objects, and so are all operations on them except for finalization.
- *   Therefore, it is to query the ROS graph using the same node concurrently.
+ *   Therefore, it is safe to query the ROS graph using the same node concurrently.
  *   However, when querying subscribed topic names and types:
  *   - Access to the array of names and types is not synchronized.
  *     It is not safe to read or write `topic_names_and_types`
@@ -56,7 +56,7 @@ extern "C"
  *   - Access to node name and namespace is read-only but it is not synchronized.
  *     Concurrent `node_name` and `node_namespace` reads are safe, but concurrent reads and
  *     writes are not.
- *   - Allocators are generally thread-safe objects, but the given `allocator` may not be.
+ *   - The default allocators are thread-safe objects, but any custom `allocator` may not be.
  *     Check your allocator documentation for further reference.
  *
  * \pre Given `node` must be a valid node handle, as returned by rmw_create_node().
@@ -69,8 +69,9 @@ extern "C"
  * \param[in] node_namespace Namespace of the remote node to get information for.
  * \param[in] no_demangle Whether to demangle all topic names following ROS conventions or not.
  * \param[out] topic_names_and_types Array of topic names and types the remote node has created
- *   a subscription for, populated on success.
- *   It is up to the caller to finalize this array later on, using rmw_names_and_types_fini().
+ *   a subscription for, populated on success but left unchanged on failure.
+ *   If populated, it is up to the caller to finalize this array later on
+ *   using rmw_names_and_types_fini().
  * \return `RMW_RET_OK` if the query was successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `node` is NULL, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `allocator` is not valid,
@@ -99,10 +100,10 @@ rmw_get_subscriber_names_and_types_by_node(
   bool no_demangle,
   rmw_names_and_types_t * topic_names_and_types);
 
-/// Return all topics known to be published by a given node, along with their types.
+/// Return all topic names and types for which a given remote node has publishers.
 /**
- * This function returns an array of topic names and types known to be published by a
- * given remote node, as discovered so far by the given local node.
+ * This function returns an array of topic names and types for which a given remote
+ * node has created publishers, as discovered so far by the given local node.
  *
  * <hr>
  * Attribute          | Adherence
@@ -122,7 +123,7 @@ rmw_get_subscriber_names_and_types_by_node(
  *
  * \par Thread-safety
  *   Nodes are thread-safe objects, and so are all operations on them except for finalization.
- *   Therefore, it is to query the ROS graph using the same node concurrently.
+ *   Therefore, it is safe to query the ROS graph using the same node concurrently.
  *   However, when querying published topic names and types:
  *   - Access to the array of names and types is not synchronized.
  *     It is not safe to read or write `topic_names_and_types`
@@ -130,7 +131,7 @@ rmw_get_subscriber_names_and_types_by_node(
  *   - Access to node name and namespace is read-only but it is not synchronized.
  *     Concurrent `node_name` and `node_namespace` reads are safe, but concurrent reads and
  *     writes are not.
- *   - Allocators are generally thread-safe objects, but the given `allocator` may not be.
+ *   - The default allocators are thread-safe objects, but any custom `allocator` may not be.
  *     Check your allocator documentation for further reference.
  *
  * \pre Given `node` must be a valid node handle, as returned by rmw_create_node().
@@ -143,8 +144,9 @@ rmw_get_subscriber_names_and_types_by_node(
  * \param[in] node_namespace Namespace of the remote node to get information for.
  * \param[in] no_demangle Whether to demangle all topic names following ROS conventions or not.
  * \param[out] topic_names_and_types Array of topic names and types the remote node has created
- *   a publisher for, populated on success.
- *   It is up to the caller to finalize this array later on, using rmw_names_and_types_fini().
+ *   a publisher for, populated on success but left unchanged on failure.
+ *   If populated, it is up to the caller to finalize this array later on
+ *   using rmw_names_and_types_fini().
  * \return `RMW_RET_OK` if the query was successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `node` is NULL, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `allocator` is not valid,
@@ -173,11 +175,10 @@ rmw_get_publisher_names_and_types_by_node(
   bool no_demangle,
   rmw_names_and_types_t * topic_names_and_types);
 
-/// Return all services known to be served by a given node, along with their types.
+/// Return all service names and types for which a given remote node has servers.
 /**
- * This function returns an array of service names and types known to be served by
- * a given remote node, as discovered so far by the given local node.
- * A node serving a service means it created a service server for it.
+ * This function returns an array of service names and types for which a given remote
+ * node has servers, as discovered so far by the given local node.
  *
  * <hr>
  * Attribute          | Adherence
@@ -197,7 +198,7 @@ rmw_get_publisher_names_and_types_by_node(
  *
  * \par Thread-safety
  *   Nodes are thread-safe objects, and so are all operations on them except for finalization.
- *   Therefore, it is to query the ROS graph using the same node concurrently.
+ *   Therefore, it is safe to query the ROS graph using the same node concurrently.
  *   However, when querying served service names and types:
  *   - Access to the array of names and types is not synchronized.
  *     It is not safe to read or write `service_names_and_types`
@@ -205,7 +206,7 @@ rmw_get_publisher_names_and_types_by_node(
  *   - Access to node name and namespace is read-only but it is not synchronized.
  *     Concurrent `node_name` and `node_namespace` reads are safe, but concurrent reads and
  *     writes are not.
- *   - Allocators are generally thread-safe objects, but the given `allocator` may not be.
+ *   - The default allocators are thread-safe objects, but any custom `allocator` may not be.
  *     Check your allocator documentation for further reference.
  *
  * \param[in] node Handle to local node to query the ROS graph.
@@ -213,8 +214,9 @@ rmw_get_publisher_names_and_types_by_node(
  * \param[in] node_namespace Namespace of the remote node to get information for.
  * \param[in] no_demangle Whether to demangle all topic names following ROS conventions or not.
  * \param[out] service_names_and_types Array of service names and types the remote node has
- *   created a service server for, populated on success.
- *   It is up to the caller to finalize this array later on, using rmw_names_and_types_fini().
+ *   created a service server for, populated on success but left unchanged on failure.
+ *   If populated, it is up to the caller to finalize this array later on
+ *   using rmw_names_and_types_fini().
  * \return `RMW_RET_OK` if the query was successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `node` is NULL, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `allocator` is not valid,
@@ -242,11 +244,10 @@ rmw_get_service_names_and_types_by_node(
   const char * node_namespace,
   rmw_names_and_types_t * service_names_and_types);
 
-/// Return all services known to be used by a given node, along with their types.
+/// Return all service names and types for which a given remote node has clients.
 /**
- * This function returns an array of service names and types known to be served by
- * a given remote node, as discovered so far by the given local node.
- * A node using a service means it created a service client for it.
+ * This function returns an array of service names and types for which a given remote
+ * node has clients, as discovered so far by the given local node.
  *
  * <hr>
  * Attribute          | Adherence
@@ -266,15 +267,15 @@ rmw_get_service_names_and_types_by_node(
  *
  * \par Thread-safety
  *   Nodes are thread-safe objects, and so are all operations on them except for finalization.
- *   Therefore, it is to query the ROS graph using the same node concurrently.
+ *   Therefore, it is safe to query the ROS graph using the same node concurrently.
  *   However, when querying served service names and types:
  *   - Access to the array of names and types is not synchronized.
  *     It is not safe to read or write `service_names_and_types`
  *     while rmw_get_client_names_and_types_by_node() uses it.
- *   - Access to node name and namespace is read-only but it is not synchronized.
+ *   - Access to C-style string arguments is read-only but it is not synchronized.
  *     Concurrent `node_name` and `node_namespace` reads are safe, but concurrent reads and
  *     writes are not.
- *   - Allocators are generally thread-safe objects, but the given `allocator` may not be.
+ *   - The default allocators are thread-safe objects, but any custom `allocator` may not be.
  *     Check your allocator documentation for further reference.
  *
  * \param[in] node Handle to local node to query the ROS graph.
@@ -282,8 +283,9 @@ rmw_get_service_names_and_types_by_node(
  * \param[in] node_namespace Namespace of the remote node to get information for.
  * \param[in] no_demangle Whether to demangle all topic names following ROS conventions or not.
  * \param[out] service_names_and_types Array of service names and types the remote node has
- *   created a service client for, populated on success.
- *   It is up to the caller to finalize this array later on, using rmw_names_and_types_fini().
+ *   created a service client for, populated on success but left unchanged on failure.
+ *   If populated, it is up to the caller to finalize this array later on
+ *   using rmw_names_and_types_fini().
  * \return `RMW_RET_OK` if the query was successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `node` is NULL, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `allocator` is not valid,
