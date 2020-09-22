@@ -2102,7 +2102,7 @@ rmw_count_subscribers(
  *
  * \pre Given `publisher` must be a valid subscription, as returned by rmw_create_publisher().
  *
- * \param[in] publisher Publisher to be get a gid from.
+ * \param[in] publisher Publisher to get a gid from.
  * \param[out] gid Publisher's unique identifier, populated on success
  *   but left unchanged on failure.
  * \return `RMW_RET_OK` if successful, or
