@@ -2081,23 +2081,69 @@ rmw_count_subscribers(
   const char * topic_name,
   size_t * count);
 
-/// Get the unique identifier of the publisher
+/// Get the unique identifier (gid) of a publisher.
 /**
- * \param[in] publisher The publisher to get the gid of
- * \param[out] gid The resulting gid
- * \return RMW_RET_OK if successful, otherwise an appropriate error code
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ *
+ * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Thread-safety
+ *   Publishers are thread-safe objects, and so are all operations on them except for
+ *   finalization.
+ *   Therefore, it is safe to get the unique identifier from the same publisher concurrently.
+ *   However, access to the gid is not synchronized.
+ *   It is not safe to read or write `gid` while rmw_get_gid_for_publisher() uses it.
+ *
+ * \pre Given `publisher` must be a valid subscription, as returned by rmw_create_publisher().
+ *
+ * \param[in] publisher Publisher to get a gid from.
+ * \param[out] gid Publisher's unique identifier, populated on success
+ *   but left unchanged on failure.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `publisher` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `gid` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `publisher` implementation
+ *   identifier does not match this implementation, or
+ * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_get_gid_for_publisher(const rmw_publisher_t * publisher, rmw_gid_t * gid);
 
-/// Check if two gid objects are the same
+/// Check if two unique identifiers (gids) are equal.
 /**
- * \param[in] gid1 One gid1 to compare
- * \param[in] gid2 The other gid to compare
- * \param[out] bool true if the gid objects match, false otherwise
- * \return RMW_RET_OK if successful, otherwise an appropriate error code
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ *
+ * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Thread-safety
+ *   Unique identifier comparison is a reentrant function, but:
+ *   - Access to both gids is read-only but it is not synchronized.
+ *     Concurrent `gid1` and `gid2` reads are safe, but concurrent reads and writes are not.
+ *   - Access to primitive data-type arguments is not synchronized.
+ *     It is not safe to read or write `result` while rmw_compare_gids_equal() uses it.
+ *
+ * \param[in] gid1 First unique identifier to compare.
+ * \param[in] gid2 Second unique identifier to compare.
+ * \param[out] bool true if both gids are equal, false otherwise.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `gid1` or `gid2` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the implementation
+ *   identifier of `gid1` or `gid2` does not match this implementation, or
+ * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
