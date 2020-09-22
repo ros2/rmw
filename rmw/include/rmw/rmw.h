@@ -1749,7 +1749,7 @@ rmw_return_loaned_message_from_subscription(
   const rmw_subscription_t * subscription,
   void * loaned_message);
 
-/// Create a service client that can send requests to a service server.
+/// Create a service client that can send requests to and receive replies from a service server.
 /**
  * This function can fail, and therefore return `NULL`, if:
  *   - `node` is `NULL`, or
@@ -1863,7 +1863,7 @@ rmw_take_response(
   void * ros_response,
   bool * taken);
 
-/// Create a service server that can reply to client requests.
+/// Create a service server that can receive requests from and send replies to a service client.
 /**
  * This function can fail, and therefore return `NULL`, if:
  *   - `node` is `NULL`, or
