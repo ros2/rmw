@@ -2081,7 +2081,7 @@ rmw_count_subscribers(
   const char * topic_name,
   size_t * count);
 
-/// Get the unique identifier or gid of a publisher.
+/// Get the unique identifier (gid) of a publisher.
 /**
  * <hr>
  * Attribute          | Adherence
@@ -2097,7 +2097,7 @@ rmw_count_subscribers(
  *   Publishers are thread-safe objects, and so are all operations on them except for
  *   finalization.
  *   Therefore, it is safe to get the unique identifier from the same publisher concurrently.
- *   However, Access to the gid is not synchronized.
+ *   However, access to the gid is not synchronized.
  *   It is not safe to read or write `gid` while rmw_get_gid_for_publisher() uses it.
  *
  * \pre Given `publisher` must be a valid subscription, as returned by rmw_create_publisher().
@@ -2105,7 +2105,7 @@ rmw_count_subscribers(
  * \param[in] publisher Publisher to be get a gid from.
  * \param[out] gid Publisher's unique identifier, populated on success
  *   but left unchanged on failure.
- * \return `RMW_RET_OK` if successful, o
+ * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `publisher` is NULL, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `gid` is NULL, or
  * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `publisher` implementation
@@ -2117,7 +2117,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_get_gid_for_publisher(const rmw_publisher_t * publisher, rmw_gid_t * gid);
 
-/// Check if two unique identifiers or gids are equal.
+/// Check if two unique identifiers (gids) are equal.
 /**
  * <hr>
  * Attribute          | Adherence
@@ -2139,10 +2139,10 @@ rmw_get_gid_for_publisher(const rmw_publisher_t * publisher, rmw_gid_t * gid);
  * \param[in] gid1 First unique identifier to compare.
  * \param[in] gid2 Second unique identifier to compare.
  * \param[out] bool true if both gids are equal, false otherwise.
- * \return `RMW_RET_OK` if successful,
+ * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `gid1` or `gid2` is NULL, or
- * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if `gid1`'s' or `gid2`'s' implementation
- *   identifier does the match this implementation, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the implementation
+ *   identifier of `gid1` or `gid2` does not match this implementation, or
  * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */
 RMW_PUBLIC
