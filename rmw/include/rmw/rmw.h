@@ -1940,8 +1940,7 @@ rmw_trigger_guard_condition(const rmw_guard_condition_t * guard_condition);
  *   Contexts are thread-safe objects, and so are all operations on them except for finalization.
  *   Therefore, it is safe to create multiple wait sets in the same context concurrently.
  *
- * \pre Given `context` must be a valid context, initialized by rmw_init() or
- *   otherwise zero initialized (or finalized).
+ * \pre Given `context` must be a valid context, initialized by rmw_init().
  *
  * \param[in] context Context to associate the wait set with.
  * \param[in] max_conditions
@@ -1954,13 +1953,12 @@ RMW_WARN_UNUSED
 rmw_wait_set_t *
 rmw_create_wait_set(rmw_context_t * context, size_t max_conditions);
 
-/// Finalize a wait set.
+/// Destroy a wait set.
 /**
- * This function will reclaim all associated resources, including the wait set handle.
- * Use of a deallocated wait set handle is undefined behavior.
+ * This function will reclaim all associated resources, including the wait set.
+ * Use of a wait set after destruction is undefined behavior.
  * This function will return early if a logical error, such as `RMW_RET_INVALID_ARGUMENT`
- * or `RMW_RET_INCORRECT_RMW_IMPLEMENTATION`, ensues, leaving the given wait set
- * handle unchanged.
+ * or `RMW_RET_INCORRECT_RMW_IMPLEMENTATION`, ensues, leaving the given wait set unchanged.
  * Otherwise, it will proceed despite errors.
  *
  * <hr>
@@ -2030,15 +2028,15 @@ rmw_destroy_wait_set(rmw_wait_set_t * wait_set);
  *   with the same context the given `wait_set` was registered with on creation.
  *
  * \param[inout] subscriptions Array of subscriptions to wait on.
- *   Can be `NULL` if there're no subscriptions to wait on.
+ *   Can be `NULL` if there are no subscriptions to wait on.
  * \param[inout] guard_conditions Array of guard conditions to wait on
- *   Can be `NULL` if there're no guard conditions to wait on.
+ *   Can be `NULL` if there are no guard conditions to wait on.
  * \param[inout] services Array of services to wait on.
- *   Can be `NULL` if there're no services to wait on.
+ *   Can be `NULL` if there are no services to wait on.
  * \param[inout] clients Array of clients to wait on.
- *   Can be `NULL` if there're no clients to wait on.
+ *   Can be `NULL` if there are no clients to wait on.
  * \param[inout] events Array of events to wait on.
- *   Can be `NULL` if there're no events to wait on.
+ *   Can be `NULL` if there are no events to wait on.
  * \param[in] wait_set Wait set to use for waiting.
  * \param[in] wait_timeout If `NULL`, block indefinitely until an entity becomes ready.
  *   If zero, do not block -- check only for immediately available entities.
