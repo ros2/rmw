@@ -1753,8 +1753,8 @@ rmw_return_loaned_message_from_subscription(
 /**
  * This function can fail, and therefore return `NULL`, if:
  *   - `node` is `NULL`, or
- *   - `node` does not belong to this implementation i.e. it does not have
- *     a matching implementation identifier, or
+ *   - `node` does not belong to this implementation
+ *      i.e. it does not have a matching implementation identifier, or
  *   - `type_support` is `NULL`, or
  *   - `service_name` is `NULL`, or
  *   - `service_name` is an empty string, or
@@ -1762,7 +1762,7 @@ rmw_return_loaned_message_from_subscription(
  *     rmw_validate_full_topic_name() definition, or
  *   - `qos_profile` is `NULL`, or
  *   - `qos_profile` has invalid or unknown policies, or
- *   - memory allocation fails during service server creation, or
+ *   - memory allocation fails during service client creation, or
  *   - an unspecified error occurs.
  *
  * <hr>
@@ -1866,17 +1866,17 @@ rmw_take_response(
 /// Create a service server that can reply to client requests.
 /**
  * This function can fail, and therefore return `NULL`, if:
- *   - `node` is `NULL`
- *   - `node` does not belong to this implementation i.e. it does not have
- *     a matching implementation identifier
- *   - `type_support` is `NULL`
- *   - `service_name` is `NULL`
- *   - `service_name` is an empty string
+ *   - `node` is `NULL`, or
+ *   - `node` does not belong to this implementation
+ *     i.e. it does not have a matching implementation identifier, or
+ *   - `type_support` is `NULL`, or
+ *   - `service_name` is `NULL`, or
+ *   - `service_name` is an empty string, or
  *   - (if ROS namespace conventions apply) `service_name` is invalid by
- *     rmw_validate_full_topic_name() definition
- *   - `qos_profile` is `NULL`
- *   - `qos_profile` has invalid or unknown policies
- *   - memory allocation fails during service server creation
+ *     rmw_validate_full_topic_name() definition, or
+ *   - `qos_profile` is `NULL`, or
+ *   - `qos_profile` has invalid or unknown policies, or
+ *   - memory allocation fails during service server creation, or
  *   - an unspecified error occurs
  *
  * <hr>
