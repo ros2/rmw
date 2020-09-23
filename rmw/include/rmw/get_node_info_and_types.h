@@ -63,7 +63,7 @@ extern "C"
  * \pre Given `topic_names_and_types` must be a zero-initialized array of names and types,
  *   as returned by rmw_get_zero_initialized_names_and_types().
  *
- * \param[in] node Handle to local node to query the ROS graph.
+ * \param[in] node Local node to query the ROS graph.
  * \param[in] allocator Allocator to be used when populating the `topic_names_and_types` array.
  * \param[in] node_name Name of the remote node to get information for.
  * \param[in] node_namespace Namespace of the remote node to get information for.
@@ -138,7 +138,7 @@ rmw_get_subscriber_names_and_types_by_node(
  * \pre Given `topic_names_and_types` must be a zero-initialized array of names and types,
  *   as returned by rmw_get_zero_initialized_names_and_types().
  *
- * \param[in] node Handle to local node to query the ROS graph.
+ * \param[in] Local node to query the ROS graph.
  * \param[in] allocator Allocator to be used when populating the `topic_names_and_types` array.
  * \param[in] node_name Name of the remote node to get information for.
  * \param[in] node_namespace Namespace of the remote node to get information for.
@@ -209,7 +209,7 @@ rmw_get_publisher_names_and_types_by_node(
  *   - The default allocators are thread-safe objects, but any custom `allocator` may not be.
  *     Check your allocator documentation for further reference.
  *
- * \param[in] node Handle to local node to query the ROS graph.
+ * \param[in] node Local node to query the ROS graph.
  * \param[in] node_name Name of the remote node to get information for.
  * \param[in] node_namespace Namespace of the remote node to get information for.
  * \param[in] no_demangle Whether to demangle all topic names following ROS conventions or not.
@@ -278,7 +278,7 @@ rmw_get_service_names_and_types_by_node(
  *   - The default allocators are thread-safe objects, but any custom `allocator` may not be.
  *     Check your allocator documentation for further reference.
  *
- * \param[in] node Handle to local node to query the ROS graph.
+ * \param[in] node Local node to query the ROS graph.
  * \param[in] node_name Name of the remote node to get information for.
  * \param[in] node_namespace Namespace of the remote node to get information for.
  * \param[in] no_demangle Whether to demangle all topic names following ROS conventions or not.

@@ -68,7 +68,7 @@ extern "C"
  * \pre Given `topic_names_and_types` must be a zero-initialized array of names and types,
  *   as returned by rmw_get_zero_initialized_names_and_types().
  *
- * \param[in] node Node handle to query the ROS graph.
+ * \param[in] node Node to query the ROS graph.
  * \param[in] allocator Allocator to be used when populating the `topic_names_and_types` array.
  * \param[in] no_demangle Whether to demangle all topic names following ROS conventions or not.
  * \param[out] topic_names_and_types Array of topic names and their types,

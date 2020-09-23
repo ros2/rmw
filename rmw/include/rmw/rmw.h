@@ -201,13 +201,36 @@ rmw_node_assert_liveliness(const rmw_node_t * node);
 /// Return a guard condition which is triggered when the ROS graph changes.
 /**
  * The guard condition will be triggered anytime a change to the ROS graph occurs.
- * A ROS graph change includes but it is not limited to a new publisher
- * advertises, a new subscription is created, a new service becomes available,
- * a subscription is canceled, etc.
+ * A ROS graph change occurs whenever:
+ * - A node joins or leaves the ROS graph.
+ *   This change will be reflected in rmw_get_node_names() and
+ *   rmw_get_node_names_with_enclaves() outcome.
+ * - A topic subscription joins or leaves the ROS graph.
+ *   This change will be reflected in rmw_get_topic_names_and_types(),
+ *   rmw_get_subscriber_names_and_types_by_node(), and
+ *   rmw_get_subscriptions_info_by_topic() outcome.
+ * - A topic publisher joins or leaves the ROS graph.
+ *   This change will be reflected in rmw_get_topic_names_and_types(),
+ *   rmw_get_publisher_names_and_types_by_node(), and
+ *   rmw_get_publishers_info_by_topic() outcome.
+ * - A topic subscription matches a topic publisher with compatible QoS policies.
+ *   This change will be reflected in rmw_subscription_count_matched_publishers() outcome.
+ * - A topic publisher matches a topic subscription with compatible QoS policies.
+ *   This change will be reflected in rmw_publisher_count_matched_subscriptions() outcome.
+ * - A service server joins or leaves the ROS graph.
+ *   This change will be reflected in rmw_get_service_names_and_types() and
+ *   rmw_get_service_names_and_types_by_node() outcome.
+ * - A service client joins or leaves the ROS graph.
+ *   This change will be reflected in rmw_get_service_names_and_types() and
+ *   rmw_get_client_names_and_types_by_node() outcome.
+ * - A service client matches a service server with compatible QoS policies.
+ *   This change will be reflected in rmw_service_server_is_available() outcome.
+ *
+ * \note The state of the ROS graph, and any changes that may take place,
+ *   are reported as seen by the associated `node`.
  *
  * The guard condition is owned and internally held by the `node`.
- * It will be invalidated if `node` is finalized using rmw_destroy_node(),
- * or if rmw_shutdown() is called on the context `node` was created in.
+ * It will be invalidated if `node` is finalized using rmw_destroy_node().
  * It is undefined behavior to use an invalidated guard condition.
  *
  * <hr>
@@ -219,9 +242,10 @@ rmw_node_assert_liveliness(const rmw_node_t * node);
  * Lock-Free          | Yes
  *
  * \pre Given `node` must be a valid node handle, as returned by rmw_create_node().
- * \param[in] node Node handle to retrieve the guard condition from.
- * \return Guard condition handle if successful, or `NULL` if `node` is NULL or an
- *   unspecified error occurs.
+ *
+ * \param[in] node Node to retrieve the guard condition from.
+ * \return Guard condition if successful, or `NULL` if
+ *   `node` is `NULL`, or an unspecified error occurs.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -2034,7 +2058,7 @@ rmw_wait(
  *   such as an invalid argument, or in an unknown yet valid state if it fails due to
  *   a runtime error.
  *
- * \param[in] node Handle to node to use to query the ROS graph.
+ * \param[in] node Node to query the ROS graph.
  * \param[out] node_names Array of discovered node names, populated on success.
  *   It is up to the caller to finalize this array later on, using rcutils_string_array_fini().
  * \param[out] node_namespaces Array of discovered node namespaces, populated on success.
@@ -2097,7 +2121,7 @@ rmw_get_node_names(
  *   such as an invalid argument, or in an unknown yet valid state if it fails due to
  *   a runtime error.
  *
- * \param[in] node Handle to node to use to query the ROS graph
+ * \param[in] node Node to query the ROS graph.
  * \param[out] node_names Array of discovered node names, populated on success.
  *   It is up to the caller to finalize this array later on, using rcutils_string_array_fini().
  * \param[out] node_namespaces Array of discovered node namespaces, populated on success.

@@ -61,7 +61,7 @@ extern "C"
  * \pre Given `services_names_and_types` must be a zero-initialized array of names and types,
  *   as returned by rmw_get_zero_initialized_names_and_types().
  *
- * \param[in] node Node handle to query the ROS graph.
+ * \param[in] node Node to query the ROS graph.
  * \param[in] allocator Allocator to be used when populating the `service_names_and_types` array.
  * \param[out] service_names_and_types Array of service names and their types,
  *   populated on success but left unchanged on failure.

@@ -63,7 +63,7 @@ extern "C"
  * \pre Given `publishers_info` must be a zero-initialized array of endpoints' information,
  *   as returned by rmw_get_zero_initialized_topic_endpoint_info_array().
  *
- * \param[in] node Node handle to query the ROS graph.
+ * \param[in] node Node to query the ROS graph.
  * \param[in] allocator Allocator to be used when populating the `publishers_info` array.
  * \param[in] topic_name Name of the topic for publisher lookup, often a fully qualified
  *   topic name but not necessarily (see rmw_create_publisher()).
@@ -133,7 +133,7 @@ rmw_get_publishers_info_by_topic(
  * \pre Given `subscriptions_info` must be a zero-initialized array of endpoints' information,
  *   as returned by rmw_get_zero_initialized_topic_endpoint_info_array().
  *
- * \param[in] node Node handle to query the ROS graph.
+ * \param[in] node Node to query the ROS graph.
  * \param[in] allocator Allocator to be used when populating the `subscriptions_info` array.
  * \param[in] topic_name Name of the topic for subscription lookup, often a fully qualified
  *   topic name but not necessarily (see rmw_create_subscription()).
