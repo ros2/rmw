@@ -1987,7 +1987,7 @@ rmw_destroy_wait_set(rmw_wait_set_t * wait_set);
 /// Waits on sets of different entities and returns when one is ready.
 /**
  * This function adds middleware-specific conditions to the wait set and waits
- * until one comes ready, or until the timeout is reached.
+ * until one or more become ready, or until the timeout is reached.
  *
  * \remark Elapsed time is measured against the system clock.
  *   Timeout granularity is thus bound to that of the aforementioned clock and,
