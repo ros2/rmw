@@ -244,6 +244,7 @@ rmw_node_get_graph_guard_condition(const rmw_node_t * node);
  * \param[in] message_bounds Bounds structure of the message to be preallocated.
  * \param[out] allocation Allocation structure to be passed to `rmw_publish`.
  * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_UNSUPPORTED` if it's unimplemented
  * \return `RMW_RET_INVALID_ARGUMENT` if an argument is null, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
@@ -261,6 +262,7 @@ rmw_init_publisher_allocation(
  *
  * \param[in] allocation Allocation object to be destroyed.
  * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_UNSUPPORTED` if it's unimplemented
  * \return `RMW_RET_INVALID_ARGUMENT` if argument is null, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
@@ -871,6 +873,7 @@ rmw_deserialize(
  * \param[in] message_bounds Bounds structure of the message to be preallocated.
  * \param[out] allocation Allocation structure to be passed to `rmw_take`.
  * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_UNSUPPORTED` if it's unimplemented
  * \return `RMW_RET_INVALID_ARGUMENT` if an argument is null, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
@@ -888,6 +891,7 @@ rmw_init_subscription_allocation(
  *
  * \param[in] allocation Allocation object to be destroyed.
  * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_UNSUPPORTED` if it's unimplemented
  * \return `RMW_RET_INVALID_ARGUMENT` if argument is null, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
