@@ -1781,12 +1781,67 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_client(rmw_node_t * node, rmw_client_t * client);
 
-/// Send a service request to the rmw server
+/// Send a ROS service request.
 /**
- * \param[in] client The connected client over which to send this request
- * \param[in] ros_request the request message to send to the server
- * \param[out] sequence_id A unique identification value to identify this request
- * \return RMW_RET_OK if successful, otherwise an appropriate error code
+ * Send a ROS service request to one or more service servers, with matching QoS policies,
+ * using the given client.
+ *
+ * \note It is implementation defined how many service requests may get the same request,
+ *   considering there may be more than one service server for the same client in the ROS graph.
+ *
+ * On success, this function will return a sequence number.
+ * It is up to callers to keep that sequence number to pair the ROS service request just sent
+ * with future ROS service responses, to be taken using rmw_take_response().
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ *
+ * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   It is implementation defined whether to send a ROS service request is a
+ *   synchronous or asynchronous, blocking or non-blocking operation.
+ *   However, asynchronous implementations are not allowed to access the
+ *   given ROS service request after this function returns.
+ *   Check the implementation documentation to learn about request behavior.
+ *
+ * \par Memory allocation
+ *   It is implementation defined whether memory will be allocated on send or not.
+ *   For instance, implementations that serialize ROS service requests may need to
+ *   perform additional memory allocations when dealing with unbounded (dynamically-sized)
+ *   fields.
+ *
+ * \par Thread-safety
+ *   Service clients are thread-safe objects, and so are all operations on them except for
+ *   finalization.
+ *   Therefore, it is safe to send requests using the same service client concurrently.
+ *   However:
+ *   - Access to the given ROS service request is read-only but it is not synchronized.
+ *     Concurrent `ros_request` reads are safe, but concurrent reads and writes are not.
+ *   - Access to given primitive data-type arguments is not synchronized.
+ *     It is not safe to read or write `sequence_id` while rmw_send_request() uses it.
+ *
+ * \pre Given `client` must be a valid client, as returned by rmw_create_client().
+ * \pre Given `ros_request` must be a valid service request, whose type matches the
+ *   service type support registered with the `client` on creation.
+ *
+ * \param[in] client Service client to send a request with.
+ * \param[in] ros_request ROS service request to be sent.
+ * \param[out] sequence_id Sequence number for the `ros_request` just sent
+ *   i.e. a unique identification number for it, populated on success.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `client` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `ros_request` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `sequence_id` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `client`
+ *   implementation identifier does not match this implementation, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -1796,13 +1851,83 @@ rmw_send_request(
   const void * ros_request,
   int64_t * sequence_id);
 
-/// Attempt to get the response from a service request
+/// Take an incoming ROS service response.
 /**
- * \param[in] client The connected client to check on this request
- * \param[out] request_header Header response information
- * \param[out] ros_response The response of this service request,
- * \param[out] taken True if the response was taken, false otherwise
- * \return RMW_RET_OK if successful, otherwise an appropriate error code
+ * Take a ROS service response already received by the given service server, removing
+ * it from internal queues.
+ * The response header (i.e. its metadata), including, but not limited to, writer guid
+ * and sequence number, is also retrieved.
+ * Both writer guid and sequence number allow callers to pair, potentially for each
+ * remote service server, a ROS service response with its corresponding ROS service
+ * request, previously sent using rmw_send_request().
+ *
+ * \note It is implementation defined how many responses a given request may get,
+ *   considering there may be more than one service server for the same client
+ *   in the ROS graph.
+ *
+ * This function will succeed even if no ROS service request was received,
+ * but `taken` will be false.
+ *
+ * \remarks The same ROS service response cannot be taken twice.
+ *   Callers do not have to deal with duplicates.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ *
+ * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   To take a ROS service response is a synchronous operation.
+ *   It is also non-blocking, to the extent it will not wait for new ROS service responses
+ *   to arrive, but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
+ *
+ * \par Memory allocation
+ *   It is implementation defined whether memory will be allocated on take or not.
+ *   For instance, implementations that deserialize ROS service responses received over
+ *   the wire may need to perform additional memory allocations when dealing with
+ *   unbounded (dynamically-sized) fields.
+ *
+ * \par Thread-safety
+ *   Service clients are thread-safe objects, and so are all operations on them except for
+ *   finalization.
+ *   Therefore, it is safe to take responses from the same service client concurrently.
+ *   However:
+ *   - Access to the given ROS service response is not synchronized.
+ *     It is not safe to read or write `ros_response` while rmw_take_request() uses it.
+ *   - Access to the given ROS service response header is not synchronized.
+ *     It is not safe to read or write `response_header` while rmw_take_response() uses it.
+ *   - Access to given primitive data-type arguments is not synchronized.
+ *     It is not safe to read or write `taken` while rmw_take_response() uses it.
+ *
+ * \pre Given `client` must be a valid client, as returned by rmw_create_client().
+ * \pre Given `ros_response` must be a valid service response, whose type matches the
+ *   service type support registered with the `client` on creation.
+ * \post Given `ros_response` will remain a valid service response.
+ *   It will be left unchanged if this function fails early due to a logical error, such as an
+ *   invalid argument, or in an unknown yet valid state if it fails due to a runtime error.
+ *   It will also be left unchanged if this function succeeds but `taken` is false.
+ *
+ * \param[in] client Service client to take response from.
+ * \param[out] response_header Service response header to write to.
+ * \param[out] ros_request Type erased ROS service response to write to.
+ * \param[out] taken Boolean flag indicating if a ROS service response was taken or not.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `client` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `response_header` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `ros_response` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `taken` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `client`
+ *   implementation identifier does not match this implementation, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -1841,13 +1966,79 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_service(rmw_node_t * node, rmw_service_t * service);
 
-/// Attempt to take a request from this service's request buffer
+/// Take an incoming ROS service request.
 /**
- * \param[in] service service object that responds to these requests
- * \param[out] request_header Request information header with writer guid and sequence number
- * \param[out] ros_request The deserialized ros_request, and is unmodified if there are no requests
- * \param[out] taken true if the request was taken, otherwise false
- * \return RMW_RET_OK if successful, otherwise an appropriate error code
+ * Take a ROS service request already received by the given service server, removing
+ * it from internal queues.
+ * The request header (i.e. its metadata), including, but not limited to, writer guid
+ * and sequence number, is also retrieved.
+ * Both writer guid and sequence number allow callers to pair, for each remote service
+ * client, a ROS service request with its corresponding ROS service response, to be later
+ * sent using rmw_send_response().
+ *
+ * This function will succeed even if no ROS service request was received,
+ * but `taken` will be false.
+ *
+ * \remarks The same ROS service request cannot be taken twice.
+ *   Callers do not have to deal with duplicates.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ *
+ * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   To take a ROS service request is a synchronous operation.
+ *   It is also non-blocking, to the extent it will not wait for new ROS service requests
+ *   to arrive, but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
+ *
+ * \par Memory allocation
+ *   It is implementation defined whether memory will be allocated on take or not.
+ *   For instance, implementations that deserialize ROS service requests received over
+ *   the wire may need to perform additional memory allocations when dealing with
+ *   unbounded (dynamically-sized) fields.
+ *
+ * \par Thread-safety
+ *   Service servers are thread-safe objects, and so are all operations on them except for
+ *   finalization.
+ *   Therefore, it is safe to take requests from the same service server concurrently.
+ *   However:
+ *   - Access to the given ROS service request is not synchronized.
+ *     It is not safe to read or write `ros_request` while rmw_take_request() uses it.
+ *   - Access to the given ROS service request header is not synchronized.
+ *     It is not safe to read or write `request_header` while rmw_take_request() uses it.
+ *   - Access to given primitive data-type arguments is not synchronized.
+ *     It is not safe to read or write `taken` while rmw_take_request() uses it.
+ *
+ * \pre Given `service` must be a valid service, as returned by rmw_create_service().
+ * \pre Given `ros_request` must be a valid service request, whose type matches the
+ *   service type support registered with the `service` on creation.
+ * \post Given `ros_request` will remain a valid service request.
+ *   It will be left unchanged if this function fails early due to a logical error, such as an
+ *   invalid argument, or in an unknown yet valid state if it fails due to a runtime error.
+ *   It will also be left unchanged if this function succeeds but `taken` is false.
+ *
+ * \param[in] service Service server to take request from.
+ * \param[out] request_header Service request header to write to.
+ * \param[out] ros_request Type erased ROS service request to write to.
+ * \param[out] taken Boolean flag indicating if a ROS service request was taken or not.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `service` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `request_header` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `ros_request` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `taken` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `service`
+ *   implementation identifier does not match this implementation, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -1858,12 +2049,62 @@ rmw_take_request(
   void * ros_request,
   bool * taken);
 
-/// Send response to a client's request
+/// Send a ROS service response.
 /**
- * \param[in] service The service that responding to this request
- * \param[in] request_header The request header obtained when this request was taken
- * \param[in] ros_response The response message to send to the client
- * \return RMW_RET_OK if successful, otherwise an appropriate error code
+ * Send a ROS service response the service client, with matching QoS policies,
+ * from which the previously taken ROS service request was originally sent.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ *
+ * <i>[1] implementation defined, check implementation documentation.</i>
+ *
+ * \par Runtime behavior
+ *   It is implementation defined whether to send a ROS service response is a
+ *   synchronous or asynchronous, blocking or non-blocking operation.
+ *   However, asynchronous implementations are not allowed to access the
+ *   given ROS service request after this function returns.
+ *   Check the implementation documentation to learn about request behavior.
+ *
+ * \par Memory allocation
+ *   It is implementation defined whether memory will be allocated on send or not.
+ *   For instance, implementations that serialize ROS service responses may need to
+ *   perform additional memory allocations when dealing with unbounded (dynamically-sized)
+ *   fields.
+ *
+ * \par Thread-safety
+ *   Service servers are thread-safe objects, and so are all operations on them except for
+ *   finalization.
+ *   Therefore, it is safe to send responses using the same service server concurrently.
+ *   However:
+ *   - Access to the given ROS service request header is read-only but it is not synchronized.
+ *     Concurrent `request_header` reads are safe, but concurrent reads and writes are not.
+ *   - Access to the given ROS service response is read-only but it is not synchronized.
+ *     Concurrent `ros_request` reads are safe, but concurrent reads and writes are not.
+ *
+ * \pre Given `service` must be a valid service server, as returned by rmw_create_service().
+ * \pre Given `request_header` must be the one previously taken along with the ROS service
+ *   request to which we reply.
+ * \pre Given `ros_response` must be a valid service response, whose type matches the
+ *   service type support registered with the `service` on creation.
+ *
+ * \param[in] client Service server to send a response with.
+ * \param[in] request_header Service response header, same as the one taken
+ *   with the corresponding ROS service request.
+ * \param[in] ros_response ROS service response to be sent.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `service` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `request_header` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `ros_response` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `service`
+ *   implementation identifier does not match this implementation, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
