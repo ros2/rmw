@@ -1755,13 +1755,42 @@ rmw_return_loaned_message_from_subscription(
   const rmw_subscription_t * subscription,
   void * loaned_message);
 
-/// Create an rmw client to communicate with the specified service
+/// Create a service client that can send requests to and receive replies from a service server.
 /**
- * \param[in] node Handle to node with which to register this client
- * \param[in] type_support The type_support of this rosidl service
- * \param[in] service_name The name of the ROS 2 service to connect with
- * \param[in] qos_policies The QoS profile policies to utilize for this connection
- * \return The initialized client if successful, `nullptr` if not
+ * This function can fail, and therefore return `NULL`, if:
+ *   - `node` is `NULL`, or
+ *   - `node` does not belong to this implementation
+ *      i.e. it does not have a matching implementation identifier, or
+ *   - `type_support` is `NULL`, or
+ *   - `service_name` is `NULL`, or
+ *   - `service_name` is an empty string, or
+ *   - (if ROS namespace conventions apply) `service_name` is invalid by
+ *     rmw_validate_full_topic_name() definition, or
+ *   - `qos_profile` is `NULL`, or
+ *   - `qos_profile` has invalid or unknown policies, or
+ *   - memory allocation fails during service client creation, or
+ *   - an unspecified error occurs.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Yes
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
+ *
+ * \pre Given `node` must be a valid node, as returned by rmw_create_node().
+ * \pre Given `type_support` must be a valid `rosidl` service type support, as
+ *   returned by ROSIDL_GET_SRV_TYPE_SUPPORT().
+ *
+ * \param[in] node Node with which to register this service client.
+ * \param[in] type_support Type support of the service to be used.
+ * \param[in] service_name Name of the service to be used, often a fully qualified
+ *   service name unless `qos_profile` is configured to avoid ROS namespace conventions
+ *   i.e. to create a native service client.
+ * \param[in] qos_profile QoS policies for this service client's connections.
+ * \return rmw service client handle, or `NULL` if there was an error.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -1772,11 +1801,36 @@ rmw_create_client(
   const char * service_name,
   const rmw_qos_profile_t * qos_policies);
 
-/// Destroy and unregister a service client
+/// Destroy and unregister a service client from its node.
 /**
- * \param[in] node The associated node whose client will be destroyed
- * \param[in] client The service client to destroy
- * \return RMW_RET_OK if successful, otherwise an appropriate error code
+ * This function will reclaim all associated resources, including the service client itself.
+ * Use of a destroyed service client is undefined behavior.
+ * This function will return early if a logical error, such as `RMW_RET_INVALID_ARGUMENT`
+ * or `RMW_RET_INCORRECT_RMW_IMPLEMENTATION`, ensues, leaving the given service client unchanged.
+ * Otherwise, it will proceed despite errors.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
+ *
+ * \pre Given `node` must be the one the service client was registered with.
+ * \pre Given `client` must be a valid service client, as returned by rmw_create_service().
+ *
+ * \param[in] node Node with which the given service client is registered.
+ * \param[in] client Service client to be destroyed.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `node` is `NULL`, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `client` is `NULL`, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `node`
+ *   implementation identifier does not match this implementation, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `client`
+ *   implementation identifier does not match this implementation, or
+ * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -1815,13 +1869,42 @@ rmw_take_response(
   void * ros_response,
   bool * taken);
 
-/// Create an rmw service server that responds to requests
+/// Create a service server that can receive requests from and send replies to a service client.
 /**
- * \param[in] node The node that responds the service requests
- * \param[in] type_support The type support description of this service
- * \param[in] service_name The name of this service advertised across the ROS graph
- * \param[in] qos_policies The QoS profile policies to utilize for connections
- * \return The created service object if successful, otherwise a nullptr
+ * This function can fail, and therefore return `NULL`, if:
+ *   - `node` is `NULL`, or
+ *   - `node` does not belong to this implementation
+ *     i.e. it does not have a matching implementation identifier, or
+ *   - `type_support` is `NULL`, or
+ *   - `service_name` is `NULL`, or
+ *   - `service_name` is an empty string, or
+ *   - (if ROS namespace conventions apply) `service_name` is invalid by
+ *     rmw_validate_full_topic_name() definition, or
+ *   - `qos_profile` is `NULL`, or
+ *   - `qos_profile` has invalid or unknown policies, or
+ *   - memory allocation fails during service server creation, or
+ *   - an unspecified error occurs
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Yes
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
+ *
+ * \pre Given `node` must be a valid node, as returned by rmw_create_node().
+ * \pre Given `type_support` must be a valid `rosidl` service type support, as
+ *   returned by ROSIDL_GET_SRV_TYPE_SUPPORT().
+ *
+ * \param[in] node Node with which to register this service server.
+ * \param[in] type_support Type support of the service to be served.
+ * \param[in] service_name Name of the service to be served, often a fully qualified
+ *   service name unless `qos_profile` is configured to avoid ROS namespace conventions
+ *   i.e. to create a native service server.
+ * \param[in] qos_profile QoS policies for this service server's connections.
+ * \return rmw service handle, or `NULL` if there was an error.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -1830,13 +1913,38 @@ rmw_create_service(
   const rmw_node_t * node,
   const rosidl_service_type_support_t * type_support,
   const char * service_name,
-  const rmw_qos_profile_t * qos_policies);
+  const rmw_qos_profile_t * qos_profile);
 
-/// Destroy and unregister the service from this node
+/// Destroy and unregister a service server from its node.
 /**
- * \param[in] node The node that owns the service that is being destroyed
- * \param[in] service Pointer to the service type created in `rmw_create_service`
- * \return RMW_RET_OK if successful, otherwise an appropriate error code
+ * This function will reclaim all associated resources, including the service server itself.
+ * Use of a destroyed service server is undefined behavior.
+ * This function will return early if a logical error, such as `RMW_RET_INVALID_ARGUMENT`
+ * or `RMW_RET_INCORRECT_RMW_IMPLEMENTATION`, ensues, leaving the given service server unchanged.
+ * Otherwise, it will proceed despite errors.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
+ *
+ * \pre Given `node` must be the one the service server was registered with.
+ * \pre Given `service` must be a valid service server, as returned by rmw_create_service().
+ *
+ * \param[in] node Node with which the given service server is registered.
+ * \param[in] service Service server to be destroyed.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `node` is `NULL`, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `service` is `NULL`, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `node`
+ *   implementation identifier does not match this implementation, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `service`
+ *   implementation identifier does not match this implementation, or
+ * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
