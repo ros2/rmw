@@ -1786,8 +1786,9 @@ rmw_destroy_client(rmw_node_t * node, rmw_client_t * client);
  * Send a ROS service request to one or more service servers, with matching QoS policies,
  * using the given client.
  *
- * \note It is implementation defined how many service requests may get the same request,
- *   considering there may be more than one service server for the same client in the ROS graph.
+ * \note It is implementation defined how many service servers may get, and potentially react to,
+ *   the same request, considering there may be more than one server for the same service
+ *   in the ROS graph.
  *
  * On success, this function will return a sequence number.
  * It is up to callers to keep that sequence number to pair the ROS service request just sent
@@ -1862,8 +1863,7 @@ rmw_send_request(
  * request, previously sent using rmw_send_request().
  *
  * \note It is implementation defined how many responses a given request may get,
- *   considering there may be more than one service server for the same client
- *   in the ROS graph.
+ *   considering there may be more than one server for the same service in the ROS graph.
  *
  * This function will succeed even if no ROS service request was received,
  * but `taken` will be false.
