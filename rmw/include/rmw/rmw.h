@@ -202,19 +202,38 @@ rmw_node_assert_liveliness(const rmw_node_t * node);
 
 /// Return a guard condition which is triggered when the ROS graph changes.
 /**
- * The handle returned is a pointer to an internally held rmw guard condition.
- * This function can fail, and therefore return `NULL`, if:
- *   - node is `NULL`
- *   - node is invalid
+ * The guard condition will be triggered anytime a change to the ROS graph occurs.
+ * A ROS graph change occurs whenever:
+ * - A node joins or leaves the ROS graph.
+ *   This change will be reflected in rmw_get_node_names() and
+ *   rmw_get_node_names_with_enclaves() outcome.
+ * - A topic subscription joins or leaves the ROS graph.
+ *   This change will be reflected in rmw_get_topic_names_and_types(),
+ *   rmw_get_subscriber_names_and_types_by_node(), and
+ *   rmw_get_subscriptions_info_by_topic() outcome.
+ * - A topic publisher joins or leaves the ROS graph.
+ *   This change will be reflected in rmw_get_topic_names_and_types(),
+ *   rmw_get_publisher_names_and_types_by_node(), and
+ *   rmw_get_publishers_info_by_topic() outcome.
+ * - A topic subscription matches a topic publisher with compatible QoS policies.
+ *   This change will be reflected in rmw_subscription_count_matched_publishers() outcome.
+ * - A topic publisher matches a topic subscription with compatible QoS policies.
+ *   This change will be reflected in rmw_publisher_count_matched_subscriptions() outcome.
+ * - A service server joins or leaves the ROS graph.
+ *   This change will be reflected in rmw_get_service_names_and_types() and
+ *   rmw_get_service_names_and_types_by_node() outcome.
+ * - A service client joins or leaves the ROS graph.
+ *   This change will be reflected in rmw_get_service_names_and_types() and
+ *   rmw_get_client_names_and_types_by_node() outcome.
+ * - A service client matches a service server with compatible QoS policies.
+ *   This change will be reflected in rmw_service_server_is_available() outcome.
  *
- * The returned handle is made invalid if the node is destroyed or if
- * rmw_shutdown() is called.
+ * \note The state of the ROS graph, and any changes that may take place,
+ *   are reported as seen by the associated `node`.
  *
- * The guard condition will be triggered anytime a change to the ROS graph
- * occurs.
- * A ROS graph change includes things like (but not limited to) a new publisher
- * advertises, a new subscription is created, a new service becomes available,
- * a subscription is canceled, etc.
+ * The guard condition is owned and internally held by the `node`.
+ * It will be invalidated if `node` is finalized using rmw_destroy_node().
+ * It is undefined behavior to use an invalidated guard condition.
  *
  * <hr>
  * Attribute          | Adherence
@@ -224,8 +243,11 @@ rmw_node_assert_liveliness(const rmw_node_t * node);
  * Uses Atomics       | No
  * Lock-Free          | Yes
  *
- * \param[in] node pointer to the rmw node
- * \return rmw guard condition handle if successful, otherwise `NULL`
+ * \pre Given `node` must be a valid node handle, as returned by rmw_create_node().
+ *
+ * \param[in] node Node to retrieve the guard condition from.
+ * \return Guard condition if successful, or `NULL` if
+ *   `node` is `NULL`, or an unspecified error occurs.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
@@ -2110,31 +2132,60 @@ rmw_wait(
   rmw_wait_set_t * wait_set,
   const rmw_time_t * wait_timeout);
 
-/// Return a list of node name and namespaces discovered via a node.
+/// Return the name and namespace of all nodes in the ROS graph.
 /**
- * This function will return a list of node names and a list of node namespaces
- * that are discovered via the middleware.
- * The two lists represent pairs of namespace and name for each discovered
- * node.
- * The lists will be the same length and the same position will refer to the
- * same node across lists.
+ * This function will return an array of node names and an array of node namespaces,
+ * as discovered so far by the given node.
+ * The two arrays represent name and namespace pairs for each discovered node.
+ * Both arrays will be the same length and the same index will refer to the same node.
  *
- * The node parameter must not be `NULL`, and must point to a valid node.
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Yes
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] implementation defined, check the implementation documentation</i>
  *
- * The node_names parameter must not be `NULL`, and must point to a valid
- * string array.
+ * \par Runtime behavior
+ *   To query the ROS graph is a synchronous operation.
+ *   It is also non-blocking, but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
  *
- * The node_namespaces parameter must not be `NULL`, and must point to a
- * valid string array.
+ * \par Thread-safety
+ *   Nodes are thread-safe objects, and so are all operations on them except for finalization.
+ *   Therefore, it is safe to query the ROS graph using the same node concurrently.
+ *   However, access to string arrays is not synchronized.
+ *   It is not safe to read or write `node_names` nor `node_namespaces`
+ *   while rmw_get_node_names() uses them.
  *
- * This function does manipulate heap memory.
- * This function is not thread-safe.
- * This function is lock-free.
+ * \pre Given `node` must be a valid node handle, as returned by rmw_create_node().
+ * \pre Given `node_names` must be a valid string array, zero-initialized
+ *   as returned by rcutils_get_zero_initialized_string_array().
+ * \pre Given `node_namespaces` must be a valid string array, zero-initialized
+ *   as returned by rcutils_get_zero_initialized_string_array().
+ * \post Given `node_names` and `node_namespaces` will remain valid arrays.
+ *   These will be left unchanged if this function fails early due to a logical error,
+ *   such as an invalid argument, or in an unknown yet valid state if it fails due to
+ *   a runtime error.
  *
- * \param[in] node the handle to the node being used to query the ROS graph
- * \param[out] node_names a list of discovered node names
- * \param[out] node_namespaces a list of discovered node namespaces
- * \return `RMW_RET_OK` if node the query was made successfully, or
+ * \param[in] node Node to query the ROS graph.
+ * \param[out] node_names Array of discovered node names, populated on success.
+ *   It is up to the caller to finalize this array later on, using rcutils_string_array_fini().
+ * \param[out] node_namespaces Array of discovered node namespaces, populated on success.
+ *   It is up to the caller to finalize this array later on, using rcutils_string_array_fini().
+ * \return `RMW_RET_OK` if the query was successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `node` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `node_names` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `node_names` is not a zero-initialized array, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `node_namespaces` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `node_namespaces` is not a zero-initialized array, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `node` implementation
+ *   identifier does not match this implementation, or
+ * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
  * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */
 RMW_PUBLIC
@@ -2145,15 +2196,63 @@ rmw_get_node_names(
   rcutils_string_array_t * node_names,
   rcutils_string_array_t * node_namespaces);
 
-/// Return a list of node name and namespaces discovered via a node with its enclave.
+/// Return the name, namespae, and enclave name of all nodes in the ROS graph.
 /**
- * Similar to \ref rmw_get_node_names, but it also provides the enclave name.
+ * This is similar to rmw_get_node_names(), but it also provides enclave names.
  *
- * \param[in] node the handle to the node being used to query the ROS graph
- * \param[out] node_names a list of discovered node names
- * \param[out] node_namespaces a list of discovered node namespaces
- * \param[out] enclaves list of discovered nodes' enclave names
- * \return `RMW_RET_OK` if node the query was made successfully, or
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Yes
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] implementation defined, check the implementation documentation</i>
+ *
+ * \par Runtime behavior
+ *   To query the ROS graph is a synchronous operation.
+ *   It is also non-blocking, but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
+ *
+ * \par Thread-safety
+ *   Nodes are thread-safe objects, and so are all operations on them except for finalization.
+ *   Therefore, it is safe to query the ROS graph using the same node concurrently.
+ *   However, access to string arrays is not synchronized.
+ *   It is not safe to read or write `node_names`, `node_namespaces`, nor `enclaves`
+ *   while rmw_get_node_names_with_enclaves() uses them.
+ *
+ * \pre Given `node` must be a valid node handle, as returned by rmw_create_node().
+ * \pre Given `node_names` must be a valid string array, zero-initialized
+ *   as returned by rcutils_get_zero_initialized_string_array().
+ * \pre Given `node_namespaces` must be a valid string array, zero-initialized
+ *   as returned by rcutils_get_zero_initialized_string_array().
+ * \pre Given `enclaves` must be a zero-initialized string array,
+ *   as returned by rcutils_get_zero_initialized_string_array().
+ * \post Given `node_names`, `node_namespaces`, and `enclaves` will remain valid arrays.
+ *   These will be left unchanged if this function fails early due to a logical error,
+ *   such as an invalid argument, or in an unknown yet valid state if it fails due to
+ *   a runtime error.
+ *
+ * \param[in] node Node to query the ROS graph.
+ * \param[out] node_names Array of discovered node names, populated on success.
+ *   It is up to the caller to finalize this array later on, using rcutils_string_array_fini().
+ * \param[out] node_namespaces Array of discovered node namespaces, populated on success.
+ *   It is up to the caller to finalize this array later on, using rcutils_string_array_fini().
+ * \param[out] enclaves Array of discovered node enclave names, populated on success.
+ *   It is up to the caller to finalize this array later on, using rcutils_string_array_fini().
+ * \return `RMW_RET_OK` if the query was successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `node` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `node_names` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `node_names` is not a zero-initialized array, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `node_namespaces` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `node_namespaces` is not a zero-initialized array, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `enclaves` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `enclaves` is not a zero-initialized array, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `node` implementation
+ *   identifier does not match this implementation, or
+ * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
  * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */
 RMW_PUBLIC
@@ -2165,13 +2264,49 @@ rmw_get_node_names_with_enclaves(
   rcutils_string_array_t * node_namespaces,
   rcutils_string_array_t * enclaves);
 
-/// Count the number of publishers matching a topic name
+/// Count the number of known publishers matching a topic name.
 /**
-* \param[in] node rmw node connected to the ROS graph
-* \param[in] topic_name The name of the topic to match under possible prefixes
-* \param[out] count The number of publishers matching the topic name
-* \return RMW_RET_OK if successful, otherwise an appropriate error code
-*/
+ * This function returns the numbers of publishers of a given topic in the ROS graph,
+ * as discovered so far by the given node.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] implementation defined, check the implementation documentation</i>
+ *
+ * \par Runtime behavior
+ *   To query the ROS graph is a synchronous operation.
+ *   It is also non-blocking, but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
+ *
+ * \par Thread-safety
+ *   Nodes are thread-safe objects, and so are all operations on them except for finalization.
+ *   Therefore, it is to query the ROS graph using the same node concurrently.
+ *   However, access to primitive data-type arguments is not synchronized.
+ *   It is not safe to read or write `topic_name` or `count` while rmw_count_publishers()
+ *   uses them.
+ *
+ * \pre Given `node` must be a valid node handle, as returned by rmw_create_node().
+ *
+ * \param[in] node Handle to node to use to query the ROS graph.
+ * \param[in] topic_name Fully qualified ROS topic name.
+ * \param[out] count Number of publishers matching the given topic name.
+ * \return `RMW_RET_OK` if the query was successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `node` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `topic_name` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `topic_name` is not a fully qualified topic name,
+ *   by rmw_validate_full_topic_name() definition, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `count` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `node` implementation
+ *   identifier does not match this implementation, or
+ * \return `RMW_RET_ERROR` if an unspecified error occurs.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -2180,12 +2315,48 @@ rmw_count_publishers(
   const char * topic_name,
   size_t * count);
 
-/// Count the number of subscribers matching a topic name
+/// Count the number of known subscribers matching a topic name.
 /**
- * \param[in] node rmw node connected to the ROS graph
- * \param[in] topic_name The name of the topic to match under possible prefixes
- * \param[out] count The number of subscribers matching the topic name
- * \return RMW_RET_OK if successful, otherwise an appropriate error code
+ * This function returns the numbers of subscribers of a given topic in the ROS graph,
+ * as discovered so far by the given node.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] implementation defined, check the implementation documentation</i>
+ *
+ * \par Runtime behavior
+ *   To query the ROS graph is a synchronous operation.
+ *   It is also non-blocking, but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
+ *
+ * \par Thread-safety
+ *   Nodes are thread-safe objects, and so are all operations on them except for finalization.
+ *   Therefore, it is to query the ROS graph using the same node concurrently.
+ *   However, access to primitive data-type arguments is not synchronized.
+ *   It is not safe to read or write `topic_name` or `count` while rmw_count_subscribers()
+ *   uses them.
+ *
+ * \pre Given `node` must be a valid node handle, as returned by rmw_create_node().
+ *
+ * \param[in] node Handle to node to use to query the ROS graph.
+ * \param[in] topic_name Fully qualified ROS topic name.
+ * \param[out] count Number of subscribers matching the given topic name.
+ * \return `RMW_RET_OK` if the query was successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `node` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `topic_name` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `topic_name` is not a fully qualified topic name,
+ *   by rmw_validate_full_topic_name() definition, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `count` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `node` implementation
+ *   identifier does not match this implementation, or
+ * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
