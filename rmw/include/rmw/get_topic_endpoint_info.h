@@ -23,42 +23,65 @@ extern "C"
 #include "rmw/topic_endpoint_info_array.h"
 #include "rmw/visibility_control.h"
 
-/// Retrieve the information for all publishers to a given topic.
+/// Retrieve endpoint information for each known publisher of a given topic.
 /**
- * The retrieved information will contain the publisher's node name, node namespace,
- * associated topic type, publisher gid and qos profile.
+ * This function returns an array of endpoint information for each publisher
+ * of a given topic, as discovered so far by the given node.
+ * Endpoint information includes the publisher's node name and namespace,
+ * the associated topic type, the publisher's gid, and the publisher QoS profile.
+ * Names of non-existent topics are allowed, in which case an empty array will be returned.
  *
- * The node parameter must not be `NULL` and must point to a valid node.
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Yes
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
  *
- * The topic_name parameter must not be `NULL` and must follow the topic naming rules
- * mentioned at http://design.ros2.org/articles/topic_and_service_names.html
- * Names of non-existent topics are allowed.
- * In that case, this function will return an empty array.
+ * \par Runtime behavior
+ *   To query the ROS graph is a synchronous operation.
+ *   It is also non-blocking, but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
  *
- * It is the responsibility of the caller to ensure that `publishers_info` parameter points
- * to a valid struct of type rmw_topic_endpoint_info_array_t.
- * The rmw_topic_endpoint_info_array_t struct must be zero initialized.
- * \see rmw_get_zero_initialized_topic_endpoint_info_array
+ * \par Thread-safety
+ *   Nodes are thread-safe objects, and so are all operations on them except for finalization.
+ *   Therefore, it is safe to query the ROS graph using the same node concurrently.
+ *   However, when querying topic names and types:
+ *   - Access to the array of topic endpoint information is not synchronized.
+ *     It is not safe to read or write `publishers_info`
+ *     while rmw_get_publishers_info_by_topic() uses it.
+ *   - Access to C-style string arguments is read-only but it is not synchronized.
+ *     Concurrent `topic_name` reads are safe, but concurrent reads and writes are not.
+ *   - The default allocators are thread-safe objects, but any custom `allocator` may not be.
+ *     Check your allocator documentation for further reference.
  *
- * The `allocator` will be used to allocate memory to the `info_array` member
- * inside of `publishers_info`.
- * Moreover, every `const char *` member inside of
- * rmw_topic_endpoint_info_t will be assigned a copied value on allocated memory.
- * \see rmw_topic_endpoint_info_set_topic_type
- * \see rmw_topic_endpoint_info_set_node_name
- * \see rmw_topic_endpoint_info_set_node_namespace
- * However, it is the responsibility of the caller to
- * reclaim any allocated resources to `publishers_info` to avoid leaking memory.
- * \see rmw_topic_endpoint_info_array_fini
+ * \pre Given `node` must be a valid node handle, as returned by rmw_create_node().
+ * \pre Given `publishers_info` must be a zero-initialized array of endpoints' information,
+ *   as returned by rmw_get_zero_initialized_topic_endpoint_info_array().
  *
- * \param[in] node the handle to the node being used to query the ROS graph.
- * \param[in] allocator the allocator to be used when allocating space for the array.
- * \param[in] topic_name the name of the topic for which the list of publishers will be retrieved.
- * \param[in] no_mangle if true, the topic name will not be mangled.
- * \param[out] publishers_info an array of rmw_topic_endpoint_info_t.
+ * \param[in] node Node to query the ROS graph.
+ * \param[in] allocator Allocator to be used when populating the `publishers_info` array.
+ * \param[in] topic_name Name of the topic for publisher lookup, often a fully qualified
+ *   topic name but not necessarily (see rmw_create_publisher()).
+ * \param[in] no_mangle Whether to mangle the topic name before publisher lookup or not.
+ * \param[out] publishers_info Array of publisher information, populated on success,
+ *   left unchanged on failure.
+ *   If populated, it is up to the caller to finalize this array later on,
+ *   using rmw_topic_endpoint_info_array_fini().
  * \return `RMW_RET_OK` if the query was successful, or
- * \return `RMW_RET_INVALID_ARGUMENT` if the node is invalid, or
- * \return `RMW_RET_INVALID_ARGUMENT` if any arguments are invalid, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `node` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `allocator` is not valid,
+ *   by rcutils_allocator_is_valid() definition, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `topic_name` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `publishers_info` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `publishers_info` is not a
+ *   zero-initialized array, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `node` implementation
+ *   identifier does not match this implementation, or
  * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
  * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */
@@ -72,42 +95,63 @@ rmw_get_publishers_info_by_topic(
   bool no_mangle,
   rmw_topic_endpoint_info_array_t * publishers_info);
 
-/// Retrieve the information for all subscriptions to a given topic.
+/// Retrieve endpoint information for each known subscription of a given topic.
 /**
- * The retrieved information will contain the subscriptions's node name, node namespace,
- * associated topic type, subscription gid and qos profile.
+ * This function returns an array of endpoint information for each subscription
+ * of a given topic, as discovered so far by the given node.
+ * Endpoint information includes the subscription's node name and namespace,
+ * the associated topic type, the subscription's gid, and the subscription QoS profile.
+ * Names of non-existent topics are allowed, in which case an empty array will be returned.
  *
- * The node parameter must not be `NULL` and must point to a valid node.
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Yes
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
  *
- * The topic_name parameter must not be `NULL` and must follow the topic naming rules
- * mentioned at http://design.ros2.org/articles/topic_and_service_names.html
- * Names of non-existent topics are allowed.
- * They will return an empty array.
+ * \par Runtime behavior
+ *   To query the ROS graph is a synchronous operation.
+ *   It is also non-blocking, but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
  *
- * It is the responsibility of the caller to ensure that `subscriptions_info` parameter points
- * to a valid struct of type rmw_topic_endpoint_info_array_t.
- * The rmw_topic_endpoint_info_array_t struct must be zero initialized.
- * \see rmw_get_zero_initialized_topic_endpoint_info_array
+ * \par Thread-safety
+ *   Nodes are thread-safe objects, and so are all operations on them except for finalization.
+ *   Therefore, it is safe to query the ROS graph using the same node concurrently.
+ *   However, when querying subscriptions' information:
+ *   - Access to the array of topic endpoint information is not synchronized.
+ *     It is not safe to read or write `subscriptions_info`
+ *     while rmw_get_subscriptions_info_by_topic() uses it.
+ *   - The default allocators are thread-safe objects, but any custom `allocator` may not be.
+ *     Check your allocator documentation for further reference.
  *
- * The `allocator` will be used to allocate memory to the `info_array` member
- * inside of `publishers_info`.
- * Moreover, every `const char *` member inside of
- * rmw_topic_endpoint_info_t will be assigned a copied value on allocated memory.
- * \see rmw_topic_endpoint_info_set_topic_type
- * \see rmw_topic_endpoint_info_set_node_name
- * \see rmw_topic_endpoint_info_set_node_namespace
- * However, it is the responsibility of the caller to
- * reclaim any allocated resources to `publishers_info` to avoid leaking memory.
- * \see rmw_topic_endpoint_info_array_fini
+ * \pre Given `node` must be a valid node handle, as returned by rmw_create_node().
+ * \pre Given `subscriptions_info` must be a zero-initialized array of endpoints' information,
+ *   as returned by rmw_get_zero_initialized_topic_endpoint_info_array().
  *
- * \param[in] node the handle to the node being used to query the ROS graph.
- * \param[in] allocator the allocator to be used when allocating space for the array.
- * \param[in] topic_name the name of the topic for which the list of subscriptions will be retrieved.
- * \param[in] no_mangle if true, the topic name will not be mangled.
- * \param[out] subscriptions_info an array of rmw_topic_endpoint_info_t..
+ * \param[in] node Node to query the ROS graph.
+ * \param[in] allocator Allocator to be used when populating the `subscriptions_info` array.
+ * \param[in] topic_name Name of the topic for subscription lookup, often a fully qualified
+ *   topic name but not necessarily (see rmw_create_subscription()).
+ * \param[in] no_mangle Whether to mangle the topic name before subscription lookup or not.
+ * \param[out] publishers_info Array of subscription information, populated on success,
+ *   left unchanged on failure.
+ *   If populated, it is up to the caller to finalize this array later on,
+ *   using rmw_topic_endpoint_info_array_fini().
  * \return `RMW_RET_OK` if the query was successful, or
- * \return `RMW_RET_INVALID_ARGUMENT` if the node is invalid, or
- * \return `RMW_RET_INVALID_ARGUMENT` if any arguments are invalid, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `node` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `allocator` is not valid,
+ *   by rcutils_allocator_is_valid() definition, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `topic_name` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `subscriptions_info` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `subscriptions_info` is not a
+ *   zero-initialized array, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `node` implementation
+ *   identifier does not match this implementation, or
  * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
  * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */
