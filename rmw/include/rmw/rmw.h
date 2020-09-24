@@ -1791,8 +1791,8 @@ rmw_destroy_client(rmw_node_t * node, rmw_client_t * client);
  *   in the ROS graph.
  *
  * On success, this function will return a sequence number.
- * It is up to callers to keep that sequence number to pair the ROS service request just sent
- * with future ROS service responses, to be taken using rmw_take_response().
+ * It is up to callers to save the returned sequence number to pair the ROS service request
+ * just sent with future ROS service responses (taken using rmw_take_response()).
  *
  * <hr>
  * Attribute          | Adherence
@@ -1805,8 +1805,8 @@ rmw_destroy_client(rmw_node_t * node, rmw_client_t * client);
  * <i>[1] implementation defined, check implementation documentation.</i>
  *
  * \par Runtime behavior
- *   It is implementation defined whether to send a ROS service request is a
- *   synchronous or asynchronous, blocking or non-blocking operation.
+ *   It is implementation defined whether sending a ROS service request is a
+ *   synchronous or asynchronous, and blocking or non-blocking, operation.
  *   However, asynchronous implementations are not allowed to access the
  *   given ROS service request after this function returns.
  *   Check the implementation documentation to learn about request behavior.
@@ -1856,8 +1856,8 @@ rmw_send_request(
 /**
  * Take a ROS service response already received by the given service server, removing
  * it from internal queues.
- * The response header (i.e. its metadata), including, but not limited to, writer guid
- * and sequence number, is also retrieved.
+ * The response header (i.e. its metadata), containing at least the writer guid and
+ * sequence number, is also retrieved.
  * Both writer guid and sequence number allow callers to pair, potentially for each
  * remote service server, a ROS service response with its corresponding ROS service
  * request, previously sent using rmw_send_request().
@@ -1882,7 +1882,7 @@ rmw_send_request(
  * <i>[1] implementation defined, check implementation documentation.</i>
  *
  * \par Runtime behavior
- *   To take a ROS service response is a synchronous operation.
+ *   Taking a ROS service response is a synchronous operation.
  *   It is also non-blocking, to the extent it will not wait for new ROS service responses
  *   to arrive, but it is not guaranteed to be lock-free.
  *   Generally speaking, implementations may synchronize access to internal resources using
@@ -1970,8 +1970,8 @@ rmw_destroy_service(rmw_node_t * node, rmw_service_t * service);
 /**
  * Take a ROS service request already received by the given service server, removing
  * it from internal queues.
- * The request header (i.e. its metadata), including, but not limited to, writer guid
- * and sequence number, is also retrieved.
+ * The request header (i.e. its metadata), containing at least the writer guid and
+ * sequence number, is also retrieved.
  * Both writer guid and sequence number allow callers to pair, for each remote service
  * client, a ROS service request with its corresponding ROS service response, to be later
  * sent using rmw_send_response().
@@ -1993,7 +1993,7 @@ rmw_destroy_service(rmw_node_t * node, rmw_service_t * service);
  * <i>[1] implementation defined, check implementation documentation.</i>
  *
  * \par Runtime behavior
- *   To take a ROS service request is a synchronous operation.
+ *   Taking a ROS service request is a synchronous operation.
  *   It is also non-blocking, to the extent it will not wait for new ROS service requests
  *   to arrive, but it is not guaranteed to be lock-free.
  *   Generally speaking, implementations may synchronize access to internal resources using
@@ -2051,7 +2051,7 @@ rmw_take_request(
 
 /// Send a ROS service response.
 /**
- * Send a ROS service response the service client, with matching QoS policies,
+ * Send a ROS service response to the service client, with matching QoS policies,
  * from which the previously taken ROS service request was originally sent.
  *
  * <hr>
@@ -2065,8 +2065,8 @@ rmw_take_request(
  * <i>[1] implementation defined, check implementation documentation.</i>
  *
  * \par Runtime behavior
- *   It is implementation defined whether to send a ROS service response is a
- *   synchronous or asynchronous, blocking or non-blocking operation.
+ *   It is implementation defined whether sending a ROS service response is a
+ *   synchronous or asynchronous, and blocking or non-blocking, operation.
  *   However, asynchronous implementations are not allowed to access the
  *   given ROS service request after this function returns.
  *   Check the implementation documentation to learn about request behavior.
