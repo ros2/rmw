@@ -2523,6 +2523,8 @@ rmw_compare_gids_equal(const rmw_gid_t * gid1, const rmw_gid_t * gid2, bool * re
  * \param[out] is_available
  *   set to true if there is a service server available, else false
  * \return `RMW_RET_OK` if node the check was made successfully, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `publisher` implementation
+ *   identifier does not match this implementation, or
  * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */
 RMW_PUBLIC
