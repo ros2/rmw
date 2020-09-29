@@ -768,6 +768,7 @@ rmw_publish_serialized_message(
  * \param[out] size The computed size of the serialized message.
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if either argument is null, or
+ * \return `RMW_RET_UNSUPPORTED` if it's unimplemented, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
 RMW_PUBLIC
