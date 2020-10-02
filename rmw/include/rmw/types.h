@@ -244,6 +244,43 @@ typedef struct RMW_PUBLIC_TYPE rmw_guard_condition_t
   rmw_context_t * context;
 } rmw_guard_condition_t;
 
+/// Define publisher/subscription events
+typedef enum rmw_event_type_t
+{
+  // subscription events
+  RMW_EVENT_LIVELINESS_CHANGED,
+  RMW_EVENT_REQUESTED_DEADLINE_MISSED,
+  RMW_EVENT_REQUESTED_QOS_INCOMPATIBLE,
+  RMW_EVENT_MESSAGE_LOST,
+
+  // publisher events
+  RMW_EVENT_LIVELINESS_LOST,
+  RMW_EVENT_OFFERED_DEADLINE_MISSED,
+  RMW_EVENT_OFFERED_QOS_INCOMPATIBLE,
+
+  // sentinel value
+  RMW_EVENT_INVALID
+} rmw_event_type_t;
+
+/// Define publisher/subscription event types
+typedef enum rmw_event_data_type_t
+{
+  RMW_SUBSCRIBER_EVENT,
+  RMW_PUBLISHER_EVENT
+} rmw_event_data_type_t;
+
+/// Encapsulate the RMW event implementation, data, and type.
+typedef struct RMW_PUBLIC_TYPE rmw_event_t
+{
+  /// Implementation identifier, used to ensure two different implementations are not being mixed.
+  const char * implementation_identifier;
+  /// Data specific to this event type from either the publisher or subscriber.
+  void * data;
+  /// The event type that occurred.
+  rmw_event_type_t event_type;
+  rmw_event_data_type_t event_data_type;
+} rmw_event_t;
+
 /// Allocation of memory for an rmw publisher
 typedef struct RMW_PUBLIC_TYPE rmw_publisher_allocation_t
 {
