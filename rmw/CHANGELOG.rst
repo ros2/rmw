@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.2 (2020-10-13)
+------------------
 * Update service request/response API documentation. (`#279 <https://github.com/ros2/rmw//issues/279>`_)
 * Update rmw_get_serialized_message_size docblock (`#281 <https://github.com/ros2/rmw//issues/281>`_)
 * Update rmw_service_server_is_available doc (`#280 <https://github.com/ros2/rmw//issues/280>`_)
