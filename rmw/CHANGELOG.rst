@@ -2,6 +2,62 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Update service request/response API documentation. (`#279 <https://github.com/ros2/rmw//issues/279>`_)
+* Update rmw_get_serialized_message_size docblock (`#281 <https://github.com/ros2/rmw//issues/281>`_)
+* Update rmw_service_server_is_available doc (`#280 <https://github.com/ros2/rmw//issues/280>`_)
+* Update wait and wait sets' API documentation. (`#275 <https://github.com/ros2/rmw//issues/275>`_)
+* Update graph API documentation. (`#272 <https://github.com/ros2/rmw//issues/272>`_)
+* Update service server/client creation/destruction API documentation. (`#276 <https://github.com/ros2/rmw//issues/276>`_)
+* update rmw\_*_*_allocation returns (`#278 <https://github.com/ros2/rmw//issues/278>`_)
+* Update gid API documentation. (`#274 <https://github.com/ros2/rmw//issues/274>`_)
+  Namely, rmw_get_gid_for_publisher() and rmw_compare_gids_equal().
+* Update taking API documentation. (`#271 <https://github.com/ros2/rmw//issues/271>`_)
+* Update publishing API documentation. (`#270 <https://github.com/ros2/rmw//issues/270>`_)
+* Add fault injection macros for use in other packages (`#254 <https://github.com/ros2/rmw//issues/254>`_)
+  * Add fault injection macros for use in other packages
+  * cxx/c flags
+  * Address feedback
+  * lint cmake
+* Add bad_alloc return to topic_endpoint_info functions (`#269 <https://github.com/ros2/rmw//issues/269>`_)
+* Update publisher/subscription matched count API documentation. (`#262 <https://github.com/ros2/rmw//issues/262>`_)
+* Update publisher/subscription QoS query API documentation. (`#263 <https://github.com/ros2/rmw//issues/263>`_)
+  Follow-up after 0176872b10ff502ae34fa3eef5e900145f18b0b3.
+* Extend rmw_serialized_message_t tests. (`#261 <https://github.com/ros2/rmw//issues/261>`_)
+* Update serialization/deserialization API documentation. (`#258 <https://github.com/ros2/rmw//issues/258>`_)
+  * Update rmw\_(de)serialize() API documentation.
+  * Add rmw_serialize_message_t API documentation.
+* Update subscription API documentation (`#256 <https://github.com/ros2/rmw//issues/256>`_)
+  * Update subscription creation/destruction API documentation.
+  * Update subscription QoS querying API documentation.
+* Update publisher creation/destruction API documentation. (`#252 <https://github.com/ros2/rmw//issues/252>`_)
+* Update node creation/destruction API documentation. (`#249 <https://github.com/ros2/rmw//issues/249>`_)
+* Require enclave upon rmw_init() call. (`#247 <https://github.com/ros2/rmw//issues/247>`_)
+* Update init/shutdown API documentation. (`#243 <https://github.com/ros2/rmw//issues/243>`_)
+* Update init options API documentation. (`#244 <https://github.com/ros2/rmw//issues/244>`_)
+* remove double empty lines (`#240 <https://github.com/ros2/rmw//issues/240>`_)
+  as per title
+* Update QD
+* Rebasing and adding time_bomb_allocator
+* fix class name
+* Add test types
+* Increase rmw testing coverage
+* Handle zero-length names_and_types properly (`#239 <https://github.com/ros2/rmw//issues/239>`_)
+  from malloc(3):
+* Add unit tests for set_root_path
+* RMW_PUBLIC to security_options_set_root_path
+* Remove redundant check (`#237 <https://github.com/ros2/rmw//issues/237>`_)
+* Do not link against pthread on Android (`#259 <https://github.com/ros2/rmw//issues/259>`_) (`#268 <https://github.com/ros2/rmw//issues/268>`_)
+  Co-authored-by: Esteve Fernandez <esteve@apache.org>
+* Fix rmw_names_and_types_fini test to address issue `#234 <https://github.com/ros2/rmw//issues/234>`_ (`#235 <https://github.com/ros2/rmw//issues/235>`_) (`#265 <https://github.com/ros2/rmw//issues/265>`_)
+  * Fix rmw_names_and_types_fini test to address issue `#234 <https://github.com/ros2/rmw//issues/234>`_
+  * Switch explicit size with variable
+  * ASSERT_EQ
+  Co-authored-by: brawner <brawner@gmail.com>
+* Add Security Vulnerability Policy pointing to REP-2006. (`#230 <https://github.com/ros2/rmw//issues/230>`_)
+* Contributors: Alejandro Hernández Cordero, Chris Lalancette, Jacob Perron, Karsten Knese, Michel Hidalgo, Scott K Logan, Stephen Brawner, brawner
+
 1.0.1 (2020-05-19)
 ------------------
 * Fix cppcheck error (`#229 <https://github.com/ros2/rmw/issues/229>`_)
