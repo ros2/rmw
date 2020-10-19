@@ -30,8 +30,8 @@ extern "C"
  * The stringified version of the policy value can be obtained doing the follwing conversion:
  * RMW_QOS_POLICY_<POLICY_KIND>_<POLICY_VALUE> -> lower_case(<POLICY_VALUE>)
  *
- * For example, the strigified version of `RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC` is
- * "manual_by_topic" and `RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT` is `best_effort`.
+ * For example, the stringified version of `RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC` is
+ * "manual_by_topic" and `RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT` is "best_effort".
  *
  * <hr>
  * Attribute          | Adherence
