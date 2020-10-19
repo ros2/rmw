@@ -78,16 +78,19 @@ rmw_qos_reliability_policy_to_str(enum rmw_qos_reliability_policy_t value)
   }
 }
 
+#define RMW_QOS_STREQ_WITH_LITERAL(string_literal, string) \
+  (0 == strncmp(string_literal, str, sizeof(string_literal)))
+
 enum rmw_qos_durability_policy_t
 rmw_qos_durability_policy_from_str(const char * str)
 {
-  if (0 == strcmp("system_default", str)) {
+  if (RMW_QOS_STREQ_WITH_LITERAL("system_default", str)) {
     return RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT;
   }
-  if (0 == strcmp("transient_local", str)) {
+  if (RMW_QOS_STREQ_WITH_LITERAL("transient_local", str)) {
     return RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL;
   }
-  if (0 == strcmp("volatile", str)) {
+  if (RMW_QOS_STREQ_WITH_LITERAL("volatile", str)) {
     return RMW_QOS_POLICY_DURABILITY_VOLATILE;
   }
   return RMW_QOS_POLICY_DURABILITY_UNKNOWN;
@@ -96,13 +99,13 @@ rmw_qos_durability_policy_from_str(const char * str)
 enum rmw_qos_history_policy_t
 rmw_qos_history_policy_from_str(const char * str)
 {
-  if (0 == strcmp("system_default", str)) {
+  if (RMW_QOS_STREQ_WITH_LITERAL("system_default", str)) {
     return RMW_QOS_POLICY_HISTORY_SYSTEM_DEFAULT;
   }
-  if (0 == strcmp("keep_last", str)) {
+  if (RMW_QOS_STREQ_WITH_LITERAL("keep_last", str)) {
     return RMW_QOS_POLICY_HISTORY_KEEP_LAST;
   }
-  if (0 == strcmp("keep_all", str)) {
+  if (RMW_QOS_STREQ_WITH_LITERAL("keep_all", str)) {
     return RMW_QOS_POLICY_HISTORY_KEEP_ALL;
   }
   return RMW_QOS_POLICY_HISTORY_UNKNOWN;
@@ -111,13 +114,13 @@ rmw_qos_history_policy_from_str(const char * str)
 enum rmw_qos_liveliness_policy_t
 rmw_qos_liveliness_policy_from_str(const char * str)
 {
-  if (0 == strcmp("system_default", str)) {
+  if (RMW_QOS_STREQ_WITH_LITERAL("system_default", str)) {
     return RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT;
   }
-  if (0 == strcmp("automatic", str)) {
+  if (RMW_QOS_STREQ_WITH_LITERAL("automatic", str)) {
     return RMW_QOS_POLICY_LIVELINESS_AUTOMATIC;
   }
-  if (0 == strcmp("manual_by_topic", str)) {
+  if (RMW_QOS_STREQ_WITH_LITERAL("manual_by_topic", str)) {
     return RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC;
   }
   return RMW_QOS_POLICY_LIVELINESS_UNKNOWN;
@@ -126,13 +129,13 @@ rmw_qos_liveliness_policy_from_str(const char * str)
 enum rmw_qos_reliability_policy_t
 rmw_qos_reliability_policy_from_str(const char * str)
 {
-  if (0 == strcmp("system_default", str)) {
+  if (RMW_QOS_STREQ_WITH_LITERAL("system_default", str)) {
     return RMW_QOS_POLICY_RELIABILITY_SYSTEM_DEFAULT;
   }
-  if (0 == strcmp("reliable", str)) {
+  if (RMW_QOS_STREQ_WITH_LITERAL("reliable", str)) {
     return RMW_QOS_POLICY_RELIABILITY_RELIABLE;
   }
-  if (0 == strcmp("best_effort", str)) {
+  if (RMW_QOS_STREQ_WITH_LITERAL("best_effort", str)) {
     return RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT;
   }
   return RMW_QOS_POLICY_RELIABILITY_UNKNOWN;
