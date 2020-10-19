@@ -12,7 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "rmw/error_handling.h"
 #include "rmw/qos_string_conversions.h"
+
+const char *
+rmw_qos_policy_kind_to_str(rmw_qos_policy_kind_t kind)
+{
+  switch (kind) {
+    case RMW_QOS_POLICY_DURABILITY:
+      return "durability";
+    case RMW_QOS_POLICY_DEADLINE:
+      return "deadline";
+    case RMW_QOS_POLICY_LIVELINESS:
+      return "liveliness";
+    case RMW_QOS_POLICY_RELIABILITY:
+      return "reliability";
+    case RMW_QOS_POLICY_HISTORY:
+      return "history";
+    case RMW_QOS_POLICY_LIFESPAN:
+      return "lifespan";
+    case RMW_QOS_POLICY_DEPTH:
+      return "depth";
+    case RMW_QOS_POLICY_LIVELINESS_LEASE_DURATION:
+      return "liveliness_lease_duration";
+    case RMW_QOS_POLICY_AVOID_ROS_NAMESPACE_CONVENTIONS:
+      return "avoid_ros_namespace_conventions";
+    case RMW_QOS_POLICY_INVALID:  // fallthrough
+    default:
+      return NULL;
+  }
+}
 
 const char *
 rmw_qos_durability_policy_to_str(enum rmw_qos_durability_policy_t value)
@@ -81,9 +110,44 @@ rmw_qos_reliability_policy_to_str(enum rmw_qos_reliability_policy_t value)
 #define RMW_QOS_STREQ_WITH_LITERAL(string_literal, string) \
   (0 == strncmp(string_literal, str, sizeof(string_literal)))
 
+rmw_qos_policy_kind_t
+rmw_qos_policy_kind_from_str(const char * str)
+{
+  RMW_CHECK_ARGUMENT_FOR_NULL(str, RMW_QOS_POLICY_INVALID);
+  if (RMW_QOS_STREQ_WITH_LITERAL("durability", str)) {
+    return RMW_QOS_POLICY_DURABILITY;
+  }
+  if (RMW_QOS_STREQ_WITH_LITERAL("deadline", str)) {
+    return RMW_QOS_POLICY_DEADLINE;
+  }
+  if (RMW_QOS_STREQ_WITH_LITERAL("liveliness", str)) {
+    return RMW_QOS_POLICY_LIVELINESS;
+  }
+  if (RMW_QOS_STREQ_WITH_LITERAL("reliability", str)) {
+    return RMW_QOS_POLICY_RELIABILITY;
+  }
+  if (RMW_QOS_STREQ_WITH_LITERAL("history", str)) {
+    return RMW_QOS_POLICY_HISTORY;
+  }
+  if (RMW_QOS_STREQ_WITH_LITERAL("lifespan", str)) {
+    return RMW_QOS_POLICY_LIFESPAN;
+  }
+  if (RMW_QOS_STREQ_WITH_LITERAL("depth", str)) {
+    return RMW_QOS_POLICY_DEPTH;
+  }
+  if (RMW_QOS_STREQ_WITH_LITERAL("liveliness_lease_duration", str)) {
+    return RMW_QOS_POLICY_LIVELINESS_LEASE_DURATION;
+  }
+  if (RMW_QOS_STREQ_WITH_LITERAL("avoid_ros_namespace_conventions", str)) {
+    return RMW_QOS_POLICY_AVOID_ROS_NAMESPACE_CONVENTIONS;
+  }
+  return RMW_QOS_POLICY_INVALID;
+}
+
 enum rmw_qos_durability_policy_t
 rmw_qos_durability_policy_from_str(const char * str)
 {
+  RMW_CHECK_ARGUMENT_FOR_NULL(str, RMW_QOS_POLICY_DURABILITY_UNKNOWN);
   if (RMW_QOS_STREQ_WITH_LITERAL("system_default", str)) {
     return RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT;
   }
@@ -99,6 +163,7 @@ rmw_qos_durability_policy_from_str(const char * str)
 enum rmw_qos_history_policy_t
 rmw_qos_history_policy_from_str(const char * str)
 {
+  RMW_CHECK_ARGUMENT_FOR_NULL(str, RMW_QOS_POLICY_HISTORY_UNKNOWN);
   if (RMW_QOS_STREQ_WITH_LITERAL("system_default", str)) {
     return RMW_QOS_POLICY_HISTORY_SYSTEM_DEFAULT;
   }
@@ -114,6 +179,7 @@ rmw_qos_history_policy_from_str(const char * str)
 enum rmw_qos_liveliness_policy_t
 rmw_qos_liveliness_policy_from_str(const char * str)
 {
+  RMW_CHECK_ARGUMENT_FOR_NULL(str, RMW_QOS_POLICY_LIVELINESS_UNKNOWN);
   if (RMW_QOS_STREQ_WITH_LITERAL("system_default", str)) {
     return RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT;
   }
@@ -129,6 +195,7 @@ rmw_qos_liveliness_policy_from_str(const char * str)
 enum rmw_qos_reliability_policy_t
 rmw_qos_reliability_policy_from_str(const char * str)
 {
+  RMW_CHECK_ARGUMENT_FOR_NULL(str, RMW_QOS_POLICY_RELIABILITY_UNKNOWN);
   if (RMW_QOS_STREQ_WITH_LITERAL("system_default", str)) {
     return RMW_QOS_POLICY_RELIABILITY_SYSTEM_DEFAULT;
   }
