@@ -32,9 +32,12 @@
     EXPECT_EQ( \
       RMW_QOS_POLICY_ ## kind_upper ## _UNKNOWN, \
       rmw_qos_ ## kind ## _policy_from_str("this could never be a stringified policy value")); \
+    EXPECT_EQ( \
+      RMW_QOS_POLICY_ ## kind_upper ## _UNKNOWN, \
+      rmw_qos_ ## kind ## _policy_from_str(NULL)); \
   } while (0)
 
-TEST(test_qos_policy_stringify, test_normal_use) {
+TEST(test_qos_policy_stringify, test_policy_values) {
   TEST_QOS_POLICY_VALUE_STRINGIFY(durability, RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT);
   TEST_QOS_POLICY_VALUE_STRINGIFY(durability, RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL);
   TEST_QOS_POLICY_VALUE_STRINGIFY(durability, RMW_QOS_POLICY_DURABILITY_VOLATILE);
@@ -52,4 +55,27 @@ TEST(test_qos_policy_stringify, test_normal_use) {
   TEST_QOS_POLICY_STRINGIFY_CORNER_CASES(history, HISTORY);
   TEST_QOS_POLICY_STRINGIFY_CORNER_CASES(liveliness, LIVELINESS);
   TEST_QOS_POLICY_STRINGIFY_CORNER_CASES(reliability, RELIABILITY);
+}
+
+// Converts to string and back to the policy kind, check that it's the same
+#define TEST_QOS_POLICY_KIND_STRINGIFY(kind) \
+  do { \
+    EXPECT_EQ( \
+      kind, rmw_qos_policy_kind_from_str(rmw_qos_policy_kind_to_str(kind))); \
+  } while (0)
+
+TEST(test_qos_policy_stringify, test_policy_kinds) {
+  TEST_QOS_POLICY_KIND_STRINGIFY(RMW_QOS_POLICY_DURABILITY);
+  TEST_QOS_POLICY_KIND_STRINGIFY(RMW_QOS_POLICY_DEADLINE);
+  TEST_QOS_POLICY_KIND_STRINGIFY(RMW_QOS_POLICY_LIVELINESS);
+  TEST_QOS_POLICY_KIND_STRINGIFY(RMW_QOS_POLICY_RELIABILITY);
+  TEST_QOS_POLICY_KIND_STRINGIFY(RMW_QOS_POLICY_HISTORY);
+  TEST_QOS_POLICY_KIND_STRINGIFY(RMW_QOS_POLICY_LIFESPAN);
+  TEST_QOS_POLICY_KIND_STRINGIFY(RMW_QOS_POLICY_DEPTH);
+  TEST_QOS_POLICY_KIND_STRINGIFY(RMW_QOS_POLICY_LIVELINESS_LEASE_DURATION);
+  TEST_QOS_POLICY_KIND_STRINGIFY(RMW_QOS_POLICY_AVOID_ROS_NAMESPACE_CONVENTIONS);
+
+  EXPECT_EQ(RMW_QOS_POLICY_INVALID, rmw_qos_policy_kind_from_str(NULL));
+  EXPECT_EQ(RMW_QOS_POLICY_INVALID, rmw_qos_policy_kind_from_str("this is not a policy kind!"));
+  EXPECT_FALSE(rmw_qos_policy_kind_to_str(RMW_QOS_POLICY_INVALID));
 }

@@ -23,6 +23,32 @@ extern "C"
 {
 #endif
 
+/// Return a string representing the policy kind.
+/**
+ * Returns `NULL` when `kind` is `RMW_QOS_POLICY_INVALID` or an undefined kind.
+ *
+ * The stringified version of the policy kind can be obtained doing the follwing conversion:
+ * RMW_QOS_POLICY_<POLICY_KIND> -> lower_case(<POLICY_KIND>)
+ *
+ * For example, the stringified version of `RMW_QOS_POLICY_DURABILITY` is
+ * "durability" and `RMW_QOS_POLICY_DEADLINE` is "deadline".
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | Yes
+ * Uses Atomics       | No
+ * Lock-Free          | Yes
+ *
+ * \param[in] kind qos policy kind to be stringified.
+ * \return a null terminated string representing the policy kind, or
+ * \return `NULL` if kind is `RMW_QOS_POLICY_INVALID` or an undefined kind.
+ */
+RMW_PUBLIC
+const char *
+rmw_qos_policy_kind_to_str(rmw_qos_policy_kind_t kind);
+
 /// Return a string representing the policy value.
 /**
  * Returns `NULL` when `value` is `RMW_QOS_POLICY_*_UNKNOWN` or an undefined enum value.
@@ -72,6 +98,29 @@ rmw_qos_liveliness_policy_to_str(enum rmw_qos_liveliness_policy_t value);
 RMW_PUBLIC
 const char *
 rmw_qos_reliability_policy_to_str(enum rmw_qos_reliability_policy_t value);
+
+/// Return a policy kind based on the provided string.
+/**
+ * Returns the policy kind represented by the provided string, or
+ * `RMW_QOS_POLICY_INVALID` when the provided string doesn't represent any policy kind.
+ *
+ * How policy kinds are stringified is explained in \ref rmw_qos_policy_kind_to_str.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | Yes
+ * Uses Atomics       | No
+ * Lock-Free          | Yes
+ *
+ * \param[in] str string identifying a qos policy kind.
+ * \return the policy kind represented by the string, or
+ * \return `RMW_QOS_POLICY_INVALID` if the string doesn't represent any policy kind.
+ */
+RMW_PUBLIC
+rmw_qos_policy_kind_t
+rmw_qos_policy_kind_from_str(const char * str);
 
 /// Return a enum value based on the provided string.
 /**
