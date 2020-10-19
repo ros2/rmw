@@ -75,6 +75,15 @@ if(TARGET test_publisher_options)
   target_link_libraries(test_publisher_options ${PROJECT_NAME})
 endif()
 
+ament_add_gtest(test_qos_string_conversions
+test_qos_string_conversions.cpp
+  # Append the directory of librmw so it is found at test time.
+  APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+)
+if(TARGET test_qos_string_conversions)
+  target_link_libraries(test_qos_string_conversions ${PROJECT_NAME})
+endif()
+
 ament_add_gmock(test_sanity_checks
   test_sanity_checks.cpp
   # Append the directory of librmw so it is found at test time.
