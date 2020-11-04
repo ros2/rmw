@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.2.0 (2020-11-04)
+------------------
 * Extend rmw_qos_policy_kind_t, add functions to convert it to/from a string (`#285 <https://github.com/ros2/rmw/issues/285>`_)
 * Add functions to convert between qos policy values and strings (`#284 <https://github.com/ros2/rmw/issues/284>`_)
 * Update maintainers (`#282 <https://github.com/ros2/rmw/issues/282>`_)
