@@ -2,6 +2,11 @@
 Changelog for package rmw_implementation_cmake
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.2.0 (2020-11-04)
+------------------
+* Update maintainers (`#282 <https://github.com/ros2/rmw/issues/282>`_)
+* Contributors: Ivan Santiago Paunovic
+
 2.1.0 (2020-07-22)
 ------------------
 

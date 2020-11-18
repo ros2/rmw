@@ -17,24 +17,13 @@
 
 #include <stdint.h>
 
+#include "rmw/qos_policy_kind.h"
 #include "rmw/visibility_control.h"
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-
-/// QoS Policy Kinds
-typedef enum RMW_PUBLIC_TYPE rmw_qos_policy_kind_t
-{
-  RMW_QOS_POLICY_INVALID = 1 << 0,
-  RMW_QOS_POLICY_DURABILITY = 1 << 1,
-  RMW_QOS_POLICY_DEADLINE = 1 << 2,
-  RMW_QOS_POLICY_LIVELINESS = 1 << 3,
-  RMW_QOS_POLICY_RELIABILITY = 1 << 4,
-  RMW_QOS_POLICY_HISTORY = 1 << 5,
-  RMW_QOS_POLICY_LIFESPAN = 1 << 6
-} rmw_qos_policy_kind_t;
 
 struct RMW_PUBLIC_TYPE rmw_qos_incompatible_event_status_t
 {

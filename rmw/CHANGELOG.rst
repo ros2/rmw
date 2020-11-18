@@ -2,6 +2,32 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.2.0 (2020-11-04)
+------------------
+* Extend rmw_qos_policy_kind_t, add functions to convert it to/from a string (`#285 <https://github.com/ros2/rmw/issues/285>`_)
+* Add functions to convert between qos policy values and strings (`#284 <https://github.com/ros2/rmw/issues/284>`_)
+* Update maintainers (`#282 <https://github.com/ros2/rmw/issues/282>`_)
+* Update service request/response API documentation (`#279 <https://github.com/ros2/rmw/issues/279>`_)
+* Update rmw_get_serialized_message_size docblock (`#281 <https://github.com/ros2/rmw/issues/281>`_)
+* Update rmw_service_server_is_available doc (`#280 <https://github.com/ros2/rmw/issues/280>`_)
+* Update wait and wait sets' API documentation (`#275 <https://github.com/ros2/rmw/issues/275>`_)
+* Update graph API documentation (`#272 <https://github.com/ros2/rmw/issues/272>`_)
+* Update service server/client creation/destruction API documentation. (`#276 <https://github.com/ros2/rmw/issues/276>`_)
+* Update rmw\_*_*_allocation return values (`#278 <https://github.com/ros2/rmw/issues/278>`_)
+* Update gid API documentation (`#274 <https://github.com/ros2/rmw/issues/274>`_)
+* Do not link against pthread on Android (`#267 <https://github.com/ros2/rmw/issues/267>`_)
+* Update taking API documentation (`#271 <https://github.com/ros2/rmw/issues/271>`_)
+* Update publishing API documentation (`#270 <https://github.com/ros2/rmw/issues/270>`_)
+* Add fault injection macros for use in other packages (`#254 <https://github.com/ros2/rmw/issues/254>`_)
+* Add bad_alloc return to topic_endpoint_info functions (`#269 <https://github.com/ros2/rmw/issues/269>`_)
+* Update publisher/subscription matched count API documentation (`#262 <https://github.com/ros2/rmw/issues/262>`_)
+* Update publisher/subscription QoS query API documentation (`#263 <https://github.com/ros2/rmw/issues/263>`_)
+* Extend rmw_serialized_message_t tests (`#261 <https://github.com/ros2/rmw/issues/261>`_)
+* Update serialization/deserialization API documentation (`#258 <https://github.com/ros2/rmw/issues/258>`_)
+* Update subscription API documentation (`#256 <https://github.com/ros2/rmw/issues/256>`_)
+* Update publisher creation/destruction API documentation (`#252 <https://github.com/ros2/rmw/issues/252>`_)
+* Contributors: Alejandro Hernández Cordero, Ivan Santiago Paunovic, Jacob Perron, Michel Hidalgo, brawner
+
 2.1.0 (2020-07-22)
 ------------------
 * Add actual domain id to rmw_context_t (`#251 <https://github.com/ros2/rmw/issues/251>`_)
