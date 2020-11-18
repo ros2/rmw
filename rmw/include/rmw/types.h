@@ -86,6 +86,15 @@ typedef struct RMW_PUBLIC_TYPE rmw_publisher_options_t
    * structure and may use this payload throughout their lifetime.
    */
   void * rmw_specific_publisher_payload;
+
+  /// If true, then the middleware should generate a unique network flow.
+  /**
+   * Unique network flows are required to differentiate the QoS provided by
+   * networks for flows between publishers and subscribers in communicating
+   * nodes.
+   * Default value is false.
+   */
+  bool unique_network_flow;
 } rmw_publisher_options_t;
 
 /// Structure which encapsulates an rmw publisher
@@ -141,6 +150,15 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_options_t
    * may become more complicated when/if participants map to a context instead.
    */
   bool ignore_local_publications;
+
+  /// If true, then the middleware should generate a unique network flow.
+  /**
+   * Unique network flows are required to differentiate the QoS provided by
+   * networks for flows between publishers and subscribers in communicating
+   * nodes.
+   * Default value is false.
+   */
+  bool unique_network_flow;
 } rmw_subscription_options_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_subscription_t
