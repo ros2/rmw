@@ -2,9 +2,9 @@ This document is a declaration of software quality for the `rmw` package, based 
 
 # `rmw` Quality Declaration
 
-The package `rmw` claims to be in the **Quality Level 2** category.
+The package `rmw` claims to be in the **Quality Level 1** category.
 
-Below are the rationales, notes, and caveats for this claim, organized by each requirement listed in the [Package Requirements for Quality Level 2 in REP-2004](https://www.ros.org/reps/rep-2004.html).
+Below are the rationales, notes, and caveats for this claim, organized by each requirement listed in the [Package Requirements for Quality Level 1 in REP-2004](https://www.ros.org/reps/rep-2004.html).
 
 ## Version Policy [1]
 
@@ -64,7 +64,7 @@ There is documentation for all of the features, and new features require documen
 
 ### Public API Documentation [3.ii]
 
-`rmw` has embedded API documentation and it is generated using doxygen and is [hosted](https://docs.ros2.org/eloquent/api/rmw/index.html) alongside the feature documentation.
+`rmw` has embedded API documentation and it is generated using doxygen and is [hosted](https://docs.ros2.org/latest/api/rmw/index.html) alongside the feature documentation.
 There is documentation for all of the public API, and new additions to the public API require documentation before being added.
 
 ### License [3.iii]
@@ -73,7 +73,7 @@ The license for `rmw_implementation_cmake` is Apache 2.0, and a summary is in ea
 
 There is an automated test which runs a linter that ensures each file has a license statement.
 
-Most recent test results can be found [here](http://build.ros2.org/view/Epr/job/Epr__rmw__ubuntu_bionic_amd64/lastBuild/testReport/rmw/).
+Most recent test results can be found [here](http://build.ros2.org/view/Rpr/job/Rpr__rmw__ubuntu_focal_amd64/lastCompletedBuild/testReport/rmw/).
 
 ### Copyright Statements [3.iv]
 
@@ -81,9 +81,9 @@ The copyright holders each provide a statement of copyright in each source code 
 
 There is an automated test which runs a linter that ensures each file has at least one copyright statement.
 
-The results of those tests are available [here](http://build.ros2.org/view/Epr/job/Epr__rmw__ubuntu_bionic_amd64/lastBuild/testReport/rmw/copyright/).
+The results of those tests are available [here](http://build.ros2.org/view/Rpr/job/Rpr__rmw__ubuntu_focal_amd64/lastCompletedBuild/testReport/rmw/copyright/).
 
-Results of the copyright test can be found [here](http://build.ros2.org/view/Epr/job/Epr__rmw__ubuntu_bionic_amd64/lastBuild/testReport/rmw_implementation_cmake/copyright/).
+Results of the copyright test can be found [here](http://build.ros2.org/view/Rpr/job/Rpr__rmw__ubuntu_focal_amd64/lastCompletedBuild/testReport/rmw/copyright/).
 
 ## Testing [4]
 
@@ -115,13 +115,19 @@ A description of how coverage statistics are summarized from this page can be fo
 
 ### Performance [4.iv]
 
-`rmw` does not currently have performance tests.
+`rmw` follows the recommendations for performance testing of C code in the [ROS 2 Developer Guide](https://index.ros.org/doc/ros2/Contributing/Developer-Guide/#performance), and opts to do performance analysis on each release rather than each change.
+
+System level performance benchmarks that cover features of `rmw` can be found at:
+* [Benchmarks](http://build.ros2.org/view/Rci/job/Rci__benchmark_ubuntu_focal_amd64/BenchmarkTable/)
+* [Performance](http://build.ros2.org/view/Rci/job/Rci__nightly-performance_ubuntu_focal_amd64/lastCompletedBuild/)
+
+Changes that introduce regressions in performance must be adequately justified in order to be accepted and merged.
 
 ### Linters and Static Analysis [4.v]
 
 `rmw` uses and passes all the standard linters and static analysis tools for a C++ package as described in the [ROS 2 Developer Guide](https://index.ros.org/doc/ros2/Contributing/Developer-Guide/#linters).
 
-Results of linter tests can be found [here](http://build.ros2.org/view/Epr/job/Epr__rmw__ubuntu_bionic_amd64/lastBuild/testReport/rmw/).
+Results of linter tests can be found [here](http://build.ros2.org/view/Rpr/job/Rpr__rmw__ubuntu_focal_amd64/lastCompletedBuild/testReport/rmw/).
 
 ## Dependencies [5]
 
@@ -136,13 +142,13 @@ It also has several test dependencies, which do not affect the resulting quality
 
 The `rcutils` package provides an API which contains common utilities and data structures needed when programming in C.
 
-It is **Quality Level 2**, see its [Quality Declaration document](https://github.com/ros2/rcutils/blob/master/QUALITY_DECLARATION.md).
+It is **Quality Level 1**, see its [Quality Declaration document](https://github.com/ros2/rcutils/blob/master/QUALITY_DECLARATION.md).
 
 #### `rosidl_runtime_c`
 
 The `rosidl_runtime_c` package provides runtime interfaces in C based on user defined ROS Messages and ROS Services, as well as associated support functions for those types.
 
-It is **Quality Level 2**, see its [Quality Declaration document](https://github.com/ros2/rosidl/tree/master/rosidl_runtime_c/Quality_Declaration.md).
+It is **Quality Level 1**, see its [Quality Declaration document](https://github.com/ros2/rosidl/tree/master/rosidl_runtime_c/Quality_Declaration.md).
 
 ### Direct Runtime Non-ROS Dependencies [5.iii]
 
