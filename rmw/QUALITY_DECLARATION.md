@@ -59,12 +59,12 @@ All pull requests must resolve related documentation changes before merging.
 
 ### Feature Documentation [3.i]
 
-`rmw` has a [feature list](http://docs.ros2.org/latest/api/rmw/) and each item in the list links to the corresponding feature documentation.
+`rmw` has a [feature list](http://docs.ros2.org/foxy/api/rmw/) and each item in the list links to the corresponding feature documentation.
 There is documentation for all of the features, and new features require documentation before being added.
 
 ### Public API Documentation [3.ii]
 
-`rmw` has embedded API documentation and it is generated using doxygen and is [hosted](https://docs.ros2.org/latest/api/rmw/index.html) alongside the feature documentation.
+`rmw` has embedded API documentation and it is generated using doxygen and is [hosted](https://docs.ros2.org/foxy/api/rmw/index.html) alongside the feature documentation.
 There is documentation for all of the public API, and new additions to the public API require documentation before being added.
 
 ### License [3.iii]
@@ -73,7 +73,7 @@ The license for `rmw_implementation_cmake` is Apache 2.0, and a summary is in ea
 
 There is an automated test which runs a linter that ensures each file has a license statement.
 
-Most recent test results can be found [here](http://build.ros2.org/view/Rpr/job/Rpr__rmw__ubuntu_focal_amd64/lastCompletedBuild/testReport/rmw/).
+Most recent test results can be found [here](http://build.ros2.org/view/Fpr/job/Fpr__rmw__ubuntu_focal_amd64/lastCompletedBuild/testReport/rmw/).
 
 ### Copyright Statements [3.iv]
 
@@ -81,9 +81,9 @@ The copyright holders each provide a statement of copyright in each source code 
 
 There is an automated test which runs a linter that ensures each file has at least one copyright statement.
 
-The results of those tests are available [here](http://build.ros2.org/view/Rpr/job/Rpr__rmw__ubuntu_focal_amd64/lastCompletedBuild/testReport/rmw/copyright/).
+The results of those tests are available [here](http://build.ros2.org/view/Fpr/job/Fpr__rmw__ubuntu_focal_amd64/lastCompletedBuild/testReport/rmw/copyright/).
 
-Results of the copyright test can be found [here](http://build.ros2.org/view/Rpr/job/Rpr__rmw__ubuntu_focal_amd64/lastCompletedBuild/testReport/rmw/copyright/).
+Results of the copyright test can be found [here](http://build.ros2.org/view/Fpr/job/Fpr__rmw__ubuntu_focal_amd64/lastCompletedBuild/testReport/rmw/copyright/).
 
 ## Testing [4]
 
@@ -118,8 +118,8 @@ A description of how coverage statistics are summarized from this page can be fo
 `rmw` follows the recommendations for performance testing of C code in the [ROS 2 Developer Guide](https://index.ros.org/doc/ros2/Contributing/Developer-Guide/#performance), and opts to do performance analysis on each release rather than each change.
 
 System level performance benchmarks that cover features of `rmw` can be found at:
-* [Benchmarks](http://build.ros2.org/view/Rci/job/Rci__benchmark_ubuntu_focal_amd64/BenchmarkTable/)
-* [Performance](http://build.ros2.org/view/Rci/job/Rci__nightly-performance_ubuntu_focal_amd64/lastCompletedBuild/)
+* [Benchmarks](http://build.ros2.org/view/Fci/job/Fci__benchmark_ubuntu_focal_amd64/BenchmarkTable/)
+* [Performance](http://build.ros2.org/view/Fci/job/Fci__nightly-performance_ubuntu_focal_amd64/lastCompletedBuild/)
 
 Changes that introduce regressions in performance must be adequately justified in order to be accepted and merged.
 
@@ -127,7 +127,7 @@ Changes that introduce regressions in performance must be adequately justified i
 
 `rmw` uses and passes all the standard linters and static analysis tools for a C++ package as described in the [ROS 2 Developer Guide](https://index.ros.org/doc/ros2/Contributing/Developer-Guide/#linters).
 
-Results of linter tests can be found [here](http://build.ros2.org/view/Rpr/job/Rpr__rmw__ubuntu_focal_amd64/lastCompletedBuild/testReport/rmw/).
+Results of linter tests can be found [here](http://build.ros2.org/view/Fpr/job/Fpr__rmw__ubuntu_focal_amd64/lastCompletedBuild/testReport/rmw/).
 
 ## Dependencies [5]
 
@@ -142,13 +142,13 @@ It also has several test dependencies, which do not affect the resulting quality
 
 The `rcutils` package provides an API which contains common utilities and data structures needed when programming in C.
 
-It is **Quality Level 1**, see its [Quality Declaration document](https://github.com/ros2/rcutils/blob/master/QUALITY_DECLARATION.md).
+It is **Quality Level 1**, see its [Quality Declaration document](https://github.com/ros2/rcutils/blob/foxy/QUALITY_DECLARATION.md).
 
 #### `rosidl_runtime_c`
 
 The `rosidl_runtime_c` package provides runtime interfaces in C based on user defined ROS Messages and ROS Services, as well as associated support functions for those types.
 
-It is **Quality Level 1**, see its [Quality Declaration document](https://github.com/ros2/rosidl/tree/master/rosidl_runtime_c/Quality_Declaration.md).
+It is **Quality Level 1**, see its [Quality Declaration document](https://github.com/ros2/rosidl/tree/foxy/rosidl_runtime_c/Quality_Declaration.md).
 
 ### Direct Runtime Non-ROS Dependencies [5.iii]
 
@@ -158,11 +158,11 @@ It is **Quality Level 1**, see its [Quality Declaration document](https://github
 
 `rmw` supports all of the tier 1 platforms as described in [REP-2000](https://www.ros.org/reps/rep-2000.html#support-tiers), and tests each change against all of them.
 
-Currently nightly results can be seen here:
-* [linux-aarch64_release](https://ci.ros2.org/view/nightly/job/nightly_linux-aarch64_release/lastBuild/testReport/rmw/)
-* [linux_release](https://ci.ros2.org/view/nightly/job/nightly_linux_release/lastBuild/testReport/rmw/)
-* [mac_osx_release](https://ci.ros2.org/view/nightly/job/nightly_osx_release/lastBuild/testReport/rmw/)
-* [windows_release](https://ci.ros2.org/view/nightly/job/nightly_win_rel/lastBuild/testReport/rmw/)
+Though there are no nightly jobs for foxy outside of linux, each change is tested on ci.ros2.org.
+* [linux-aarch64](https://ci.ros2.org/job/ci_linux-aarch64)
+* [linux](https://ci.ros2.org/job/ci_linux)
+* [mac_osx](https://ci.ros2.org/job/ci_osx)
+* [windows](https://ci.ros2.org/job/ci_windows)
 
 ## Security [7]
 
