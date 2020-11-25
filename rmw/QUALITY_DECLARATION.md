@@ -2,7 +2,7 @@ This document is a declaration of software quality for the `rmw` package, based 
 
 # `rmw` Quality Declaration
 
-The package `rmw` claims to be in the **Quality Level 1** category.
+The package `rmw` claims to be in the **Quality Level 1** category when it is used with a **Quality Level 1** middleware.
 
 Below are the rationales, notes, and caveats for this claim, organized by each requirement listed in the [Package Requirements for Quality Level 1 in REP-2004](https://www.ros.org/reps/rep-2004.html).
 
