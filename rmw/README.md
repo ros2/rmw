@@ -9,4 +9,4 @@ For specific information about the rmw interface and features, see its [api docs
 
 ## Quality Declaration
 
-This package claims to be in the **Quality Level 2** category, see the [Quality Declaration](QUALITY_DECLARATION.md) for more details.
+This package claims to be in the **Quality Level 1** category, see the [Quality Declaration](QUALITY_DECLARATION.md) for more details.
