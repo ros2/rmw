@@ -81,8 +81,6 @@ The copyright holders each provide a statement of copyright in each source code 
 
 There is an automated test which runs a linter that ensures each file has at least one copyright statement.
 
-The results of those tests are available [here](http://build.ros2.org/view/Fpr/job/Fpr__rmw__ubuntu_focal_amd64/lastCompletedBuild/testReport/rmw/copyright/).
-
 Results of the copyright test can be found [here](http://build.ros2.org/view/Fpr/job/Fpr__rmw__ubuntu_focal_amd64/lastCompletedBuild/testReport/rmw/copyright/).
 
 ## Testing [4]
