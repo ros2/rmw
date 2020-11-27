@@ -1117,6 +1117,77 @@ rmw_subscription_get_actual_qos(
   const rmw_subscription_t * subscription,
   rmw_qos_profile_t * qos);
 
+/// Set the filter expression and expression parameters for the subscription.
+/**
+ * This function will set a filter expression and an array of expression parameters
+ * for the given subscription, but not to update the original rmw_subscription_options_t
+ * of subscription.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] implementation defined, check the implementation documentation</i>
+ *
+ * \param[in] subscription subscription the subscription object to inspect.
+ * \param[in] filter_expression An filter expression to set.
+ * \param[in] expression_parameters Array of expression parameters to set,
+ *   it can be NULL if there is no placeholder in filter_expression.
+ * \return `RMW_RET_OK` if the query was successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `subscription` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `filter_expression` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `expression_parameters` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `node` implementation
+ *   identifier does not match this implementation, or
+ * \return `RMW_RET_ERROR` if an unspecified error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_subscription_set_cft_expression_parameters(
+  const rmw_subscription_t * subscription,
+  const char * filter_expression,
+  const rcutils_string_array_t * expression_parameters);
+
+/// Retrieve the filter expression of the subscription.
+/**
+ * This function will return an filter expression by the given subscription.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Yes
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] implementation defined, check the implementation documentation</i>
+ *
+ * \param[in] subscription subscription the subscription object to inspect.
+ * \param[out] filter_expression an filter expression, populated on success.
+ *   It is up to the caller to deallocate the filter expression later on,
+ *   using rcutils_get_default_allocator().deallocate().
+ * \param[out] expression_parameters Array of expression parameters, populated on success.
+ *   It is up to the caller to finalize this array later on, using rcutils_string_array_fini().
+ * \return `RMW_RET_OK` if the query was successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `subscription` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `filter_expression` is NULL or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `expression_parameters` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `node` implementation
+ *   identifier does not match this implementation, or
+ * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
+ * \return `RMW_RET_ERROR` if an unspecified error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_subscription_get_cft_expression_parameters(
+  const rmw_subscription_t * subscription,
+  char ** filter_expression,
+  rcutils_string_array_t * expression_parameters);
+
 /// Take an incoming ROS message.
 /**
  * Take a ROS message already received by the given subscription, removing it from internal queues.

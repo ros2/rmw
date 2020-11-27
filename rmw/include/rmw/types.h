@@ -177,6 +177,10 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_options_s
    * Default value is RMW_UNIQUE_NETWORK_FLOW_ENDPOINTS_NOT_REQUIRED.
    */
   rmw_unique_network_flow_endpoints_requirement_t require_unique_network_flow_endpoints;
+
+  /// Used to create a content filtered topic during subscription creation.
+  char * filter_expression;
+  rcutils_string_array_t * expression_parameters;
 } rmw_subscription_options_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_subscription_s
@@ -203,6 +207,9 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_s
 
   /// Indicates whether this subscription can loan messages
   bool can_loan_messages;
+
+  /// Indicates whether this subscription can set content filtered expression
+  bool is_cft_supported;
 } rmw_subscription_t;
 
 /// A handle to an rmw service
