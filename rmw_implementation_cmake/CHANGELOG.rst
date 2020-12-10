@@ -2,8 +2,8 @@
 Changelog for package rmw_implementation_cmake
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.2.1 (2020-12-10)
+------------------
 * Update rmw QD to QL 1 (`#289 <https://github.com/ros2/rmw/issues/289>`_)
 * Contributors: Stephen Brawner
 
