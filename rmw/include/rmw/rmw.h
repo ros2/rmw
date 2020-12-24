@@ -806,6 +806,40 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_publisher_assert_liveliness(const rmw_publisher_t * publisher);
 
+/// Waits until all published message data were acknowledged or timeout.
+/**
+ * This function make sure that waits until all published message data
+ * were acknowledged by peer node or timeout.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe [1]
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
+ *
+ * \param[in] publisher handle to the publisher that needs to wait for all acked.
+ * \param[in] wait_timeout If `NULL`, block indefinitely until all published message data
+ *   were acknowledged. If zero, do not block -- check only for immediately all published
+ *   message data. Else, this represents the maximum amount of time to wait for all published
+ *   message data were acknowledged.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_TIMEOUT` if wait timed out, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `publisher` is `NULL`, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `publisher` implementation
+ *   identifier does not match this implementation, or
+ * \return `RMW_RET_ERROR` if an unspecified error occurs, or
+ * \return `RMW_RET_UNSUPPORTED` if the rmw implementation is unimplemented.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_publisher_wait_for_all_acked(
+  const rmw_publisher_t * publisher,
+  const rmw_time_t * wait_timeout);
+
 /// Serialize a ROS message into a rmw_serialized_message_t.
 /**
  * The ROS message is serialized into a byte stream contained within the
