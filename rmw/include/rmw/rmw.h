@@ -808,8 +808,9 @@ rmw_publisher_assert_liveliness(const rmw_publisher_t * publisher);
 
 /// Waits until all published message data were acknowledged or timeout.
 /**
- * This function make sure that waits until all published message data
- * were acknowledged by peer node or timeout.
+ * This function waits until all published message data were acknowledged by peer node or timeout.
+ *
+ * \note This function only works effectively while QOS profile of publisher is set to RELIABLE.
  *
  * <hr>
  * Attribute          | Adherence
