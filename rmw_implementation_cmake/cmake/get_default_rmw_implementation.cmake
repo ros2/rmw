@@ -32,8 +32,8 @@ macro(get_default_rmw_implementation var)
   if("${RMW_IMPLEMENTATION}" STREQUAL "" AND
     "$ENV{RMW_IMPLEMENTATION}" STREQUAL ""
   )
-    # prefer FastRTPS, otherwise first in alphabetical order
-    list(FIND _middleware_implementations "rmw_fastrtps_cpp" _index)
+    # prefer CycloneDDS, otherwise first in alphabetical order
+    list(FIND _middleware_implementations "rmw_cyclonedds_cpp" _index)
     if(NOT _index EQUAL -1)
       list(GET _middleware_implementations ${_index} _middleware_implementation)
     else()

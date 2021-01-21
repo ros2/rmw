@@ -2,6 +2,11 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.2.1 (2020-12-10)
+------------------
+* Update rmw QD to QL 1 (`#289 <https://github.com/ros2/rmw/issues/289>`_)
+* Contributors: Stephen Brawner
+
 2.2.0 (2020-11-04)
 ------------------
 * Extend rmw_qos_policy_kind_t, add functions to convert it to/from a string (`#285 <https://github.com/ros2/rmw/issues/285>`_)
