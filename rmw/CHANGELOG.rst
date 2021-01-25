@@ -2,6 +2,9 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 2.2.1 (2020-12-10)
 ------------------
 * Update rmw QD to QL 1 (`#289 <https://github.com/ros2/rmw/issues/289>`_)

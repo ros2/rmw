@@ -2,6 +2,11 @@
 Changelog for package rmw_implementation_cmake
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Change default RMW vendor to CycloneDDS. (`#293 <https://github.com/ros2/rmw/issues/293>`_)
+* Contributors: Chris Lalancette
+
 2.2.1 (2020-12-10)
 ------------------
 * Update rmw QD to QL 1 (`#289 <https://github.com/ros2/rmw/issues/289>`_)
