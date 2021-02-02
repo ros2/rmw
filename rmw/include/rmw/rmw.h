@@ -1142,6 +1142,7 @@ rmw_subscription_get_actual_qos(
  * \return `RMW_RET_INVALID_ARGUMENT` if `expression_parameters` is NULL, or
  * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `node` implementation
  *   identifier does not match this implementation, or
+ * \return `RMW_RET_UNSUPPORTED` if the implementation does not support content filter topic, or
  * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */
 RMW_PUBLIC
@@ -1178,6 +1179,7 @@ rmw_subscription_set_cft_expression_parameters(
  * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `node` implementation
  *   identifier does not match this implementation, or
  * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
+ * \return `RMW_RET_UNSUPPORTED` if the implementation does not support content filter topic, or
  * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */
 RMW_PUBLIC
