@@ -72,6 +72,24 @@ typedef enum RMW_PUBLIC_TYPE rmw_endpoint_type_t
   RMW_ENDPOINT_SUBSCRIPTION
 } rmw_endpoint_type_t;
 
+/// Unique network flow requirement enumeration
+typedef enum RMW_PUBLIC_TYPE rmw_unique_network_flow_requirement_t
+{
+  /// Unique network flow not required
+  RMW_UNIQUE_NETWORK_FLOW_NOT_REQUIRED = 0,
+
+  /// Unique network flow strictly required.
+  /// Error if not provided by RMW implementation.
+  RMW_UNIQUE_NETWORK_FLOW_STRICTLY_REQUIRED,
+
+  /// Unique network flow optionally required.
+  /// No error if not provided RMW implementation.
+  RMW_UNIQUE_NETWORK_FLOW_OPTIONALLY_REQUIRED,
+
+  /// Unique network flow requirement decided by system.
+  RMW_UNIQUE_NETWORK_FLOW_SYSTEM_DEFAULT
+} rmw_unique_network_flow_requirement_t;
+
 /// Options that can be used to configure the creation of a publisher in rmw.
 typedef struct RMW_PUBLIC_TYPE rmw_publisher_options_t
 {
@@ -87,14 +105,14 @@ typedef struct RMW_PUBLIC_TYPE rmw_publisher_options_t
    */
   void * rmw_specific_publisher_payload;
 
-  /// If true, then the middleware should generate a unique network flow.
+  /// Require middleware to generate unique network flow.
   /**
    * Unique network flows are required to differentiate the QoS provided by
    * networks for flows between publishers and subscribers in communicating
    * nodes.
-   * Default value is false.
+   * Default value is RMW_UNIQUE_NETWORK_FLOW_NOT_REQUIRED.
    */
-  bool unique_network_flow;
+  rmw_unique_network_flow_requirement_t require_unique_network_flow;
 } rmw_publisher_options_t;
 
 /// Structure which encapsulates an rmw publisher
@@ -151,14 +169,14 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_options_t
    */
   bool ignore_local_publications;
 
-  /// If true, then the middleware should generate a unique network flow.
+  /// Require middleware to generate unique network flow.
   /**
    * Unique network flows are required to differentiate the QoS provided by
    * networks for flows between publishers and subscribers in communicating
    * nodes.
-   * Default value is false.
+   * Default value is RMW_UNIQUE_NETWORK_FLOW_NOT_REQUIRED.
    */
-  bool unique_network_flow;
+  rmw_unique_network_flow_requirement_t require_unique_network_flow;
 } rmw_subscription_options_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_subscription_t
