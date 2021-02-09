@@ -339,6 +339,9 @@ typedef struct RMW_PUBLIC_TYPE rmw_time_t
 /// A duration of time, measured in nanoseconds.
 typedef rcutils_duration_value_t rmw_duration_t;
 
+#define RMW_DURATION_INFINITE INT64_MAX
+
+
 typedef rcutils_time_point_value_t rmw_time_point_value_t;
 
 /// Meta-data for a service-related take.
@@ -430,14 +433,14 @@ enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_t
   RMW_QOS_POLICY_LIVELINESS_UNKNOWN = 4
 };
 
-/// QoS Deadline default, 0s indicates deadline policies are not tracked or enforced
-#define RMW_QOS_DEADLINE_DEFAULT 0
+/// QoS Deadline default, indicates that no deadline is enforced
+#define RMW_QOS_DEADLINE_DEFAULT RMW_DURATION_INFINITE
 
-/// QoS Lifespan default, 0s indicate lifespan policies are not tracked or enforced
-#define RMW_QOS_LIFESPAN_DEFAULT 0
+/// QoS Lifespan default, indicates that no lifespan is enforced
+#define RMW_QOS_LIFESPAN_DEFAULT RMW_DURATION_INFINITE
 
-/// QoS Liveliness lease duration default, 0s indicate lease durations are not tracked or enforced
-#define RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT 0
+/// QoS Liveliness lease duration default, indicates that no lease duration is enforced
+#define RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT RMW_DURATION_INFINITE
 
 /// ROS MiddleWare quality of service profile.
 typedef struct RMW_PUBLIC_TYPE rmw_qos_profile_t
