@@ -2414,7 +2414,7 @@ rmw_destroy_wait_set(rmw_wait_set_t * wait_set);
  * \param[inout] events Array of events to wait on.
  *   Can be `NULL` if there are no events to wait on.
  * \param[in] wait_set Wait set to use for waiting.
- * \param[in] wait_timeout If `NULL`, block indefinitely until an entity becomes ready.
+ * \param[in] wait_timeout If negative, block indefinitely until an entity becomes ready.
  *   If zero, do not block -- check only for immediately available entities.
  *   Else, this represents the maximum amount of time to wait for an entity to become ready.
  * \return `RMW_RET_OK` if successful, or
@@ -2435,7 +2435,7 @@ rmw_wait(
   rmw_clients_t * clients,
   rmw_events_t * events,
   rmw_wait_set_t * wait_set,
-  const rmw_time_t * wait_timeout);
+  rmw_duration_t wait_timeout);
 
 /// Return the name and namespace of all nodes in the ROS graph.
 /**

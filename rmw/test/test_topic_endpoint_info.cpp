@@ -146,10 +146,10 @@ TEST(test_topic_endpoint_info, set_qos_profile) {
   qos_profile.depth = 0;
   qos_profile.reliability = RMW_QOS_POLICY_RELIABILITY_RELIABLE;
   qos_profile.durability = RMW_QOS_POLICY_DURABILITY_VOLATILE;
-  qos_profile.deadline = {1, 0};
-  qos_profile.lifespan = {2, 0};
+  qos_profile.deadline = RCUTILS_S_TO_NS(1);
+  qos_profile.lifespan = RCUTILS_S_TO_NS(2);
   qos_profile.liveliness = RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC;
-  qos_profile.liveliness_lease_duration = {3, 0};
+  qos_profile.liveliness_lease_duration = RCUTILS_S_TO_NS(3);
   qos_profile.avoid_ros_namespace_conventions = false;
 
   rmw_ret_t ret = rmw_topic_endpoint_info_set_qos_profile(nullptr, &qos_profile);
@@ -173,19 +173,14 @@ TEST(test_topic_endpoint_info, set_qos_profile) {
   EXPECT_EQ(
     topic_endpoint_info.qos_profile.durability,
     RMW_QOS_POLICY_DURABILITY_VOLATILE) << "Unequal durability";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.deadline.sec, 1u) << "Unequal deadline sec";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.deadline.nsec, 0u) << "Unequal deadline nsec";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.lifespan.sec, 2u) << "Unequal lifespan sec";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.lifespan.nsec, 0u) << "Unequal lifespan nsec";
+  EXPECT_EQ(topic_endpoint_info.qos_profile.deadline, RCUTILS_S_TO_NS(1)) << "Unequal deadline";
+  EXPECT_EQ(topic_endpoint_info.qos_profile.lifespan, RCUTILS_S_TO_NS(2u)) << "Unequal lifespan";
   EXPECT_EQ(
     topic_endpoint_info.qos_profile.liveliness,
     RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC) << "Unequal liveliness";
   EXPECT_EQ(
-    topic_endpoint_info.qos_profile.liveliness_lease_duration.sec,
-    3u) << "Unequal liveliness lease duration sec";
-  EXPECT_EQ(
-    topic_endpoint_info.qos_profile.liveliness_lease_duration.nsec,
-    0u) << "Unequal liveliness lease duration nsec";
+    topic_endpoint_info.qos_profile.liveliness_lease_duration, RCUTILS_S_TO_NS(3u)
+  ) << "Unequal liveliness lease duration";
   EXPECT_EQ(
     topic_endpoint_info.qos_profile.avoid_ros_namespace_conventions,
     false) << "Unequal avoid namespace conventions";
@@ -205,17 +200,12 @@ TEST(test_topic_endpoint_info, zero_init) {
   EXPECT_EQ(topic_endpoint_info.qos_profile.depth, 0u) << "Non-zero depth";
   EXPECT_EQ(topic_endpoint_info.qos_profile.reliability, 0) << "Non-zero reliability";
   EXPECT_EQ(topic_endpoint_info.qos_profile.durability, 0) << "Non-zero durability";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.deadline.sec, 0u) << "Non-zero deadline sec";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.deadline.nsec, 0u) << "Non-zero deadline nsec";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.lifespan.sec, 0u) << "Non-zero lifespan sec";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.lifespan.nsec, 0u) << "Non-zero lifespan nsec";
+  EXPECT_EQ(topic_endpoint_info.qos_profile.deadline, 0) << "Non-zero deadline";
+  EXPECT_EQ(topic_endpoint_info.qos_profile.lifespan, 0) << "Non-zero lifespan";
   EXPECT_EQ(topic_endpoint_info.qos_profile.liveliness, 0) << "Non-zero liveliness";
   EXPECT_EQ(
-    topic_endpoint_info.qos_profile.liveliness_lease_duration.sec,
-    0u) << "Non-zero liveliness lease duration sec";
-  EXPECT_EQ(
-    topic_endpoint_info.qos_profile.liveliness_lease_duration.nsec,
-    0u) << "Non-zero liveliness lease duration nsec";
+    topic_endpoint_info.qos_profile.liveliness_lease_duration,
+    0) << "Non-zero liveliness lease duration";
   EXPECT_EQ(
     topic_endpoint_info.qos_profile.avoid_ros_namespace_conventions,
     false) << "Non-zero avoid namespace conventions";
@@ -229,10 +219,10 @@ TEST(test_topic_endpoint_info, fini) {
   qos_profile.depth = 0;
   qos_profile.reliability = RMW_QOS_POLICY_RELIABILITY_RELIABLE;
   qos_profile.durability = RMW_QOS_POLICY_DURABILITY_VOLATILE;
-  qos_profile.deadline = {1, 0};
-  qos_profile.lifespan = {2, 0};
+  qos_profile.deadline = RCUTILS_S_TO_NS(1);
+  qos_profile.lifespan = RCUTILS_S_TO_NS(2);
   qos_profile.liveliness = RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC;
-  qos_profile.liveliness_lease_duration = {3, 0};
+  qos_profile.liveliness_lease_duration = RCUTILS_S_TO_NS(3);
   qos_profile.avoid_ros_namespace_conventions = false;
   rmw_ret_t ret = rmw_topic_endpoint_info_set_qos_profile(&topic_endpoint_info, &qos_profile);
   EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
@@ -277,15 +267,11 @@ TEST(test_topic_endpoint_info, fini) {
   EXPECT_EQ(topic_endpoint_info.qos_profile.depth, 0u) << "Non-zero depth";
   EXPECT_EQ(topic_endpoint_info.qos_profile.reliability, 0) << "Non-zero reliability";
   EXPECT_EQ(topic_endpoint_info.qos_profile.durability, 0) << "Non-zero durability";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.deadline.sec, 0u) << "Non-zero deadline sec";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.deadline.nsec, 0u) << "Non-zero deadline nsec";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.lifespan.sec, 0u) << "Non-zero lifespan sec";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.lifespan.nsec, 0u) << "Non-zero lifespan nsec";
+  EXPECT_EQ(topic_endpoint_info.qos_profile.deadline, 0u) << "Non-zero deadline";
+  EXPECT_EQ(topic_endpoint_info.qos_profile.lifespan, 0u) << "Non-zero lifespan";
   EXPECT_EQ(topic_endpoint_info.qos_profile.liveliness, 0) << "Non-zero liveliness";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.liveliness_lease_duration.sec, 0u) <<
-    "Non-zero liveliness lease duration sec";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.liveliness_lease_duration.nsec, 0u) <<
-    "Non-zero liveliness lease duration nsec";
+  EXPECT_EQ(topic_endpoint_info.qos_profile.liveliness_lease_duration, 0u) <<
+    "Non-zero liveliness lease duration";
   EXPECT_EQ(topic_endpoint_info.qos_profile.avoid_ros_namespace_conventions, false) <<
     "Non-zero avoid namespace conventions";
 }

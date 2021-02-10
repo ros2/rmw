@@ -39,6 +39,12 @@ extern "C"
 // implementation. It may need to be increased in the future.
 #define RMW_GID_STORAGE_SIZE 24u
 
+#ifndef _WIN32
+# define RMW_DECLARE_DEPRECATED(name, msg) name __attribute__((deprecated(msg)))
+#else
+# define RMW_DECLARE_DEPRECATED(name, msg) name __pragma(deprecated(name))
+#endif
+
 /// Structure which encapsulates an rmw node
 typedef struct RMW_PUBLIC_TYPE rmw_node_t
 {
@@ -326,7 +332,12 @@ typedef struct RMW_PUBLIC_TYPE rmw_time_t
 
   /// Nanoseconds component of this time point
   uint64_t nsec;
-} rmw_time_t;
+} RMW_DECLARE_DEPRECATED (rmw_time_t,
+  "rmw_time_t has been deprecated in G-Turtle in favor of rmw_duration_t. "
+  "It will be removed in H-Turtle");
+
+/// A duration of time, measured in nanoseconds.
+typedef rcutils_duration_value_t rmw_duration_t;
 
 typedef rcutils_time_point_value_t rmw_time_point_value_t;
 
@@ -389,11 +400,6 @@ enum RMW_PUBLIC_TYPE rmw_qos_durability_policy_t
   "RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE is deprecated. " \
   "Use RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC if manually asserted liveliness is needed."
 
-#ifndef _WIN32
-# define RMW_DECLARE_DEPRECATED(name, msg) name __attribute__((deprecated(msg)))
-#else
-# define RMW_DECLARE_DEPRECATED(name, msg) name __pragma(deprecated(name))
-#endif
 
 /// QoS liveliness enumerations that describe a publisher's reporting policy for its alive status.
 /// For a subscriber, these are its requirements for its topic's publishers.
@@ -425,13 +431,13 @@ enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_t
 };
 
 /// QoS Deadline default, 0s indicates deadline policies are not tracked or enforced
-#define RMW_QOS_DEADLINE_DEFAULT {0, 0}
+#define RMW_QOS_DEADLINE_DEFAULT 0
 
 /// QoS Lifespan default, 0s indicate lifespan policies are not tracked or enforced
-#define RMW_QOS_LIFESPAN_DEFAULT {0, 0}
+#define RMW_QOS_LIFESPAN_DEFAULT 0
 
 /// QoS Liveliness lease duration default, 0s indicate lease durations are not tracked or enforced
-#define RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT {0, 0}
+#define RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT 0
 
 /// ROS MiddleWare quality of service profile.
 typedef struct RMW_PUBLIC_TYPE rmw_qos_profile_t
@@ -444,13 +450,13 @@ typedef struct RMW_PUBLIC_TYPE rmw_qos_profile_t
   /// Durability QoS policy setting
   enum rmw_qos_durability_policy_t durability;
   /// The period at which messages are expected to be sent/received
-  struct rmw_time_t deadline;
+  rmw_duration_t deadline;
   /// The age at which messages are considered expired and no longer valid
-  struct rmw_time_t lifespan;
+  rmw_duration_t lifespan;
   /// Liveliness QoS policy setting
   enum rmw_qos_liveliness_policy_t liveliness;
   /// The time within which the RMW node or publisher must show that it is alive
-  struct rmw_time_t liveliness_lease_duration;
+  rmw_duration_t liveliness_lease_duration;
 
   /// If true, any ROS specific namespacing conventions will be circumvented.
   /**
