@@ -113,6 +113,30 @@ static const rmw_qos_profile_t rmw_qos_profile_unknown =
   false
 };
 
+/// Check if two QoS profiles are compatible.
+/**
+ * Two QoS profiles are compatible if the a publisher and subcription
+ * using their QoS policies can communicate with each other.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | No
+ * Uses Atomics       | No
+ * Lock-Free          | No
+ *
+ * \param[in] publisher_profile: The QoS profile used for a publisher.
+ * \param[in] subscription_profile: The QoS profile used for a subscription.
+ * \return `true` if the publisher and subscription profiles are compatible, `false` otherwise.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+bool
+rmw_qos_profile_are_compatible(
+  const rmw_qos_profile_t publisher_profile,
+  const rmw_qos_profile_t subscription_profile);
+
 #ifdef __cplusplus
 }
 #endif
