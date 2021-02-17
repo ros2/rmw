@@ -136,8 +136,8 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_compatibility_type_t
  * In this case, the output parameter `compatibility` is set to `RMW_QOS_COMPATIBILITY_WARNING`
  * and `reason` is populated
  *
- * Profile policies must not have the value "unknown". This is considered an error, and the
- * output parameter `compatiblity` is not set.
+ * Profile policies must not have the value "unknown". An "unknown" value is considered an error
+ * and `RMW_RET_INVALID_ARGUMENT` is returned.
  *
  * <hr>
  * Attribute          | Adherence
@@ -156,7 +156,8 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_compatibility_type_t
  *   Must be pre-allocated by the caller. This parameter is optional and may be set to `NULL`.
  * \param[in] reason_size: Size of the string buffer `reason`, if one is provided.
  * \return `RMW_RET_OK` if the check was successful, or
- * \return `RMW_RET_INVALID_ARGUMENT` if any of the policies have value "unknown"
+ * \return `RMW_RET_INVALID_ARGUMENT` if `compatiblity` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if any of the policies have value "unknown".
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
