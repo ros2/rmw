@@ -41,7 +41,7 @@
  *   - rmw_validate_node_name()
  *   - rmw/validate_node_name.h
  * - A function to validate the compatibility of two QoS profiles
- *   - rmw_qos_profile_are_compatible()
+ *   - rmw_qos_profile_check_compatible()
  *   - rmw/qos_profiles.h
  *
  * It also has some machinery that is necessary to wait on and act on these concepts:
