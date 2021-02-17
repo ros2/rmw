@@ -333,7 +333,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_time_t
   /// Nanoseconds component of this time point
   uint64_t nsec;
 } RMW_DECLARE_DEPRECATED (rmw_time_t,
-  "rmw_time_t has been deprecated in G-Turtle in favor of rmw_duration_t. "
+  "rmw_time_t has been deprecated in Galactic in favor of rmw_duration_t. "
   "It will be removed in H-Turtle");
 
 /// A duration of time, measured in nanoseconds.

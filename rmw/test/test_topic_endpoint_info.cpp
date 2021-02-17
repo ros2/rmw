@@ -15,6 +15,7 @@
 #include "gmock/gmock.h"
 #include "osrf_testing_tools_cpp/scope_exit.hpp"
 #include "rcutils/allocator.h"
+#include "rcutils/time.h"
 
 #include "rmw/error_handling.h"
 #include "rmw/topic_endpoint_info.h"
@@ -173,13 +174,13 @@ TEST(test_topic_endpoint_info, set_qos_profile) {
   EXPECT_EQ(
     topic_endpoint_info.qos_profile.durability,
     RMW_QOS_POLICY_DURABILITY_VOLATILE) << "Unequal durability";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.deadline, RCUTILS_S_TO_NS(1)) << "Unequal deadline";
-  EXPECT_EQ(topic_endpoint_info.qos_profile.lifespan, RCUTILS_S_TO_NS(2u)) << "Unequal lifespan";
+  EXPECT_EQ(topic_endpoint_info.qos_profile.deadline, RCUTILS_S_TO_NS(1LL)) << "Unequal deadline";
+  EXPECT_EQ(topic_endpoint_info.qos_profile.lifespan, RCUTILS_S_TO_NS(2LL)) << "Unequal lifespan";
   EXPECT_EQ(
     topic_endpoint_info.qos_profile.liveliness,
     RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC) << "Unequal liveliness";
   EXPECT_EQ(
-    topic_endpoint_info.qos_profile.liveliness_lease_duration, RCUTILS_S_TO_NS(3u)
+    topic_endpoint_info.qos_profile.liveliness_lease_duration, RCUTILS_S_TO_NS(3LL)
   ) << "Unequal liveliness lease duration";
   EXPECT_EQ(
     topic_endpoint_info.qos_profile.avoid_ros_namespace_conventions,
