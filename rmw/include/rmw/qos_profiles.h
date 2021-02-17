@@ -113,29 +113,60 @@ static const rmw_qos_profile_t rmw_qos_profile_unknown =
   false
 };
 
+typedef enum RMW_PUBLIC_TYPE rmw_qos_compatibility_type_t
+{
+  /// QoS policies are compatible
+  RMW_QOS_COMPATIBILITY_OK = 0,
+
+  /// QoS policies may not be compatible
+  RMW_QOS_COMPATIBILITY_WARNING,
+
+  /// QoS policies are not compatible
+  RMW_QOS_COMPATIBILITY_ERROR
+} rmw_qos_compatibility_type_t;
+
+
 /// Check if two QoS profiles are compatible.
 /**
- * Two QoS profiles are compatible if the a publisher and subcription
- * using their QoS policies can communicate with each other.
+ * Two QoS profiles are compatible if a publisher and subcription
+ * using the QoS policies can communicate with each other.
+ *
+ * If any of the profile policies has the value "system default", then it may not be
+ * possible to determine the compatibilty.
+ * In this case, the output parameter `compatibility` is set to `RMW_QOS_COMPATIBILITY_WARNING`
+ * and `reason` is populated
+ *
+ * Profile policies must not have the value "unknown". This is considered an error, and the
+ * output parameter `compatiblity` is not set.
  *
  * <hr>
  * Attribute          | Adherence
  * ------------------ | -------------
  * Allocates Memory   | No
- * Thread-Safe        | No
+ * Thread-Safe        | Yes
  * Uses Atomics       | No
- * Lock-Free          | No
+ * Lock-Free          | Yes
  *
  * \param[in] publisher_profile: The QoS profile used for a publisher.
  * \param[in] subscription_profile: The QoS profile used for a subscription.
- * \return `true` if the publisher and subscription profiles are compatible, `false` otherwise.
+ * \param[out] compatibility: `RMW_QOS_COMPATIBILITY_OK` if the QoS profiles are compatible, or
+ *   `RMW_QOS_COMPATIBILITY_WARNING` if the QoS profiles might be compatible, or
+ *   `RMW_QOS_COMPATIBILITY_ERROR` if the QoS profiles are not compatible.
+ * \param[out] reason: A detailed reason for a QoS incompatibility.
+ *   Must be pre-allocated by the caller. This parameter is optional and may be set to `NULL`.
+ * \param[in] reason_size: Size of the string buffer `reason`, if one is provided.
+ * \return `RMW_RET_OK` if the check was successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if any of the policies have value "unknown"
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
-bool
-rmw_qos_profile_are_compatible(
+rmw_ret_t
+rmw_qos_profile_check_compatible(
   const rmw_qos_profile_t publisher_profile,
-  const rmw_qos_profile_t subscription_profile);
+  const rmw_qos_profile_t subscription_profile,
+  rmw_qos_compatibility_type_t * compatibility,
+  char * reason,
+  size_t reason_size);
 
 #ifdef __cplusplus
 }
