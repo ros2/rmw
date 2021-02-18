@@ -134,10 +134,21 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_compatibility_type_t
  * If any of the profile policies has the value "system default", then it may not be
  * possible to determine the compatibilty.
  * In this case, the output parameter `compatibility` is set to `RMW_QOS_COMPATIBILITY_WARNING`
- * and `reason` is populated
+ * and `reason` is populated.
  *
  * Profile policies must not have the value "unknown". An "unknown" value is considered an error
  * and `RMW_RET_INVALID_ARGUMENT` is returned.
+ * `reason` will be set, identifying the offending policy.
+ *
+ * If there is a compatibility warning or error, and a buffer is provided for `reason`, then an
+ * explanation of all warnings and errors will be populated into the buffer, separated by
+ * semi-colons (`;`).
+ * Errors will appear before warnings in the string buffer.
+ * If the provided buffer is not large enough, this function will still write to the buffer, up to
+ * the `reason_size` number of characters.
+ * Therefore, it is possible that not errors and warnings are communicated if the buffer size limit
+ * is reached.
+ * A buffer size of 2048 should be more than enough to capture all possible errors and warnings.
  *
  * <hr>
  * Attribute          | Adherence
