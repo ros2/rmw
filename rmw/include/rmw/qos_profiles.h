@@ -146,7 +146,7 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_compatibility_type_t
  * Errors will appear before warnings in the string buffer.
  * If the provided buffer is not large enough, this function will still write to the buffer, up to
  * the `reason_size` number of characters.
- * Therefore, it is possible that not errors and warnings are communicated if the buffer size limit
+ * Therefore, it is possible that not all errors and warnings are communicated if the buffer size limit
  * is reached.
  * A buffer size of 2048 should be more than enough to capture all possible errors and warnings.
  *
