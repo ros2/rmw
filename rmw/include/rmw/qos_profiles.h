@@ -136,9 +136,9 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_compatibility_type_t
  * In this case, the output parameter `compatibility` is set to `RMW_QOS_COMPATIBILITY_WARNING`
  * and `reason` is populated.
  *
- * Profile policies must not have the value "unknown". An "unknown" value is considered an error
- * and `RMW_RET_INVALID_ARGUMENT` is returned.
- * `reason` will be set, identifying the offending policy.
+ * Profile policies must not have the value "unknown".
+ * An "unknown" value is considered an error and `RMW_RET_INVALID_ARGUMENT` is returned.
+ * `compatibility` and `reason` will not be set.
  *
  * If there is a compatibility warning or error, and a buffer is provided for `reason`, then an
  * explanation of all warnings and errors will be populated into the buffer, separated by
