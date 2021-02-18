@@ -169,6 +169,7 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_compatibility_type_t
  * \return `RMW_RET_OK` if the check was successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `compatiblity` is NULL, or
  * \return `RMW_RET_INVALID_ARGUMENT` if any of the policies have value "unknown".
+ * \return `RMW_RET_ERROR` if there is an unexpected error.
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
