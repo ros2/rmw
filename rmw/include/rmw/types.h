@@ -329,6 +329,41 @@ typedef struct RMW_PUBLIC_TYPE rmw_time_t
 } rmw_time_t;
 
 typedef rcutils_time_point_value_t rmw_time_point_value_t;
+typedef rcutils_duration_value_t rmw_duration_t;
+
+/// Constant representing an infinite duration. Use rmw_time_equal for comparisons.
+/**
+  * Different RMW implementations have different representations for infinite durations.
+  * This value is reported for QoS policy durations that are left unspecified.
+  * Do not directly comparee `sec == sec && nsec == nsec`, because we don't want to be sensitive
+  * to non-normalized values (nsec > 1 second) - use rmw_time_equal instead.
+  * This value is INT64_MAX nanoseconds = 0x7FFF FFFF FFFF FFFF = d 9 223 372 036 854 775 807
+  */
+#define RMW_DURATION_INFINITE {9223372036LL, 854775807LL}
+
+/// Check whether two rmw_time_t represent the same time.
+RMW_PUBLIC
+RMW_WARN_UNUSED
+bool
+rmw_time_equal(const rmw_time_t left, const rmw_time_t right);
+
+/// Return the total nanosecond representation of a time.
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_duration_t
+rmw_time_total_nsec(const rmw_time_t time);
+
+/// Construct rmw_time_t from a total nanoseconds representation.
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_time_t
+rmw_time_from_nsec(const rmw_duration_t nanoseconds);
+
+/// Ensure that an rmw_time_t does not have nanoseconds > 1 second.
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_time_t
+rmw_time_normalize(const rmw_time_t time);
 
 /// Meta-data for a service-related take.
 typedef struct RMW_PUBLIC_TYPE rmw_service_info_t
@@ -424,14 +459,16 @@ enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_t
   RMW_QOS_POLICY_LIVELINESS_UNKNOWN = 4
 };
 
+#define RMW_QOS_DURATION_UNSPECIFIED {0, 0}
+
 /// QoS Deadline default, 0s indicates deadline policies are not tracked or enforced
-#define RMW_QOS_DEADLINE_DEFAULT {0, 0}
+#define RMW_QOS_DEADLINE_DEFAULT RMW_QOS_DURATION_UNSPECIFIED
 
 /// QoS Lifespan default, 0s indicate lifespan policies are not tracked or enforced
-#define RMW_QOS_LIFESPAN_DEFAULT {0, 0}
+#define RMW_QOS_LIFESPAN_DEFAULT RMW_QOS_DURATION_UNSPECIFIED
 
 /// QoS Liveliness lease duration default, 0s indicate lease durations are not tracked or enforced
-#define RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT {0, 0}
+#define RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT RMW_QOS_DURATION_UNSPECIFIED
 
 /// ROS MiddleWare quality of service profile.
 typedef struct RMW_PUBLIC_TYPE rmw_qos_profile_t
