@@ -163,11 +163,15 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_compatibility_type_t
  * \param[out] compatibility: `RMW_QOS_COMPATIBILITY_OK` if the QoS profiles are compatible, or
  *   `RMW_QOS_COMPATIBILITY_WARNING` if the QoS profiles might be compatible, or
  *   `RMW_QOS_COMPATIBILITY_ERROR` if the QoS profiles are not compatible.
- * \param[out] reason: A detailed reason for a QoS incompatibility.
- *   Must be pre-allocated by the caller. This parameter is optional and may be set to `NULL`.
+ * \param[out] reason: A detailed reason for a QoS incompatibility or potential incompatibility.
+ *   Must be pre-allocated by the caller.
+ *   This parameter is optional and may be set to `NULL` if the reason information is not
+ *   desired.
  * \param[in] reason_size: Size of the string buffer `reason`, if one is provided.
+ *   If `reason` is `nullptr`, then this parameter must be zero.
  * \return `RMW_RET_OK` if the check was successful, or
- * \return `RMW_RET_INVALID_ARGUMENT` if `compatiblity` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `compatiblity` is `nullptr`, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `reason` is `NULL` and  `reason_size` is not zero, or
  * \return `RMW_RET_INVALID_ARGUMENT` if any of the policies have value "unknown".
  * \return `RMW_RET_ERROR` if there is an unexpected error.
  */
