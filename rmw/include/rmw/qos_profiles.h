@@ -131,14 +131,10 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_compatibility_type_t
  * Two QoS profiles are compatible if a publisher and subcription
  * using the QoS policies can communicate with each other.
  *
- * If any of the profile policies has the value "system default", then it may not be
+ * If any of the profile policies has the value "system default" or "unknown", then it may not be
  * possible to determine the compatibilty.
  * In this case, the output parameter `compatibility` is set to `RMW_QOS_COMPATIBILITY_WARNING`
  * and `reason` is populated.
- *
- * Profile policies must not have the value "unknown".
- * An "unknown" value is considered an error and `RMW_RET_INVALID_ARGUMENT` is returned.
- * `compatibility` and `reason` will not be set.
  *
  * If there is a compatibility warning or error, and a buffer is provided for `reason`, then an
  * explanation of all warnings and errors will be populated into the buffer, separated by
@@ -172,7 +168,6 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_compatibility_type_t
  * \return `RMW_RET_OK` if the check was successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `compatiblity` is `nullptr`, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `reason` is `NULL` and  `reason_size` is not zero, or
- * \return `RMW_RET_INVALID_ARGUMENT` if any of the policies have value "unknown".
  * \return `RMW_RET_ERROR` if there is an unexpected error.
  */
 RMW_PUBLIC
