@@ -20,5 +20,7 @@ TEST(rmw_publisher_options, get_default_publisher_options)
 {
   rmw_publisher_options_t options = rmw_get_default_publisher_options();
   EXPECT_EQ(options.rmw_specific_publisher_payload, nullptr);
-  EXPECT_EQ(options.require_unique_network_flow, RMW_UNIQUE_NETWORK_FLOW_NOT_REQUIRED);
+  EXPECT_EQ(
+    options.require_unique_network_flow_endpoint,
+    RMW_UNIQUE_NETWORK_FLOW_ENDPOINT_NOT_REQUIRED);
 }

@@ -13,33 +13,35 @@
 // limitations under the License.
 
 #include "rmw/error_handling.h"
-#include "rmw/network_flow_array.h"
+#include "rmw/network_flow_endpoint_array.h"
 
-rmw_network_flow_array_t
-rmw_get_zero_initialized_network_flow_array(void)
+rmw_network_flow_endpoint_array_t
+rmw_get_zero_initialized_network_flow_endpoint_array(void)
 {
-  rmw_network_flow_array_t network_flow_array = {0};
-  return network_flow_array;
+  rmw_network_flow_endpoint_array_t network_flow_endpoint_array = {0};
+  return network_flow_endpoint_array;
 }
 
 rmw_ret_t
-rmw_network_flow_array_check_zero(
-  rmw_network_flow_array_t * network_flow_array)
+rmw_network_flow_endpoint_array_check_zero(
+  rmw_network_flow_endpoint_array_t * network_flow_endpoint_array)
 {
-  if (!network_flow_array) {
-    RMW_SET_ERROR_MSG("network_flow_array is null");
+  if (!network_flow_endpoint_array) {
+    RMW_SET_ERROR_MSG("network_flow_endpoint_array is null");
     return RMW_RET_INVALID_ARGUMENT;
   }
-  if (network_flow_array->size != 0 || network_flow_array->network_flow != NULL) {
-    RMW_SET_ERROR_MSG("network_flow_array is not zeroed");
+  if (network_flow_endpoint_array->size != 0 ||
+    network_flow_endpoint_array->network_flow_endpoint != NULL)
+  {
+    RMW_SET_ERROR_MSG("network_flow_endpoint_array is not zeroed");
     return RMW_RET_ERROR;
   }
   return RMW_RET_OK;
 }
 
 rmw_ret_t
-rmw_network_flow_array_init(
-  rmw_network_flow_array_t * network_flow_array,
+rmw_network_flow_endpoint_array_init(
+  rmw_network_flow_endpoint_array_t * network_flow_endpoint_array,
   size_t size,
   rcutils_allocator_t * allocator)
 {
@@ -47,26 +49,27 @@ rmw_network_flow_array_init(
     RMW_SET_ERROR_MSG("allocator is null");
     return RMW_RET_INVALID_ARGUMENT;
   }
-  if (!network_flow_array) {
-    RMW_SET_ERROR_MSG("network_flow_array is null");
+  if (!network_flow_endpoint_array) {
+    RMW_SET_ERROR_MSG("network_flow_endpoint_array is null");
     return RMW_RET_INVALID_ARGUMENT;
   }
-  network_flow_array->network_flow =
-    allocator->allocate(sizeof(rmw_network_flow_t) * size, allocator->state);
-  if (!network_flow_array->network_flow) {
-    RMW_SET_ERROR_MSG("failed to allocate memory for network_flow_array");
+  network_flow_endpoint_array->network_flow_endpoint =
+    allocator->allocate(sizeof(rmw_network_flow_endpoint_t) * size, allocator->state);
+  if (!network_flow_endpoint_array->network_flow_endpoint) {
+    RMW_SET_ERROR_MSG("failed to allocate memory for network_flow_endpoint_array");
     return RMW_RET_BAD_ALLOC;
   }
-  network_flow_array->size = size;
+  network_flow_endpoint_array->size = size;
   for (size_t i = 0; i < size; i++) {
-    network_flow_array->network_flow[i] = rmw_get_zero_initialized_network_flow();
+    network_flow_endpoint_array->network_flow_endpoint[i] =
+      rmw_get_zero_initialized_network_flow_endpoint();
   }
   return RMW_RET_OK;
 }
 
 rmw_ret_t
-rmw_network_flow_array_fini(
-  rmw_network_flow_array_t * network_flow_array,
+rmw_network_flow_endpoint_array_fini(
+  rmw_network_flow_endpoint_array_t * network_flow_endpoint_array,
   rcutils_allocator_t * allocator)
 {
   if (!allocator) {
@@ -74,13 +77,13 @@ rmw_network_flow_array_fini(
     return RMW_RET_INVALID_ARGUMENT;
   }
 
-  if (!network_flow_array) {
-    RMW_SET_ERROR_MSG("network_flow_array is null");
+  if (!network_flow_endpoint_array) {
+    RMW_SET_ERROR_MSG("network_flow_endpoint_array is null");
     return RMW_RET_INVALID_ARGUMENT;
   }
 
-  allocator->deallocate(network_flow_array->network_flow, allocator->state);
-  network_flow_array->network_flow = NULL;
-  network_flow_array->size = 0;
+  allocator->deallocate(network_flow_endpoint_array->network_flow_endpoint, allocator->state);
+  network_flow_endpoint_array->network_flow_endpoint = NULL;
+  network_flow_endpoint_array->size = 0;
   return RMW_RET_OK;
 }

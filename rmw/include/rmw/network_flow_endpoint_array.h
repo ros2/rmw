@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__NETWORK_FLOW_ARRAY_H_
-#define RMW__NETWORK_FLOW_ARRAY_H_
+#ifndef RMW__NETWORK_FLOW_ENDPOINT_ARRAY_H_
+#define RMW__NETWORK_FLOW_ENDPOINT_ARRAY_H_
 
 #if __cplusplus
 extern "C"
@@ -22,59 +22,59 @@ extern "C"
 
 #include "rcutils/allocator.h"
 
-#include "rmw/network_flow.h"
+#include "rmw/network_flow_endpoint.h"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
 
-/// Structure to hold an arrary of network_flow_t
-typedef struct RMW_PUBLIC_TYPE rmw_network_flow_array_t
+/// Structure to hold an arrary of network_flow_endpoint_t
+typedef struct RMW_PUBLIC_TYPE rmw_network_flow_endpoint_array_t
 {
   /// Size of the array
   size_t size;
-  /// Array of rmw_network_flow_t
-  rmw_network_flow_t * network_flow;
-} rmw_network_flow_array_t;
+  /// Array of rmw_network_flow_endpoint_t
+  rmw_network_flow_endpoint_t * network_flow_endpoint;
+} rmw_network_flow_endpoint_array_t;
 
-/// Return a rmw_network_flow_array_t instance with zero-initialized members
+/// Return a rmw_network_flow_endpoint_array_t instance with zero-initialized members
 RMW_PUBLIC
-rmw_network_flow_array_t
-rmw_get_zero_initialized_network_flow_array(void);
+rmw_network_flow_endpoint_array_t
+rmw_get_zero_initialized_network_flow_endpoint_array(void);
 
-/// Check if network_flow_array instance is zero-initialized
+/// Check if network_flow_endpoint_array instance is zero-initialized
 /**
- * \param[in] network_flow_array arrary to be checked
+ * \param[in] network_flow_endpoint_array arrary to be checked
  * \returns `RMW_RET_OK` if array is zero-initialized, or
- * \returns `RMW_RET_INVALID_ARGUMENT` if `network_flow_array` is NULL, or
- * \returns `RMW_RET_ERROR` if `network_flow_array` is not zero-initialized.
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `network_flow_endpoint_array` is NULL, or
+ * \returns `RMW_RET_ERROR` if `network_flow_endpoint_array` is not zero-initialized.
  * \remark RMW error state is set on failure
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_network_flow_array_check_zero(
-  rmw_network_flow_array_t * network_flow_array);
+rmw_network_flow_endpoint_array_check_zero(
+  rmw_network_flow_endpoint_array_t * network_flow_endpoint_array);
 
-/// Allocate a rmw_network_flow_array_t instance
+/// Allocate a rmw_network_flow_endpoint_array_t instance
 /**
- * \param[inout] network_flow_array array to be allocated
+ * \param[inout] network_flow_endpoint_array array to be allocated
  * \param[in] size size of the array to be allocated
  * \param[in] allocator the allcator for allocating memory
  * \returns `RMW_RET_OK` on successfull initilization, or
- * \returns `RMW_RET_INVALID_ARGUMENT` if `network_flow_array` or `allocator` is NULL, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `network_flow_endpoint_array` or `allocator` is NULL, or
  * \returns `RMW_RET_BAD_ALLOC` if memory allocation fails, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
  * \remark RMW error state is set on failure
  */
 RMW_PUBLIC
 rmw_ret_t
-rmw_network_flow_array_init(
-  rmw_network_flow_array_t * network_flow_array,
+rmw_network_flow_endpoint_array_init(
+  rmw_network_flow_endpoint_array_t * network_flow_endpoint_array,
   size_t size,
   rcutils_allocator_t * allocator);
 
-/// Deallocate a rmw_network_flow_array_t instance
+/// Deallocate a rmw_network_flow_endpoint_array_t instance
 /**
- * \param[inout] network_flow_array array to be deallocated
+ * \param[inout] network_flow_endpoint_array array to be deallocated
  * \param[in] allocator the allcator for allocating memory
  * \returns `RMW_RET_OK` on successfully deallocation, or
  * \returns `RMW_RET_INVALID_ARGUMENT` if any argument is NULL, or
@@ -83,12 +83,12 @@ rmw_network_flow_array_init(
  */
 RMW_PUBLIC
 rmw_ret_t
-rmw_network_flow_array_fini(
-  rmw_network_flow_array_t * network_flow_array,
+rmw_network_flow_endpoint_array_fini(
+  rmw_network_flow_endpoint_array_t * network_flow_endpoint_array,
   rcutils_allocator_t * allocator);
 
 #if __cplusplus
 }
 #endif
 
-#endif  // RMW__NETWORK_FLOW_ARRAY_H_
+#endif  // RMW__NETWORK_FLOW_ENDPOINT_ARRAY_H_

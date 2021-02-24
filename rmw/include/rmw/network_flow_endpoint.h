@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__NETWORK_FLOW_H_
-#define RMW__NETWORK_FLOW_H_
+#ifndef RMW__NETWORK_FLOW_ENDPOINT_H_
+#define RMW__NETWORK_FLOW_ENDPOINT_H_
 
 #if __cplusplus
 extern "C"
@@ -45,9 +45,8 @@ typedef enum rmw_internet_protocol_t
 /// Inspired from linux/inet.h
 #define RMW_INET_ADDRSTRLEN 48
 
-/// Structure that describes network flow of a publisher or subscriber
-// TODO(anamud): Consider renaming structure to network_flow_endpoint_t
-typedef struct RMW_PUBLIC_TYPE rmw_network_flow_t
+/// Structure that describes network flow endpoint of a publisher or subscription
+typedef struct RMW_PUBLIC_TYPE rmw_network_flow_endpoint_t
 {
   // Transport protocol
   rmw_transport_protocol_t transport_protocol;
@@ -59,27 +58,28 @@ typedef struct RMW_PUBLIC_TYPE rmw_network_flow_t
   // TODO(anamud): Consider specializing since flow_label is set only at publisher
   // ... side.
   uint32_t flow_label;
+  // TODO(anemud): Consider adding the DSCP parameter
   // Internet address
   char internet_address[RMW_INET_ADDRSTRLEN];
-} rmw_network_flow_t;
+} rmw_network_flow_endpoint_t;
 
-/// Return a rmw_network_flow_t struct with zero-initialized members
+/// Return a rmw_network_flow_endpoint_t struct with zero-initialized members
 RMW_PUBLIC
-rmw_network_flow_t
-rmw_get_zero_initialized_network_flow(void);
+rmw_network_flow_endpoint_t
+rmw_get_zero_initialized_network_flow_endpoint(void);
 
-/// Set transport protocol in given rmw_network_flow_t instance
+/// Set transport protocol in given rmw_network_flow_endpoint_t instance
 /**
- * \param[in] network_flow network_flow_t to be initialized
+ * \param[in] network_flow_endpoint network_flow_endpoint_t to be initialized
  * \param[in] transport_protocol the tranport protocol
  * \returns `RMW_RET_OK` on successfull initilization, or
- * \returns `RMW_RET_INVALID_ARGUMENT` if network_flow is NULL, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if network_flow_endpoint is NULL, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
  */
 RMW_PUBLIC
 rmw_ret_t
-rmw_network_flow_set_transport_protocol(
-  rmw_network_flow_t * network_flow,
+rmw_network_flow_endpoint_set_transport_protocol(
+  rmw_network_flow_endpoint_t * network_flow_endpoint,
   const rmw_transport_protocol_t transport_protocol);
 
 /// Convert to string variant of transport protocol
@@ -87,21 +87,21 @@ rmw_network_flow_set_transport_protocol(
  * \param[in] transport_protocol transport_protocol_t to be converted
  */
 RMW_PUBLIC
-const char * rmw_network_flow_get_transport_protocol_string(
+const char * rmw_network_flow_endpoint_get_transport_protocol_string(
   const rmw_transport_protocol_t transport_protocol);
 
-/// Set internet protocol in given rmw_network_flow_t instance
+/// Set internet protocol in given rmw_network_flow_endpoint_t instance
 /**
- * \param[in] network_flow network_flow_t to be initialized
+ * \param[in] network_flow_endpoint network_flow_endpoint_t to be initialized
  * \param[in] internet_protocol the internet protocolcol
  * \returns `RMW_RET_OK` on successfull initilization, or
- * \returns `RMW_RET_INVALID_ARGUMENT` if network_flow is NULL, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if network_flow_endpoint is NULL, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
  */
 RMW_PUBLIC
 rmw_ret_t
-rmw_network_flow_set_internet_protocol(
-  rmw_network_flow_t * network_flow,
+rmw_network_flow_endpoint_set_internet_protocol(
+  rmw_network_flow_endpoint_t * network_flow_endpoint,
   const rmw_internet_protocol_t internet_protocol);
 
 /// Convert to string variant of internet protocol
@@ -109,40 +109,40 @@ rmw_network_flow_set_internet_protocol(
  * \param[in] internet_protocol internet_protocol_t to be converted
  */
 RMW_PUBLIC
-const char * rmw_network_flow_get_internet_protocol_string(
+const char * rmw_network_flow_endpoint_get_internet_protocol_string(
   const rmw_internet_protocol_t internet_protocol);
 
-/// Set transport port in given rmw_network_flow_t instance
+/// Set transport port in given rmw_network_flow_endpoint_t instance
 /**
- * \param[in] network_flow network_flow_t to be initialized
+ * \param[in] network_flow_endpoint network_flow_endpoint_t to be initialized
  * \param[in] transport_port the transport port
  * \returns `RMW_RET_OK` on successfull initilization, or
- * \returns `RMW_RET_INVALID_ARGUMENT` if `network_flow` is NULL, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `network_flow_endpoint` is NULL, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
  */
 RMW_PUBLIC
 rmw_ret_t
-rmw_network_flow_set_transport_port(
-  rmw_network_flow_t * network_flow,
+rmw_network_flow_endpoint_set_transport_port(
+  rmw_network_flow_endpoint_t * network_flow_endpoint,
   const uint16_t transport_port);
 
-/// Set flow label in given rmw_network_flow_t instance
+/// Set flow label in given rmw_network_flow_endpoint_t instance
 /**
- * \param[in] network_flow network_flow_t to be initialized
+ * \param[in] network_flow_endpoint network_flow_endpoint_t to be initialized
  * \param[in] flow_label the flow label
  * \returns `RMW_RET_OK` on successfull initilization, or
- * \returns `RMW_RET_INVALID_ARGUMENT` if `network_flow` is NULL, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `network_flow_endpoint` is NULL, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
  */
 RMW_PUBLIC
 rmw_ret_t
-rmw_network_flow_set_flow_label(
-  rmw_network_flow_t * network_flow,
+rmw_network_flow_endpoint_set_flow_label(
+  rmw_network_flow_endpoint_t * network_flow_endpoint,
   const uint32_t flow_label);
 
-/// Set internet address in the rmw_network_flow_t struct
+/// Set internet address in the rmw_network_flow_endpoint_t struct
 /**
- * \param[in] network_flow network_flow_t to be initialized
+ * \param[in] network_flow_endpoint network_flow_endpoint_t to be initialized
  * \param[in] internet_address the internet address as C-style string
  * \param[in] size size of internet_address
  * \returns `RMW_RET_OK` on successfull initilization, or
@@ -152,8 +152,8 @@ rmw_network_flow_set_flow_label(
  */
 RMW_PUBLIC
 rmw_ret_t
-rmw_network_flow_set_internet_address(
-  rmw_network_flow_t * network_flow,
+rmw_network_flow_endpoint_set_internet_address(
+  rmw_network_flow_endpoint_t * network_flow_endpoint,
   const char * internet_address,
   size_t size);
 
@@ -161,4 +161,4 @@ rmw_network_flow_set_internet_address(
 }
 #endif
 
-#endif  // RMW__NETWORK_FLOW_H_
+#endif  // RMW__NETWORK_FLOW_ENDPOINT_H_

@@ -12,25 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__GET_NETWORK_FLOW_H_
-#define RMW__GET_NETWORK_FLOW_H_
+#ifndef RMW__GET_NETWORK_FLOW_ENDPOINT_H_
+#define RMW__GET_NETWORK_FLOW_ENDPOINT_H_
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-#include "rmw/network_flow_array.h"
+#include "rmw/network_flow_endpoint_array.h"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
 
-/// Get network flows of a publisher
+/// Get network flow endpoints of a publisher
 /**
- * Query the underlying middleware for a given publisher's network flows
+ * Query the underlying middleware for a given publisher's network flow endpoints
  *
  * \param[in] publisher the publisher instance to inspect
- * \param[in] allocator allocator to be used when allocating space for network_flow_array_t
- * \param[out] network_flow_array the network flows
+ * \param[in] allocator allocator to be used when allocating space for network_flow_endpoint_array_t
+ * \param[out] network_flow_endpoint_array the network flow endpoints
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if any argument is null,
  * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
@@ -40,18 +40,18 @@ extern "C"
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_publisher_get_network_flow(
+rmw_publisher_get_network_flow_endpoint(
   const rmw_publisher_t * publisher,
   rcutils_allocator_t * allocator,
-  rmw_network_flow_array_t * network_flow_array);
+  rmw_network_flow_endpoint_array_t * network_flow_endpoint_array);
 
-/// Get network flows of a subscription
+/// Get network flow endpoints of a subscription
 /**
- * Query the underlying middleware for a given subscription's network flows
+ * Query the underlying middleware for a given subscription's network flow endpoints
  *
  * \param[in] subscription the subscription instance to inspect
- * \param[in] allocator allocator to be used when allocating space for network_flow_array_t
- * \param[out] network_flow_array the network flows
+ * \param[in] allocator allocator to be used when allocating space for network_flow_endpoint_array_t
+ * \param[out] network_flow_endpoint_array the network flow endpoints
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if any argument is null, or
  * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
@@ -61,13 +61,13 @@ rmw_publisher_get_network_flow(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_subscription_get_network_flow(
+rmw_subscription_get_network_flow_endpoint(
   const rmw_subscription_t * subscription,
   rcutils_allocator_t * allocator,
-  rmw_network_flow_array_t * network_flow_array);
+  rmw_network_flow_endpoint_array_t * network_flow_endpoint_array);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  // RMW__GET_NETWORK_FLOW_H_
+#endif  // RMW__GET_NETWORK_FLOW_ENDPOINT_H_
