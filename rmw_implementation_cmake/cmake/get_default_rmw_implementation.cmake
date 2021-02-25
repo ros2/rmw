@@ -58,7 +58,8 @@ macro(get_default_rmw_implementation var)
   if(_index EQUAL -1)
     string(REPLACE ";" ", " _middleware_implementations_string "${_middleware_implementations}")
     message(FATAL_ERROR
-      "Could not find ROS middleware implementation '${_middleware_implementation}'. "
+      "Could not find ROS middleware implementation "
+      "'${_middleware_implementation}'. "
       "Choose one of the following: ${_middleware_implementations_string}")
   endif()
   find_package("${_middleware_implementation}" REQUIRED)
