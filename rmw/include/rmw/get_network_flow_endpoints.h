@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__GET_NETWORK_FLOW_ENDPOINT_H_
-#define RMW__GET_NETWORK_FLOW_ENDPOINT_H_
+#ifndef RMW__GET_NETWORK_FLOW_ENDPOINTS_H_
+#define RMW__GET_NETWORK_FLOW_ENDPOINTS_H_
 
 #ifdef __cplusplus
 extern "C"
@@ -40,7 +40,7 @@ extern "C"
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_publisher_get_network_flow_endpoint(
+rmw_publisher_get_network_flow_endpoints(
   const rmw_publisher_t * publisher,
   rcutils_allocator_t * allocator,
   rmw_network_flow_endpoint_array_t * network_flow_endpoint_array);
@@ -61,7 +61,7 @@ rmw_publisher_get_network_flow_endpoint(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_subscription_get_network_flow_endpoint(
+rmw_subscription_get_network_flow_endpoints(
   const rmw_subscription_t * subscription,
   rcutils_allocator_t * allocator,
   rmw_network_flow_endpoint_array_t * network_flow_endpoint_array);
@@ -70,4 +70,4 @@ rmw_subscription_get_network_flow_endpoint(
 }
 #endif
 
-#endif  // RMW__GET_NETWORK_FLOW_ENDPOINT_H_
+#endif  // RMW__GET_NETWORK_FLOW_ENDPOINTS_H_
