@@ -2,6 +2,11 @@
 Changelog for package rmw_implementation_cmake
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.1.0 (2021-02-25)
+------------------
+* Shorten some excessively long lines of CMake (`#300 <https://github.com/ros2/rmw/issues/300>`_)
+* Contributors: Scott K Logan
+
 3.0.0 (2021-01-25)
 ------------------
 * Change default RMW vendor to CycloneDDS. (`#293 <https://github.com/ros2/rmw/issues/293>`_)

@@ -2,6 +2,12 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.1.0 (2021-02-25)
+------------------
+* Add declaration for function to check QoS profile compatibility (`#299 <https://github.com/ros2/rmw/issues/299>`_)
+* Update the rmw_take_sequence documentation. (`#297 <https://github.com/ros2/rmw/issues/297>`_)
+* Contributors: Chris Lalancette, Jacob Perron
+
 3.0.0 (2021-01-25)
 ------------------
 
