@@ -27,6 +27,7 @@ TEST(test_network_flow_endpoint, zero_init) {
   EXPECT_EQ(network_flow_endpoint.internet_protocol, 0) << "Non-zero internet protocol";
   EXPECT_EQ(network_flow_endpoint.transport_port, 0u) << "Non-zero transport_port";
   EXPECT_EQ(network_flow_endpoint.flow_label, 0u) << "Non-zero flow label";
+  EXPECT_EQ(network_flow_endpoint.dscp, 0u) << "Non-zero DSCP";
   for (uint8_t i = 0; i < RMW_INET_ADDRSTRLEN; i++) {
     EXPECT_EQ(network_flow_endpoint.internet_address[i], 0) << "Non-zero internet address";
   }
@@ -166,6 +167,21 @@ TEST(test_network_flow_endpoint, set_flow_label) {
   ret = rmw_network_flow_endpoint_set_flow_label(&network_flow_endpoint, flow_label);
   EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
   EXPECT_EQ(network_flow_endpoint.flow_label, flow_label) << "flow_label value is not as expected";
+}
+
+TEST(test_network_flow_endpoint, set_dscp) {
+  rmw_network_flow_endpoint_t network_flow_endpoint =
+    rmw_get_zero_initialized_network_flow_endpoint();
+  uint8_t dscp = 0x2e;
+
+  rmw_ret_t ret = rmw_network_flow_endpoint_set_dscp(nullptr, dscp);
+  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
+    "Expected invalid argument for null network_flow_endpoint";
+  rmw_reset_error();
+
+  ret = rmw_network_flow_endpoint_set_dscp(&network_flow_endpoint, dscp);
+  EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
+  EXPECT_EQ(network_flow_endpoint.dscp, dscp) << "dscp value is not as expected";
 }
 
 TEST(test_network_flow_endpoint, set_internet_address) {

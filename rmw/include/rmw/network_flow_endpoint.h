@@ -58,7 +58,10 @@ typedef struct RMW_PUBLIC_TYPE rmw_network_flow_endpoint_t
   // TODO(anamud): Consider specializing since flow_label is set only at publisher
   // ... side.
   uint32_t flow_label;
-  // TODO(anemud): Consider adding the DSCP parameter
+  // DSCP (Diff. Services Code Point)
+  // TODO(anamud): Consider specializing since DSCP is set only at publisher
+  // ... side.
+  uint8_t dscp;
   // Internet address
   char internet_address[RMW_INET_ADDRSTRLEN];
 } rmw_network_flow_endpoint_t;
@@ -139,6 +142,20 @@ rmw_ret_t
 rmw_network_flow_endpoint_set_flow_label(
   rmw_network_flow_endpoint_t * network_flow_endpoint,
   const uint32_t flow_label);
+
+/// Set DSCP (Diff. Services Code Point) in given rmw_network_flow_endpoint_t instance
+/**
+ * \param[in] network_flow_endpoint network_flow_endpoint_t to be initialized
+ * \param[in] dscp the DSCP
+ * \returns `RMW_RET_OK` on successfull initilization, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `network_flow_endpoint` is NULL, or
+ * \returns `RMW_RET_ERROR` when an unspecified error occurs.
+ */
+RMW_PUBLIC
+rmw_ret_t
+rmw_network_flow_endpoint_set_dscp(
+  rmw_network_flow_endpoint_t * network_flow_endpoint,
+  const uint8_t dscp);
 
 /// Set internet address in the rmw_network_flow_endpoint_t struct
 /**

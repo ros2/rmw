@@ -111,6 +111,20 @@ rmw_network_flow_endpoint_set_flow_label(
 }
 
 rmw_ret_t
+rmw_network_flow_endpoint_set_dscp(
+  rmw_network_flow_endpoint_t * network_flow_endpoint,
+  const uint8_t dscp)
+{
+  if (!network_flow_endpoint) {
+    RMW_SET_ERROR_MSG("network_flow_endpoint is null");
+    return RMW_RET_INVALID_ARGUMENT;
+  }
+
+  network_flow_endpoint->dscp = dscp;
+  return RMW_RET_OK;
+}
+
+rmw_ret_t
 rmw_network_flow_endpoint_set_internet_address(
   rmw_network_flow_endpoint_t * network_flow_endpoint,
   const char * internet_address,
