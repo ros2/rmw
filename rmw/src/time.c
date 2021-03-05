@@ -49,7 +49,7 @@ rmw_time_t
 rmw_time_from_nsec(const rmw_duration_t nanoseconds)
 {
   if (nanoseconds < 0) {
-    return RMW_DURATION_INFINITE;
+    return (rmw_time_t)RMW_DURATION_INFINITE;
   }
 
   // Avoid typing the 1 billion constant

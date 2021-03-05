@@ -47,9 +47,12 @@ typedef rcutils_duration_value_t rmw_duration_t;
   * Do not directly compare `sec == sec && nsec == nsec`, because we don't want to be sensitive
   * to non-normalized values (nsec > 1 second) - use rmw_time_equal instead.
   * This value is INT64_MAX nanoseconds = 0x7FFF FFFF FFFF FFFF = d 9 223 372 036 854 775 807
+  *
+  * Note: these constants cannot be `static const rmw_time_t` because in C that can't be used
+  * as a compile-time initializer
   */
-static const struct rmw_time_t RMW_DURATION_INFINITE = {9223372036LL, 854775807LL};
-static const struct rmw_time_t RMW_DURATION_UNSPECIFIED = {0LL, 0LL};
+#define RMW_DURATION_INFINITE {9223372036LL, 854775807LL}
+#define RMW_DURATION_UNSPECIFIED {0LL, 0LL}
 
 /// Check whether two rmw_time_t represent the same time.
 RMW_PUBLIC
