@@ -74,7 +74,6 @@ TEST(test_time, time_total_nsec) {
   }
   {
     // Overflow on seconds alone, not at the type limit
-    //
     rmw_time_t time{1ll << 35, 0};
     EXPECT_EQ(rmw_time_total_nsec(time), MAXTIME);
   }
