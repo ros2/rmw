@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+3.2.0 (2021-03-11)
+------------------
 * Introduce RMW_DURATION_INFINITE constant and API return value promise (`#301 <https://github.com/ros2/rmw/issues/301>`_)
 * Contributors: Emerson Knapp
 
