@@ -98,6 +98,7 @@ extern "C"
 #include "rosidl_runtime_c/service_type_support_struct.h"
 #include "rosidl_runtime_c/sequence_bound.h"
 
+#include "rmw/event.h"
 #include "rmw/init.h"
 #include "rmw/listener_callback_type.h"
 #include "rmw/macros.h"
