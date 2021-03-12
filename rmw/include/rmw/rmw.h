@@ -1133,9 +1133,15 @@ rmw_subscription_get_actual_qos(
  * <i>[1] implementation defined, check the implementation documentation</i>
  *
  * \param[in] subscription the subscription object to inspect.
- * \param[in] filter_expression An filter expression to set.
- * \param[in] expression_parameters Array of expression parameters to set,
- *   it can be NULL if there is no placeholder in filter_expression.
+ * \param[in] filter_expression A filter_expression is a string that specifies the criteria
+ *   to select the data samples of interest. It is similar to the WHERE part of an SQL clause.
+ *   Using an empty("") string can reset/clean content filtered topic for the subscription.
+ * \param[in] expression_parameters An expression_parameters is an array of strings that
+ *   give values to the ‘parameters’ (i.e., "%n" tokens begin from 0) in the filter_expression.
+ *   The number of supplied parameters must fit with the requested values in the filter_expression.
+ *   It can be NULL if there is no "%n" tokens placeholder in filter_expression.
+ *   The maximun size allowance depends on concrete DDS vendor.
+ *   (i.e., it cannot be greater than 100 on RTI_Connext.)
  * \return `RMW_RET_OK` if the query was successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `subscription` is NULL, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `filter_expression` is NULL, or
@@ -1149,7 +1155,7 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_subscription_set_cft_expression_parameters(
-  const rmw_subscription_t * subscription,
+  rmw_subscription_t * subscription,
   const char * filter_expression,
   const rcutils_string_array_t * expression_parameters);
 
