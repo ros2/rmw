@@ -2873,8 +2873,6 @@ rmw_client_set_listener_callback(
  * \param[in] rmw_guard_condition The rmw guard condition to which the listener belongs
  * \param[in] listener_callback The callback to be called by the listener
  * \param[in] user_data Used as arg for the call of the listener_callback
- * \param[in] use_previous_events Boolean flag to indicate if events happened before the
- *   set of the listener callback should be taken into account or ignored
  * \return `RMW_RET_OK` if callback was set to the listener, or
  * \return `RMW_RET_UNSUPPORTED` if the API is not implemented in the dds implementation
  */
@@ -2884,8 +2882,7 @@ rmw_ret_t
 rmw_guard_condition_set_listener_callback(
   rmw_guard_condition_t * rmw_guard_condition,
   rmw_listener_callback_t listener_callback,
-  const void * user_data,
-  bool use_previous_events);
+  const void * user_data);
 
 /// Set callback function of the rmw event listener.
 /**
@@ -2899,8 +2896,6 @@ rmw_guard_condition_set_listener_callback(
  * \param[in] rmw_event The rmw event to which the listener belongs
  * \param[in] listener_callback The callback to be called by the listener
  * \param[in] user_data Used as arg for the call of the listener_callback
- * \param[in] use_previous_events Boolean flag to indicate if events happened before the
- *   set of the listener callback should be taken into account or ignored
  * \return `RMW_RET_OK` if callback was set to the listener, or
  * \return `RMW_RET_UNSUPPORTED` if the API is not implemented in the dds implementation
  */
@@ -2910,8 +2905,7 @@ rmw_ret_t
 rmw_event_set_listener_callback(
   rmw_event_t * rmw_event,
   rmw_listener_callback_t listener_callback,
-  const void * user_data,
-  bool use_previous_events);
+  const void * user_data);
 
 #ifdef __cplusplus
 }
