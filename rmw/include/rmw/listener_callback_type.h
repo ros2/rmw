@@ -1,4 +1,4 @@
-// Copyright 2020 Open Source Robotics Foundation, Inc.
+// Copyright 2021 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ extern "C"
 {
 #endif
 
-typedef void (* rmw_listener_callback_t)(const void * user_data);
+typedef void (* rmw_listener_callback_t)(const void * user_data, size_t num_events);
 
 #ifdef __cplusplus
 }
