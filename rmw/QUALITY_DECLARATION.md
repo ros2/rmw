@@ -10,7 +10,7 @@ Below are the rationales, notes, and caveats for this claim, organized by each r
 
 ### Version Scheme [1.i]
 
-`rmw` uses `semver` according to the recommendation for ROS Core packages in the [ROS 2 Developer Guide](https://index.ros.org/doc/ros2/Contributing/Developer-Guide/#versioning).
+`rmw` uses `semver` according to the recommendation for ROS Core packages in the [ROS 2 Developer Guide](https://docs.ros.org/en/rolling/Contributing/Developer-Guide.html#versioning).
 
 ### Version Stability [1.ii]
 
@@ -33,7 +33,7 @@ All installed headers are in the `include` directory of the package, headers in 
 
 ## Change Control Process [2]
 
-`rmw` follows the recommended guidelines for ROS Core packages in the [ROS 2 Developer Guide](https://index.ros.org/doc/ros2/Contributing/Developer-Guide/#package-requirements).
+`rmw` follows the recommended guidelines for ROS Core packages in the [ROS 2 Developer Guide](https://docs.ros.org/en/rolling/Contributing/Developer-Guide.html#quality-practices).
 
 ### Change Requests [2.i]
 
@@ -99,7 +99,7 @@ The tests aim to cover both typical usage and corner cases, but are quantified b
 
 ### Coverage [4.iii]
 
-`rmw` follows the recommendations for ROS Core packages in the [ROS 2 Developer Guide](https://index.ros.org/doc/ros2/Contributing/Developer-Guide/#code-coverage), and opts to use line coverage instead of branch coverage.
+`rmw` follows the recommendations for ROS Core packages in the [ROS 2 Developer Guide](https://docs.ros.org/en/rolling/Contributing/Developer-Guide.html#code-coverage), and opts to use line coverage instead of branch coverage.
 
 This includes:
 
@@ -111,11 +111,11 @@ Changes are required to make a best effort to keep or increase coverage before b
 
 This package has testing coverage of at least 95%.
 Current coverage statistics can be viewed [here](https://ci.ros2.org/job/ci_linux_coverage/lastSuccessfulBuild/cobertura/).
-A description of how coverage statistics are summarized from this page can be found in the [ROS 2 On-boarding Guide](https://index.ros.org/doc/ros2/Contributing/ROS-2-On-boarding-Guide/#note-on-coverage-runs).
+A description of how coverage statistics are summarized from this page can be found in the [ROS 2 On-boarding Guide](https://docs.ros.org/en/rolling/Contributing/Developer-Guide.html#note-on-coverage-runs).
 
 ### Performance [4.iv]
 
-`rmw` follows the recommendations for performance testing of C code in the [ROS 2 Developer Guide](https://index.ros.org/doc/ros2/Contributing/Developer-Guide/#performance), and opts to do performance analysis on each release rather than each change.
+`rmw` follows the recommendations for performance testing of C code in the [ROS 2 Developer Guide](https://docs.ros.org/en/rolling/Contributing/Developer-Guide.html#performance), and opts to do performance analysis on each release rather than each change.
 
 System level performance benchmarks that cover features of `rmw` can be found at:
 * [Benchmarks](http://build.ros2.org/view/Rci/job/Rci__benchmark_ubuntu_focal_amd64/BenchmarkTable/)
@@ -125,7 +125,7 @@ Changes that introduce regressions in performance must be adequately justified i
 
 ### Linters and Static Analysis [4.v]
 
-`rmw` uses and passes all the standard linters and static analysis tools for a C++ package as described in the [ROS 2 Developer Guide](https://index.ros.org/doc/ros2/Contributing/Developer-Guide/#linters).
+`rmw` uses and passes all the standard linters and static analysis tools for a C++ package as described in the [ROS 2 Developer Guide](https://docs.ros.org/en/rolling/Contributing/Developer-Guide.html#linters-and-static-analysis).
 
 Results of linter tests can be found [here](http://build.ros2.org/view/Rpr/job/Rpr__rmw__ubuntu_focal_amd64/lastCompletedBuild/testReport/rmw/).
 
