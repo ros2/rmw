@@ -141,6 +141,10 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_options_t
    * may become more complicated when/if participants map to a context instead.
    */
   bool ignore_local_publications;
+
+  /// Used to create a content filtered topic during subscription creation.
+  char * filter_expression;
+  rcutils_string_array_t * expression_parameters;
 } rmw_subscription_options_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_subscription_t
@@ -167,6 +171,9 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_t
 
   /// Indicates whether this subscription can loan messages
   bool can_loan_messages;
+
+  /// Indicates whether this subscription can support content filtered topic
+  bool is_cft_supported;
 } rmw_subscription_t;
 
 /// A handle to an rmw service

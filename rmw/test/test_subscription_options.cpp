@@ -20,4 +20,6 @@ TEST(rmw_subscription_options, get_default_subscription_options)
   rmw_subscription_options_t options = rmw_get_default_subscription_options();
   EXPECT_EQ(options.rmw_specific_subscription_payload, nullptr);
   EXPECT_EQ(options.ignore_local_publications, false);
+  EXPECT_EQ(options.filter_expression, nullptr);
+  EXPECT_EQ(options.expression_parameters, nullptr);
 }
