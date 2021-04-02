@@ -100,7 +100,7 @@ extern "C"
 
 #include "rmw/event.h"
 #include "rmw/init.h"
-#include "rmw/listener_callback_type.h"
+#include "rmw/event_callback_type.h"
 #include "rmw/macros.h"
 #include "rmw/message_sequence.h"
 #include "rmw/qos_profiles.h"
@@ -2770,8 +2770,8 @@ rmw_compare_gids_equal(const rmw_gid_t * gid1, const rmw_gid_t * gid2, bool * re
  * \param[out] is_available
  *   set to true if there is a service server available, else false
  * \return `RMW_RET_OK` if node the check was made successfully, or
- * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `publisher` implementation
- *   identifier does not match this implementation, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the implementation
+ *   identifier for any arguments does not match this implementation, or
  * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */
 RMW_PUBLIC
@@ -2792,96 +2792,144 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_set_log_severity(rmw_log_severity_t severity);
 
-/// Set callback function of the rmw subscription listener.
+/// Set the on new message callback function for the subscription.
 /**
- * This API sets the callback function which will be called whenever the
- * subscription listener is notified about a new message for the subscription.
+ * This API sets the callback function to be called whenever the
+ * subscription is notified about a new message.
+ *
+ * This callback is called for each new message received by the subscription.
+ * If messages arrive before the callback is registered, the number_of_events
+ * argument given to the callback may be > 1.
+ *
  * The callback may be called from a thread that the rmw implementation
  * created, rather than a thread owned by the user, i.e. some thread other
  * than user owned threads calling rmw functions such as rmw_wait() or
  * rmw_publish().
  *
- * \param[in] rmw_subscription The rmw subscription to which the listener belongs
- * \param[in] listener_callback The callback to be called by the listener
- * \param[in] user_data Used as arg for the call of the listener_callback
- * \return `RMW_RET_OK` if callback was set to the listener, or
+ * This function is thread-safe.
+ * This is required of the rmw implementation because the callback may be called
+ * from any middleware thread, and this function could be called by the user
+ * at any time.
+ *
+ * \param[in] subscription The subscription on which to set the callback
+ * \param[in] callback The callback to be called when new messages arrive
+ * \param[in] user_data Given to the callback when called later, may be NULL
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `subscription` or `callback` is NULL, or
  * \return `RMW_RET_UNSUPPORTED` if the API is not implemented in the dds implementation
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_subscription_set_listener_callback(
-  rmw_subscription_t * rmw_subscription,
-  rmw_listener_callback_t listener_callback,
+rmw_subscription_set_on_new_message_callback(
+  rmw_subscription_t * subscription,
+  rmw_event_callback_t callback,
   const void * user_data);
 
-/// Set callback function of the rmw service listener.
+/// Set the on new request callback function for the service.
 /**
- * This API sets the callback function which will be called whenever the
- * service listener is notified about a service ready.
+ * This API sets the callback function to be called whenever the
+ * service is notified about a new request.
+ *
+ * This callback is called for each new request received by the service.
+ * If requests arrive before the callback is registered, the number_of_events
+ * argument given to the callback may be > 1.
+ *
  * The callback may be called from a thread that the rmw implementation
  * created, rather than a thread owned by the user, i.e. some thread other
  * than user owned threads calling rmw functions such as rmw_wait() or
- * rmw_publish().
+ * rmw_send_request().
  *
- * \param[in] rmw_service The rmw service to which the listener belongs
- * \param[in] listener_callback The callback to be called by the listener
- * \param[in] user_data Used as arg for the call of the listener_callback
+ * This function is thread-safe.
+ * This is required of the rmw implementation because the callback may be called
+ * from any middleware thread, and this function could be called by the user
+ * at any time.
+ *
+ * \param[in] service The service on which to set the callback
+ * \param[in] callback The callback to be called when new requests arrive
+ * \param[in] user_data Given to the callback when called later, may be NULL
  * \return `RMW_RET_OK` if callback was set to the listener, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `service` or `callback` is NULL, or
  * \return `RMW_RET_UNSUPPORTED` if the API is not implemented in the dds implementation
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_service_set_listener_callback(
-  rmw_service_t * rmw_service,
-  rmw_listener_callback_t listener_callback,
+rmw_service_set_on_new_request_callback(
+  rmw_service_t * service,
+  rmw_event_callback_t callback,
   const void * user_data);
 
-/// Set callback function of the rmw client listener.
+/// Set the on new response callback function for the client.
 /**
- * This API sets the callback function which will be called whenever the
- * client listener is notified about a new client request.
+ * This API sets the callback function to be called whenever the
+ * client is notified about a new response.
+ *
+ * This callback is called for each new response received by the client.
+ * If responses arrive before the callback is registered, the number_of_events
+ * argument given to the callback may be > 1.
+ *
  * The callback may be called from a thread that the rmw implementation
  * created, rather than a thread owned by the user, i.e. some thread other
  * than user owned threads calling rmw functions such as rmw_wait() or
- * rmw_publish().
+ * rmw_take_response().
  *
- * \param[in] rmw_client The rmw client to which the listener belongs
- * \param[in] listener_callback The callback to be called by the listener
- * \param[in] user_data Used as arg for the call of the listener_callback
+ * This function is thread-safe.
+ * This is required of the rmw implementation because the callback may be called
+ * from any middleware thread, and this function could be called by the user
+ * at any time.
+ *
+ * \param[in] client The client on which to set the callback
+ * \param[in] callback The callback to be called when new responses arrive
+ * \param[in] user_data Given to the callback when called later, may be NULL
  * \return `RMW_RET_OK` if callback was set to the listener, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `client` or `callback` is NULL, or
  * \return `RMW_RET_UNSUPPORTED` if the API is not implemented in the dds implementation
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_client_set_listener_callback(
-  rmw_client_t * rmw_client,
-  rmw_listener_callback_t listener_callback,
+rmw_client_set_on_new_response_callback(
+  rmw_client_t * client,
+  rmw_event_callback_t callback,
   const void * user_data);
 
-/// Set callback function of the rmw event listener.
+/// Set the callback function for the event.
 /**
- * This API sets the callback function which will be called whenever the
- * event listener is notified about a new event, like a QoS change.
+ * This API sets the callback function to be called whenever the
+ * event is notified about a new instance of the event.
+ *
+ * For example, this could be called when incompatible QoS is detected, or
+ * a deadline is missed, or any other QoS event.
+ *
+ * This callback is called for each new event that occurs for this rmw_event_t
+ * instance.
+ * If events occur before the callback is registered, the number_of_events
+ * argument given to the callback may be > 1.
+ *
  * The callback may be called from a thread that the rmw implementation
  * created, rather than a thread owned by the user, i.e. some thread other
  * than user owned threads calling rmw functions such as rmw_wait() or
  * rmw_publish().
  *
- * \param[in] rmw_event The rmw event to which the listener belongs
- * \param[in] listener_callback The callback to be called by the listener
- * \param[in] user_data Used as arg for the call of the listener_callback
+ * This function is thread-safe.
+ * This is required of the rmw implementation because the callback may be called
+ * from any middleware thread, and this function could be called by the user
+ * at any time.
+ *
+ * \param[in] event The event on which to set the callback
+ * \param[in] callback The callback to be called when new events occur
+ * \param[in] user_data Given to the callback when called later, may be NULL
  * \return `RMW_RET_OK` if callback was set to the listener, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `event` or `callback` is NULL, or
  * \return `RMW_RET_UNSUPPORTED` if the API is not implemented in the dds implementation
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_event_set_listener_callback(
-  rmw_event_t * rmw_event,
-  rmw_listener_callback_t listener_callback,
+rmw_event_set_callback(
+  rmw_event_t * event,
+  rmw_event_callback_t callback,
   const void * user_data);
 
 #ifdef __cplusplus
