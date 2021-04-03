@@ -37,6 +37,7 @@ TEST(test_network_flow_endpoint_array, zero_init) {
     rmw_get_zero_initialized_network_flow_endpoint_array();
   EXPECT_EQ(network_flow_endpoint_array.size, 0u);
   EXPECT_FALSE(network_flow_endpoint_array.network_flow_endpoint);
+  EXPECT_FALSE(network_flow_endpoint_array.allocator);
 }
 
 TEST(test_network_flow_endpoint_array, check_zero) {
@@ -44,36 +45,48 @@ TEST(test_network_flow_endpoint_array, check_zero) {
     rmw_get_zero_initialized_network_flow_endpoint_array();
   EXPECT_EQ(rmw_network_flow_endpoint_array_check_zero(&network_flow_endpoint_array), RMW_RET_OK);
   rmw_network_flow_endpoint_array_t network_flow_endpoint_array_bad_1 =
-  {1, nullptr};    // size not zero
+  {1, nullptr, nullptr};    // size not zero
   EXPECT_EQ(
     rmw_network_flow_endpoint_array_check_zero(
       &network_flow_endpoint_array_bad_1), RMW_RET_ERROR);
   rmw_reset_error();
+
   rmw_network_flow_endpoint_t network_flow_endpoint;
   rmw_network_flow_endpoint_array_t network_flow_endpoint_array_bad_2 =
-  {0, &network_flow_endpoint};    // network_flow_endpoint not NULL
+  {0, &network_flow_endpoint, nullptr};    // network_flow_endpoint not NULL
   EXPECT_EQ(
     rmw_network_flow_endpoint_array_check_zero(
       &network_flow_endpoint_array_bad_2), RMW_RET_ERROR);
   rmw_reset_error();
+
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
+  rmw_network_flow_endpoint_array_t network_flow_endpoint_array_bad_3 =
+  {0, nullptr, &allocator};    // allocator not NULL
+  EXPECT_EQ(
+    rmw_network_flow_endpoint_array_check_zero(
+      &network_flow_endpoint_array_bad_3), RMW_RET_ERROR);
+  rmw_reset_error();
+
   EXPECT_EQ(rmw_network_flow_endpoint_array_check_zero(nullptr), RMW_RET_INVALID_ARGUMENT);
   rmw_reset_error();
 }
 
 TEST(test_network_flow_endpoint_array, init) {
-  rcutils_allocator_t allocator = rcutils_get_default_allocator();
   rmw_network_flow_endpoint_array_t network_flow_endpoint_array =
     rmw_get_zero_initialized_network_flow_endpoint_array();
   OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT(
   {
     rmw_ret_t fini_ret =
-    rmw_network_flow_endpoint_array_fini(&network_flow_endpoint_array, &allocator);
+    rmw_network_flow_endpoint_array_fini(&network_flow_endpoint_array);
     EXPECT_EQ(fini_ret, RMW_RET_OK);
   });
+
   EXPECT_EQ(
     rmw_network_flow_endpoint_array_init(&network_flow_endpoint_array, 1, nullptr),
     RMW_RET_INVALID_ARGUMENT);
   rmw_reset_error();
+
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
   EXPECT_EQ(
     rmw_network_flow_endpoint_array_init(
       nullptr, 1,
@@ -105,15 +118,11 @@ TEST(test_network_flow_endpoint_array, fini) {
     rmw_network_flow_endpoint_array_init(&network_flow_endpoint_array, 10, &allocator);
   EXPECT_EQ(ret, RMW_RET_OK);
   EXPECT_TRUE(network_flow_endpoint_array.network_flow_endpoint);
-  ret = rmw_network_flow_endpoint_array_fini(&network_flow_endpoint_array, &allocator);
+
+  ret = rmw_network_flow_endpoint_array_fini(&network_flow_endpoint_array);
   EXPECT_EQ(ret, RMW_RET_OK);
   EXPECT_FALSE(network_flow_endpoint_array.network_flow_endpoint);
 
-  EXPECT_EQ(
-    rmw_network_flow_endpoint_array_fini(
-      &network_flow_endpoint_array,
-      nullptr), RMW_RET_INVALID_ARGUMENT);
-  rmw_reset_error();
-  EXPECT_EQ(rmw_network_flow_endpoint_array_fini(nullptr, &allocator), RMW_RET_INVALID_ARGUMENT);
+  EXPECT_EQ(rmw_network_flow_endpoint_array_fini(nullptr), RMW_RET_INVALID_ARGUMENT);
   rmw_reset_error();
 }

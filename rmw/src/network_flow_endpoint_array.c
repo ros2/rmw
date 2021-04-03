@@ -31,7 +31,8 @@ rmw_network_flow_endpoint_array_check_zero(
     return RMW_RET_INVALID_ARGUMENT;
   }
   if (network_flow_endpoint_array->size != 0 ||
-    network_flow_endpoint_array->network_flow_endpoint != NULL)
+    network_flow_endpoint_array->network_flow_endpoint != NULL ||
+    network_flow_endpoint_array->allocator != NULL)
   {
     RMW_SET_ERROR_MSG("network_flow_endpoint_array is not zeroed");
     return RMW_RET_ERROR;
@@ -64,25 +65,20 @@ rmw_network_flow_endpoint_array_init(
     network_flow_endpoint_array->network_flow_endpoint[i] =
       rmw_get_zero_initialized_network_flow_endpoint();
   }
+  network_flow_endpoint_array->allocator = allocator;
   return RMW_RET_OK;
 }
 
 rmw_ret_t
 rmw_network_flow_endpoint_array_fini(
-  rmw_network_flow_endpoint_array_t * network_flow_endpoint_array,
-  rcutils_allocator_t * allocator)
+  rmw_network_flow_endpoint_array_t * network_flow_endpoint_array)
 {
-  if (!allocator) {
-    RMW_SET_ERROR_MSG("allocator is null");
-    return RMW_RET_INVALID_ARGUMENT;
-  }
-
   if (!network_flow_endpoint_array) {
     RMW_SET_ERROR_MSG("network_flow_endpoint_array is null");
     return RMW_RET_INVALID_ARGUMENT;
   }
 
-  allocator->deallocate(network_flow_endpoint_array->network_flow_endpoint, allocator->state);
+  network_flow_endpoint_array->allocator->deallocate(network_flow_endpoint_array->network_flow_endpoint, network_flow_endpoint_array->allocator->state);
   network_flow_endpoint_array->network_flow_endpoint = NULL;
   network_flow_endpoint_array->size = 0;
   return RMW_RET_OK;

@@ -33,6 +33,8 @@ typedef struct RMW_PUBLIC_TYPE rmw_network_flow_endpoint_array_t
   size_t size;
   /// Array of rmw_network_flow_endpoint_t
   rmw_network_flow_endpoint_t * network_flow_endpoint;
+  /// Allocator
+  rcutils_allocator_t * allocator;
 } rmw_network_flow_endpoint_array_t;
 
 /// Return a rmw_network_flow_endpoint_array_t instance with zero-initialized members
@@ -75,7 +77,6 @@ rmw_network_flow_endpoint_array_init(
 /// Deallocate a rmw_network_flow_endpoint_array_t instance
 /**
  * \param[inout] network_flow_endpoint_array array to be deallocated
- * \param[in] allocator the allcator for allocating memory
  * \returns `RMW_RET_OK` on successfully deallocation, or
  * \returns `RMW_RET_INVALID_ARGUMENT` if any argument is NULL, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
@@ -84,8 +85,7 @@ rmw_network_flow_endpoint_array_init(
 RMW_PUBLIC
 rmw_ret_t
 rmw_network_flow_endpoint_array_fini(
-  rmw_network_flow_endpoint_array_t * network_flow_endpoint_array,
-  rcutils_allocator_t * allocator);
+  rmw_network_flow_endpoint_array_t * network_flow_endpoint_array);
 
 #if __cplusplus
 }
