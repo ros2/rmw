@@ -90,7 +90,8 @@ rmw_network_flow_endpoint_set_transport_protocol(
  * \param[in] transport_protocol transport_protocol_t to be converted
  */
 RMW_PUBLIC
-const char * rmw_network_flow_endpoint_get_transport_protocol_string(
+const char *
+rmw_network_flow_endpoint_get_transport_protocol_string(
   const rmw_transport_protocol_t transport_protocol);
 
 /// Set internet protocol in given rmw_network_flow_endpoint_t instance
@@ -112,7 +113,8 @@ rmw_network_flow_endpoint_set_internet_protocol(
  * \param[in] internet_protocol internet_protocol_t to be converted
  */
 RMW_PUBLIC
-const char * rmw_network_flow_endpoint_get_internet_protocol_string(
+const char *
+rmw_network_flow_endpoint_get_internet_protocol_string(
   const rmw_internet_protocol_t internet_protocol);
 
 /// Set transport port in given rmw_network_flow_endpoint_t instance
