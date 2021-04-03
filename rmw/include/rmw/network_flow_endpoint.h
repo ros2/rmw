@@ -166,7 +166,7 @@ rmw_network_flow_endpoint_set_dscp(
  * \param[in] size size of internet_address
  * \returns `RMW_RET_OK` on successfull initilization, or
  * \returns `RMW_RET_INVALID_ARGUMENT` if `internet_address is NULL, or
- * \returns `RMW_RET_INVALID_ARGUMENT` if `size` exceeds RMW_internet_ADDRSTRLEN, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `size` exceeds RMW_INET_ADDRSTRLEN, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
  */
 RMW_PUBLIC
