@@ -78,7 +78,7 @@ rmw_network_flow_endpoint_array_init(
 /**
  * \param[inout] network_flow_endpoint_array array to be deallocated
  * \returns `RMW_RET_OK` on successfully deallocation, or
- * \returns `RMW_RET_INVALID_ARGUMENT` if any argument is NULL, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `network_flow_endpoint_array` or its allocator is NULL, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
  * \remark RMW error state is set on failure
  */
