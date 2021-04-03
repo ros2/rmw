@@ -78,7 +78,9 @@ rmw_network_flow_endpoint_array_fini(
     return RMW_RET_INVALID_ARGUMENT;
   }
 
-  network_flow_endpoint_array->allocator->deallocate(network_flow_endpoint_array->network_flow_endpoint, network_flow_endpoint_array->allocator->state);
+  network_flow_endpoint_array->allocator->deallocate(
+    network_flow_endpoint_array->network_flow_endpoint,
+    network_flow_endpoint_array->allocator->state);
   network_flow_endpoint_array->network_flow_endpoint = NULL;
   network_flow_endpoint_array->size = 0;
   return RMW_RET_OK;
