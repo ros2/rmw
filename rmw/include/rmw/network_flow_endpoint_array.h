@@ -52,7 +52,7 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_network_flow_endpoint_array_check_zero(
-  rmw_network_flow_endpoint_array_t * network_flow_endpoint_array);
+  const rmw_network_flow_endpoint_array_t * network_flow_endpoint_array);
 
 /// Allocate a rmw_network_flow_endpoint_array_t instance
 /**
