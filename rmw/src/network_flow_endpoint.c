@@ -24,20 +24,6 @@ rmw_get_zero_initialized_network_flow_endpoint(void)
   return network_flow_endpoint;
 }
 
-rmw_ret_t
-rmw_network_flow_endpoint_set_transport_protocol(
-  rmw_network_flow_endpoint_t * network_flow_endpoint,
-  const rmw_transport_protocol_t transport_protocol)
-{
-  if (!network_flow_endpoint) {
-    RMW_SET_ERROR_MSG("network_flow_endpoint is null");
-    return RMW_RET_INVALID_ARGUMENT;
-  }
-
-  network_flow_endpoint->transport_protocol = transport_protocol;
-  return RMW_RET_OK;
-}
-
 const char * rmw_network_flow_endpoint_get_transport_protocol_string(
   const rmw_transport_protocol_t transport_protocol)
 {
@@ -53,20 +39,6 @@ const char * rmw_network_flow_endpoint_get_transport_protocol_string(
   return transport_protocol_str[transport_protocol];
 }
 
-rmw_ret_t
-rmw_network_flow_endpoint_set_internet_protocol(
-  rmw_network_flow_endpoint_t * network_flow_endpoint,
-  const rmw_internet_protocol_t internet_protocol)
-{
-  if (!network_flow_endpoint) {
-    RMW_SET_ERROR_MSG("network_flow_endpoint is null");
-    return RMW_RET_INVALID_ARGUMENT;
-  }
-
-  network_flow_endpoint->internet_protocol = internet_protocol;
-  return RMW_RET_OK;
-}
-
 const char * rmw_network_flow_endpoint_get_internet_protocol_string(
   const rmw_internet_protocol_t internet_protocol)
 {
@@ -80,48 +52,6 @@ const char * rmw_network_flow_endpoint_get_internet_protocol_string(
     return internet_protocol_str[RMW_INTERNET_PROTOCOL_UNKNOWN];
   }
   return internet_protocol_str[internet_protocol];
-}
-
-rmw_ret_t
-rmw_network_flow_endpoint_set_transport_port(
-  rmw_network_flow_endpoint_t * network_flow_endpoint,
-  const uint16_t transport_port)
-{
-  if (!network_flow_endpoint) {
-    RMW_SET_ERROR_MSG("network_flow_endpoint is null");
-    return RMW_RET_INVALID_ARGUMENT;
-  }
-
-  network_flow_endpoint->transport_port = transport_port;
-  return RMW_RET_OK;
-}
-
-rmw_ret_t
-rmw_network_flow_endpoint_set_flow_label(
-  rmw_network_flow_endpoint_t * network_flow_endpoint,
-  const uint32_t flow_label)
-{
-  if (!network_flow_endpoint) {
-    RMW_SET_ERROR_MSG("network_flow_endpoint is null");
-    return RMW_RET_INVALID_ARGUMENT;
-  }
-
-  network_flow_endpoint->flow_label = flow_label;
-  return RMW_RET_OK;
-}
-
-rmw_ret_t
-rmw_network_flow_endpoint_set_dscp(
-  rmw_network_flow_endpoint_t * network_flow_endpoint,
-  const uint8_t dscp)
-{
-  if (!network_flow_endpoint) {
-    RMW_SET_ERROR_MSG("network_flow_endpoint is null");
-    return RMW_RET_INVALID_ARGUMENT;
-  }
-
-  network_flow_endpoint->dscp = dscp;
-  return RMW_RET_OK;
 }
 
 rmw_ret_t

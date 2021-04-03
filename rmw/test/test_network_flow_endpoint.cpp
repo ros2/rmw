@@ -33,24 +33,6 @@ TEST(test_network_flow_endpoint, zero_init) {
   }
 }
 
-TEST(test_network_flow_endpoint, set_transport_protocol) {
-  rmw_network_flow_endpoint_t network_flow_endpoint =
-    rmw_get_zero_initialized_network_flow_endpoint();
-  rmw_transport_protocol_t transport_protocol = RMW_TRANSPORT_PROTOCOL_UDP;
-
-  rmw_ret_t ret = rmw_network_flow_endpoint_set_transport_protocol(nullptr, transport_protocol);
-  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
-    "Expected invalid argument for null network_flow_endpoint";
-  rmw_reset_error();
-
-  ret =
-    rmw_network_flow_endpoint_set_transport_protocol(&network_flow_endpoint, transport_protocol);
-  EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
-  EXPECT_EQ(
-    network_flow_endpoint.transport_protocol,
-    transport_protocol) << "transport_protocol value is not as expected";
-}
-
 TEST(test_network_flow_endpoint, get_transport_protocol_string) {
   const char * transport_protocol_udp_str = rmw_network_flow_endpoint_get_transport_protocol_string(
     RMW_TRANSPORT_PROTOCOL_UDP);
@@ -86,23 +68,6 @@ TEST(test_network_flow_endpoint, get_transport_protocol_string) {
     "Expected \"Unknown\" if transport protocol argument is invalid";
 }
 
-TEST(test_network_flow_endpoint, set_internet_protocol) {
-  rmw_network_flow_endpoint_t network_flow_endpoint =
-    rmw_get_zero_initialized_network_flow_endpoint();
-  rmw_internet_protocol_t internet_protocol = RMW_INTERNET_PROTOCOL_IPV4;
-
-  rmw_ret_t ret = rmw_network_flow_endpoint_set_internet_protocol(nullptr, internet_protocol);
-  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
-    "Expected invalid argument for null network_flow_endpoint";
-  rmw_reset_error();
-
-  ret = rmw_network_flow_endpoint_set_internet_protocol(&network_flow_endpoint, internet_protocol);
-  EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
-  EXPECT_EQ(
-    network_flow_endpoint.internet_protocol,
-    internet_protocol) << "internet_protocol value is not as expected";
-}
-
 TEST(test_network_flow_endpoint, get_internet_protocol_string) {
   const char * internet_protocol_ipv4_str = rmw_network_flow_endpoint_get_internet_protocol_string(
     RMW_INTERNET_PROTOCOL_IPV4);
@@ -135,53 +100,6 @@ TEST(test_network_flow_endpoint, get_internet_protocol_string) {
       RMW_INTERNET_PROTOCOL_COUNT + 1));
   EXPECT_STREQ(internet_protocol_invalid_str, "Unknown") <<
     "Expected \"Unknown\" if internet protocol argument is invalid";
-}
-
-TEST(test_network_flow_endpoint, set_transport_port) {
-  rmw_network_flow_endpoint_t network_flow_endpoint =
-    rmw_get_zero_initialized_network_flow_endpoint();
-  uint16_t transport_port = 45678;
-
-  rmw_ret_t ret = rmw_network_flow_endpoint_set_transport_port(nullptr, transport_port);
-  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
-    "Expected invalid argument for null network_flow_endpoint";
-  rmw_reset_error();
-
-  ret = rmw_network_flow_endpoint_set_transport_port(&network_flow_endpoint, transport_port);
-  EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
-  EXPECT_EQ(
-    network_flow_endpoint.transport_port,
-    transport_port) << "transport_port value is not as expected";
-}
-
-TEST(test_network_flow_endpoint, set_flow_label) {
-  rmw_network_flow_endpoint_t network_flow_endpoint =
-    rmw_get_zero_initialized_network_flow_endpoint();
-  uint32_t flow_label = 0xabcde;
-
-  rmw_ret_t ret = rmw_network_flow_endpoint_set_flow_label(nullptr, flow_label);
-  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
-    "Expected invalid argument for null network_flow_endpoint";
-  rmw_reset_error();
-
-  ret = rmw_network_flow_endpoint_set_flow_label(&network_flow_endpoint, flow_label);
-  EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
-  EXPECT_EQ(network_flow_endpoint.flow_label, flow_label) << "flow_label value is not as expected";
-}
-
-TEST(test_network_flow_endpoint, set_dscp) {
-  rmw_network_flow_endpoint_t network_flow_endpoint =
-    rmw_get_zero_initialized_network_flow_endpoint();
-  uint8_t dscp = 0x2e;
-
-  rmw_ret_t ret = rmw_network_flow_endpoint_set_dscp(nullptr, dscp);
-  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
-    "Expected invalid argument for null network_flow_endpoint";
-  rmw_reset_error();
-
-  ret = rmw_network_flow_endpoint_set_dscp(&network_flow_endpoint, dscp);
-  EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
-  EXPECT_EQ(network_flow_endpoint.dscp, dscp) << "dscp value is not as expected";
 }
 
 TEST(test_network_flow_endpoint, set_internet_address) {
