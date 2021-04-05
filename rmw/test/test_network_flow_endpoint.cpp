@@ -14,7 +14,9 @@
 
 #include "gmock/gmock.h"
 #include "osrf_testing_tools_cpp/scope_exit.hpp"
+
 #include "rcutils/allocator.h"
+#include "rcutils/snprintf.h"
 
 #include "rmw/error_handling.h"
 #include "rmw/network_flow_endpoint.h"
@@ -105,9 +107,13 @@ TEST(test_network_flow_endpoint, get_internet_protocol_string) {
 TEST(test_network_flow_endpoint, set_internet_address) {
   rmw_network_flow_endpoint_t network_flow_endpoint =
     rmw_get_zero_initialized_network_flow_endpoint();
+  const char * test_internet_address = "1898:23ac:b1ae:44df:6170:9f3f:887d:d2a7";
   char internet_address[RMW_INET_ADDRSTRLEN];
-  strncpy(internet_address, "1898:23ac:b1ae:44df:6170:9f3f:887d:d2a7", RMW_INET_ADDRSTRLEN);
-  int size = strlen(internet_address);
+  int snprintf_ret = rcutils_snprintf(
+    internet_address, RMW_INET_ADDRSTRLEN, "%s",
+    test_internet_address);
+  EXPECT_GE(snprintf_ret, 0) << "Expected rcutils_snprintf() to return non-negative value";
+  size_t size = strlen(internet_address);
 
   rmw_ret_t ret = rmw_network_flow_endpoint_set_internet_address(nullptr, internet_address, size);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
@@ -116,9 +122,9 @@ TEST(test_network_flow_endpoint, set_internet_address) {
 
   ret = rmw_network_flow_endpoint_set_internet_address(
     &network_flow_endpoint, internet_address,
-    RMW_INET_ADDRSTRLEN + 1);
+    RMW_INET_ADDRSTRLEN);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
-    "Expected invalid argument for size greater than RMW_INET_ADDRSTRLEN";
+    "Expected invalid argument for size greater than or equal to RMW_INET_ADDRSTRLEN";
   rmw_reset_error();
 
   ret = rmw_network_flow_endpoint_set_internet_address(

@@ -41,7 +41,7 @@ typedef enum rmw_internet_protocol_t
   RMW_INTERNET_PROTOCOL_COUNT
 } rmw_internet_protocol_t;
 
-/// Maximum length of internet address string
+/// Maximum length of internet address string including terminating null
 /// Inspired from linux/inet.h
 #define RMW_INET_ADDRSTRLEN 48
 
@@ -93,11 +93,11 @@ rmw_network_flow_endpoint_get_internet_protocol_string(
 /**
  * \param[in] network_flow_endpoint network_flow_endpoint_t to be initialized
  * \param[in] internet_address the internet address as C-style string
- * \param[in] size size of internet_address
+ * \param[in] size size of internet_address excluding terminating null
  * \returns `RMW_RET_OK` on successfull initilization, or
  * \returns `RMW_RET_INVALID_ARGUMENT` if `network_flow_endpoint` is NULL, or
  * \returns `RMW_RET_INVALID_ARGUMENT` if `internet_address` is NULL, or
- * \returns `RMW_RET_INVALID_ARGUMENT` if `size` exceeds RMW_INET_ADDRSTRLEN, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `size` is not less than RMW_INET_ADDRSTRLEN, or
  * \returns `RMW_RET_ERROR` when an unspecified error occurs.
  */
 RMW_PUBLIC

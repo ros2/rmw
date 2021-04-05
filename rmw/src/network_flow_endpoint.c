@@ -14,6 +14,8 @@
 
 #include <string.h>
 
+#include "rcutils/snprintf.h"
+
 #include "rmw/error_handling.h"
 #include "rmw/network_flow_endpoint.h"
 
@@ -68,10 +70,16 @@ rmw_network_flow_endpoint_set_internet_address(
     RMW_SET_ERROR_MSG("internet_address is null");
     return RMW_RET_INVALID_ARGUMENT;
   }
-  if (size > RMW_INET_ADDRSTRLEN) {
-    RMW_SET_ERROR_MSG("size is greater than RMW_INET_ADDRSTRLEN");
+  if (size >= RMW_INET_ADDRSTRLEN) {
+    RMW_SET_ERROR_MSG("size is not less than RMW_INET_ADDRSTRLEN");
     return RMW_RET_INVALID_ARGUMENT;
   }
-  strncpy(network_flow_endpoint->internet_address, internet_address, size);
+  int ret = rcutils_snprintf(
+    network_flow_endpoint->internet_address, RMW_INET_ADDRSTRLEN, "%s",
+    internet_address);
+  if (ret < 0) {
+    RMW_SET_ERROR_MSG("Copying internet_address using rcutils_snprintf() failed");
+    return RMW_RET_ERROR;
+  }
   return RMW_RET_OK;
 }
