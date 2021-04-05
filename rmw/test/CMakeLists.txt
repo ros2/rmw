@@ -191,3 +191,23 @@ if(TARGET test_topic_endpoint_info)
   target_link_libraries(test_topic_endpoint_info ${PROJECT_NAME}
   osrf_testing_tools_cpp::memory_tools)
 endif()
+
+ament_add_gmock(test_network_flow_endpoint
+  test_network_flow_endpoint.cpp
+  # Append the directory of librmw so it is found at test time.
+  APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+)
+if(TARGET test_network_flow_endpoint)
+  target_link_libraries(test_network_flow_endpoint ${PROJECT_NAME}
+  osrf_testing_tools_cpp::memory_tools)
+endif()
+
+ament_add_gmock(test_network_flow_endpoint_array
+  test_network_flow_endpoint_array.cpp
+  # Append the directory of librmw so it is found at test time.
+  APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+)
+if(TARGET test_network_flow_endpoint_array)
+  target_link_libraries(test_network_flow_endpoint_array ${PROJECT_NAME}
+  osrf_testing_tools_cpp::memory_tools)
+endif()

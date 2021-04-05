@@ -25,6 +25,7 @@ rmw_get_default_subscription_options(void)
   rmw_subscription_options_t subscription_options = {
     .rmw_specific_subscription_payload = NULL,
     .ignore_local_publications = false,
+    .require_unique_network_flow_endpoints = RMW_UNIQUE_NETWORK_FLOW_ENDPOINTS_NOT_REQUIRED,
   };
   return subscription_options;
 }

@@ -24,6 +24,7 @@ rmw_get_default_publisher_options(void)
 {
   rmw_publisher_options_t publisher_options = {
     .rmw_specific_publisher_payload = NULL,
+    .require_unique_network_flow_endpoints = RMW_UNIQUE_NETWORK_FLOW_ENDPOINTS_NOT_REQUIRED,
   };
   return publisher_options;
 }
