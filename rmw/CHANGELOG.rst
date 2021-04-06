@@ -2,6 +2,12 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Unique network flows (`#294 <https://github.com/ros2/rmw/issues/294>`_)
+* updating quality declaration links (re: `ros2/docs.ros2.org#52 <https://github.com/ros2/docs.ros2.org/issues/52>`_) (`#307 <https://github.com/ros2/rmw/issues/307>`_)
+* Contributors: Ananya Muddukrishna, shonigmann
+
 3.2.0 (2021-03-11)
 ------------------
 * Introduce RMW_DURATION_INFINITE constant and API return value promise (`#301 <https://github.com/ros2/rmw/issues/301>`_)
