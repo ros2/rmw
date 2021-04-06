@@ -810,17 +810,28 @@ rmw_publisher_assert_liveliness(const rmw_publisher_t * publisher);
 /**
  * This function waits until all published message data were acknowledged by peer node or timeout.
  *
- * This function only works effectively while QOS profile of publisher is set to RELIABLE. Otherwise
- * this function will immediately return RMW_RET_OK.
+ * This function only works effectively while QOS profile of publisher is set to RELIABLE.
+ * Otherwise this function will immediately return RMW_RET_OK.
  *
  * <hr>
  * Attribute          | Adherence
  * ------------------ | -------------
  * Allocates Memory   | Maybe [1]
- * Thread-Safe        | No
+ * Thread-Safe        | Yes
  * Uses Atomics       | Maybe [1]
  * Lock-Free          | Maybe [1]
  * <i>[1] rmw implementation defined, check the implementation documentation</i>
+ *
+ * \par Runtime behavior
+ *   Waiting for all acknowledgments is synchronous operation.
+ *   So the calling thread is blocked until all published message data is acknowledged or specified
+ *   duration elapses.
+ *
+ * \par Thread-Safety
+ *   Publishers are thread-safe objects, and so are all operations on them except for finalization.
+ *   Therefore, it is safe to call this function using the same publisher concurrently.
+ *
+ * \pre Given `publisher` must be a valid publisher, as returned by rmw_create_publisher().
  *
  * \param[in] publisher handle to the publisher that needs to wait for all acked.
  * \param[in] wait_timeout represents the maximum amount of time to wait for all published message
