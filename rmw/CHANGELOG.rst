@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+3.3.0 (2021-04-06)
+------------------
 * Unique network flows (`#294 <https://github.com/ros2/rmw/issues/294>`_)
 * updating quality declaration links (re: `ros2/docs.ros2.org#52 <https://github.com/ros2/docs.ros2.org/issues/52>`_) (`#307 <https://github.com/ros2/rmw/issues/307>`_)
 * Contributors: Ananya Muddukrishna, shonigmann
