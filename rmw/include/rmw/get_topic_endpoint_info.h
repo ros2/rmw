@@ -115,13 +115,7 @@ rmw_get_publishers_info_by_topic(
  * Names of non-existent topics are allowed, in which case an empty array will be returned.
  *
  * \par QoS that are correctly read
- *   The QoS profiles returned might have some invalid fields.
- *   Particularly, the only QoS policies that are guaranteed to be shared
- *   during discovery are the ones that participate in endpoint matching.
- *   From the current QoS settings available, the only ones not shared by DDS based
- *   implementations are `history` and `history_depth`.
- *   The rmw implementation must set the settings that were not correctly read to
- *   `RMW_QOS_POLICY_*_UNKNOWN`.
+ * Not all QoS may be read correctly, \sa rmw_get_publishers_info_by_topic() for more details.
  *
  * <hr>
  * Attribute          | Adherence
