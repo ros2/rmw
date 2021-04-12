@@ -31,6 +31,15 @@ extern "C"
  * the associated topic type, the publisher's gid, and the publisher QoS profile.
  * Names of non-existent topics are allowed, in which case an empty array will be returned.
  *
+ * \par QoS that are correctly read
+ *   The qos profiles returned might have some invalid fields.
+ *   Particularly, the only qos policies that are guaranteed to be shared
+ *   during discovery are the ones that participate in endpoint matching.
+ *   From the current qos settings available, the only ones not shared by DDS based
+ *   implementations are `history` and `history_depth`.
+ *   The rmw implementation must set the settings that were not correctly read to
+ *   `RMW_QOS_POLICY_*_UNKNOWN`.
+ *
  * <hr>
  * Attribute          | Adherence
  * ------------------ | -------------
@@ -104,6 +113,15 @@ rmw_get_publishers_info_by_topic(
  * Endpoint information includes the subscription's node name and namespace,
  * the associated topic type, the subscription's gid, and the subscription QoS profile.
  * Names of non-existent topics are allowed, in which case an empty array will be returned.
+ *
+ * \par QoS that are correctly read
+ *   The qos profiles returned might have some invalid fields.
+ *   Particularly, the only qos policies that are guaranteed to be shared
+ *   during discovery are the ones that participate in endpoint matching.
+ *   From the current qos settings available, the only ones not shared by DDS based
+ *   implementations are `history` and `history_depth`.
+ *   The rmw implementation must set the settings that were not correctly read to
+ *   `RMW_QOS_POLICY_*_UNKNOWN`.
  *
  * <hr>
  * Attribute          | Adherence
