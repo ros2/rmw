@@ -33,12 +33,11 @@ extern "C"
  *
  * \par QoS that are correctly read
  * The QoS profiles returned might have some invalid fields.
- * Particularly, the only QoS policies that are guaranteed to be shared
+ * The rmw implementation must set the invalid fields to `RMW_QOS_POLICY_*_UNKNOWN`.
+ * For DDS based implementations, the only QoS policies that are guaranteed to be shared
  * during discovery are the ones that participate in endpoint matching.
  * From the current QoS settings available, the only ones not shared by DDS based
  * implementations are `history` and `history_depth`.
- * The rmw implementation must set the settings that were not correctly read to
- * `RMW_QOS_POLICY_*_UNKNOWN`.
  *
  * <hr>
  * Attribute          | Adherence
