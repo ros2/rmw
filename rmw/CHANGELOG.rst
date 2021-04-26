@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+3.3.1 (2021-04-26)
+------------------
 * Document which QoS policies are correctly read by rmw_get_publishers/subscriptions_info_by_topic (`#308 <https://github.com/ros2/rmw/issues/308>`_)
 * Contributors: Ivan Santiago Paunovic
 
