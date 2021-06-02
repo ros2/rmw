@@ -98,6 +98,7 @@ extern "C"
 #include "rosidl_runtime_c/service_type_support_struct.h"
 #include "rosidl_runtime_c/sequence_bound.h"
 
+#include "rmw/get_topic_endpoint_info.h"
 #include "rmw/init.h"
 #include "rmw/macros.h"
 #include "rmw/qos_profiles.h"
