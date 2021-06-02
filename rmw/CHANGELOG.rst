@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+4.0.0 (2021-06-02)
+------------------
 * Add rmw_publisher_wait_for_all_acked support. (`#296 <https://github.com/ros2/rmw/issues/296>`_)
 * Contributors: Barry Xu
 
