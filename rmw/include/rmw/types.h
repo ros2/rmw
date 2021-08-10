@@ -159,13 +159,6 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_options_t
    * This setting is most often used when data should only be received from
    * remote nodes, especially to avoid "double delivery" when both intra- and
    * inter- process communication is taking place.
-   *
-   * \TODO(wjwwood): nail this down when participant mapping is sorted out.
-   *   See: https://github.com/ros2/design/pull/250
-   *
-   * The definition of local is somewhat vague at the moment.
-   * Right now it means local to the node, and that definition works best, but
-   * may become more complicated when/if participants map to a context instead.
    */
   bool ignore_local_publications;
 
