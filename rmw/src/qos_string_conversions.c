@@ -44,7 +44,7 @@ rmw_qos_policy_kind_to_str(rmw_qos_policy_kind_t kind)
 }
 
 const char *
-rmw_qos_durability_policy_to_str(enum rmw_qos_durability_policy_t value)
+rmw_qos_durability_policy_to_str(enum rmw_qos_durability_policy_e value)
 {
   switch (value) {
     case RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT:
@@ -60,7 +60,7 @@ rmw_qos_durability_policy_to_str(enum rmw_qos_durability_policy_t value)
 }
 
 const char *
-rmw_qos_history_policy_to_str(enum rmw_qos_history_policy_t value)
+rmw_qos_history_policy_to_str(enum rmw_qos_history_policy_e value)
 {
   switch (value) {
     case RMW_QOS_POLICY_HISTORY_SYSTEM_DEFAULT:
@@ -76,7 +76,7 @@ rmw_qos_history_policy_to_str(enum rmw_qos_history_policy_t value)
 }
 
 const char *
-rmw_qos_liveliness_policy_to_str(enum rmw_qos_liveliness_policy_t value)
+rmw_qos_liveliness_policy_to_str(enum rmw_qos_liveliness_policy_e value)
 {
   switch (value) {
     case RMW_QOS_POLICY_LIVELINESS_SYSTEM_DEFAULT:
@@ -92,7 +92,7 @@ rmw_qos_liveliness_policy_to_str(enum rmw_qos_liveliness_policy_t value)
 }
 
 const char *
-rmw_qos_reliability_policy_to_str(enum rmw_qos_reliability_policy_t value)
+rmw_qos_reliability_policy_to_str(enum rmw_qos_reliability_policy_e value)
 {
   switch (value) {
     case RMW_QOS_POLICY_RELIABILITY_SYSTEM_DEFAULT:
@@ -144,7 +144,7 @@ rmw_qos_policy_kind_from_str(const char * str)
   return RMW_QOS_POLICY_INVALID;
 }
 
-enum rmw_qos_durability_policy_t
+enum rmw_qos_durability_policy_e
 rmw_qos_durability_policy_from_str(const char * str)
 {
   RMW_CHECK_ARGUMENT_FOR_NULL(str, RMW_QOS_POLICY_DURABILITY_UNKNOWN);
@@ -160,7 +160,7 @@ rmw_qos_durability_policy_from_str(const char * str)
   return RMW_QOS_POLICY_DURABILITY_UNKNOWN;
 }
 
-enum rmw_qos_history_policy_t
+enum rmw_qos_history_policy_e
 rmw_qos_history_policy_from_str(const char * str)
 {
   RMW_CHECK_ARGUMENT_FOR_NULL(str, RMW_QOS_POLICY_HISTORY_UNKNOWN);
@@ -176,7 +176,7 @@ rmw_qos_history_policy_from_str(const char * str)
   return RMW_QOS_POLICY_HISTORY_UNKNOWN;
 }
 
-enum rmw_qos_liveliness_policy_t
+enum rmw_qos_liveliness_policy_e
 rmw_qos_liveliness_policy_from_str(const char * str)
 {
   RMW_CHECK_ARGUMENT_FOR_NULL(str, RMW_QOS_POLICY_LIVELINESS_UNKNOWN);
@@ -192,7 +192,7 @@ rmw_qos_liveliness_policy_from_str(const char * str)
   return RMW_QOS_POLICY_LIVELINESS_UNKNOWN;
 }
 
-enum rmw_qos_reliability_policy_t
+enum rmw_qos_reliability_policy_e
 rmw_qos_reliability_policy_from_str(const char * str)
 {
   RMW_CHECK_ARGUMENT_FOR_NULL(str, RMW_QOS_POLICY_RELIABILITY_UNKNOWN);
