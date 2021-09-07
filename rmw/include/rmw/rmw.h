@@ -195,6 +195,10 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_node(rmw_node_t * node);
 
+/**
+ * \deprecated `rmw_node_assert_liveliness` implementation was removed.
+ *   If manual liveliness assertion is needed, use MANUAL_BY_TOPIC.
+ */
 RMW_PUBLIC
 RCUTILS_DEPRECATED_WITH_MSG(
   "rmw_node_assert_liveliness implementation was removed."
