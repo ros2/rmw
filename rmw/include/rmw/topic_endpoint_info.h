@@ -288,7 +288,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_topic_endpoint_info_set_gid(
   rmw_topic_endpoint_info_t * topic_endpoint_info,
-  const uint8_t gid[],
+  const uint8_t * gid,
   size_t size);
 
 /// Set the endpoint QoS profile in the given topic endpoint info data structure.
