@@ -100,6 +100,7 @@ extern "C"
 
 #include "rmw/init.h"
 #include "rmw/macros.h"
+#include "rmw/publisher_options.h"
 #include "rmw/qos_profiles.h"
 #include "rmw/subscription_options.h"
 #include "rmw/message_sequence.h"
@@ -296,12 +297,6 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_fini_publisher_allocation(
   rmw_publisher_allocation_t * allocation);
-
-/// Return a rmw_publisher_options_t initialized with default values.
-RMW_PUBLIC
-RMW_WARN_UNUSED
-rmw_publisher_options_t
-rmw_get_default_publisher_options(void);
 
 /// Create a publisher and return a handle to that publisher.
 /**
