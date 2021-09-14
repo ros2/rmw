@@ -202,7 +202,7 @@ rmw_topic_endpoint_info_set_endpoint_type(
 rmw_ret_t
 rmw_topic_endpoint_info_set_gid(
   rmw_topic_endpoint_info_t * topic_endpoint_info,
-  const uint8_t gid[],
+  const uint8_t * gid,
   size_t size)
 {
   RCUTILS_CAN_RETURN_WITH_ERROR_OF(RMW_RET_INVALID_ARGUMENT);
