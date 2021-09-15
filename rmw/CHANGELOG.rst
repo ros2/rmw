@@ -2,6 +2,13 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fix up documentation build for rmw when using rosdoc2 (`#313 <https://github.com/ros2/rmw/issues/313>`_)
+* Fix up errors in doxygen documentation (`#311 <https://github.com/ros2/rmw/issues/311>`_)
+* Fix copy-paste error in API doc for rmw_get_gid_for_publisher (`#310 <https://github.com/ros2/rmw/issues/310>`_)
+* Contributors: Chris Lalancette, Christophe Bedard, Michel Hidalgo
+
 4.0.0 (2021-06-02)
 ------------------
 * Add rmw_publisher_wait_for_all_acked support. (`#296 <https://github.com/ros2/rmw/issues/296>`_)
