@@ -2062,6 +2062,44 @@ rmw_take_response(
   void * ros_response,
   bool * taken);
 
+/// Retrieve the actual qos settings of the client.
+/**
+ * Query the underlying middleware to determine the qos settings
+ * of the client.
+ * The actual configuration applied when using RMW_*_SYSTEM_DEFAULT
+ * can only be resolved after the creation of the client, and it
+ * depends on the underlying rmw implementation.
+ * If the underlying setting in use can't be represented in ROS terms,
+ * it will be set to RMW_*_UNKNOWN.
+ *
+ * \note The value of avoid_ros_namespace_conventions field is not resolved
+ *   with this function. The rcl function `rcl_client_get_actual_qos()`
+ *   resolves it.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe [1]
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
+ *
+ * \param[in] client the client object to inspect
+ * \param[out] qos the actual qos settings
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if either argument is null, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if client
+ *   implementation identifier does not match, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_client_get_actual_qos(
+  const rmw_client_t * client,
+  rmw_qos_profile_t * qos);
+
 /// Create a service server that can receive requests from and send replies to a service client.
 /**
  * This function can fail, and therefore return `NULL`, if:
@@ -2291,6 +2329,44 @@ rmw_send_response(
   const rmw_service_t * service,
   rmw_request_id_t * request_header,
   void * ros_response);
+
+/// Retrieve the actual qos settings of the service.
+/**
+ * Query the underlying middleware to determine the qos settings
+ * of the service.
+ * The actual configuration applied when using RMW_*_SYSTEM_DEFAULT
+ * can only be resolved after the creation of the service, and it
+ * depends on the underlying rmw implementation.
+ * If the underlying setting in use can't be represented in ROS terms,
+ * it will be set to RMW_*_UNKNOWN.
+ *
+ * \note The value of avoid_ros_namespace_conventions field is not resolved
+ *   with this function. The rcl function `rcl_service_get_actual_qos()`
+ *   resolves it.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe [1]
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
+ *
+ * \param[in] service the service object to inspect
+ * \param[out] qos the actual qos settings
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if either argument is null, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if service
+ *   implementation identifier does not match, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_service_get_actual_qos(
+  const rmw_service_t * service,
+  rmw_qos_profile_t * qos);
 
 // TODO(wjwwood): refactor this API to return a return code when updated to use an allocator
 /// Create a guard condition and return a handle to that guard condition.
