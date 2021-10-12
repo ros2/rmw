@@ -33,6 +33,7 @@ extern "C"
 #include "rmw/ret_types.h"
 #include "rmw/security_options.h"
 #include "rmw/serialized_message.h"
+#include "rmw/subscription_content_filtered_topic_options.h"
 #include "rmw/time.h"
 #include "rmw/visibility_control.h"
 
@@ -179,8 +180,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_options_s
   rmw_unique_network_flow_endpoints_requirement_t require_unique_network_flow_endpoints;
 
   /// Used to create a content filtered topic during subscription creation.
-  char * filter_expression;
-  rcutils_string_array_t * expression_parameters;
+  rmw_subscription_content_filtered_topic_options_t * content_filtered_topic_options;
 } rmw_subscription_options_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_subscription_s
@@ -208,8 +208,8 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_s
   /// Indicates whether this subscription can loan messages
   bool can_loan_messages;
 
-  /// Indicates whether this subscription can support content filtered topic
-  bool is_cft_supported;
+  /// Indicates whether content filtered topic of this subscription is enabled
+  bool is_cft_enabled;
 } rmw_subscription_t;
 
 /// A handle to an rmw service
