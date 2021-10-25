@@ -55,11 +55,14 @@ TEST(rmw_subscription_content_filtered_topic_options, options_init)
   rmw_reset_error();
 
   {
-    EXPECT_EQ(RMW_RET_OK, rmw_subscription_content_filtered_topic_options_init(
-      "filter='p'", 0, nullptr, &allocator, &options));
+    EXPECT_EQ(
+      RMW_RET_OK, rmw_subscription_content_filtered_topic_options_init(
+        "filter='p'", 0, nullptr, &allocator, &options));
     EXPECT_STREQ(options.filter_expression, "filter='p'");
 
-    EXPECT_EQ(RMW_RET_OK, rmw_subscription_content_filtered_topic_options_fini(&options, &allocator));
+    EXPECT_EQ(
+      RMW_RET_OK,
+      rmw_subscription_content_filtered_topic_options_fini(&options, &allocator));
   }
 
   {
@@ -67,9 +70,11 @@ TEST(rmw_subscription_content_filtered_topic_options, options_init)
     const char * expression_parameters[] = {
       "p1", "p2", "q1",
     };
-    size_t expression_parameters_count = sizeof(expression_parameters) / sizeof(char*);
-    EXPECT_EQ(RMW_RET_OK, rmw_subscription_content_filtered_topic_options_init(
-      filter_expression, expression_parameters_count, expression_parameters, &allocator, &options));
+    size_t expression_parameters_count = sizeof(expression_parameters) / sizeof(char *);
+    EXPECT_EQ(
+      RMW_RET_OK, rmw_subscription_content_filtered_topic_options_init(
+        filter_expression, expression_parameters_count, expression_parameters, &allocator,
+        &options));
 
     EXPECT_STREQ(options.filter_expression, filter_expression);
     ASSERT_NE(nullptr, options.expression_parameters);
@@ -92,8 +97,9 @@ TEST(rmw_subscription_content_filtered_topic_options, options_set)
 
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
 
-  EXPECT_EQ(RMW_RET_OK, rmw_subscription_content_filtered_topic_options_init(
-    "filter='p'", 0, nullptr, &allocator, &options));
+  EXPECT_EQ(
+    RMW_RET_OK, rmw_subscription_content_filtered_topic_options_init(
+      "filter='p'", 0, nullptr, &allocator, &options));
   EXPECT_STREQ(options.filter_expression, "filter='p'");
 
   EXPECT_EQ(
@@ -115,8 +121,9 @@ TEST(rmw_subscription_content_filtered_topic_options, options_set)
   rmw_reset_error();
 
   {
-    EXPECT_EQ(RMW_RET_OK, rmw_subscription_content_filtered_topic_options_set(
-      "filter='p1'", 0, nullptr, &allocator, &options));
+    EXPECT_EQ(
+      RMW_RET_OK, rmw_subscription_content_filtered_topic_options_set(
+        "filter='p1'", 0, nullptr, &allocator, &options));
     EXPECT_STREQ(options.filter_expression, "filter='p1'");
   }
 
@@ -125,9 +132,11 @@ TEST(rmw_subscription_content_filtered_topic_options, options_set)
     const char * expression_parameters[] = {
       "p1", "p2", "q1",
     };
-    size_t expression_parameters_count = sizeof(expression_parameters) / sizeof(char*);
-    EXPECT_EQ(RMW_RET_OK, rmw_subscription_content_filtered_topic_options_set(
-      filter_expression, expression_parameters_count, expression_parameters, &allocator, &options));
+    size_t expression_parameters_count = sizeof(expression_parameters) / sizeof(char *);
+    EXPECT_EQ(
+      RMW_RET_OK, rmw_subscription_content_filtered_topic_options_set(
+        filter_expression, expression_parameters_count, expression_parameters, &allocator,
+        &options));
 
     EXPECT_STREQ(options.filter_expression, filter_expression);
     ASSERT_NE(nullptr, options.expression_parameters);
@@ -152,10 +161,11 @@ TEST(rmw_subscription_content_filtered_topic_options, options_copy) {
   const char * expression_parameters[] = {
     "p1", "p2", "q1",
   };
-  size_t expression_parameters_count = sizeof(expression_parameters) / sizeof(char*);
+  size_t expression_parameters_count = sizeof(expression_parameters) / sizeof(char *);
 
-  EXPECT_EQ(RMW_RET_OK, rmw_subscription_content_filtered_topic_options_init(
-    filter_expression, expression_parameters_count, expression_parameters, &allocator, &source));
+  EXPECT_EQ(
+    RMW_RET_OK, rmw_subscription_content_filtered_topic_options_init(
+      filter_expression, expression_parameters_count, expression_parameters, &allocator, &source));
 
   rmw_subscription_content_filtered_topic_options_t destination =
     rmw_get_zero_initialized_content_filtered_topic_options();
@@ -191,7 +201,8 @@ TEST(rmw_subscription_content_filtered_topic_options, options_copy) {
 
   EXPECT_STREQ(source.filter_expression, destination.filter_expression);
   int res = 0;
-  EXPECT_EQ(RCUTILS_RET_OK,
+  EXPECT_EQ(
+    RCUTILS_RET_OK,
     rcutils_string_array_cmp(
       source.expression_parameters, destination.expression_parameters, &res));
   EXPECT_EQ(res, 0);
@@ -201,8 +212,9 @@ TEST(rmw_subscription_content_filtered_topic_options, options_copy) {
     rmw_subscription_content_filtered_topic_options_t source2 =
       rmw_get_zero_initialized_content_filtered_topic_options();
     const char * filter_expression = "filter='p1'";
-    EXPECT_EQ(RMW_RET_OK, rmw_subscription_content_filtered_topic_options_init(
-      filter_expression, 0, nullptr, &allocator, &source2));
+    EXPECT_EQ(
+      RMW_RET_OK, rmw_subscription_content_filtered_topic_options_init(
+        filter_expression, 0, nullptr, &allocator, &source2));
     EXPECT_STREQ(source2.filter_expression, filter_expression);
     EXPECT_EQ(
       RMW_RET_OK,
