@@ -74,14 +74,15 @@ rmw_subscription_content_filtered_topic_options_init(
       ret = RMW_RET_BAD_ALLOC;
       goto failed;
     }
-  }
-  for (i = 0; i < expression_parameters_argc; i++) {
-    new_expression_parameters->data[i] =
-      rcutils_strdup(expression_parameter_argv[i], *allocator);
-    if (!new_expression_parameters->data[i]) {
-      RMW_SET_ERROR_MSG("failed to copy expression parameter");
-      ret = RMW_RET_BAD_ALLOC;
-      goto clear_expression_parameters;
+
+    for (i = 0; i < expression_parameters_argc; i++) {
+      new_expression_parameters->data[i] =
+        rcutils_strdup(expression_parameter_argv[i], *allocator);
+      if (!new_expression_parameters->data[i]) {
+        RMW_SET_ERROR_MSG("failed to copy expression parameter");
+        ret = RMW_RET_BAD_ALLOC;
+        goto clear_expression_parameters;
+      }
     }
   }
 
