@@ -212,11 +212,11 @@ if(TARGET test_network_flow_endpoint_array)
   osrf_testing_tools_cpp::memory_tools)
 endif()
 
-ament_add_gmock(test_subscription_content_filtered_topic_options
-  test_subscription_content_filtered_topic_options.cpp
+ament_add_gmock(test_subscription_content_filter_options
+  test_subscription_content_filter_options.cpp
   # Append the directory of librmw so it is found at test time.
   APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
 )
-if(TARGET test_subscription_content_filtered_topic_options)
-  target_link_libraries(test_subscription_content_filtered_topic_options ${PROJECT_NAME})
+if(TARGET test_subscription_content_filter_options)
+  target_link_libraries(test_subscription_content_filter_options ${PROJECT_NAME})
 endif()

@@ -24,5 +24,5 @@ TEST(rmw_subscription_options, get_default_subscription_options)
   EXPECT_EQ(
     options.require_unique_network_flow_endpoints,
     RMW_UNIQUE_NETWORK_FLOW_ENDPOINTS_NOT_REQUIRED);
-  EXPECT_EQ(options.content_filtered_topic_options, nullptr);
+  EXPECT_EQ(options.content_filter_options, nullptr);
 }

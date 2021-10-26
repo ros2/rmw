@@ -18,61 +18,61 @@
 
 #include "./time_bomb_allocator_testing_utils.h"
 #include "rmw/error_handling.h"
-#include "rmw/subscription_content_filtered_topic_options.h"
+#include "rmw/subscription_content_filter_options.h"
 
-TEST(rmw_subscription_content_filtered_topic_options, get_zero_init)
+TEST(rmw_subscription_content_filter_options, get_zero_init)
 {
-  rmw_subscription_content_filtered_topic_options_t options =
-    rmw_get_zero_initialized_content_filtered_topic_options();
+  rmw_subscription_content_filter_options_t options =
+    rmw_get_zero_initialized_content_filter_options();
   EXPECT_EQ(options.filter_expression, nullptr);
   EXPECT_EQ(options.expression_parameters, nullptr);
 }
 
-TEST(rmw_subscription_content_filtered_topic_options, options_init)
+TEST(rmw_subscription_content_filter_options, options_init)
 {
-  rmw_subscription_content_filtered_topic_options_t options =
-    rmw_get_zero_initialized_content_filtered_topic_options();
+  rmw_subscription_content_filter_options_t options =
+    rmw_get_zero_initialized_content_filter_options();
   EXPECT_EQ(options.filter_expression, nullptr);
   EXPECT_EQ(options.expression_parameters, nullptr);
 
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
   EXPECT_EQ(
     RMW_RET_INVALID_ARGUMENT,
-    rmw_subscription_content_filtered_topic_options_init(
+    rmw_subscription_content_filter_options_init(
       nullptr, 0, nullptr, &allocator, &options));
   rmw_reset_error();
 
   EXPECT_EQ(
     RMW_RET_INVALID_ARGUMENT,
-    rmw_subscription_content_filtered_topic_options_init(
+    rmw_subscription_content_filter_options_init(
       "filter='p'", 1, nullptr, &allocator, &options));
   rmw_reset_error();
 
   EXPECT_EQ(
     RMW_RET_INVALID_ARGUMENT,
-    rmw_subscription_content_filtered_topic_options_init(
+    rmw_subscription_content_filter_options_init(
       "filter='p'", 0, nullptr, &allocator, nullptr));
   rmw_reset_error();
 
   {
     EXPECT_EQ(
-      RMW_RET_OK, rmw_subscription_content_filtered_topic_options_init(
+      RMW_RET_OK, rmw_subscription_content_filter_options_init(
         "filter='p'", 0, nullptr, &allocator, &options));
     EXPECT_STREQ(options.filter_expression, "filter='p'");
 
     EXPECT_EQ(
       RMW_RET_OK,
-      rmw_subscription_content_filtered_topic_options_fini(&options, &allocator));
+      rmw_subscription_content_filter_options_fini(&options, &allocator));
   }
 
   {
     const char * filter_expression = "(filter1=%0 OR filter1=%1) AND filter2=%2";
     const char * expression_parameters[] = {
-      "p1", "p2", "q1",
+      "1", "2", "3",
     };
     size_t expression_parameters_count = sizeof(expression_parameters) / sizeof(char *);
     EXPECT_EQ(
-      RMW_RET_OK, rmw_subscription_content_filtered_topic_options_init(
+      RMW_RET_OK, rmw_subscription_content_filter_options_init(
         filter_expression, expression_parameters_count, expression_parameters, &allocator,
         &options));
 
@@ -84,45 +84,45 @@ TEST(rmw_subscription_content_filtered_topic_options, options_init)
     }
 
     EXPECT_EQ(
-      RMW_RET_OK, rmw_subscription_content_filtered_topic_options_fini(&options, &allocator));
+      RMW_RET_OK, rmw_subscription_content_filter_options_fini(&options, &allocator));
   }
 }
 
-TEST(rmw_subscription_content_filtered_topic_options, options_set)
+TEST(rmw_subscription_content_filter_options, options_set)
 {
-  rmw_subscription_content_filtered_topic_options_t options =
-    rmw_get_zero_initialized_content_filtered_topic_options();
+  rmw_subscription_content_filter_options_t options =
+    rmw_get_zero_initialized_content_filter_options();
   EXPECT_EQ(options.filter_expression, nullptr);
   EXPECT_EQ(options.expression_parameters, nullptr);
 
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
 
   EXPECT_EQ(
-    RMW_RET_OK, rmw_subscription_content_filtered_topic_options_init(
+    RMW_RET_OK, rmw_subscription_content_filter_options_init(
       "filter='p'", 0, nullptr, &allocator, &options));
   EXPECT_STREQ(options.filter_expression, "filter='p'");
 
   EXPECT_EQ(
     RMW_RET_INVALID_ARGUMENT,
-    rmw_subscription_content_filtered_topic_options_set(
+    rmw_subscription_content_filter_options_set(
       nullptr, 0, nullptr, &allocator, &options));
   rmw_reset_error();
 
   EXPECT_EQ(
     RMW_RET_INVALID_ARGUMENT,
-    rmw_subscription_content_filtered_topic_options_set(
+    rmw_subscription_content_filter_options_set(
       "filter='p'", 1, nullptr, &allocator, &options));
   rmw_reset_error();
 
   EXPECT_EQ(
     RMW_RET_INVALID_ARGUMENT,
-    rmw_subscription_content_filtered_topic_options_set(
+    rmw_subscription_content_filter_options_set(
       "filter='p'", 0, nullptr, &allocator, nullptr));
   rmw_reset_error();
 
   {
     EXPECT_EQ(
-      RMW_RET_OK, rmw_subscription_content_filtered_topic_options_set(
+      RMW_RET_OK, rmw_subscription_content_filter_options_set(
         "filter='p1'", 0, nullptr, &allocator, &options));
     EXPECT_STREQ(options.filter_expression, "filter='p1'");
   }
@@ -130,11 +130,11 @@ TEST(rmw_subscription_content_filtered_topic_options, options_set)
   {
     const char * filter_expression = "(filter1=%0 OR filter1=%1) AND filter2=%2";
     const char * expression_parameters[] = {
-      "p1", "p2", "q1",
+      "1", "2", "3",
     };
     size_t expression_parameters_count = sizeof(expression_parameters) / sizeof(char *);
     EXPECT_EQ(
-      RMW_RET_OK, rmw_subscription_content_filtered_topic_options_set(
+      RMW_RET_OK, rmw_subscription_content_filter_options_set(
         filter_expression, expression_parameters_count, expression_parameters, &allocator,
         &options));
 
@@ -146,42 +146,42 @@ TEST(rmw_subscription_content_filtered_topic_options, options_set)
     }
 
     EXPECT_EQ(
-      RMW_RET_OK, rmw_subscription_content_filtered_topic_options_fini(&options, &allocator));
+      RMW_RET_OK, rmw_subscription_content_filter_options_fini(&options, &allocator));
   }
 
-  EXPECT_EQ(RMW_RET_OK, rmw_subscription_content_filtered_topic_options_fini(&options, &allocator));
+  EXPECT_EQ(RMW_RET_OK, rmw_subscription_content_filter_options_fini(&options, &allocator));
 }
 
-TEST(rmw_subscription_content_filtered_topic_options, options_copy) {
-  rmw_subscription_content_filtered_topic_options_t source =
-    rmw_get_zero_initialized_content_filtered_topic_options();
+TEST(rmw_subscription_content_filter_options, options_copy) {
+  rmw_subscription_content_filter_options_t source =
+    rmw_get_zero_initialized_content_filter_options();
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
 
   const char * filter_expression = "(filter1=%0 OR filter1=%1) AND filter2=%2";
   const char * expression_parameters[] = {
-    "p1", "p2", "q1",
+    "1", "2", "3",
   };
   size_t expression_parameters_count = sizeof(expression_parameters) / sizeof(char *);
 
   EXPECT_EQ(
-    RMW_RET_OK, rmw_subscription_content_filtered_topic_options_init(
+    RMW_RET_OK, rmw_subscription_content_filter_options_init(
       filter_expression, expression_parameters_count, expression_parameters, &allocator, &source));
 
-  rmw_subscription_content_filtered_topic_options_t destination =
-    rmw_get_zero_initialized_content_filtered_topic_options();
+  rmw_subscription_content_filter_options_t destination =
+    rmw_get_zero_initialized_content_filter_options();
   EXPECT_EQ(
     RMW_RET_INVALID_ARGUMENT,
-    rmw_subscription_content_filtered_topic_options_copy(nullptr, &allocator, &destination));
+    rmw_subscription_content_filter_options_copy(nullptr, &allocator, &destination));
   rcutils_reset_error();
 
   EXPECT_EQ(
     RMW_RET_INVALID_ARGUMENT,
-    rmw_subscription_content_filtered_topic_options_copy(&source, nullptr, &destination));
+    rmw_subscription_content_filter_options_copy(&source, nullptr, &destination));
   rcutils_reset_error();
 
   EXPECT_EQ(
     RMW_RET_INVALID_ARGUMENT,
-    rmw_subscription_content_filtered_topic_options_copy(&source, &allocator, nullptr));
+    rmw_subscription_content_filter_options_copy(&source, &allocator, nullptr));
   rcutils_reset_error();
 
   rcutils_allocator_t failing_allocator = get_time_bomb_allocator();
@@ -190,14 +190,14 @@ TEST(rmw_subscription_content_filtered_topic_options, options_copy) {
     set_time_bomb_allocator_malloc_count(failing_allocator, i);
     EXPECT_EQ(
       RMW_RET_BAD_ALLOC,
-      rmw_subscription_content_filtered_topic_options_copy(
+      rmw_subscription_content_filter_options_copy(
         &source, &failing_allocator, &destination));
     rcutils_reset_error();
   }
 
   EXPECT_EQ(
     RMW_RET_OK,
-    rmw_subscription_content_filtered_topic_options_copy(&source, &allocator, &destination));
+    rmw_subscription_content_filter_options_copy(&source, &allocator, &destination));
 
   EXPECT_STREQ(source.filter_expression, destination.filter_expression);
   int res = 0;
@@ -209,41 +209,41 @@ TEST(rmw_subscription_content_filtered_topic_options, options_copy) {
 
   {
     // second copy operation
-    rmw_subscription_content_filtered_topic_options_t source2 =
-      rmw_get_zero_initialized_content_filtered_topic_options();
+    rmw_subscription_content_filter_options_t source2 =
+      rmw_get_zero_initialized_content_filter_options();
     const char * filter_expression = "filter='p1'";
     EXPECT_EQ(
-      RMW_RET_OK, rmw_subscription_content_filtered_topic_options_init(
+      RMW_RET_OK, rmw_subscription_content_filter_options_init(
         filter_expression, 0, nullptr, &allocator, &source2));
     EXPECT_STREQ(source2.filter_expression, filter_expression);
     EXPECT_EQ(
       RMW_RET_OK,
-      rmw_subscription_content_filtered_topic_options_copy(&source2, &allocator, &destination));
+      rmw_subscription_content_filter_options_copy(&source2, &allocator, &destination));
     EXPECT_STREQ(source2.filter_expression, destination.filter_expression);
     EXPECT_EQ(nullptr, destination.expression_parameters);
     EXPECT_EQ(
-      RMW_RET_OK, rmw_subscription_content_filtered_topic_options_fini(&source2, &allocator));
+      RMW_RET_OK, rmw_subscription_content_filter_options_fini(&source2, &allocator));
   }
 
-  EXPECT_EQ(RMW_RET_OK, rmw_subscription_content_filtered_topic_options_fini(&source, &allocator));
+  EXPECT_EQ(RMW_RET_OK, rmw_subscription_content_filter_options_fini(&source, &allocator));
   EXPECT_EQ(
     RMW_RET_OK,
-    rmw_subscription_content_filtered_topic_options_fini(&destination, &allocator));
+    rmw_subscription_content_filter_options_fini(&destination, &allocator));
 }
 
-TEST(rmw_subscription_content_filtered_topic_options, content_filtered_topic_options_fini) {
+TEST(rmw_subscription_content_filter_options, content_filter_options_fini) {
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
   EXPECT_EQ(
     RMW_RET_INVALID_ARGUMENT,
-    rmw_subscription_content_filtered_topic_options_fini(nullptr, &allocator));
+    rmw_subscription_content_filter_options_fini(nullptr, &allocator));
   rcutils_reset_error();
 
-  rmw_subscription_content_filtered_topic_options_t options =
-    rmw_get_zero_initialized_content_filtered_topic_options();
+  rmw_subscription_content_filter_options_t options =
+    rmw_get_zero_initialized_content_filter_options();
   EXPECT_EQ(
     RMW_RET_INVALID_ARGUMENT,
-    rmw_subscription_content_filtered_topic_options_fini(&options, nullptr));
+    rmw_subscription_content_filter_options_fini(&options, nullptr));
   rcutils_reset_error();
 
-  EXPECT_EQ(RMW_RET_OK, rmw_subscription_content_filtered_topic_options_fini(&options, &allocator));
+  EXPECT_EQ(RMW_RET_OK, rmw_subscription_content_filter_options_fini(&options, &allocator));
 }

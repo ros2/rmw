@@ -33,7 +33,7 @@ extern "C"
 #include "rmw/ret_types.h"
 #include "rmw/security_options.h"
 #include "rmw/serialized_message.h"
-#include "rmw/subscription_content_filtered_topic_options.h"
+#include "rmw/subscription_content_filter_options.h"
 #include "rmw/time.h"
 #include "rmw/visibility_control.h"
 
@@ -179,8 +179,8 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_options_s
    */
   rmw_unique_network_flow_endpoints_requirement_t require_unique_network_flow_endpoints;
 
-  /// Used to create a content filtered topic during subscription creation.
-  rmw_subscription_content_filtered_topic_options_t * content_filtered_topic_options;
+  /// Used to create a content filter options during subscription creation.
+  rmw_subscription_content_filter_options_t * content_filter_options;
 } rmw_subscription_options_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_subscription_s

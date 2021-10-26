@@ -17,12 +17,12 @@
 #include "rcutils/strdup.h"
 
 #include "rmw/error_handling.h"
-#include "rmw/subscription_content_filtered_topic_options.h"
+#include "rmw/subscription_content_filter_options.h"
 
-rmw_subscription_content_filtered_topic_options_t
-rmw_get_zero_initialized_content_filtered_topic_options()
+rmw_subscription_content_filter_options_t
+rmw_get_zero_initialized_content_filter_options()
 {
-  static rmw_subscription_content_filtered_topic_options_t zero_initialized_options = {
+  static rmw_subscription_content_filter_options_t zero_initialized_options = {
     .filter_expression = NULL,
     .expression_parameters = NULL,
   };
@@ -31,12 +31,12 @@ rmw_get_zero_initialized_content_filtered_topic_options()
 }
 
 rmw_ret_t
-rmw_subscription_content_filtered_topic_options_init(
+rmw_subscription_content_filter_options_init(
   const char * filter_expression,
   size_t expression_parameters_argc,
   const char * expression_parameter_argv[],
   const rcutils_allocator_t * allocator,
-  rmw_subscription_content_filtered_topic_options_t * options)
+  rmw_subscription_content_filter_options_t * options)
 {
   RMW_CHECK_ARGUMENT_FOR_NULL(filter_expression, RMW_RET_INVALID_ARGUMENT);
   if (expression_parameters_argc > 0) {
@@ -105,19 +105,19 @@ failed:
 }
 
 rmw_ret_t
-rmw_subscription_content_filtered_topic_options_set(
+rmw_subscription_content_filter_options_set(
   const char * filter_expression,
   size_t expression_parameters_argc,
   const char * expression_parameter_argv[],
   const rcutils_allocator_t * allocator,
-  rmw_subscription_content_filtered_topic_options_t * options)
+  rmw_subscription_content_filter_options_t * options)
 {
-  rmw_ret_t ret = rmw_subscription_content_filtered_topic_options_fini(options, allocator);
+  rmw_ret_t ret = rmw_subscription_content_filter_options_fini(options, allocator);
   if (ret != RMW_RET_OK) {
     return ret;
   }
 
-  return rmw_subscription_content_filtered_topic_options_init(
+  return rmw_subscription_content_filter_options_init(
     filter_expression,
     expression_parameters_argc,
     expression_parameter_argv,
@@ -127,10 +127,10 @@ rmw_subscription_content_filtered_topic_options_set(
 }
 
 rmw_ret_t
-rmw_subscription_content_filtered_topic_options_copy(
-  const rmw_subscription_content_filtered_topic_options_t * src,
+rmw_subscription_content_filter_options_copy(
+  const rmw_subscription_content_filter_options_t * src,
   const rcutils_allocator_t * allocator,
-  rmw_subscription_content_filtered_topic_options_t * dst)
+  rmw_subscription_content_filter_options_t * dst)
 {
   RMW_CHECK_ARGUMENT_FOR_NULL(src, RMW_RET_INVALID_ARGUMENT);
   RCUTILS_CHECK_ALLOCATOR(allocator, return RMW_RET_INVALID_ARGUMENT);
@@ -141,12 +141,12 @@ rmw_subscription_content_filtered_topic_options_copy(
     expression_parameters_size = src->expression_parameters->size;
     expression_parameters_data = src->expression_parameters->data;
   }
-  rmw_ret_t ret = rmw_subscription_content_filtered_topic_options_fini(dst, allocator);
+  rmw_ret_t ret = rmw_subscription_content_filter_options_fini(dst, allocator);
   if (ret != RMW_RET_OK) {
     return ret;
   }
 
-  return rmw_subscription_content_filtered_topic_options_init(
+  return rmw_subscription_content_filter_options_init(
     src->filter_expression,
     expression_parameters_size,
     (const char **)expression_parameters_data,
@@ -156,8 +156,8 @@ rmw_subscription_content_filtered_topic_options_copy(
 }
 
 rmw_ret_t
-rmw_subscription_content_filtered_topic_options_fini(
-  rmw_subscription_content_filtered_topic_options_t * options,
+rmw_subscription_content_filter_options_fini(
+  rmw_subscription_content_filter_options_t * options,
   const rcutils_allocator_t * allocator)
 {
   RMW_CHECK_ARGUMENT_FOR_NULL(options, RMW_RET_INVALID_ARGUMENT);
