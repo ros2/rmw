@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+5.1.0 (2021-11-19)
+------------------
 * Add client/service QoS getters. (`#314 <https://github.com/ros2/rmw/issues/314>`_)
 * Contributors: mauropasse
 
