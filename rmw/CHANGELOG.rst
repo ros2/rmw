@@ -2,6 +2,29 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+5.0.0 (2021-09-15)
+------------------
+* Fix up documentation build for rmw when using rosdoc2 (`#313 <https://github.com/ros2/rmw/issues/313>`_)
+* Fix up errors in doxygen documentation (`#311 <https://github.com/ros2/rmw/issues/311>`_)
+* Fix copy-paste error in API doc for rmw_get_gid_for_publisher (`#310 <https://github.com/ros2/rmw/issues/310>`_)
+* Contributors: Chris Lalancette, Christophe Bedard, Michel Hidalgo
+
+4.0.0 (2021-06-02)
+------------------
+* Add rmw_publisher_wait_for_all_acked support. (`#296 <https://github.com/ros2/rmw/issues/296>`_)
+* Contributors: Barry Xu
+
+3.3.1 (2021-04-26)
+------------------
+* Document which QoS policies are correctly read by rmw_get_publishers/subscriptions_info_by_topic (`#308 <https://github.com/ros2/rmw/issues/308>`_)
+* Contributors: Ivan Santiago Paunovic
+
+3.3.0 (2021-04-06)
+------------------
+* Unique network flows (`#294 <https://github.com/ros2/rmw/issues/294>`_)
+* updating quality declaration links (re: `ros2/docs.ros2.org#52 <https://github.com/ros2/docs.ros2.org/issues/52>`_) (`#307 <https://github.com/ros2/rmw/issues/307>`_)
+* Contributors: Ananya Muddukrishna, shonigmann
+
 3.2.0 (2021-03-11)
 ------------------
 * Introduce RMW_DURATION_INFINITE constant and API return value promise (`#301 <https://github.com/ros2/rmw/issues/301>`_)

@@ -17,7 +17,9 @@ ENABLE_PREPROCESSING   = YES
 MACRO_EXPANSION        = YES
 EXPAND_ONLY_PREDEF     = YES
 PREDEFINED             += RMW_PUBLIC=
+PREDEFINED             += RMW_PUBLIC_TYPE=
 PREDEFINED             += RMW_WARN_UNUSED=
+PREDEFINED             += RCUTILS_DEPRECATED_WITH_MSG(x)=
 
 # Tag files that do not exist will produce a warning and cross-project linking will not work.
 TAGFILES += "../../../../doxygen_tag_files/cppreference-doxygen-web.tag.xml=http://en.cppreference.com/w/"

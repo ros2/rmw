@@ -103,6 +103,7 @@ extern "C"
 #include "rmw/event_callback_type.h"
 #include "rmw/macros.h"
 #include "rmw/message_sequence.h"
+#include "rmw/publisher_options.h"
 #include "rmw/qos_profiles.h"
 #include "rmw/subscription_options.h"
 #include "rmw/types.h"
@@ -196,6 +197,10 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_node(rmw_node_t * node);
 
+/**
+ * \deprecated `rmw_node_assert_liveliness` implementation was removed.
+ *   If manual liveliness assertion is needed, use MANUAL_BY_TOPIC.
+ */
 RMW_PUBLIC
 RCUTILS_DEPRECATED_WITH_MSG(
   "rmw_node_assert_liveliness implementation was removed."
@@ -298,12 +303,6 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_fini_publisher_allocation(
   rmw_publisher_allocation_t * allocation);
-
-/// Return a rmw_publisher_options_t initialized with default values.
-RMW_PUBLIC
-RMW_WARN_UNUSED
-rmw_publisher_options_t
-rmw_get_default_publisher_options(void);
 
 /// Create a publisher and return a handle to that publisher.
 /**
@@ -747,7 +746,7 @@ rmw_publisher_get_actual_qos(
  *   one registered with `publisher` on creation.
  *
  * \param[in] publisher Publisher to be used to send message.
- * \param[in] ros_message Serialized ROS message to be sent.
+ * \param[in] serialized_message Serialized ROS message to be sent.
  * \param[in] allocation Pre-allocated memory to be used. May be NULL.
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `publisher` is NULL, or
@@ -769,7 +768,7 @@ rmw_publish_serialized_message(
  * Given a message definition and bounds, compute the serialized size.
  *
  * \param[in] type_support The type support of the message to compute.
- * \param[in] bounds Artifical bounds to use on unbounded fields.
+ * \param[in] message_bounds Artifical bounds to use on unbounded fields.
  * \param[out] size The computed size of the serialized message.
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if either argument is null, or
@@ -807,6 +806,51 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_publisher_assert_liveliness(const rmw_publisher_t * publisher);
+
+/// Wait until all published message data is acknowledged or until the specified timeout elapses.
+/**
+ * This function waits until all published message data were acknowledged by peer node or timeout.
+ *
+ * This function only works effectively while QOS profile of publisher is set to RELIABLE.
+ * Otherwise this function will immediately return RMW_RET_OK.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe [1]
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
+ *
+ * \par Runtime behavior
+ *   Waiting for all acknowledgments is synchronous operation.
+ *   So the calling thread is blocked until all published message data is acknowledged or specified
+ *   duration elapses.
+ *
+ * \par Thread-Safety
+ *   Publishers are thread-safe objects, and so are all operations on them except for finalization.
+ *   Therefore, it is safe to call this function using the same publisher concurrently.
+ *
+ * \pre Given `publisher` must be a valid publisher, as returned by rmw_create_publisher().
+ *
+ * \param[in] publisher handle to the publisher that needs to wait for all acked.
+ * \param[in] wait_timeout represents the maximum amount of time to wait for all published message
+ *   data were acknowledged.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_TIMEOUT` if wait timed out, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `publisher` is `NULL`, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `publisher` implementation
+ *   identifier does not match this implementation, or
+ * \return `RMW_RET_ERROR` if an unspecified error occurs, or
+ * \return `RMW_RET_UNSUPPORTED` if the rmw implementation is unimplemented.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_publisher_wait_for_all_acked(
+  const rmw_publisher_t * publisher,
+  rmw_time_t wait_timeout);
 
 /// Serialize a ROS message into a rmw_serialized_message_t.
 /**
@@ -958,7 +1002,7 @@ rmw_fini_subscription_allocation(
  * \param[in] topic_name Name of the topic to subscribe to, often a fully qualified
  *   topic name unless `qos_profile` is configured to avoid ROS namespace conventions
  *   i.e. to create a native topic subscription
- * \param[in] qos_profile QoS policies for this subscription
+ * \param[in] qos_policies QoS policies for this subscription
  * \param[in] subscription_options Options for configuring this subscription
  * \return rmw subscription handle, or `NULL` if there was an error
  */
@@ -1815,7 +1859,7 @@ rmw_return_loaned_message_from_subscription(
  * \param[in] service_name Name of the service to be used, often a fully qualified
  *   service name unless `qos_profile` is configured to avoid ROS namespace conventions
  *   i.e. to create a native service client.
- * \param[in] qos_profile QoS policies for this service client's connections.
+ * \param[in] qos_policies QoS policies for this service client's connections.
  * \return rmw service client handle, or `NULL` if there was an error.
  */
 RMW_PUBLIC
@@ -1998,8 +2042,8 @@ rmw_send_request(
  *   It will also be left unchanged if this function succeeds but `taken` is false.
  *
  * \param[in] client Service client to take response from.
- * \param[out] response_header Service response header to write to.
- * \param[out] ros_request Type erased ROS service response to write to.
+ * \param[out] request_header Service response header to write to.
+ * \param[out] ros_response Type erased ROS service response to write to.
  * \param[out] taken Boolean flag indicating if a ROS service response was taken or not.
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_BAD_ALLOC` if memory allocation fails, or
@@ -2229,7 +2273,7 @@ rmw_take_request(
  * \pre Given `ros_response` must be a valid service response, whose type matches the
  *   service type support registered with the `service` on creation.
  *
- * \param[in] client Service server to send a response with.
+ * \param[in] service Service server to send a response with.
  * \param[in] request_header Service response header, same as the one taken
  *   with the corresponding ROS service request.
  * \param[in] ros_response ROS service response to be sent.
@@ -2695,7 +2739,7 @@ rmw_count_subscribers(
  *   However, access to the gid is not synchronized.
  *   It is not safe to read or write `gid` while rmw_get_gid_for_publisher() uses it.
  *
- * \pre Given `publisher` must be a valid subscription, as returned by rmw_create_publisher().
+ * \pre Given `publisher` must be a valid publisher, as returned by rmw_create_publisher().
  *
  * \param[in] publisher Publisher to get a gid from.
  * \param[out] gid Publisher's unique identifier, populated on success
@@ -2733,7 +2777,7 @@ rmw_get_gid_for_publisher(const rmw_publisher_t * publisher, rmw_gid_t * gid);
  *
  * \param[in] gid1 First unique identifier to compare.
  * \param[in] gid2 Second unique identifier to compare.
- * \param[out] bool true if both gids are equal, false otherwise.
+ * \param[out] result true if both gids are equal, false otherwise.
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `gid1` or `gid2` is NULL, or
  * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the implementation

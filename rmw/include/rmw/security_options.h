@@ -27,15 +27,15 @@ extern "C"
 #include "rmw/ret_types.h"
 #include "rmw/visibility_control.h"
 
-typedef enum RMW_PUBLIC_TYPE rmw_security_enforcement_policy_t
+typedef enum RMW_PUBLIC_TYPE rmw_security_enforcement_policy_e
 {
   RMW_SECURITY_ENFORCEMENT_PERMISSIVE,
   RMW_SECURITY_ENFORCEMENT_ENFORCE,
 } rmw_security_enforcement_policy_t;
 
-typedef struct RMW_PUBLIC_TYPE rmw_security_options_t
+typedef struct RMW_PUBLIC_TYPE rmw_security_options_s
 {
-  enum rmw_security_enforcement_policy_t enforce_security;
+  rmw_security_enforcement_policy_t enforce_security;
   char * security_root_path;
 } rmw_security_options_t;
 
@@ -70,7 +70,7 @@ rmw_security_options_copy(
  *
  * \param[in] security_root_path path to be set.
  * \param[in] allocator allocator used to allocate the new path.
- * \param[in|out] security_options security options to be set.
+ * \param[inout] security_options security options to be set.
  * \returns RMW_RET_BAD_ALLOC, or
  * \returns RMW_RET_OK
  */
