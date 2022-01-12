@@ -2,6 +2,11 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+5.1.0 (2021-11-19)
+------------------
+* Add client/service QoS getters. (`#314 <https://github.com/ros2/rmw/issues/314>`_)
+* Contributors: mauropasse
+
 5.0.0 (2021-09-15)
 ------------------
 * Fix up documentation build for rmw when using rosdoc2 (`#313 <https://github.com/ros2/rmw/issues/313>`_)
