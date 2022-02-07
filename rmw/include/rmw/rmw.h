@@ -2567,7 +2567,7 @@ rmw_destroy_wait_set(rmw_wait_set_t * wait_set);
  * \remark Elapsed time should be measured using a monotonic clock,
  *   though rmw implementations could use a different one.
  *   Timeout granularity is thus bound to that of the clock used by the underlying implementation,
- *   and to the used platform-specific APIs to sleep and/or wait.
+ *   and to the platform-specific APIs used to sleep and/or wait.
  *
  * \remark
  *   The amount of time this function actually waits may be either above or
