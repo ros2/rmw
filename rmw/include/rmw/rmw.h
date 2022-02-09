@@ -2566,10 +2566,10 @@ rmw_destroy_wait_set(rmw_wait_set_t * wait_set);
  * This function adds middleware-specific conditions to the wait set and waits
  * until one or more become ready, or until the timeout is reached.
  *
- * \remark Elapsed time is measured against the system clock.
- *   Timeout granularity is thus bound to that of the aforementioned clock and,
- *   depending on the underlying implementation, to that of platform-specific
- *   APIs to sleep and/or wait.
+ * \remark Elapsed time should be measured using a monotonic clock,
+ *   though rmw implementations could use a different one.
+ *   Timeout granularity is thus bound to that of the clock used by the underlying implementation,
+ *   and to the platform-specific APIs used to sleep and/or wait.
  *
  * \remark
  *   The amount of time this function actually waits may be either above or
@@ -2793,7 +2793,7 @@ rmw_get_node_names_with_enclaves(
  *
  * \par Thread-safety
  *   Nodes are thread-safe objects, and so are all operations on them except for finalization.
- *   Therefore, it is to query the ROS graph using the same node concurrently.
+ *   Therefore, it is safe to query the ROS graph using the same node concurrently.
  *   However, access to primitive data-type arguments is not synchronized.
  *   It is not safe to read or write `topic_name` or `count` while rmw_count_publishers()
  *   uses them.
@@ -2943,31 +2943,40 @@ rmw_compare_gids_equal(const rmw_gid_t * gid1, const rmw_gid_t * gid2, bool * re
 
 /// Check if a service server is available for the given service client.
 /**
- * This function will return true for `is_available` if there is a service
- * server available for the given client.
+ * This function checks whether one or more service services matching the
+ * given service client exist in the ROS graph, as discovered so far by the
+ * given local node.
  *
- * The node parameter must not be `NULL`, and must point to a valid node.
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
  *
- * The client parameter must not be `NULL`, and must point to a valid client.
+ * <i>[1] implementation defined, check implementation documentation.</i>
  *
- * The given client and node must match, i.e. the client must have been created
- * using the given node.
+ * \par Runtime behavior
+ *   To query the ROS graph is a synchronous operation.
+ *   It is also non-blocking, but it is not guaranteed to be lock-free.
+ *   Generally speaking, implementations may synchronize access to internal resources using
+ *   locks but are not allowed to wait for events with no guaranteed time bound (barring
+ *   the effects of starvation due to OS scheduling).
  *
- * The is_available parameter must not be `NULL`, and must point to a bool
- * variable.
- * The result of the check will be stored in the is_available parameter.
+ * \pre Given `node` must be a valid node, as returned by rmw_create_node().
+ * \pre Given `client` must be a valid client, as returned by rmw_create_client().
+ * \pre Given `node` must be the one the `client` was registered with.
  *
- * This function does manipulate heap memory.
- * This function is not thread-safe.
- * This function is lock-free.
- *
- * \param[in] node the handle to the node being used to query the ROS graph
- * \param[in] client the handle to the service client being queried
- * \param[out] is_available
- *   set to true if there is a service server available, else false
- * \return `RMW_RET_OK` if node the check was made successfully, or
+ * \param[in] node Node to query the ROS graph.
+ * \param[in] client Service client to look for matching service servers.
+ * \param[out] is_available True if there is a service server available, else false.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `node` is `NULL`, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `client` is `NULL`, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `is_available` is `NULL`, or
  * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the implementation
- *   identifier for any arguments does not match this implementation, or
+ *   identifier of `node` or `client` does not match this implementation, or
  * \return `RMW_RET_ERROR` if an unspecified error occurs.
  */
 RMW_PUBLIC
