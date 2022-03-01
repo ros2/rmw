@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+6.0.0 (2022-03-01)
+------------------
 * Add EventsExecutor (`#286 <https://github.com/ros2/rmw/issues/286>`_)
 * Document that rmw_wait() SHOULD use a monotonic clock (`#316 <https://github.com/ros2/rmw/issues/316>`_)
 * Install headers to include/${PROJECT_NAME} (`#317 <https://github.com/ros2/rmw/issues/317>`_)
