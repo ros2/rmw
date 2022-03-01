@@ -40,7 +40,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_content_filter_options_s
    * filter_expression. The number of supplied parameters must fit with the requested values.
    *
    * It can be NULL if there is no "%n" tokens placeholder in filter_expression.
-   * The maximun size allowance must be smaller than 100.
+   * The maximum index number must be smaller than 100.
    */
   rcutils_string_array_t * expression_parameters;
 } rmw_subscription_content_filter_options_t;
