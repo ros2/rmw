@@ -2,6 +2,14 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add EventsExecutor (`#286 <https://github.com/ros2/rmw/issues/286>`_)
+* Document that rmw_wait() SHOULD use a monotonic clock (`#316 <https://github.com/ros2/rmw/issues/316>`_)
+* Install headers to include/${PROJECT_NAME} (`#317 <https://github.com/ros2/rmw/issues/317>`_)
+* Update rmw_server_is_available() API documentation. (`#277 <https://github.com/ros2/rmw/issues/277>`_)
+* Contributors: Ivan Santiago Paunovic, Michel Hidalgo, Shane Loretz, iRobot ROS
+
 5.1.0 (2021-11-19)
 ------------------
 * Add client/service QoS getters. (`#314 <https://github.com/ros2/rmw/issues/314>`_)

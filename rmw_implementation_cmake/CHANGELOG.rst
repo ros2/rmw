@@ -2,6 +2,11 @@
 Changelog for package rmw_implementation_cmake
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Use FastDDS as default DDS (`#315 <https://github.com/ros2/rmw/issues/315>`_)
+* Contributors: Audrow Nash
+
 5.1.0 (2021-11-19)
 ------------------
 
