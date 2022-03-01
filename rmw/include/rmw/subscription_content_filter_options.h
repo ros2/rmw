@@ -40,8 +40,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_content_filter_options_s
    * filter_expression. The number of supplied parameters must fit with the requested values.
    *
    * It can be NULL if there is no "%n" tokens placeholder in filter_expression.
-   * The maximun size allowance depends on concrete DDS vendor.
-   * (i.e., it cannot be greater than 100 on RTI_Connext.)
+   * The maximun size allowance must be smaller than 100.
    */
   rcutils_string_array_t * expression_parameters;
 } rmw_subscription_content_filter_options_t;
