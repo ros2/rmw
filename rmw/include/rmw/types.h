@@ -526,12 +526,12 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_s
   /**
    * If the rmw implementation doesn't support sequence numbers, it's value will be UINT64_MAX.
    */
-  uint64_t publication_sequence_number;
+  int64_t publication_sequence_number;
   /// Sequence number of the received message for the subscription,
   /**
    * If the rmw implementation doesn't support sequence numbers, it's value will be UINT64_MAX.
    */
-  uint64_t reception_sequence_number;
+  int64_t reception_sequence_number;
   /// Global unique identifier of the publisher that sent the message.
   rmw_gid_t publisher_gid;
 
