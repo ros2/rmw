@@ -518,8 +518,21 @@ typedef struct RMW_PUBLIC_TYPE rmw_gid_s
 /// Information describing an rmw message
 typedef struct RMW_PUBLIC_TYPE rmw_message_info_s
 {
+  /// Time when the DDS sample was written in the publisher queue.
   rmw_time_point_value_t source_timestamp;
+  /// Time when the message was added to the subscription queue.
   rmw_time_point_value_t received_timestamp;
+  /// Sequence number of the received message for the publisher.
+  /**
+   * If the rmw implementation doesn't support sequence numbers, it's value will be UINT64_MAX.
+   */
+  uint64_t publication_sequence_number;
+  /// Sequence number of the received message for the subscription,
+  /**
+   * If the rmw implementation doesn't support sequence numbers, it's value will be UINT64_MAX.
+   */
+  uint64_t reception_sequence_number;
+  /// Global unique identifier of the publisher that sent the message.
   rmw_gid_t publisher_gid;
 
   /// Whether this message is from intra_process communication or not

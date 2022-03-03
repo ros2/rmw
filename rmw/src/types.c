@@ -19,6 +19,6 @@ RMW_WARN_UNUSED
 rmw_message_info_t
 rmw_get_zero_initialized_message_info(void)
 {
-  rmw_message_info_t zero_initialized_message_info = {0, 0, {NULL, {0}}, false};
+  rmw_message_info_t zero_initialized_message_info = {0, 0, UINT64_MAX, UINT64_MAX, {NULL, {0}}, false};
   return zero_initialized_message_info;
 }
