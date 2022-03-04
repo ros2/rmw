@@ -538,18 +538,40 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_s
   /**
    * This sequence number is set by the publisher and therefore uniquely identifies
    * a message when combined with the publisher GID.
+   * For long running applications, the sequence number might wrap arround at some point.
    *
    * If the rmw implementation doesn't support sequence numbers, it's value will be
    * RMW_MESSAGE_INFO_SEQUENCE_NUMBER_UNSUPPORTED.
+   *
+   * Requirements:
+   *
+   * If `psn1` and `psn2` are the publication sequence numbers obtained by
+   * calls to `rmw_take*()`, where `psn1` was obtained in a call that happened before `psn2` and both
+   * sequence numbers are from the same publisher (i.e. also same publisher gid), then:
+   *
+   * - psn2 > psn1 (except in the case of a wrap around)
+   * - `psn2 - psn1 - 1` is the number of messages the publisher sent in the middle of both
+   *   received messages.
+   *   Those might have already been taken by other `rmw_take*()` calls that happened in between or lost.
+   *   `psn2 - psn1 - 1 = 0` if and only if the messages were sent by the publisher consecutively.
    */
   int64_t publication_sequence_number;
   /// Sequence number of the received message set by the subscription.
   /**
    * This sequence number is set by the subscription regardless of which
    * publish sent the message.
+   * For long running applications, the sequence number might wrap arround at some point.
    *
    * If the rmw implementation doesn't support sequence numbers, it's value will be
    * RMW_MESSAGE_INFO_SEQUENCE_NUMBER_UNSUPPORTED.
+   *
+   * Requirements:
+   *
+   * If `rsn1` and `rsn2` are the reception sequence numbers obtained by
+   * calls to `rmw_take*()`, where `rsn1` was obtained in a call that happened before `rsn2`, then:
+   *
+   * - rsn2 > rsn1 (except in the case of a wrap around)
+   * - `rsn2 = rsn1 + 1` if and only if both `rmw_take*()` calls happened consecutively.
    */
   int64_t reception_sequence_number;
   /// Global unique identifier of the publisher that sent the message.
