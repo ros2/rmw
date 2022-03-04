@@ -20,7 +20,8 @@ rmw_message_info_t
 rmw_get_zero_initialized_message_info(void)
 {
   rmw_message_info_t zero_initialized_message_info = {
-    0, 0, RMW_MESSAGE_INFO_SEQUENCE_NUMBER_UNSUPPORTED, RMW_MESSAGE_INFO_SEQUENCE_NUMBER_UNSUPPORTED,
-    {NULL, {0}}, false};
+    0, 0, RMW_MESSAGE_INFO_SEQUENCE_NUMBER_UNSUPPORTED,
+    RMW_MESSAGE_INFO_SEQUENCE_NUMBER_UNSUPPORTED, {NULL, {0}}, false
+  };
   return zero_initialized_message_info;
 }
