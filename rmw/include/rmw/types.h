@@ -515,6 +515,8 @@ typedef struct RMW_PUBLIC_TYPE rmw_gid_s
   uint8_t data[RMW_GID_STORAGE_SIZE];
 } rmw_gid_t;
 
+#define RMW_MESSAGE_INFO_SEQUENCE_NUMBER_UNSUPPORTED INT64_MAX
+
 /// Information describing an rmw message
 typedef struct RMW_PUBLIC_TYPE rmw_message_info_s
 {
@@ -530,13 +532,15 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_s
    * The exact point at which the timestamp is taken is not specified, but
    * it should be taken consistently at the same point in the
    * process of receiving a message each time.
+   */
   rmw_time_point_value_t received_timestamp;
   /// Sequence number of the received message set by the publisher.
   /**
    * This sequence number is set by the publisher and therefore uniquely identifies
    * a message when combined with the publisher GID.
    *
-   * If the rmw implementation doesn't support sequence numbers, it's value will be UINT64_MAX.
+   * If the rmw implementation doesn't support sequence numbers, it's value will be
+   * RMW_MESSAGE_INFO_SEQUENCE_NUMBER_UNSUPPORTED.
    */
   int64_t publication_sequence_number;
   /// Sequence number of the received message set by the subscription.
@@ -544,7 +548,8 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_s
    * This sequence number is set by the subscription regardless of which
    * publish sent the message.
    *
-   * If the rmw implementation doesn't support sequence numbers, it's value will be UINT64_MAX.
+   * If the rmw implementation doesn't support sequence numbers, it's value will be
+   * RMW_MESSAGE_INFO_SEQUENCE_NUMBER_UNSUPPORTED.
    */
   int64_t reception_sequence_number;
   /// Global unique identifier of the publisher that sent the message.
