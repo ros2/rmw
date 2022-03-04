@@ -531,8 +531,11 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_s
    * it should be taken consistently at the same point in the
    * process of receiving a message each time.
   rmw_time_point_value_t received_timestamp;
-  /// Sequence number of the received message for the publisher.
+  /// Sequence number of the received message set by the publisher.
   /**
+   * This sequence number is set by the publisher and therefore uniquely identifies
+   * a message when combined with the publisher GID.
+   *
    * If the rmw implementation doesn't support sequence numbers, it's value will be UINT64_MAX.
    */
   int64_t publication_sequence_number;
