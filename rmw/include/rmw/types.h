@@ -525,7 +525,11 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_s
    * publishing process each time.
    */
   rmw_time_point_value_t source_timestamp;
-  /// Time when the message was added to the subscription queue.
+  /// Time when the message was received by the subscription.
+  /**
+   * The exact point at which the timestamp is taken is not specified, but
+   * it should be taken consistently at the same point in the
+   * process of receiving a message each time.
   rmw_time_point_value_t received_timestamp;
   /// Sequence number of the received message for the publisher.
   /**
