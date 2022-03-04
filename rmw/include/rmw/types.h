@@ -538,7 +538,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_s
   /**
    * This sequence number is set by the publisher and therefore uniquely identifies
    * a message when combined with the publisher GID.
-   * For long running applications, the sequence number might wrap arround at some point.
+   * For long running applications, the sequence number might wrap around at some point.
    *
    * If the rmw implementation doesn't support sequence numbers, it's value will be
    * RMW_MESSAGE_INFO_SEQUENCE_NUMBER_UNSUPPORTED.
