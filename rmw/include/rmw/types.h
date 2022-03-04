@@ -539,8 +539,11 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_s
    * If the rmw implementation doesn't support sequence numbers, it's value will be UINT64_MAX.
    */
   int64_t publication_sequence_number;
-  /// Sequence number of the received message for the subscription,
+  /// Sequence number of the received message set by the subscription.
   /**
+   * This sequence number is set by the subscription regardless of which
+   * publish sent the message.
+   *
    * If the rmw implementation doesn't support sequence numbers, it's value will be UINT64_MAX.
    */
   int64_t reception_sequence_number;
