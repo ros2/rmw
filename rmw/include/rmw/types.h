@@ -518,7 +518,12 @@ typedef struct RMW_PUBLIC_TYPE rmw_gid_s
 /// Information describing an rmw message
 typedef struct RMW_PUBLIC_TYPE rmw_message_info_s
 {
-  /// Time when the DDS sample was written in the publisher queue.
+  /// Time when the message was published by the publisher.
+  /**
+   * The exact point at which the timestamp is taken is not specified, but
+   * it should be taken consistently at the same point in the
+   * publishing process each time.
+   */
   rmw_time_point_value_t source_timestamp;
   /// Time when the message was added to the subscription queue.
   rmw_time_point_value_t received_timestamp;
