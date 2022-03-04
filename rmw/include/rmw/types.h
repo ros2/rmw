@@ -540,7 +540,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_s
    * a message when combined with the publisher GID.
    * For long running applications, the sequence number might wrap around at some point.
    *
-   * If the rmw implementation doesn't support sequence numbers, it's value will be
+   * If the rmw implementation doesn't support sequence numbers, its value will be
    * RMW_MESSAGE_INFO_SEQUENCE_NUMBER_UNSUPPORTED.
    *
    * Requirements:
