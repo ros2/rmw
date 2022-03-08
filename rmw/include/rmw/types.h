@@ -559,7 +559,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_s
   /// Sequence number of the received message set by the subscription.
   /**
    * This sequence number is set by the subscription regardless of which
-   * publish sent the message.
+   * publisher sent the message.
    * For long running applications, the sequence number might wrap around at some point.
    *
    * If the rmw implementation doesn't support sequence numbers, its value will be
