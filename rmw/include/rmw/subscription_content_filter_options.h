@@ -30,13 +30,13 @@ extern "C"
 typedef struct RMW_PUBLIC_TYPE rmw_subscription_content_filter_options_s
 {
   /**
-   * specify the criteria to select the data samples of interest.
+   * Specify the criteria to select the data samples of interest.
    *
    * It is similar to the WHERE part of an SQL clause.
    */
   char * filter_expression;
   /**
-   * give values to the tokens placeholder ‘parameters’ (i.e., "%n" tokens begin from 0) in the
+   * Give values to the tokens placeholder ‘parameters’ (i.e., "%n" tokens begin from 0) in the
    * filter_expression. The number of supplied parameters must fit with the requested values.
    *
    * It can be NULL if there is no "%n" tokens placeholder in filter_expression.
