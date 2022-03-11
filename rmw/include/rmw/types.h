@@ -555,7 +555,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_s
    *   Those might have already been taken by other `rmw_take*()` calls that happened in between or lost.
    *   `psn2 - psn1 - 1 = 0` if and only if the messages were sent by the publisher consecutively.
    */
-  int64_t publication_sequence_number;
+  uint64_t publication_sequence_number;
   /// Sequence number of the received message set by the subscription.
   /**
    * This sequence number is set by the subscription regardless of which
@@ -573,7 +573,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_s
    * - rsn2 > rsn1 (except in the case of a wrap around)
    * - `rsn2 = rsn1 + 1` if and only if both `rmw_take*()` calls happened consecutively.
    */
-  int64_t reception_sequence_number;
+  uint64_t reception_sequence_number;
   /// Global unique identifier of the publisher that sent the message.
   rmw_gid_t publisher_gid;
 
