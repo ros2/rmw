@@ -515,7 +515,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_gid_s
   uint8_t data[RMW_GID_STORAGE_SIZE];
 } rmw_gid_t;
 
-#define RMW_MESSAGE_INFO_SEQUENCE_NUMBER_UNSUPPORTED INT64_MAX
+#define RMW_MESSAGE_INFO_SEQUENCE_NUMBER_UNSUPPORTED UINT64_MAX
 
 /// Information describing an rmw message
 typedef struct RMW_PUBLIC_TYPE rmw_message_info_s
