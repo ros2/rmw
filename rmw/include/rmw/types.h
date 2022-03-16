@@ -575,6 +575,13 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_s
    */
   uint64_t reception_sequence_number;
   /// Global unique identifier of the publisher that sent the message.
+  /**
+   * In rmw_cyclonedds, the "gid" currently is not global.
+   * i.e. the id printed by the local process for its publisher and the gid printed by a remote
+   * process may be different.
+   * gid continues being unique within a process though, and a
+   * (publication_sequence_number, publisher_gid) pair should still uniquely identify a message.
+   */
   rmw_gid_t publisher_gid;
 
   /// Whether this message is from intra_process communication or not
