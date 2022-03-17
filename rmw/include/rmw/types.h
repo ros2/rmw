@@ -588,6 +588,13 @@ typedef struct RMW_PUBLIC_TYPE rmw_message_info_s
    * case it is not possible to distinguish which publisher sent the message.
    * The details of how GIDs are generated are rmw implementation dependent.
    *
+   * It is possible the the rmw implementation needs to reuse a publisher GID,
+   * due to running out of unique identifiers or some other constraint, in which case
+   * the rmw implementation may document what happens in that case, but that
+   * behavior is not defined here.
+   * However, this should be avoided, if at all possible, by the rmw implementation,
+   * and should be unlikely to happen in practice.
+   *
    * \todo In the future we want this to uniquely identify the publisher globally across
    *   contexts, processes, and machines.
    */
