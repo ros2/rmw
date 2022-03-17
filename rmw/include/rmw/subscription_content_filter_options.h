@@ -42,7 +42,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_content_filter_options_s
    * It can be NULL if there is no "%n" tokens placeholder in filter_expression.
    * The maximum index number must be smaller than 100.
    */
-  rcutils_string_array_t * expression_parameters;
+  rcutils_string_array_t expression_parameters;
 } rmw_subscription_content_filter_options_t;
 
 

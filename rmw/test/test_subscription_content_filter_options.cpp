@@ -25,7 +25,8 @@ TEST(rmw_subscription_content_filter_options, get_zero_init)
   rmw_subscription_content_filter_options_t options =
     rmw_get_zero_initialized_content_filter_options();
   EXPECT_EQ(options.filter_expression, nullptr);
-  EXPECT_EQ(options.expression_parameters, nullptr);
+  EXPECT_EQ(options.expression_parameters.size, 0u);
+  EXPECT_EQ(options.expression_parameters.data, nullptr);
 }
 
 TEST(rmw_subscription_content_filter_options, options_init)
@@ -33,7 +34,8 @@ TEST(rmw_subscription_content_filter_options, options_init)
   rmw_subscription_content_filter_options_t options =
     rmw_get_zero_initialized_content_filter_options();
   EXPECT_EQ(options.filter_expression, nullptr);
-  EXPECT_EQ(options.expression_parameters, nullptr);
+  EXPECT_EQ(options.expression_parameters.size, 0u);
+  EXPECT_EQ(options.expression_parameters.data, nullptr);
 
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
   EXPECT_EQ(
@@ -77,10 +79,9 @@ TEST(rmw_subscription_content_filter_options, options_init)
         &options));
 
     EXPECT_STREQ(options.filter_expression, filter_expression);
-    ASSERT_NE(nullptr, options.expression_parameters);
-    ASSERT_EQ(expression_parameters_count, options.expression_parameters->size);
+    ASSERT_EQ(expression_parameters_count, options.expression_parameters.size);
     for (size_t i = 0; i < expression_parameters_count; ++i) {
-      EXPECT_STREQ(options.expression_parameters->data[i], expression_parameters[i]);
+      EXPECT_STREQ(options.expression_parameters.data[i], expression_parameters[i]);
     }
 
     EXPECT_EQ(
@@ -93,7 +94,8 @@ TEST(rmw_subscription_content_filter_options, options_set)
   rmw_subscription_content_filter_options_t options =
     rmw_get_zero_initialized_content_filter_options();
   EXPECT_EQ(options.filter_expression, nullptr);
-  EXPECT_EQ(options.expression_parameters, nullptr);
+  EXPECT_EQ(options.expression_parameters.size, 0u);
+  EXPECT_EQ(options.expression_parameters.data, nullptr);
 
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
 
@@ -139,10 +141,9 @@ TEST(rmw_subscription_content_filter_options, options_set)
         &options));
 
     EXPECT_STREQ(options.filter_expression, filter_expression);
-    ASSERT_NE(nullptr, options.expression_parameters);
-    ASSERT_EQ(expression_parameters_count, options.expression_parameters->size);
+    ASSERT_EQ(expression_parameters_count, options.expression_parameters.size);
     for (size_t i = 0; i < expression_parameters_count; ++i) {
-      EXPECT_STREQ(options.expression_parameters->data[i], expression_parameters[i]);
+      EXPECT_STREQ(options.expression_parameters.data[i], expression_parameters[i]);
     }
 
     EXPECT_EQ(
@@ -185,7 +186,7 @@ TEST(rmw_subscription_content_filter_options, options_copy) {
   rcutils_reset_error();
 
   rcutils_allocator_t failing_allocator = get_time_bomb_allocator();
-  constexpr int expected_num_malloc_calls = 5;
+  constexpr int expected_num_malloc_calls = 4;
   for (int i = 0; i < expected_num_malloc_calls; ++i) {
     set_time_bomb_allocator_malloc_count(failing_allocator, i);
     EXPECT_EQ(
@@ -204,7 +205,7 @@ TEST(rmw_subscription_content_filter_options, options_copy) {
   EXPECT_EQ(
     RCUTILS_RET_OK,
     rcutils_string_array_cmp(
-      source.expression_parameters, destination.expression_parameters, &res));
+      &source.expression_parameters, &destination.expression_parameters, &res));
   EXPECT_EQ(res, 0);
 
   {
@@ -220,7 +221,8 @@ TEST(rmw_subscription_content_filter_options, options_copy) {
       RMW_RET_OK,
       rmw_subscription_content_filter_options_copy(&source2, &allocator, &destination));
     EXPECT_STREQ(source2.filter_expression, destination.filter_expression);
-    EXPECT_EQ(nullptr, destination.expression_parameters);
+    EXPECT_EQ(source2.expression_parameters.size, 0u);
+    EXPECT_EQ(source2.expression_parameters.data, nullptr);
     EXPECT_EQ(
       RMW_RET_OK, rmw_subscription_content_filter_options_fini(&source2, &allocator));
   }

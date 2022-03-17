@@ -22,12 +22,10 @@
 rmw_subscription_content_filter_options_t
 rmw_get_zero_initialized_content_filter_options()
 {
-  static rmw_subscription_content_filter_options_t zero_initialized_options = {
-    .filter_expression = NULL,
-    .expression_parameters = NULL,
-  };
-
-  return zero_initialized_options;
+  return (const rmw_subscription_content_filter_options_t) {
+           .filter_expression = NULL,
+           .expression_parameters = rcutils_get_zero_initialized_string_array()
+  };  // NOLINT(readability/braces): false positive
 }
 
 rmw_ret_t
@@ -48,7 +46,6 @@ rmw_subscription_content_filter_options_init(
   rmw_ret_t ret = RMW_RET_OK;
   rcutils_ret_t rcutils_ret;
   char * new_filter_expression = NULL;
-  rcutils_string_array_t * new_expression_parameters = NULL;
   size_t i;
 
   new_filter_expression = rcutils_strdup(filter_expression, *allocator);
@@ -59,16 +56,8 @@ rmw_subscription_content_filter_options_init(
   }
 
   if (expression_parameters_argc > 0) {
-    new_expression_parameters =
-      allocator->allocate(sizeof(rcutils_string_array_t), allocator->state);
-    if (!new_expression_parameters) {
-      RMW_SET_ERROR_MSG("failed to allocate expression parameters");
-      ret = RMW_RET_BAD_ALLOC;
-      goto failed;
-    }
-    *new_expression_parameters = rcutils_get_zero_initialized_string_array();
     rcutils_ret_t rcutils_ret = rcutils_string_array_init(
-      new_expression_parameters, expression_parameters_argc, allocator);
+      &options->expression_parameters, expression_parameters_argc, allocator);
     if (RCUTILS_RET_OK != rcutils_ret) {
       RMW_SET_ERROR_MSG("failed to init string array for expression parameters");
       ret = RMW_RET_BAD_ALLOC;
@@ -76,9 +65,9 @@ rmw_subscription_content_filter_options_init(
     }
 
     for (i = 0; i < expression_parameters_argc; i++) {
-      new_expression_parameters->data[i] =
+      options->expression_parameters.data[i] =
         rcutils_strdup(expression_parameter_argv[i], *allocator);
-      if (!new_expression_parameters->data[i]) {
+      if (!options->expression_parameters.data[i]) {
         RMW_SET_ERROR_MSG("failed to copy expression parameter");
         ret = RMW_RET_BAD_ALLOC;
         goto clear_expression_parameters;
@@ -87,18 +76,16 @@ rmw_subscription_content_filter_options_init(
   }
 
   options->filter_expression = new_filter_expression;
-  options->expression_parameters = new_expression_parameters;
 
   return RMW_RET_OK;
 
 clear_expression_parameters:
-  rcutils_ret = rcutils_string_array_fini(new_expression_parameters);
+  rcutils_ret = rcutils_string_array_fini(&options->expression_parameters);
   if (RCUTILS_RET_OK != rcutils_ret) {
     RCUTILS_SAFE_FWRITE_TO_STDERR("Failed to fini string array.\n");
   }
 
 failed:
-  allocator->deallocate(new_expression_parameters, allocator->state);
   allocator->deallocate(new_filter_expression, allocator->state);
 
   return ret;
@@ -135,12 +122,7 @@ rmw_subscription_content_filter_options_copy(
   RMW_CHECK_ARGUMENT_FOR_NULL(src, RMW_RET_INVALID_ARGUMENT);
   RCUTILS_CHECK_ALLOCATOR(allocator, return RMW_RET_INVALID_ARGUMENT);
   RMW_CHECK_ARGUMENT_FOR_NULL(dst, RMW_RET_INVALID_ARGUMENT);
-  size_t expression_parameters_size = 0;
-  char ** expression_parameters_data = NULL;
-  if (src->expression_parameters) {
-    expression_parameters_size = src->expression_parameters->size;
-    expression_parameters_data = src->expression_parameters->data;
-  }
+
   rmw_ret_t ret = rmw_subscription_content_filter_options_fini(dst, allocator);
   if (ret != RMW_RET_OK) {
     return ret;
@@ -148,8 +130,8 @@ rmw_subscription_content_filter_options_copy(
 
   return rmw_subscription_content_filter_options_init(
     src->filter_expression,
-    expression_parameters_size,
-    (const char **)expression_parameters_data,
+    src->expression_parameters.size,
+    (const char **)src->expression_parameters.data,
     allocator,
     dst
   );
@@ -168,14 +150,10 @@ rmw_subscription_content_filter_options_fini(
     options->filter_expression = NULL;
   }
 
-  if (options->expression_parameters) {
-    rcutils_ret_t ret = rcutils_string_array_fini(options->expression_parameters);
-    if (RCUTILS_RET_OK != ret) {
-      RCUTILS_SAFE_FWRITE_TO_STDERR("Failed to fini string array.\n");
-      return RMW_RET_ERROR;
-    }
-    allocator->deallocate(options->expression_parameters, allocator->state);
-    options->expression_parameters = NULL;
+  rcutils_ret_t ret = rcutils_string_array_fini(&options->expression_parameters);
+  if (RCUTILS_RET_OK != ret) {
+    RCUTILS_SAFE_FWRITE_TO_STDERR("Failed to fini string array.\n");
+    return RMW_RET_ERROR;
   }
 
   return RMW_RET_OK;
