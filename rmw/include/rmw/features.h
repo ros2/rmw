@@ -38,7 +38,7 @@ extern "C"
  * There might be some optional features that are not listed here, but the goal is to have all of
  * them added.
  */
-typedef enum rmw_feature_e
+typedef enum RMW_PUBLIC_TYPE rmw_feature_e
 {
   /// `rmw_message_info_t.publication_sequence_number` is filled correctly
   /// by the rmw implementation.
