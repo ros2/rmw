@@ -123,12 +123,7 @@ rmw_subscription_content_filter_options_copy(
   RCUTILS_CHECK_ALLOCATOR(allocator, return RMW_RET_INVALID_ARGUMENT);
   RMW_CHECK_ARGUMENT_FOR_NULL(dst, RMW_RET_INVALID_ARGUMENT);
 
-  rmw_ret_t ret = rmw_subscription_content_filter_options_fini(dst, allocator);
-  if (ret != RMW_RET_OK) {
-    return ret;
-  }
-
-  return rmw_subscription_content_filter_options_init(
+  return rmw_subscription_content_filter_options_set(
     src->filter_expression,
     src->expression_parameters.size,
     (const char **)src->expression_parameters.data,
