@@ -37,6 +37,7 @@ set(rmw_sources
   "src/qos_string_conversions.c"
   "src/sanity_checks.c"
   "src/security_options.c"
+  "src/subscription_content_filter_options.c"
   "src/subscription_options.c"
   "src/time.c"
   "src/topic_endpoint_info_array.c"
