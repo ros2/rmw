@@ -2,6 +2,13 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add content filtered topics support. (`#302 <https://github.com/ros2/rmw/issues/302>`_)
+* Add sequence numbers to rmw_message_info_t. (`#318 <https://github.com/ros2/rmw/issues/318>`_)
+* Add rmw_feature_supported(). (`#318 <https://github.com/ros2/rmw/issues/318>`_)
+* Contributors: Chen Lihui, Ivan Santiago Paunovic
+
 6.0.0 (2022-03-01)
 ------------------
 * Add EventsExecutor (`#286 <https://github.com/ros2/rmw/issues/286>`_)
