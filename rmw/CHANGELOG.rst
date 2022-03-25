@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+6.1.0 (2022-03-25)
+------------------
 * Add content filtered topics support. (`#302 <https://github.com/ros2/rmw/issues/302>`_)
 * Add sequence numbers to rmw_message_info_t. (`#318 <https://github.com/ros2/rmw/issues/318>`_)
 * Add rmw_feature_supported(). (`#318 <https://github.com/ros2/rmw/issues/318>`_)
