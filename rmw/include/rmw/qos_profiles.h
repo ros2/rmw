@@ -220,7 +220,8 @@ rmw_qos_profile_check_compatible(
  * \return `RMW_RET_INVALID_ARGUMENT` if `subscription_profile` is `nullptr`, or
  * \return `RMW_RET_ERROR` if there is an unexpected error.
  */
-RMW_DDS_COMMON_PUBLIC
+RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_qos_profile_get_most_compatible_for_subscription(
   const rmw_qos_profile_t * publisher_profiles,
@@ -267,7 +268,8 @@ rmw_qos_profile_get_most_compatible_for_subscription(
  * \return `RMW_RET_INVALID_ARGUMENT` if `subscription_profile` is `nullptr`, or
  * \return `RMW_RET_ERROR` if there is an unexpected error.
  */
-RMW_DDS_COMMON_PUBLIC
+RMW_PUBLIC
+RMW_WARN_UNUSED
 rmw_ret_t
 rmw_qos_profile_get_most_compatible_for_publisher(
   const rmw_qos_profile_t * subscription_profiles,
