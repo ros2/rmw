@@ -100,6 +100,20 @@ static const rmw_qos_profile_t rmw_qos_profile_system_default =
   false
 };
 
+/// Match majority of endpoints currently available while maintaining the highest level of service
+static const rmw_qos_profile_t rmw_qos_profile_best_available =
+{
+  RMW_QOS_POLICY_HISTORY_KEEP_LAST,
+  10,
+  RMW_QOS_POLICY_RELIABILITY_BEST_AVAILABLE,
+  RMW_QOS_POLICY_DURABILITY_BEST_AVAILABLE,
+  RMW_QOS_DEADLINE_BEST_AVAILABLE,
+  RMW_QOS_LIFESPAN_DEFAULT,
+  RMW_QOS_POLICY_LIVELINESS_BEST_AVAILABLE,
+  RMW_QOS_LIVELINESS_LEASE_DURATION_BEST_AVAILABLE,
+  false
+};
+
 static const rmw_qos_profile_t rmw_qos_profile_unknown =
 {
   RMW_QOS_POLICY_HISTORY_UNKNOWN,

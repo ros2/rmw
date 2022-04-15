@@ -381,6 +381,9 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_reliability_policy_e
   /// Attempt to deliver samples, but some may be lost if the network is not robust
   RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT,
 
+  /// Will match the majority of endpoints and use a reliable policy if possible
+  RMW_QOS_POLICY_RELIABILITY_BEST_AVAILABLE,
+
   /// Reliability policy has not yet been set
   RMW_QOS_POLICY_RELIABILITY_UNKNOWN
 } rmw_qos_reliability_policy_t;
@@ -412,6 +415,9 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_durability_policy_e
 
   /// Samples are not persistent
   RMW_QOS_POLICY_DURABILITY_VOLATILE,
+
+  /// Will match the majority of endpoints and use a transient local policy if possible
+  RMW_QOS_POLICY_DURABILITY_BEST_AVAILABLE,
 
   /// Durability policy has not yet been set
   RMW_QOS_POLICY_DURABILITY_UNKNOWN
@@ -452,18 +458,27 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_e
   // Using `3` for backwards compatibility.
   RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC = 3,
 
+  /// Will match the majority of endpoints and use a manual by topic policy if possible
+  RMW_QOS_POLICY_LIVELINESS_BEST_AVAILABLE = 4,
+
   /// Liveliness policy has not yet been set
-  RMW_QOS_POLICY_LIVELINESS_UNKNOWN = 4
+  RMW_QOS_POLICY_LIVELINESS_UNKNOWN = 5
 } rmw_qos_liveliness_policy_t;
 
 /// QoS Deadline default.
 #define RMW_QOS_DEADLINE_DEFAULT RMW_DURATION_UNSPECIFIED
+/// Will match the majority of endpoints while maintaining as strict a policy as possible
+/// Value is RMW_DURATION_INFINITE - 1
+#define RMW_QOS_DEADLINE_BEST_AVAILABLE {9223372036LL, 854775806LL}
 
 /// QoS Lifespan default.
 #define RMW_QOS_LIFESPAN_DEFAULT RMW_DURATION_UNSPECIFIED
 
 /// QoS Liveliness lease duration default.
 #define RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT RMW_DURATION_UNSPECIFIED
+/// Will match the majority of endpoints while maintaining as strict a policy as possible
+/// Value is RMW_DURATION_INFINITE - 1
+#define RMW_QOS_LIVELINESS_LEASE_DURATION_BEST_AVAILABLE {9223372036LL, 854775806LL}
 
 /// ROS MiddleWare quality of service profile.
 typedef struct RMW_PUBLIC_TYPE rmw_qos_profile_s
