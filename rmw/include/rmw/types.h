@@ -382,6 +382,16 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_reliability_policy_e
   RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT,
 
   /// Will match the majority of endpoints and use a reliable policy if possible
+  /**
+   * A policy will be chosen at the time of creating a subscription or publisher.
+   * A reliable policy will by chosen if it matches with all discovered endpoints,
+   * otherwise a best effort policy will be chosen.
+   *
+   * The middleware is not expected to update the policy after creating a subscription or
+   * publisher, even if the chosen policy is incompatible with newly discovered endpoints.
+   * Therefore, this policy should be used with care since non-deterministic behavior
+   * can occur due to races with discovery.
+   */
   RMW_QOS_POLICY_RELIABILITY_BEST_AVAILABLE,
 
   /// Reliability policy has not yet been set
@@ -417,6 +427,16 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_durability_policy_e
   RMW_QOS_POLICY_DURABILITY_VOLATILE,
 
   /// Will match the majority of endpoints and use a transient local policy if possible
+  /**
+   * A policy will be chosen at the time of creating a subscription or publisher.
+   * A transient local policy will by chosen if it matches with all discovered endpoints,
+   * otherwise a volatile policy will be chosen.
+   *
+   * The middleware is not expected to update the policy after creating a subscription or
+   * publisher, even if the chosen policy is incompatible with newly discovered endpoints.
+   * Therefore, this policy should be used with care since non-deterministic behavior
+   * can occur due to races with discovery.
+   */
   RMW_QOS_POLICY_DURABILITY_BEST_AVAILABLE,
 
   /// Durability policy has not yet been set
@@ -459,6 +479,16 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_e
   RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC = 3,
 
   /// Will match the majority of endpoints and use a manual by topic policy if possible
+  /**
+   * A policy will be chosen at the time of creating a subscription or publisher.
+   * A manual by topic policy will by chosen if it matches with all discovered endpoints,
+   * otherwise an automatic policy will be chosen.
+   *
+   * The middleware is not expected to update the policy after creating a subscription or
+   * publisher, even if the chosen policy is incompatible with newly discovered endpoints.
+   * Therefore, this policy should be used with care since non-deterministic behavior
+   * can occur due to races with discovery.
+   */
   RMW_QOS_POLICY_LIVELINESS_BEST_AVAILABLE = 4,
 
   /// Liveliness policy has not yet been set
@@ -468,7 +498,20 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_e
 /// QoS Deadline default.
 #define RMW_QOS_DEADLINE_DEFAULT RMW_DURATION_UNSPECIFIED
 /// Will match the majority of endpoints while maintaining as strict a policy as possible
-/// Value is RMW_DURATION_INFINITE - 1
+/**
+ * Value is RMW_DURATION_INFINITE - 1.
+ *
+ * A policy will be chosen at the time of creating a subscription or publisher.
+ * For a subscription, the deadline will be the maximum value of all discovered publisher
+ * deadlines.
+ * For a publisher, the deadline will be the minimum value of all discovered subscription
+ * deadlines.
+ *
+ * The middleware is not expected to update the policy after creating a subscription or
+ * publisher, even if the chosen policy is incompatible with newly discovered endpoints.
+ * Therefore, this policy should be used with care since non-deterministic behavior
+ * can occur due to races with discovery.
+ */
 #define RMW_QOS_DEADLINE_BEST_AVAILABLE {9223372036LL, 854775806LL}
 
 /// QoS Lifespan default.
@@ -477,7 +520,20 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_e
 /// QoS Liveliness lease duration default.
 #define RMW_QOS_LIVELINESS_LEASE_DURATION_DEFAULT RMW_DURATION_UNSPECIFIED
 /// Will match the majority of endpoints while maintaining as strict a policy as possible
-/// Value is RMW_DURATION_INFINITE - 1
+/**
+ * Value is RMW_DURATION_INFINITE - 1.
+ *
+ * A policy will be chosen at the time of creating a subscription or publisher.
+ * For a subscription, the lease duration will be the maximum value of all discovered publisher
+ * lease durations.
+ * For a publisher, the lease duration will be the minimum value of all discovered subscription
+ * lease durations.
+ *
+ * The middleware is not expected to update the policy after creating a subscription or
+ * publisher, even if the chosen policy is incompatible with newly discovered endpoints.
+ * Therefore, this policy should be used with care since non-deterministic behavior
+ * can occur due to races with discovery.
+ */
 #define RMW_QOS_LIVELINESS_LEASE_DURATION_BEST_AVAILABLE {9223372036LL, 854775806LL}
 
 /// ROS MiddleWare quality of service profile.
