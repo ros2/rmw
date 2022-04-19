@@ -432,6 +432,9 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_durability_policy_e
    * A transient local policy will by chosen if it matches with all discovered endpoints,
    * otherwise a volatile policy will be chosen.
    *
+   * In the case that a volatile policy is chosen for a subscription, any messages sent before
+   * the subscription was created by transient local publishers will not be received.
+   *
    * The middleware is not expected to update the policy after creating a subscription or
    * publisher, even if the chosen policy is incompatible with newly discovered endpoints.
    * Therefore, this policy should be used with care since non-deterministic behavior
