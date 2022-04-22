@@ -387,8 +387,8 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_reliability_policy_e
    * A reliable policy will by chosen if it matches with all discovered endpoints,
    * otherwise a best effort policy will be chosen.
    *
-   * The actual QoS policy can be retrieved after the endpoint is created with
-   * `rmw_get_subscriptions_info_by_topic` or `rmw_get_publishers_info_by_topic`.
+   * The QoS policy reported by functions like `rmw_subscription_get_actual_qos` or
+   * `rmw_publisher_get_actual_qos` may be best available, reliable, or best effort.
    *
    * The middleware is not expected to update the policy after creating a subscription or
    * publisher, even if the chosen policy is incompatible with newly discovered endpoints.
@@ -438,8 +438,8 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_durability_policy_e
    * In the case that a volatile policy is chosen for a subscription, any messages sent before
    * the subscription was created by transient local publishers will not be received.
    *
-   * The actual QoS policy can be retrieved after the endpoint is created with
-   * `rmw_get_subscriptions_info_by_topic` or `rmw_get_publishers_info_by_topic`.
+   * The QoS policy reported by functions like `rmw_subscription_get_actual_qos` or
+   * `rmw_publisher_get_actual_qos` may be best available, transient local, or volatile.
    *
    * The middleware is not expected to update the policy after creating a subscription or
    * publisher, even if the chosen policy is incompatible with newly discovered endpoints.
@@ -487,24 +487,24 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_e
   // Using `3` for backwards compatibility.
   RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC = 3,
 
+  /// Liveliness policy has not yet been set
+  RMW_QOS_POLICY_LIVELINESS_UNKNOWN = 4
+
   /// Will match the majority of endpoints and use a manual by topic policy if possible
   /**
    * A policy will be chosen at the time of creating a subscription or publisher.
    * A manual by topic policy will by chosen if it matches with all discovered endpoints,
    * otherwise an automatic policy will be chosen.
    *
-   * The actual QoS policy can be retrieved after the endpoint is created with
-   * `rmw_get_subscriptions_info_by_topic` or `rmw_get_publishers_info_by_topic`.
+   * The QoS policy reported by functions like `rmw_subscription_get_actual_qos` or
+   * `rmw_publisher_get_actual_qos` may be best available, automatic, or manual by topic.
    *
    * The middleware is not expected to update the policy after creating a subscription or
    * publisher, even if the chosen policy is incompatible with newly discovered endpoints.
    * Therefore, this policy should be used with care since non-deterministic behavior
    * can occur due to races with discovery.
    */
-  RMW_QOS_POLICY_LIVELINESS_BEST_AVAILABLE = 4,
-
-  /// Liveliness policy has not yet been set
-  RMW_QOS_POLICY_LIVELINESS_UNKNOWN = 5
+  RMW_QOS_POLICY_LIVELINESS_BEST_AVAILABLE = 5,
 } rmw_qos_liveliness_policy_t;
 
 /// QoS Deadline default.
@@ -519,8 +519,8 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_e
  * For a publisher, the deadline will be the minimum value of all discovered subscription
  * deadlines.
  *
- * The actual QoS policy can be retrieved after the endpoint is created with
- * `rmw_get_subscriptions_info_by_topic` or `rmw_get_publishers_info_by_topic`.
+ * The QoS policy reported by functions like `rmw_subscription_get_actual_qos` or
+ * `rmw_publisher_get_actual_qos` may be best available or the actual deadline value.
  *
  * The middleware is not expected to update the policy after creating a subscription or
  * publisher, even if the chosen policy is incompatible with newly discovered endpoints.
@@ -544,8 +544,8 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_e
  * For a publisher, the lease duration will be the minimum value of all discovered subscription
  * lease durations.
  *
- * The actual QoS policy can be retrieved after the endpoint is created with
- * `rmw_get_subscriptions_info_by_topic` or `rmw_get_publishers_info_by_topic`.
+ * The QoS policy reported by functions like `rmw_subscription_get_actual_qos` or
+ * `rmw_publisher_get_actual_qos` may be best available or the actual lease duration value.
  *
  * The middleware is not expected to update the policy after creating a subscription or
  * publisher, even if the chosen policy is incompatible with newly discovered endpoints.
