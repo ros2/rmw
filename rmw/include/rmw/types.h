@@ -488,7 +488,7 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_e
   RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC = 3,
 
   /// Liveliness policy has not yet been set
-  RMW_QOS_POLICY_LIVELINESS_UNKNOWN = 4
+  RMW_QOS_POLICY_LIVELINESS_UNKNOWN = 4,
 
   /// Will match the majority of endpoints and use a manual by topic policy if possible
   /**
@@ -504,7 +504,7 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_e
    * Therefore, this policy should be used with care since non-deterministic behavior
    * can occur due to races with discovery.
    */
-  RMW_QOS_POLICY_LIVELINESS_BEST_AVAILABLE = 5,
+  RMW_QOS_POLICY_LIVELINESS_BEST_AVAILABLE = 5
 } rmw_qos_liveliness_policy_t;
 
 /// QoS Deadline default.
