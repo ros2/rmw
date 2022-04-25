@@ -381,6 +381,9 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_reliability_policy_e
   /// Attempt to deliver samples, but some may be lost if the network is not robust
   RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT,
 
+  /// Reliability policy has not yet been set
+  RMW_QOS_POLICY_RELIABILITY_UNKNOWN,
+
   /// Will match the majority of endpoints and use a reliable policy if possible
   /**
    * A policy will be chosen at the time of creating a subscription or publisher.
@@ -395,10 +398,7 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_reliability_policy_e
    * Therefore, this policy should be used with care since non-deterministic behavior
    * can occur due to races with discovery.
    */
-  RMW_QOS_POLICY_RELIABILITY_BEST_AVAILABLE,
-
-  /// Reliability policy has not yet been set
-  RMW_QOS_POLICY_RELIABILITY_UNKNOWN
+  RMW_QOS_POLICY_RELIABILITY_BEST_AVAILABLE
 } rmw_qos_reliability_policy_t;
 
 /// QoS history enumerations describing how samples endure
@@ -429,6 +429,9 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_durability_policy_e
   /// Samples are not persistent
   RMW_QOS_POLICY_DURABILITY_VOLATILE,
 
+  /// Durability policy has not yet been set
+  RMW_QOS_POLICY_DURABILITY_UNKNOWN,
+
   /// Will match the majority of endpoints and use a transient local policy if possible
   /**
    * A policy will be chosen at the time of creating a subscription or publisher.
@@ -446,10 +449,7 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_durability_policy_e
    * Therefore, this policy should be used with care since non-deterministic behavior
    * can occur due to races with discovery.
    */
-  RMW_QOS_POLICY_DURABILITY_BEST_AVAILABLE,
-
-  /// Durability policy has not yet been set
-  RMW_QOS_POLICY_DURABILITY_UNKNOWN
+  RMW_QOS_POLICY_DURABILITY_BEST_AVAILABLE
 } rmw_qos_durability_policy_t;
 
 #define RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_NODE_DEPRECATED_MSG \
