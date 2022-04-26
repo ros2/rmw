@@ -393,6 +393,9 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_reliability_policy_e
    * The QoS policy reported by functions like `rmw_subscription_get_actual_qos` or
    * `rmw_publisher_get_actual_qos` may be best available, reliable, or best effort.
    *
+   * Services and clients are not supported and default to the reliability value in
+   * `rmw_qos_profile_services_default`.
+   *
    * The middleware is not expected to update the policy after creating a subscription or
    * publisher, even if the chosen policy is incompatible with newly discovered endpoints.
    * Therefore, this policy should be used with care since non-deterministic behavior
@@ -443,6 +446,9 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_durability_policy_e
    *
    * The QoS policy reported by functions like `rmw_subscription_get_actual_qos` or
    * `rmw_publisher_get_actual_qos` may be best available, transient local, or volatile.
+   *
+   * Services and clients are not supported and default to the durability value in
+   * `rmw_qos_profile_services_default`.
    *
    * The middleware is not expected to update the policy after creating a subscription or
    * publisher, even if the chosen policy is incompatible with newly discovered endpoints.
@@ -499,6 +505,9 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_e
    * The QoS policy reported by functions like `rmw_subscription_get_actual_qos` or
    * `rmw_publisher_get_actual_qos` may be best available, automatic, or manual by topic.
    *
+   * Services and clients are not supported and default to the liveliness value in
+   * `rmw_qos_profile_services_default`.
+   *
    * The middleware is not expected to update the policy after creating a subscription or
    * publisher, even if the chosen policy is incompatible with newly discovered endpoints.
    * Therefore, this policy should be used with care since non-deterministic behavior
@@ -521,6 +530,9 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_e
  *
  * The QoS policy reported by functions like `rmw_subscription_get_actual_qos` or
  * `rmw_publisher_get_actual_qos` may be best available or the actual deadline value.
+ *
+ * Services and clients are not supported and default to the deadline value in
+ * `rmw_qos_profile_services_default`.
  *
  * The middleware is not expected to update the policy after creating a subscription or
  * publisher, even if the chosen policy is incompatible with newly discovered endpoints.
@@ -546,6 +558,9 @@ typedef enum RMW_PUBLIC_TYPE rmw_qos_liveliness_policy_e
  *
  * The QoS policy reported by functions like `rmw_subscription_get_actual_qos` or
  * `rmw_publisher_get_actual_qos` may be best available or the actual lease duration value.
+ *
+ * Services and clients are not supported and default to the lease duration value in
+ * `rmw_qos_profile_services_default`.
  *
  * The middleware is not expected to update the policy after creating a subscription or
  * publisher, even if the chosen policy is incompatible with newly discovered endpoints.
