@@ -2,6 +2,18 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+6.3.0 (2022-05-03)
+------------------
+* Add 'best available' QoS policies (`#320 <https://github.com/ros2/rmw/issues/320>`_)
+  The best available policy should select the highest level of service for the QoS setting while matching with the majority of endpoints.
+  For example, in the case of a DDS middleware subscription, this means:
+  * Prefer reliable reliability if all existing publishers on the same topic are reliable, otherwise use best effort.
+  * Prefer transient local durability if all existing publishers on the same topic are transient local, otherwise use volatile.
+  * Prefer manual by topic liveliness if all existing publishers on the same topic are manual by topic, otherwise use automatic.
+  * Use a deadline that is equal to the largest deadline of existing publishers on the same topic.
+  * Use a liveliness lease duration that is equal to the largest lease duration of existing publishers on the same topic.
+* Contributors: Jacob Perron
+
 6.2.0 (2022-04-29)
 ------------------
 
