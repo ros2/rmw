@@ -236,6 +236,9 @@ typedef struct RMW_PUBLIC_TYPE rmw_client_s
 
   /// The name of this service as exposed to the ros graph
   const char * service_name;
+
+  /// The writer guid associated with this client
+  int8_t writer_guid[16];
 } rmw_client_t;
 
 /// Handle for an rmw guard condition
