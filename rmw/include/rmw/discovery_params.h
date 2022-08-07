@@ -24,15 +24,17 @@ extern "C"
 #endif
 
 /// Used to enable or disable the use of multicast for node discovery
-typedef enum RMW_PUBLIC_TYPE rmw_multicast_discovery_e
+typedef enum RMW_PUBLIC_TYPE rmw_automatic_discovery_range_e
 {
   /// Uses ROS_LOCALHOST_ONLY environment variable.
-  RMW_MULTICAST_DISCOVERY_DEFAULT = 0,
-  /// Forces using only localhost.
-  RMW_MULTICAST_DISCOVERY_ENABLED = 1,
-  /// Forces disabling localhost only.
-  RMW_MULTICAST_DISCOVERY_DISABLED = 2,
-} rmw_multicast_discovery_t;
+  RMW_AUTOMATIC_DISCOVERY_RANGE_DEFAULT = 0,
+  /// Forces multicast discovery off
+  RMW_AUTOMATIC_DISCOVERY_RANGE_OFF = 1,
+  /// Allows multicast but only on the localhost
+  RMW_AUTOMATIC_DISCOVERY_RANGE_LOCALHOST = 2,
+  /// Allows multicast on the reachable network
+  RMW_AUTOMATIC_DISCOVERY_RANGE_SUBNET = 3,
+} rmw_automatic_discovery_range_t;
 
 /// Maximum number of peers that can be manually specified
 #define RMW_DISCOVERY_PARAMS_MAX_PEERS 32
@@ -43,18 +45,18 @@ typedef enum RMW_PUBLIC_TYPE rmw_multicast_discovery_e
 /// Used to specify the parameters that control how discovery is performed
 typedef struct RMW_PUBLIC_TYPE rmw_discovery_params_s
 {
-  /// Whether to use multicast discovery or not
-  rmw_multicast_discovery_t use_multicast;
+  /// How far to allow multicast to be used
+  rmw_automatic_discovery_range_t automatic_discovery_range;
 
-  /// The list of manually-specified peers to directly communicate with
+  /// The list of manually-specified peers to perform static discovery with
   /**
    * Each peer is specified as a hostname or an IP address (IPv4 and IPv6 are both acceptable), or
    * a subnet, e.g. 192.168.0.0/24.
    */
-  char peers[RMW_DISCOVERY_PARAMS_MAX_PEERS][RMW_DISCOVERY_PARAMS_PEER_MAX_LENGTH];
+  char static_peers[RMW_DISCOVERY_PARAMS_MAX_PEERS][RMW_DISCOVERY_PARAMS_PEER_MAX_LENGTH];
 
-  /// The number of manually-specified peer hosts
-  size_t peers_count;
+  /// The number of manually-specified peers
+  size_t static_peers_count;
 } rmw_discovery_params_t;
 
 /// Return a zero-initialized discovery parameters structure.

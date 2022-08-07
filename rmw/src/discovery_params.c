@@ -25,11 +25,11 @@ rmw_discovery_params_t
 rmw_get_zero_initialized_discovery_params(void)
 {
   rmw_discovery_params_t result = (rmw_discovery_params_t) {
-           .use_multicast = RMW_MULTICAST_DISCOVERY_DEFAULT,
-           .peers_count = 0,
+           .automatic_discovery_range = RMW_AUTOMATIC_DISCOVERY_RANGE_DEFAULT,
+           .static_peers_count = 0,
   };  // NOLINT(readability/braces): false positive
   for (size_t ii = 0; ii < RMW_DISCOVERY_PARAMS_MAX_PEERS; ++ii) {
-    result.peers[ii][0] = '\0';
+    result.static_peers[ii][0] = '\0';
   }
   return result;
 }
