@@ -2973,6 +2973,12 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_get_gid_for_publisher(const rmw_publisher_t * publisher, rmw_gid_t * gid);
 
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_get_gid_for_client(const rmw_client_t * client, rmw_gid_t * gid);
+
+
 /// Check if two unique identifiers (gids) are equal.
 /**
  * <hr>
