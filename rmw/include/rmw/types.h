@@ -37,9 +37,7 @@ extern "C"
 #include "rmw/time.h"
 #include "rmw/visibility_control.h"
 
-// 24 bytes is the most memory needed to represent the GID by any current
-// implementation. It may need to be increased in the future.
-#define RMW_GID_STORAGE_SIZE 24u
+#define RMW_GID_STORAGE_SIZE 16u
 
 /// Structure which encapsulates an rmw node
 typedef struct RMW_PUBLIC_TYPE rmw_node_s
