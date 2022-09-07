@@ -65,6 +65,12 @@ RMW_WARN_UNUSED
 rmw_discovery_params_t
 rmw_get_zero_initialized_discovery_params(void);
 
+/// Compare two discovery parameter instances for equality.
+RMW_PUBLIC
+RMW_WARN_UNUSED
+bool
+rmw_discovery_params_equal(rmw_discovery_params_t * left, rmw_discovery_params_t * right);
+
 #ifdef __cplusplus
 }
 #endif

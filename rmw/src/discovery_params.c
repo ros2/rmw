@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include <stddef.h>
+#include <string.h>
 
 #include "rmw/discovery_params.h"
 
@@ -32,6 +33,30 @@ rmw_get_zero_initialized_discovery_params(void)
     result.static_peers[ii][0] = '\0';
   }
   return result;
+}
+
+bool
+rmw_discovery_params_equal(rmw_discovery_params_t * left, rmw_discovery_params_t * right)
+{
+  if (left->automatic_discovery_range != right->automatic_discovery_range) {
+    return false;
+  }
+
+  if (left->static_peers_count != right->static_peers_count) {
+    return false;
+  }
+
+  for (size_t ii = 0; ii < left->static_peers_count; ++ii) {
+    if (strncmp(
+      left->static_peers[ii],
+      right->static_peers[ii],
+      RMW_DISCOVERY_PARAMS_PEER_MAX_LENGTH) != 0)
+    {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 #ifdef __cplusplus
