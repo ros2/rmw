@@ -2,6 +2,9 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 6.3.0 (2022-05-03)
 ------------------
 * Add 'best available' QoS policies (`#320 <https://github.com/ros2/rmw/issues/320>`_)
@@ -123,7 +126,7 @@ Changelog for package rmw
 1.1.0 (2020-06-18)
 ------------------
 * Add message lost subscription event (`#232 <https://github.com/ros2/rmw/issues/232>`_)
-* Move statuses definitions to rmw/events_statuses/*.h (`#232 <https://github.com/ros2/rmw/issues/232>`_)
+* Move statuses definitions to rmw/events_statuses/ (`#232 <https://github.com/ros2/rmw/issues/232>`_)
 * Increase rmw testing coverage above 95% (`#238 <https://github.com/ros2/rmw/issues/238>`_)
 * Handle zero-length names_and_types properly (`#239 <https://github.com/ros2/rmw/issues/239>`_)
 * Add missing RMW_PUBLIC to security_options_set_root_path (`#236 <https://github.com/ros2/rmw/issues/236>`_)
