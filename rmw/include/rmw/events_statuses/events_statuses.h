@@ -22,5 +22,6 @@
 #include "rmw/events_statuses/message_lost.h"
 #include "rmw/events_statuses/offered_deadline_missed.h"
 #include "rmw/events_statuses/requested_deadline_missed.h"
+#include "rmw/events_statuses/matched.h"
 
 #endif  // RMW__EVENTS_STATUSES__EVENTS_STATUSES_H_
