@@ -3082,7 +3082,8 @@ rmw_set_log_severity(rmw_log_severity_t severity);
  * at any time.
  *
  * \param[in] subscription The subscription on which to set the callback
- * \param[in] callback The callback to be called when new messages arrive, can be NULL
+ * \param[in] callback The callback to be called when new messages arrive,
+ *   can be NULL to clear the registered callback
  * \param[in] user_data Given to the callback when called later, may be NULL
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `subscription` is NULL, or
@@ -3116,7 +3117,8 @@ rmw_subscription_set_on_new_message_callback(
  * at any time.
  *
  * \param[in] service The service on which to set the callback
- * \param[in] callback The callback to be called when new requests arrive, can be NULL
+ * \param[in] callback The callback to be called when new requests arrive,
+ *   can be NULL to clear the registered callback
  * \param[in] user_data Given to the callback when called later, may be NULL
  * \return `RMW_RET_OK` if callback was set to the listener, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `service` is NULL, or
@@ -3150,7 +3152,8 @@ rmw_service_set_on_new_request_callback(
  * at any time.
  *
  * \param[in] client The client on which to set the callback
- * \param[in] callback The callback to be called when new responses arrive, can be NULL
+ * \param[in] callback The callback to be called when new responses arrive,
+ *   can be NULL to clear the registered callback
  * \param[in] user_data Given to the callback when called later, may be NULL
  * \return `RMW_RET_OK` if callback was set to the listener, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `client` is NULL, or
@@ -3188,7 +3191,8 @@ rmw_client_set_on_new_response_callback(
  * at any time.
  *
  * \param[in] event The event on which to set the callback
- * \param[in] callback The callback to be called when new events occur, can be NULL
+ * \param[in] callback The callback to be called when new events occur,
+ *   can be NULL to clear the registered callback
  * \param[in] user_data Given to the callback when called later, may be NULL
  * \return `RMW_RET_OK` if callback was set to the listener, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `event` is NULL, or
