@@ -2988,7 +2988,7 @@ rmw_count_clients(
   const char * service_name,
   size_t * count);
 
-  /// Count the number of known servers matching a service name.
+/// Count the number of known servers matching a service name.
 /**
  * This function returns the numbers of servers of a given service in the ROS graph,
  * as discovered so far by the given node.
