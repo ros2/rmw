@@ -29,8 +29,9 @@ rmw_get_zero_initialized_init_options(void)
            .domain_id = RMW_DEFAULT_DOMAIN_ID,
            .localhost_only = RMW_LOCALHOST_ONLY_DEFAULT,
            .discovery_params = {
-            .automatic_discovery_range = RMW_AUTOMATIC_DISCOVERY_RANGE_DEFAULT,
-            .static_peers_count = 0},
+             .automatic_discovery_range = RMW_AUTOMATIC_DISCOVERY_RANGE_DEFAULT,
+             .static_peers_count = 0
+           },
            .implementation_identifier = NULL,
            .impl = NULL,
            .instance_id = 0,

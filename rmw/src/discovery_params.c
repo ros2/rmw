@@ -17,17 +17,12 @@
 
 #include "rmw/discovery_params.h"
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
 rmw_discovery_params_t
 rmw_get_zero_initialized_discovery_params(void)
 {
   rmw_discovery_params_t result = (rmw_discovery_params_t) {
-           .automatic_discovery_range = RMW_AUTOMATIC_DISCOVERY_RANGE_DEFAULT,
-           .static_peers_count = 0,
+    .automatic_discovery_range = RMW_AUTOMATIC_DISCOVERY_RANGE_DEFAULT,
+    .static_peers_count = 0,
   };  // NOLINT(readability/braces): false positive
   for (size_t ii = 0; ii < RMW_DISCOVERY_PARAMS_MAX_PEERS; ++ii) {
     result.static_peers[ii][0] = '\0';
@@ -48,9 +43,9 @@ rmw_discovery_params_equal(rmw_discovery_params_t * left, rmw_discovery_params_t
 
   for (size_t ii = 0; ii < left->static_peers_count; ++ii) {
     if (strncmp(
-      left->static_peers[ii],
-      right->static_peers[ii],
-      RMW_DISCOVERY_PARAMS_PEER_MAX_LENGTH) != 0)
+        left->static_peers[ii],
+        right->static_peers[ii],
+        RMW_DISCOVERY_PARAMS_PEER_MAX_LENGTH) != 0)
     {
       return false;
     }
@@ -58,7 +53,3 @@ rmw_discovery_params_equal(rmw_discovery_params_t * left, rmw_discovery_params_t
 
   return true;
 }
-
-#ifdef __cplusplus
-}
-#endif
