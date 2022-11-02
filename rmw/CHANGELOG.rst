@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+6.4.0 (2022-11-02)
+------------------
 * Remove unused test_loaned_message_sequence.cpp (`#336 <https://github.com/ros2/rmw/issues/336>`_)
 * callback can be NULL to clear in Listener APIs. (`#332 <https://github.com/ros2/rmw/issues/332>`_)
 * Add rmw_get_gid_for_client method (`#327 <https://github.com/ros2/rmw/issues/327>`_)
