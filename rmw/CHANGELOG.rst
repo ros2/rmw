@@ -2,6 +2,11 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+6.1.1 (2022-11-07)
+------------------
+* callback can be NULL to clear in Listener APIs. (`#332 <https://github.com/ros2/rmw/issues/332>`_) (`#333 <https://github.com/ros2/rmw/issues/333>`_)
+* Contributors: mergify[bot]
+
 6.1.0 (2022-03-25)
 ------------------
 * Add content filtered topics support. (`#302 <https://github.com/ros2/rmw/issues/302>`_)
