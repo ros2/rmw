@@ -27,20 +27,6 @@ extern "C"
 typedef struct RMW_PUBLIC_TYPE rmw_matched_status_s
 {
   /**
-   * For publisher, total cumulative count the concerned publisher discovered a 'match' with
-   * a subscriber.
-   *
-   * For subscriber, total cumulative count the concerned subscriber discovered a 'match' with
-   * a publisher.
-   */
-  size_t total_count;
-
-  /**
-   * The change in total_count since the last time the status was read.
-   */
-  size_t total_count_change;
-
-  /**
    * For publisher, the number of subscribers currently matched to the concerned publisher.
    *
    * For subscriber, the number of publishers currently matched to the concerned subscriber.
