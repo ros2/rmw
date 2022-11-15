@@ -6,9 +6,13 @@
   <description>
     CMake functions which can discover and enumerate available implementations.
   </description>
+
+  <maintainer email="brandon@openrobotics.org">Brandon Ong</maintainer>
   <maintainer email="ivanpauno@ekumenlabs.com">Ivan Paunovic</maintainer>
   <maintainer email="william@openrobotics.org">William Woodall</maintainer>
+
   <license>Apache License 2.0</license>
+
   <author email="dthomas@openrobotics.org">Dirk Thomas</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
