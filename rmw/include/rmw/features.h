@@ -46,6 +46,11 @@ typedef enum RMW_PUBLIC_TYPE rmw_feature_e
   /// `rmw_message_info_t.reception_sequence_number` is filled correctly
   /// by the rmw implementation.
   RMW_FEATURE_MESSAGE_INFO_RECEPTION_SEQUENCE_NUMBER = 1,
+  /// deferred description runtime type rosidl_message_type_support_t structs are allowed, and the
+  /// middleware MUST populate them on type discovery
+  RMW_MIDDLEWARE_SUPPORTS_TYPE_DISCOVERY = 2,
+  /// runtime type subscriptions will use take_dynamic_data_message_with_info()
+  RMW_MIDDLEWARE_CAN_TAKE_DYNAMIC_DATA = 3,
 } rmw_feature_t;
 
 /// Query if a feature is supported by the rmw implementation.

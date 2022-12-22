@@ -106,6 +106,7 @@ extern "C"
 #include "rmw/message_sequence.h"
 #include "rmw/publisher_options.h"
 #include "rmw/qos_profiles.h"
+#include "rmw/runtime_type.h"  // TODO(methylDragon): NEW!!
 #include "rmw/subscription_options.h"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"

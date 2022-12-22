@@ -18,6 +18,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 find_package(ament_cmake_ros REQUIRED)
+find_package(serialization_support_lib REQUIRED)
 
 find_package(rcutils REQUIRED)
 find_package(rosidl_runtime_c REQUIRED)
@@ -37,6 +38,7 @@ set(rmw_sources
   "src/network_flow_endpoint.c"
   "src/publisher_options.c"
   "src/qos_string_conversions.c"
+  "src/runtime_type.c"
   "src/sanity_checks.c"
   "src/security_options.c"
   "src/subscription_content_filter_options.c"
@@ -54,6 +56,9 @@ add_library(${PROJECT_NAME} ${rmw_sources})
 target_include_directories(${PROJECT_NAME} PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
+target_link_libraries(${PROJECT_NAME}
+  serialization_support_lib::serialization_support_lib
+)
 
 if(BUILD_TESTING AND NOT RCUTILS_DISABLE_FAULT_INJECTION)
   target_compile_definitions(${PROJECT_NAME} PUBLIC RCUTILS_ENABLE_FAULT_INJECTION)
@@ -76,6 +81,7 @@ ament_export_libraries(${PROJECT_NAME})
 
 # Export modern CMake targets
 ament_export_targets(${PROJECT_NAME})
+ament_export_dependencies(serialization_support_lib)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
