@@ -3020,7 +3020,7 @@ rmw_count_clients(
  *
  * \param[in] node Handle to node to use to query the ROS graph.
  * \param[in] service_name Fully qualified ROS topic name.
- * \param[out] count Number of publishers matching the given topic name.
+ * \param[out] count Number of services matching the given topic name.
  * \return `RMW_RET_OK` if the query was successful, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `node` is NULL, or
  * \return `RMW_RET_INVALID_ARGUMENT` if `service_name` is NULL, or
