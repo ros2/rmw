@@ -2787,8 +2787,19 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_set_log_severity(rmw_log_severity_t severity);
 
+/// Notify fast-dds to re-scan networks
+/**
+ * \param[in] context The ROS context to call notify networks on.
+ * \return RMW_RET_OK if successful, otherwise an appropriate error code
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_notify_participant_dynamic_network_interface(rmw_context_t * context);
+
 #ifdef __cplusplus
 }
 #endif
 
 #endif  // RMW__RMW_H_
+
