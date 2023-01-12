@@ -90,7 +90,7 @@ static const rmw_qos_profile_t rmw_qos_profile_parameter_events =
 static const rmw_qos_profile_t rmw_qos_profile_system_default =
 {
   RMW_QOS_POLICY_HISTORY_SYSTEM_DEFAULT,
-  RMW_QOS_POLICY_DEPTH_SYSTEM_DEFAULT,
+  1,
   RMW_QOS_POLICY_RELIABILITY_SYSTEM_DEFAULT,
   RMW_QOS_POLICY_DURABILITY_SYSTEM_DEFAULT,
   RMW_QOS_DEADLINE_DEFAULT,
