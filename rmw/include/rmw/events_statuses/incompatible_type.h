@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__EVENTS_STATUSES__INCONSISTENT_TOPIC_H_
-#define RMW__EVENTS_STATUSES__INCONSISTENT_TOPIC_H_
+#ifndef RMW__EVENTS_STATUSES__INCOMPATIBLE_TYPE_H_
+#define RMW__EVENTS_STATUSES__INCOMPATIBLE_TYPE_H_
 
 #include <stdint.h>
 
@@ -24,17 +24,17 @@ extern "C"
 {
 #endif
 
-/// Inconsistent topic information provided by a topic.
-typedef struct RMW_PUBLIC_TYPE rmw_inconsistent_topic_status_s
+/// Incompatible type information provided by a topic.
+typedef struct RMW_PUBLIC_TYPE rmw_incompatible_type_status_s
 {
-  /// Lifetime cumulative number of inconsistent topics detected.
+  /// Lifetime cumulative number of incompatible types detected.
   int32_t total_count;
-  /// The incremental number of inconsistent topics detected since the status was read.
+  /// The incremental number of incompatible types detected since the status was read.
   int32_t total_count_change;
-} rmw_inconsistent_topic_status_t;
+} rmw_incompatible_type_status_t;
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  // RMW__EVENTS_STATUSES__INCONSISTENT_TOPIC_H_
+#endif  // RMW__EVENTS_STATUSES__INCOMPATIBLE_TYPE_H_
