@@ -2,6 +2,16 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add rmw count clients, services (`#334 <https://github.com/ros2/rmw/issues/334>`_)
+* make writer_guid uint8_t[] instead of int8_t for consistency with rmw_gid_t (`#329 <https://github.com/ros2/rmw/issues/329>`_)
+* Update rmw to C++17. (`#346 <https://github.com/ros2/rmw/issues/346>`_)
+* Reduce GID storage to 16 bytes. (`#345 <https://github.com/ros2/rmw/issues/345>`_)
+* Move the RMW_CHECK_TYPE_IDENTIFIERS_MATCH macro to a C header. (`#343 <https://github.com/ros2/rmw/issues/343>`_)
+* [rolling] Update maintainers - 2022-11-07 (`#337 <https://github.com/ros2/rmw/issues/337>`_)
+* Contributors: Audrow Nash, Brian, Chris Lalancette, Minju, Lee
+
 6.4.0 (2022-11-02)
 ------------------
 * Remove unused test_loaned_message_sequence.cpp (`#336 <https://github.com/ros2/rmw/issues/336>`_)
