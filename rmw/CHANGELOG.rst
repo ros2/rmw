@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+7.0.0 (2023-02-13)
+------------------
 * Add rmw count clients, services (`#334 <https://github.com/ros2/rmw/issues/334>`_)
 * make writer_guid uint8_t[] instead of int8_t for consistency with rmw_gid_t (`#329 <https://github.com/ros2/rmw/issues/329>`_)
 * Update rmw to C++17. (`#346 <https://github.com/ros2/rmw/issues/346>`_)

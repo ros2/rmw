@@ -2,8 +2,8 @@
 Changelog for package rmw_implementation_cmake
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+7.0.0 (2023-02-13)
+------------------
 * [rolling] Update maintainers - 2022-11-07 (`#337 <https://github.com/ros2/rmw/issues/337>`_)
 * Contributors: Audrow Nash
 
