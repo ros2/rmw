@@ -34,7 +34,7 @@ TEST(test_validate_topic_name, invalid_parameters) {
 
   // Invalid validation result
   ASSERT_STREQ(
-    "unknown result code for rwm topic name validation",
+    "unknown result code for rmw topic name validation",
     rmw_full_topic_name_validation_result_string(-1));
   rmw_reset_error();
 }
