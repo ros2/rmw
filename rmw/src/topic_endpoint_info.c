@@ -150,6 +150,18 @@ rmw_topic_endpoint_info_set_topic_type(
 }
 
 rmw_ret_t
+rmw_topic_endpoint_info_set_topic_type_hash(
+  rmw_topic_endpoint_info_t * topic_endpoint_info,
+  const uint8_t topic_type_hash[RCUTILS_SHA256_BLOCK_SIZE])
+{
+  RCUTILS_CAN_RETURN_WITH_ERROR_OF(RMW_RET_INVALID_ARGUMENT);
+  RCUTILS_CHECK_ARGUMENT_FOR_NULL(topic_endpoint_info, RMW_RET_INVALID_ARGUMENT);
+  RCUTILS_CHECK_ARGUMENT_FOR_NULL(topic_type_hash, RMW_RET_INVALID_ARGUMENT);
+  memcpy(topic_endpoint_info->topic_type_hash, topic_type_hash, RCUTILS_SHA256_BLOCK_SIZE);
+  return RMW_RET_OK;
+}
+
+rmw_ret_t
 rmw_topic_endpoint_info_set_node_name(
   rmw_topic_endpoint_info_t * topic_endpoint_info,
   const char * node_name,

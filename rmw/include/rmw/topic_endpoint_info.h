@@ -21,6 +21,7 @@ extern "C"
 #endif
 
 #include "rcutils/allocator.h"
+#include "rcutils/sha256.h"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
 
@@ -35,6 +36,8 @@ typedef struct RMW_PUBLIC_TYPE rmw_topic_endpoint_info_s
   const char * node_namespace;
   /// The associated topic type
   const char * topic_type;
+  /// Hashed value for topic type's description
+  uint8_t topic_type_hash[RCUTILS_SHA256_BLOCK_SIZE];
   /// The endpoint type
   rmw_endpoint_type_t endpoint_type;
   /// The GID of the endpoint
@@ -134,6 +137,44 @@ rmw_topic_endpoint_info_set_topic_type(
   rmw_topic_endpoint_info_t * topic_endpoint_info,
   const char * topic_type,
   rcutils_allocator_t * allocator);
+
+/// Set the topic type hash in the given topic endpoint info data structure.
+/**
+ * This functions copies value `topic_type_hash` into data structure `topic_type_hash` member.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | No
+ * Uses Atomics       | No
+ * Lock-Free          | Yes
+ *
+ * \par Thread-safety
+ *   Setting a member is a reentrant procedure, but:
+ *   - Access to the topic endpoint info data structure is not synchronized.
+ *     It is not safe to read or write the `topic_type_hash` member of the given `topic_endpoint`
+ *     while setting it.
+ *   - Access to C-style string arguments is read-only but it is not synchronized.
+ *     Concurrent `topic_type_hash` reads are safe, but concurrent reads and writes are not.
+ *
+ * \pre Given `topic_type_hash` is a valid uint8_t array of the correct size
+ *
+ * \param[inout] topic_endpoint_info Data structure to be populated.
+ * \param[in] topic_type_hash Topic type hash to be copied.
+ * \returns `RMW_RET_OK` if successful, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `topic_endpoint_info` is NULL, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `topic_type_hash` is NULL, or
+ * \returns `RMW_RET_ERROR` when an unspecified error occurs.
+ * \remark This function sets the RMW error state on failure.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_topic_endpoint_info_set_topic_type_hash(
+  rmw_topic_endpoint_info_t * topic_endpoint_info,
+  const uint8_t topic_type_hash[RCUTILS_SHA256_BLOCK_SIZE]);
+
 
 /// Set the node name in the given topic endpoint info data structure.
 /**
