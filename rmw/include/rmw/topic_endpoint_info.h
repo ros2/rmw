@@ -22,6 +22,7 @@ extern "C"
 
 #include "rcutils/allocator.h"
 #include "rcutils/sha256.h"
+#include "rosidl_runtime_c/type_hash.h"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
 
@@ -34,10 +35,10 @@ typedef struct RMW_PUBLIC_TYPE rmw_topic_endpoint_info_s
   const char * node_name;
   /// Namespace of the node
   const char * node_namespace;
-  /// The associated topic type
+  /// The associated topic type's name
   const char * topic_type;
   /// Hashed value for topic type's description
-  uint8_t topic_type_hash[RCUTILS_SHA256_BLOCK_SIZE];
+  rosidl_type_hash_t topic_type_hash;
   /// The endpoint type
   rmw_endpoint_type_t endpoint_type;
   /// The GID of the endpoint
@@ -173,8 +174,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_topic_endpoint_info_set_topic_type_hash(
   rmw_topic_endpoint_info_t * topic_endpoint_info,
-  const uint8_t topic_type_hash[RCUTILS_SHA256_BLOCK_SIZE]);
-
+  const rosidl_type_hash_t * type_hash);
 
 /// Set the node name in the given topic endpoint info data structure.
 /**
