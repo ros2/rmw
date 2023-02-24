@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+7.0.1 (2023-02-24)
+------------------
 * Fix rmw->rwm typo (`#347 <https://github.com/ros2/rmw/issues/347>`_)
 * Contributors: Emerson Knapp
 
