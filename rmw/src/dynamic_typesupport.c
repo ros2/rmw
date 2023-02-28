@@ -94,7 +94,7 @@ rmw_get_dynamic_message_typesupport_handle(
   }
 
   ts_impl->dynamic_data =
-    rmw_init_dynamic_data_from_dynamic_type(ts_impl->serialization_support, ts_impl->dynamic_type);
+    rmw_init_dynamic_data_from_dynamic_type(ts_impl->dynamic_type);
   if (!ts_impl->dynamic_data) {
     RCUTILS_LOG_ERROR_NAMED(rmw_dynamic_typesupport_c__identifier,
                             "Could not construct dynamic data for rmw_dynamic_typesupport_impl_t struct");
@@ -128,11 +128,11 @@ rmw_dynamic_message_typesupport_handle_fini(rosidl_message_type_support_t * ts)
     }
 
     if (ts_impl->dynamic_type) {
-      rosidl_dynamic_typesupport_dynamic_type_fini(ts_impl->serialization_support, ts_impl->dynamic_type);
+      rosidl_dynamic_typesupport_dynamic_type_fini(ts_impl->dynamic_type);
     }
 
     if (ts_impl->dynamic_data) {
-      rosidl_dynamic_typesupport_dynamic_data_fini(ts_impl->serialization_support, ts_impl->dynamic_data);
+      rosidl_dynamic_typesupport_dynamic_data_fini(ts_impl->dynamic_data);
     }
   }
   free(ts);
@@ -149,16 +149,16 @@ rmw_init_dynamic_type_from_description(rosidl_dynamic_typesupport_serialization_
 
 
 rosidl_dynamic_typesupport_dynamic_data_t *
-rmw_init_dynamic_data_from_dynamic_type(rosidl_dynamic_typesupport_serialization_support_t * serialization_support, rosidl_dynamic_typesupport_dynamic_type_t * type)
+rmw_init_dynamic_data_from_dynamic_type(rosidl_dynamic_typesupport_dynamic_type_t * type)
 {
-  return rosidl_dynamic_typesupport_dynamic_data_init_from_dynamic_type(serialization_support, type);
+  return rosidl_dynamic_typesupport_dynamic_data_init_from_dynamic_type(type);
 }
 
 
 rosidl_dynamic_typesupport_dynamic_data_t *
-rmw_clone_dynamic_data(rosidl_dynamic_typesupport_serialization_support_t * serialization_support, const rosidl_dynamic_typesupport_dynamic_data_t * data)
+rmw_clone_dynamic_data(const rosidl_dynamic_typesupport_dynamic_data_t * data)
 {
-  return rosidl_dynamic_typesupport_dynamic_data_clone(serialization_support, data);
+  return rosidl_dynamic_typesupport_dynamic_data_clone(data);
 }
 
 

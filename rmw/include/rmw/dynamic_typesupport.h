@@ -92,17 +92,19 @@ rmw_dynamic_message_typesupport_handle_fini(rosidl_message_type_support_t * type
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rosidl_dynamic_typesupport_dynamic_type_t *
-rmw_init_dynamic_type_from_description(rosidl_dynamic_typesupport_serialization_support_t * serialization_support, type_description_t * desc);
+rmw_init_dynamic_type_from_description(
+  rosidl_dynamic_typesupport_serialization_support_t * serialization_support,
+  type_description_t * desc);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rosidl_dynamic_typesupport_dynamic_data_t *
-rmw_init_dynamic_data_from_dynamic_type(rosidl_dynamic_typesupport_serialization_support_t * serialization_support, rosidl_dynamic_typesupport_dynamic_type_t * type);
+rmw_init_dynamic_data_from_dynamic_type(rosidl_dynamic_typesupport_dynamic_type_t * type);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rosidl_dynamic_typesupport_dynamic_data_t *
-rmw_clone_dynamic_data(rosidl_dynamic_typesupport_serialization_support_t * serialization_support, const rosidl_dynamic_typesupport_dynamic_data_t * data);
+rmw_clone_dynamic_data(const rosidl_dynamic_typesupport_dynamic_data_t * data);
 
 
 // INTERFACES FOR RMW IMPLEMENTATIONS TO FULFILL ===================================================
@@ -133,7 +135,8 @@ rmw_ret_t
 // TODO(methylDragon): Convert to rmw_serialized_message_to_dynamic_message
 //                     Or maybe just an additional interface?
 rmw_serialized_to_dynamic_data(
-  rmw_serialized_message_t * serialized_message, rosidl_dynamic_typesupport_dynamic_data_t * dyn_data);
+  rmw_serialized_message_t * serialized_message,
+  rosidl_dynamic_typesupport_dynamic_data_t * dyn_data);
 
 // TODO(methylDragon): Nice to have only
 // RMW_PUBLIC
