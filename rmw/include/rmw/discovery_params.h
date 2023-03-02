@@ -15,7 +15,10 @@
 #ifndef RMW__DISCOVERY_PARAMS_H_
 #define RMW__DISCOVERY_PARAMS_H_
 
+#include "rcutils/allocator.h"
+
 #include "rmw/macros.h"
+#include "rmw/ret_types.h"
 #include "rmw/visibility_control.h"
 
 #ifdef __cplusplus
@@ -36,11 +39,13 @@ typedef enum RMW_PUBLIC_TYPE rmw_automatic_discovery_range_e
   RMW_AUTOMATIC_DISCOVERY_RANGE_SUBNET = 3,
 } rmw_automatic_discovery_range_t;
 
-/// Maximum number of peers that can be manually specified
-#define RMW_DISCOVERY_PARAMS_MAX_PEERS 32
-
 /// Maximum length of a peer hostname or IP address
 #define RMW_DISCOVERY_PARAMS_PEER_MAX_LENGTH 256
+
+/// Struct to typedef some of the peer addresses
+typedef struct peer_address_s {
+  char peer_address[RMW_DISCOVERY_PARAMS_PEER_MAX_LENGTH];
+} peer_address_t;
 
 /// Used to specify the parameters that control how discovery is performed
 typedef struct RMW_PUBLIC_TYPE rmw_discovery_params_s
@@ -53,7 +58,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_discovery_params_s
    * Each peer is specified as a hostname or an IP address (IPv4 and IPv6 are both acceptable), or
    * a subnet, e.g. 192.168.0.0/24.
    */
-  char static_peers[RMW_DISCOVERY_PARAMS_MAX_PEERS][RMW_DISCOVERY_PARAMS_PEER_MAX_LENGTH];
+  peer_address_t* static_peers;
 
   /// The number of manually-specified peers
   size_t static_peers_count;
@@ -71,6 +76,21 @@ RMW_WARN_UNUSED
 bool
 rmw_discovery_params_equal(rmw_discovery_params_t * left, rmw_discovery_params_t * right);
 
+/// Copy a discovery parameter
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_discovery_params_copy(
+  const rmw_discovery_params_t * src,
+  const rcutils_allocator_t * allocator,
+  rmw_discovery_params_t * dst);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_discovery_params_fini(
+  rmw_discovery_params_t * discovery_params,
+  const rcutils_allocator_t * allocator);
 #ifdef __cplusplus
 }
 #endif
