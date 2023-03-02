@@ -16,6 +16,7 @@
 #include <string.h>
 
 #include "rmw/discovery_params.h"
+#include "rmw/error_handling.h"
 
 rmw_discovery_params_t
 rmw_get_zero_initialized_discovery_params(void)
@@ -24,9 +25,6 @@ rmw_get_zero_initialized_discovery_params(void)
     .automatic_discovery_range = RMW_AUTOMATIC_DISCOVERY_RANGE_DEFAULT,
     .static_peers_count = 0,
   };  // NOLINT(readability/braces): false positive
-  for (size_t ii = 0; ii < RMW_DISCOVERY_PARAMS_MAX_PEERS; ++ii) {
-    result.static_peers[ii][0] = '\0';
-  }
   return result;
 }
 
@@ -43,8 +41,8 @@ rmw_discovery_params_equal(rmw_discovery_params_t * left, rmw_discovery_params_t
 
   for (size_t ii = 0; ii < left->static_peers_count; ++ii) {
     if (strncmp(
-        left->static_peers[ii],
-        right->static_peers[ii],
+        left->static_peers[ii].peer_address,
+        right->static_peers[ii].peer_address,
         RMW_DISCOVERY_PARAMS_PEER_MAX_LENGTH) != 0)
     {
       return false;
@@ -52,4 +50,49 @@ rmw_discovery_params_equal(rmw_discovery_params_t * left, rmw_discovery_params_t
   }
 
   return true;
+}
+
+rmw_ret_t
+rmw_discovery_params_copy(
+  const rmw_discovery_params_t * src,
+  const rcutils_allocator_t * allocator,
+  rmw_discovery_params_t * dst)
+{
+  RMW_CHECK_ARGUMENT_FOR_NULL(src, RMW_RET_INVALID_ARGUMENT);
+  RCUTILS_CHECK_ALLOCATOR(allocator, return RMW_RET_INVALID_ARGUMENT);
+  RMW_CHECK_ARGUMENT_FOR_NULL(dst, RMW_RET_INVALID_ARGUMENT);
+
+  dst->automatic_discovery_range = src->automatic_discovery_range;
+  dst->static_peers =
+      allocator->zero_allocate(
+        src->static_peers_count, 
+        sizeof(peer_address_t),
+        allocator->state);
+  for (size_t i = 0; i < src->static_peers_count; i++)
+  {
+    strncpy(
+      dst->static_peers[i].peer_address,
+      src->static_peers[i].peer_address,
+      RMW_DISCOVERY_PARAMS_PEER_MAX_LENGTH);
+    dst->static_peers[i].peer_address[
+        RMW_DISCOVERY_PARAMS_PEER_MAX_LENGTH - 1] = '\0';
+  }
+  dst->static_peers_count = src->static_peers_count;
+
+  return RMW_RET_OK;
+}
+
+rmw_ret_t
+rmw_discovery_params_fini(
+  rmw_discovery_params_t * discovery_params,
+  const rcutils_allocator_t * allocator)
+{
+  RMW_CHECK_ARGUMENT_FOR_NULL(discovery_params, RMW_RET_INVALID_ARGUMENT);
+  RCUTILS_CHECK_ALLOCATOR(allocator, return RMW_RET_INVALID_ARGUMENT);
+
+  if (discovery_params->static_peers_count > 0)
+    allocator->deallocate(discovery_params->static_peers, allocator->state);
+  *discovery_params = rmw_get_zero_initialized_discovery_params();
+
+  return RMW_RET_OK;
 }
