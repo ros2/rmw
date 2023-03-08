@@ -71,12 +71,18 @@ rmw_discovery_params_t
 rmw_get_zero_initialized_discovery_params(void);
 
 /// Compare two discovery parameter instances for equality.
+///
+/// RMW_RET_OK will be returned when the input arguments are valid.
+/// RMW_RET_INVALID_ARGUMENT will be returned when any input is a nullptr,
+/// or if something in either struct was malformed, such as static_peers being
+/// a nullptr while static_peers_count is non-zero.
 RMW_PUBLIC
 RMW_WARN_UNUSED
-bool
+rmw_ret_t
 rmw_discovery_params_equal(
   const rmw_discovery_params_t * const left,
-  const rmw_discovery_params_t * const right);
+  const rmw_discovery_params_t * const right,
+  bool * result);
 
 /// Copy a discovery parameter
 RMW_PUBLIC
