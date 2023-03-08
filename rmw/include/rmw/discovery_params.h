@@ -74,7 +74,9 @@ rmw_get_zero_initialized_discovery_params(void);
 RMW_PUBLIC
 RMW_WARN_UNUSED
 bool
-rmw_discovery_params_equal(rmw_discovery_params_t * left, rmw_discovery_params_t * right);
+rmw_discovery_params_equal(
+  const rmw_discovery_params_t * const left,
+  const rmw_discovery_params_t * const right);
 
 /// Copy a discovery parameter
 RMW_PUBLIC

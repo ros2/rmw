@@ -29,8 +29,16 @@ rmw_get_zero_initialized_discovery_params(void)
 }
 
 bool
-rmw_discovery_params_equal(rmw_discovery_params_t * left, rmw_discovery_params_t * right)
+rmw_discovery_params_equal(
+  const rmw_discovery_params_t * const left,
+  const rmw_discovery_params_t * const right)
 {
+  if (!left || !right) {
+    /* One of them is null, so they are equal if and only if both are null,
+       in which case we can do a simple equality comparison. */
+    return left == right;
+  }
+
   if (left->automatic_discovery_range != right->automatic_discovery_range) {
     return false;
   }
