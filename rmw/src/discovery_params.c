@@ -28,23 +28,34 @@ rmw_get_zero_initialized_discovery_params(void)
   return result;
 }
 
-bool
+rmw_ret_t
 rmw_discovery_params_equal(
   const rmw_discovery_params_t * const left,
-  const rmw_discovery_params_t * const right)
+  const rmw_discovery_params_t * const right,
+  bool * result)
 {
-  if (!left || !right) {
-    /* One of them is null, so they are equal if and only if both are null,
-       in which case we can do a simple equality comparison. */
-    return left == right;
+  if (!left || !right || !result) {
+    return RMW_RET_INVALID_ARGUMENT;
   }
 
   if (left->automatic_discovery_range != right->automatic_discovery_range) {
-    return false;
+    *result = false;
+    return RMW_RET_OK;
   }
 
   if (left->static_peers_count != right->static_peers_count) {
-    return false;
+    *result = false;
+    return RMW_RET_OK;
+  }
+
+  if (left->static_peers_count == 0) {
+    /* No need to examine the static_peers arrays if the count is zero */
+    *result = true;
+    return RMW_RET_OK;
+  }
+
+  if (!left->static_peers || !right->static_peers) {
+    return RMW_RET_INVALID_ARGUMENT;
   }
 
   for (size_t ii = 0; ii < left->static_peers_count; ++ii) {
@@ -53,11 +64,13 @@ rmw_discovery_params_equal(
         right->static_peers[ii].peer_address,
         RMW_DISCOVERY_PARAMS_PEER_MAX_LENGTH) != 0)
     {
-      return false;
+      *result = false;
+      return RMW_RET_OK;
     }
   }
 
-  return true;
+  *result = true;
+  return RMW_RET_OK;
 }
 
 rmw_ret_t
@@ -73,7 +86,7 @@ rmw_discovery_params_copy(
   dst->automatic_discovery_range = src->automatic_discovery_range;
   dst->static_peers =
       allocator->zero_allocate(
-        src->static_peers_count, 
+        src->static_peers_count,
         sizeof(peer_address_t),
         allocator->state);
   for (size_t i = 0; i < src->static_peers_count; i++)
