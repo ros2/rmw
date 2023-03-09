@@ -76,19 +76,19 @@ rmw_discovery_parameters_equal(
 rmw_ret_t
 rmw_discovery_parameters_copy(
   const rmw_discovery_parameters_t * src,
-  const rcutils_allocator_t * allocator,
+  rcutils_allocator_t allocator,
   rmw_discovery_parameters_t * dst)
 {
   RMW_CHECK_ARGUMENT_FOR_NULL(src, RMW_RET_INVALID_ARGUMENT);
-  RCUTILS_CHECK_ALLOCATOR(allocator, return RMW_RET_INVALID_ARGUMENT);
+  RCUTILS_CHECK_ALLOCATOR(&allocator, return RMW_RET_INVALID_ARGUMENT);
   RMW_CHECK_ARGUMENT_FOR_NULL(dst, RMW_RET_INVALID_ARGUMENT);
 
   dst->automatic_discovery_range = src->automatic_discovery_range;
   dst->static_peers =
-      allocator->zero_allocate(
+      allocator.zero_allocate(
         src->static_peers_count,
         sizeof(rmw_peer_address_t),
-        allocator->state);
+        allocator.state);
   for (size_t i = 0; i < src->static_peers_count; i++)
   {
     strncpy(
@@ -106,13 +106,13 @@ rmw_discovery_parameters_copy(
 rmw_ret_t
 rmw_discovery_parameters_fini(
   rmw_discovery_parameters_t * discovery_parameters,
-  const rcutils_allocator_t * allocator)
+  rcutils_allocator_t allocator)
 {
   RMW_CHECK_ARGUMENT_FOR_NULL(discovery_parameters, RMW_RET_INVALID_ARGUMENT);
-  RCUTILS_CHECK_ALLOCATOR(allocator, return RMW_RET_INVALID_ARGUMENT);
+  RCUTILS_CHECK_ALLOCATOR(&allocator, return RMW_RET_INVALID_ARGUMENT);
 
   if (discovery_parameters->static_peers_count > 0)
-    allocator->deallocate(discovery_parameters->static_peers, allocator->state);
+    allocator.deallocate(discovery_parameters->static_peers, allocator.state);
   *discovery_parameters = rmw_get_zero_initialized_discovery_parameters();
 
   return RMW_RET_OK;

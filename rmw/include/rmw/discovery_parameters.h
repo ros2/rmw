@@ -99,7 +99,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_discovery_parameters_copy(
   const rmw_discovery_parameters_t * src,
-  const rcutils_allocator_t * allocator,
+  rcutils_allocator_t allocator,
   rmw_discovery_parameters_t * dst);
 
 RMW_PUBLIC
@@ -107,7 +107,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_discovery_parameters_fini(
   rmw_discovery_parameters_t * discovery_parameters,
-  const rcutils_allocator_t * allocator);
+  rcutils_allocator_t allocator);
 #ifdef __cplusplus
 }
 #endif
