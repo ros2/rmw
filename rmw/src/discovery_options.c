@@ -85,17 +85,17 @@ rmw_discovery_options_copy(
 
   dst->automatic_discovery_range = src->automatic_discovery_range;
   dst->static_peers =
-      allocator.zero_allocate(
-        src->static_peers_count,
-        sizeof(rmw_peer_address_t),
-        allocator.state);
+    allocator.zero_allocate(
+    src->static_peers_count,
+    sizeof(rmw_peer_address_t),
+    allocator.state);
   for (size_t i = 0; i < src->static_peers_count; i++) {
     strncpy(
       dst->static_peers[i].peer_address,
       src->static_peers[i].peer_address,
       RMW_DISCOVERY_OPTIONS_STATIC_PEERS_MAX_LENGTH);
     dst->static_peers[i].peer_address[
-        RMW_DISCOVERY_OPTIONS_STATIC_PEERS_MAX_LENGTH - 1] = '\0';
+      RMW_DISCOVERY_OPTIONS_STATIC_PEERS_MAX_LENGTH - 1] = '\0';
   }
   dst->static_peers_count = src->static_peers_count;
 
