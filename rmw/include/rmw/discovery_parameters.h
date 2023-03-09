@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__DISCOVERY_PARAMS_H_
-#define RMW__DISCOVERY_PARAMS_H_
+#ifndef RMW__DISCOVERY_PARAMETERS_H_
+#define RMW__DISCOVERY_PARAMETERS_H_
 
 #include "rcutils/allocator.h"
 
@@ -40,11 +40,11 @@ typedef enum RMW_PUBLIC_TYPE rmw_automatic_discovery_range_e
 } rmw_automatic_discovery_range_t;
 
 /// Maximum length of a peer hostname or IP address
-#define RMW_DISCOVERY_PARAMS_PEER_MAX_LENGTH 256
+#define RMW_DISCOVERY_PARAMETERS_PEER_MAX_LENGTH 256
 
 /// Struct to typedef some of the peer addresses
 typedef struct rmw_peer_address_s {
-  char peer_address[RMW_DISCOVERY_PARAMS_PEER_MAX_LENGTH];
+  char peer_address[RMW_DISCOVERY_PARAMETERS_PEER_MAX_LENGTH];
 } rmw_peer_address_t;
 
 /// Used to specify the parameters that control how discovery is performed
@@ -68,7 +68,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_discovery_parameters_s
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_discovery_parameters_t
-rmw_get_zero_initialized_discovery_params(void);
+rmw_get_zero_initialized_discovery_parameters(void);
 
 /// Compare two discovery parameter instances for equality. Equality means the
 /// automatic_discovery_range values are equal, they have the same
@@ -85,7 +85,7 @@ rmw_get_zero_initialized_discovery_params(void);
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_discovery_params_equal(
+rmw_discovery_parameters_equal(
   const rmw_discovery_parameters_t * const left,
   const rmw_discovery_parameters_t * const right,
   bool * result);
@@ -93,11 +93,11 @@ rmw_discovery_params_equal(
 /// Perform a deep copy of the discovery parameters from src into dst using the
 /// given allocator. The dst will be left with an owned copy of the static peers
 /// array whose string values match the src. If successful, src and dst will
-/// evaluate as equal using rmw_discovery_params_equal.
+/// evaluate as equal using rmw_discovery_parameters_equal.
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_discovery_params_copy(
+rmw_discovery_parameters_copy(
   const rmw_discovery_parameters_t * src,
   const rcutils_allocator_t * allocator,
   rmw_discovery_parameters_t * dst);
@@ -105,11 +105,11 @@ rmw_discovery_params_copy(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_discovery_params_fini(
-  rmw_discovery_parameters_t * discovery_params,
+rmw_discovery_parameters_fini(
+  rmw_discovery_parameters_t * discovery_parameters,
   const rcutils_allocator_t * allocator);
 #ifdef __cplusplus
 }
 #endif
 
-#endif  // RMW__DISCOVERY_PARAMS_H_
+#endif  // RMW__DISCOVERY_PARAMETERS_H_

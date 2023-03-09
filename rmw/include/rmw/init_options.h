@@ -56,7 +56,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_init_options_s
   /// Enable localhost only
   rmw_localhost_only_t localhost_only;
   /// Configure discovery
-  rmw_discovery_parameters_t discovery_params;
+  rmw_discovery_parameters_t discovery_parameters;
   /// Enclave, name used to find security artifacts in a sros2 keystore.
   char * enclave;
 

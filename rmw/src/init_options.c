@@ -28,7 +28,7 @@ rmw_get_zero_initialized_init_options(void)
   return (const rmw_init_options_t) {
            .domain_id = RMW_DEFAULT_DOMAIN_ID,
            .localhost_only = RMW_LOCALHOST_ONLY_DEFAULT,
-           .discovery_params = {
+           .discovery_parameters = {
              .automatic_discovery_range = RMW_AUTOMATIC_DISCOVERY_RANGE_DEFAULT,
              .static_peers_count = 0
            },
