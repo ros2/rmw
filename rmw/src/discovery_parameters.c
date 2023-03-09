@@ -15,13 +15,13 @@
 #include <stddef.h>
 #include <string.h>
 
-#include "rmw/discovery_params.h"
+#include "rmw/discovery_parameters.h"
 #include "rmw/error_handling.h"
 
-rmw_discovery_params_t
+rmw_discovery_parameters_t
 rmw_get_zero_initialized_discovery_params(void)
 {
-  rmw_discovery_params_t result = (rmw_discovery_params_t) {
+  rmw_discovery_parameters_t result = (rmw_discovery_parameters_t) {
     .automatic_discovery_range = RMW_AUTOMATIC_DISCOVERY_RANGE_DEFAULT,
     .static_peers_count = 0,
   };  // NOLINT(readability/braces): false positive
@@ -30,8 +30,8 @@ rmw_get_zero_initialized_discovery_params(void)
 
 rmw_ret_t
 rmw_discovery_params_equal(
-  const rmw_discovery_params_t * const left,
-  const rmw_discovery_params_t * const right,
+  const rmw_discovery_parameters_t * const left,
+  const rmw_discovery_parameters_t * const right,
   bool * result)
 {
   if (!left || !right || !result) {
@@ -75,9 +75,9 @@ rmw_discovery_params_equal(
 
 rmw_ret_t
 rmw_discovery_params_copy(
-  const rmw_discovery_params_t * src,
+  const rmw_discovery_parameters_t * src,
   const rcutils_allocator_t * allocator,
-  rmw_discovery_params_t * dst)
+  rmw_discovery_parameters_t * dst)
 {
   RMW_CHECK_ARGUMENT_FOR_NULL(src, RMW_RET_INVALID_ARGUMENT);
   RCUTILS_CHECK_ALLOCATOR(allocator, return RMW_RET_INVALID_ARGUMENT);
@@ -87,7 +87,7 @@ rmw_discovery_params_copy(
   dst->static_peers =
       allocator->zero_allocate(
         src->static_peers_count,
-        sizeof(peer_address_t),
+        sizeof(rmw_peer_address_t),
         allocator->state);
   for (size_t i = 0; i < src->static_peers_count; i++)
   {
@@ -105,7 +105,7 @@ rmw_discovery_params_copy(
 
 rmw_ret_t
 rmw_discovery_params_fini(
-  rmw_discovery_params_t * discovery_params,
+  rmw_discovery_parameters_t * discovery_params,
   const rcutils_allocator_t * allocator)
 {
   RMW_CHECK_ARGUMENT_FOR_NULL(discovery_params, RMW_RET_INVALID_ARGUMENT);
