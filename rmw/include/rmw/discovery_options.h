@@ -43,7 +43,8 @@ typedef enum RMW_PUBLIC_TYPE rmw_automatic_discovery_range_e
 #define RMW_DISCOVERY_OPTIONS_STATIC_PEERS_MAX_LENGTH 256
 
 /// Struct to typedef some of the peer addresses
-typedef struct rmw_peer_address_s {
+typedef struct rmw_peer_address_s
+{
   char peer_address[RMW_DISCOVERY_OPTIONS_STATIC_PEERS_MAX_LENGTH];
 } rmw_peer_address_t;
 
@@ -58,7 +59,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_discovery_options_s
    * Each peer is specified as a hostname or an IP address (IPv4 and IPv6 are both acceptable), or
    * a subnet, e.g. 192.168.0.0/24.
    */
-  rmw_peer_address_t* static_peers;
+  rmw_peer_address_t * static_peers;
 
   /// The number of manually-specified peers
   size_t static_peers_count;
