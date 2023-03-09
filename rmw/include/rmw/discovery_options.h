@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__DISCOVERY_PARAMETERS_H_
-#define RMW__DISCOVERY_PARAMETERS_H_
+#ifndef RMW__DISCOVERY_OPTIONS_H_
+#define RMW__DISCOVERY_OPTIONS_H_
 
 #include "rcutils/allocator.h"
 
@@ -40,15 +40,15 @@ typedef enum RMW_PUBLIC_TYPE rmw_automatic_discovery_range_e
 } rmw_automatic_discovery_range_t;
 
 /// Maximum length of a peer hostname or IP address
-#define RMW_DISCOVERY_PARAMETERS_PEER_MAX_LENGTH 256
+#define RMW_DISCOVERY_OPTIONS_STATIC_PEERS_MAX_LENGTH 256
 
 /// Struct to typedef some of the peer addresses
 typedef struct rmw_peer_address_s {
-  char peer_address[RMW_DISCOVERY_PARAMETERS_PEER_MAX_LENGTH];
+  char peer_address[RMW_DISCOVERY_OPTIONS_STATIC_PEERS_MAX_LENGTH];
 } rmw_peer_address_t;
 
 /// Used to specify the parameters that control how discovery is performed
-typedef struct RMW_PUBLIC_TYPE rmw_discovery_parameters_s
+typedef struct RMW_PUBLIC_TYPE rmw_discovery_options_s
 {
   /// How far to allow multicast to be used
   rmw_automatic_discovery_range_t automatic_discovery_range;
@@ -62,13 +62,13 @@ typedef struct RMW_PUBLIC_TYPE rmw_discovery_parameters_s
 
   /// The number of manually-specified peers
   size_t static_peers_count;
-} rmw_discovery_parameters_t;
+} rmw_discovery_options_t;
 
 /// Return a zero-initialized discovery parameters structure.
 RMW_PUBLIC
 RMW_WARN_UNUSED
-rmw_discovery_parameters_t
-rmw_get_zero_initialized_discovery_parameters(void);
+rmw_discovery_options_t
+rmw_get_zero_initialized_discovery_options(void);
 
 /// Compare two discovery parameter instances for equality. Equality means the
 /// automatic_discovery_range values are equal, they have the same
@@ -85,31 +85,31 @@ rmw_get_zero_initialized_discovery_parameters(void);
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_discovery_parameters_equal(
-  const rmw_discovery_parameters_t * const left,
-  const rmw_discovery_parameters_t * const right,
+rmw_discovery_options_equal(
+  const rmw_discovery_options_t * const left,
+  const rmw_discovery_options_t * const right,
   bool * result);
 
 /// Perform a deep copy of the discovery parameters from src into dst using the
 /// given allocator. The dst will be left with an owned copy of the static peers
 /// array whose string values match the src. If successful, src and dst will
-/// evaluate as equal using rmw_discovery_parameters_equal.
+/// evaluate as equal using rmw_discovery_options_equal.
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_discovery_parameters_copy(
-  const rmw_discovery_parameters_t * src,
+rmw_discovery_options_copy(
+  const rmw_discovery_options_t * src,
   rcutils_allocator_t allocator,
-  rmw_discovery_parameters_t * dst);
+  rmw_discovery_options_t * dst);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_discovery_parameters_fini(
-  rmw_discovery_parameters_t * discovery_parameters,
+rmw_discovery_options_fini(
+  rmw_discovery_options_t * discovery_options,
   rcutils_allocator_t allocator);
 #ifdef __cplusplus
 }
 #endif
 
-#endif  // RMW__DISCOVERY_PARAMETERS_H_
+#endif  // RMW__DISCOVERY_OPTIONS_H_

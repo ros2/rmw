@@ -27,7 +27,7 @@ include(cmake/configure_rmw_library.cmake)
 set(rmw_sources
   "src/allocators.c"
   "src/convert_rcutils_ret_to_rmw_ret.c"
-  "src/discovery_parameters.c"
+  "src/discovery_options.c"
   "src/event.c"
   "src/init.c"
   "src/init_options.c"
