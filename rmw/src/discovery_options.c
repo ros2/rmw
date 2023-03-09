@@ -89,9 +89,8 @@ rmw_discovery_options_copy(
         src->static_peers_count,
         sizeof(rmw_peer_address_t),
         allocator.state);
-  for (size_t i = 0; i < src->static_peers_count; i++)
-  {
-    strncpy(
+  for (size_t i = 0; i < src->static_peers_count; i++) {
+    strncpy_s(
       dst->static_peers[i].peer_address,
       src->static_peers[i].peer_address,
       RMW_DISCOVERY_OPTIONS_STATIC_PEERS_MAX_LENGTH);
@@ -111,8 +110,9 @@ rmw_discovery_options_fini(
   RMW_CHECK_ARGUMENT_FOR_NULL(discovery_options, RMW_RET_INVALID_ARGUMENT);
   RCUTILS_CHECK_ALLOCATOR(&allocator, return RMW_RET_INVALID_ARGUMENT);
 
-  if (discovery_options->static_peers_count > 0)
+  if (discovery_options->static_peers_count > 0) {
     allocator.deallocate(discovery_options->static_peers, allocator.state);
+  }
   *discovery_options = rmw_get_zero_initialized_discovery_options();
 
   return RMW_RET_OK;
