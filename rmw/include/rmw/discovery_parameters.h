@@ -70,7 +70,13 @@ RMW_WARN_UNUSED
 rmw_discovery_parameters_t
 rmw_get_zero_initialized_discovery_params(void);
 
-/// Compare two discovery parameter instances for equality.
+/// Compare two discovery parameter instances for equality. Equality means the
+/// automatic_discovery_range values are equal, they have the same
+/// static_peers_count value, and each entry in static_peers is evaluated as
+/// equal using strncmp.
+///
+/// NOTE: If the two parameter structs list the static peers in different orders
+/// then this will evaulate as NOT equal.
 ///
 /// RMW_RET_OK will be returned when the input arguments are valid.
 /// RMW_RET_INVALID_ARGUMENT will be returned when any input is a nullptr,
@@ -84,7 +90,10 @@ rmw_discovery_params_equal(
   const rmw_discovery_parameters_t * const right,
   bool * result);
 
-/// Copy a discovery parameter
+/// Perform a deep copy of the discovery parameters from src into dst using the
+/// given allocator. The dst will be left with an owned copy of the static peers
+/// array whose string values match the src. If successful, src and dst will
+/// evaluate as equal using rmw_discovery_params_equal.
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
