@@ -90,7 +90,7 @@ rmw_discovery_options_copy(
         sizeof(rmw_peer_address_t),
         allocator.state);
   for (size_t i = 0; i < src->static_peers_count; i++) {
-    strncpy_s(
+    strncpy(
       dst->static_peers[i].peer_address,
       src->static_peers[i].peer_address,
       RMW_DISCOVERY_OPTIONS_STATIC_PEERS_MAX_LENGTH);
