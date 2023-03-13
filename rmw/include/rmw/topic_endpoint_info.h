@@ -21,7 +21,6 @@ extern "C"
 #endif
 
 #include "rcutils/allocator.h"
-#include "rcutils/sha256.h"
 #include "rosidl_runtime_c/type_hash.h"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
@@ -156,10 +155,7 @@ rmw_topic_endpoint_info_set_topic_type(
  *   - Access to the topic endpoint info data structure is not synchronized.
  *     It is not safe to read or write the `topic_type_hash` member of the given `topic_endpoint`
  *     while setting it.
- *   - Access to C-style string arguments is read-only but it is not synchronized.
  *     Concurrent `topic_type_hash` reads are safe, but concurrent reads and writes are not.
- *
- * \pre Given `topic_type_hash` is a valid uint8_t array of the correct size
  *
  * \param[inout] topic_endpoint_info Data structure to be populated.
  * \param[in] topic_type_hash Topic type hash to be copied.
