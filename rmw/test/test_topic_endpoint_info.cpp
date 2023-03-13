@@ -62,7 +62,7 @@ TEST(test_topic_endpoint_info, set_topic_type_hash) {
   rmw_topic_endpoint_info_t topic_endpoint_info = rmw_get_zero_initialized_topic_endpoint_info();
   rosidl_type_hash_t type_hash = rosidl_get_zero_initialized_type_hash();
   type_hash.version = 22;
-  for (size_t i = 0; i < ROSIDL_TYPE_HASH_SIZE; i++) {
+  for (uint8_t i = 0; i < ROSIDL_TYPE_HASH_SIZE; i++) {
     type_hash.value[i] = i;
   }
 
