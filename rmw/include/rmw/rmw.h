@@ -2595,6 +2595,42 @@ RMW_WARN_UNUSED
 rmw_wait_set_t *
 rmw_create_wait_set(rmw_context_t * context, size_t max_conditions);
 
+/// Create a masked wait set to store conditions that the middleware can wait on.
+/**
+ * This function can fail, and therefore return `NULL`, if:
+ *   - context is `NULL`
+ *   - context is zero initialized, as provided by rmw_get_zero_initialized_context()
+ *   - context does not belong to this implementation i.e. does not have a matching
+ *     implementation identifier
+ *   - memory allocation fails during wait set creation
+ *   - an unspecified error occurs
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Yes
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
+ *
+ * \par Thread-safety
+ *   Contexts are thread-safe objects, and so are all operations on them except for finalization.
+ *   Therefore, it is safe to create multiple wait sets in the same context concurrently.
+ *
+ * \pre Given `context` must be a valid context, initialized by rmw_init().
+ *
+ * \param[in] context Context to associate the wait set with.
+ * \param[in] max_conditions
+ *   The maximum number of conditions that can be attached to, and stored by, the wait set.
+ *   Can be set to zero (0) for the wait set to support an unbounded number of conditions.
+ * \return An rmw wait set, or `NULL` if an error occurred.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_masked_wait_set_t *
+rmw_create_masked_wait_set(rmw_context_t * context, size_t max_conditions);
+
 /// Destroy a wait set.
 /**
  * This function will reclaim all associated resources, including the wait set.
@@ -2625,6 +2661,37 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_destroy_wait_set(rmw_wait_set_t * wait_set);
+
+/// Destroy a masked wait set.
+/**
+ * This function will reclaim all associated resources, including the wait set.
+ * Use of a wait set after destruction is undefined behavior.
+ * This function will return early if a logical error, such as `RMW_RET_INVALID_ARGUMENT`
+ * or `RMW_RET_INCORRECT_RMW_IMPLEMENTATION`, ensues, leaving the given wait set unchanged.
+ * Otherwise, it will proceed despite errors.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
+ *
+ * \pre Given `masked_wait_set` must be a valid wait set, as returned by rmw_create_masked_wait_set().
+ *
+ * \param[in] masked_wait_set Wait set to be finalized.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `masked_wait_set` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `masked_wait_set` implementation
+ *   identifier does not match this implementation, or
+ * \return `RMW_RET_ERROR` if an unspecified error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_destroy_masked_wait_set(rmw_masked_wait_set_t * masked_wait_set);
 
 /// Waits on sets of different entities and returns when one is ready.
 /**
@@ -2701,6 +2768,83 @@ rmw_wait(
   rmw_clients_t * clients,
   rmw_events_t * events,
   rmw_wait_set_t * wait_set,
+  const rmw_time_t * wait_timeout);
+
+/// Waits on sets of different entities and returns when one is ready.
+/**
+ * This function adds middleware-specific conditions to the wait set and waits
+ * until one or more become ready, or until the timeout is reached.
+ *
+ * \remark Elapsed time should be measured using a monotonic clock,
+ *   though rmw implementations could use a different one.
+ *   Timeout granularity is thus bound to that of the clock used by the underlying implementation,
+ *   and to the platform-specific APIs used to sleep and/or wait.
+ *
+ * \remark
+ *   The amount of time this function actually waits may be either above or
+ *   below the specified timeout.
+ *
+ * Arrays contain type-erased, middleware-specific conditions associated with
+ * waitable entities, which this function casts and adds to the wait set.
+ * `NULL` entries in arrays prior to wait are considered invalid.
+ * When the wait is over, entries in each array that correspond to
+ * conditions that were \b not triggered are set to `NULL`.
+ *
+ * \remark Arrays' memory management is external to this function.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Maybe [1]
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
+ *
+ * \par Thread-safety
+ *   To wait is a reentrant procedure, but:
+ *   - It is not safe to use the same wait set to wait in two or more threads concurrently.
+ *   - It is not safe to wait for the same entity using different wait sets in two or
+ *     more threads concurrently.
+ *   - Access to the given timeout is read-only but it is not synchronized.
+ *     Concurrent `wait_timeout` reads are safe, but concurrent reads and writes are not.
+ *
+ * \pre Given `wait_set` must be a valid wait set, as returned by rmw_create_wait_set().
+ * \pre All given entities must be associated with nodes that, in turn, were registered
+ *   with the same context the given `wait_set` was registered with on creation.
+ *
+ * \param[inout] subscriptions Array of subscriptions to wait on.
+ *   Can be `NULL` if there are no subscriptions to wait on.
+ * \param[inout] guard_conditions Array of guard conditions to wait on
+ *   Can be `NULL` if there are no guard conditions to wait on.
+ * \param[inout] services Array of services to wait on.
+ *   Can be `NULL` if there are no services to wait on.
+ * \param[inout] clients Array of clients to wait on.
+ *   Can be `NULL` if there are no clients to wait on.
+ * \param[inout] events Array of events to wait on.
+ *   Can be `NULL` if there are no events to wait on.
+ * \param[in] wait_set Wait set to use for waiting.
+ * \param[in] wait_timeout If `NULL`, block indefinitely until an entity becomes ready.
+ *   If zero, do not block -- check only for immediately available entities.
+ *   Else, this represents the maximum amount of time to wait for an entity to become ready.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_TIMEOUT` if wait timed out, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `wait_set` is `NULL`, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if an array entry is `NULL`, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `wait_set` implementation
+ *   identifier does not match this implementation, or
+ * \return `RMW_RET_ERROR` if an unspecified error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_masked_wait(
+  rmw_subscriptions_t * subscriptions,
+  rmw_guard_conditions_t * guard_conditions,
+  rmw_services_t * services,
+  rmw_clients_t * clients,
+  rmw_events_t * events,
+  rmw_masked_wait_set_t * wait_set,
   const rmw_time_t * wait_timeout);
 
 /// Return the name and namespace of all nodes in the ROS graph.

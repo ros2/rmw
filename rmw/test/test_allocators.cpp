@@ -62,3 +62,10 @@ TEST(test_rmw_allocators, rmw_wait_set_allocate_free) {
   EXPECT_NE(wait_set, nullptr);
   rmw_wait_set_free(wait_set);
 }
+
+TEST(test_rmw_allocators, rmw_masked_wait_set_allocate_free) {
+  rmw_masked_wait_set_t * wait_set = rmw_masked_wait_set_allocate();
+  EXPECT_NE(wait_set, nullptr);
+  rmw_masked_wait_set_free(wait_set);
+}
+

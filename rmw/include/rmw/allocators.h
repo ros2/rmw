@@ -152,6 +152,23 @@ RMW_PUBLIC
 void
 rmw_wait_set_free(rmw_wait_set_t * wait_set);
 
+/// Allocate memory for an `rmw_masked_wait_set_t` using rcutils default allocator's allocate()
+/**
+ * \return pointer to allocated memory
+ */
+RMW_PUBLIC
+rmw_masked_wait_set_t *
+rmw_masked_wait_set_allocate(void);
+
+/// Free memory using rcutils default allocator's deallocate()
+/**
+ * \param[in] maksed_wait_set pointer to allocated memory
+ */
+RMW_PUBLIC
+void
+rmw_masked_wait_set_free(rmw_masked_wait_set_t * masked_wait_set);
+
+
 #ifdef __cplusplus
 }
 #endif

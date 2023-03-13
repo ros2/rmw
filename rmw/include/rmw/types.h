@@ -354,6 +354,17 @@ typedef struct RMW_PUBLIC_TYPE rmw_wait_set_s
   void * data;
 } rmw_wait_set_t;
 
+/// Container for guard conditions to be waited on
+typedef struct RMW_PUBLIC_TYPE rmw_masked_wait_set_s
+{
+  /// The wait set
+  rmw_wait_set_t * wait_set;
+
+  /// Type erased pointer to this mask data.
+  void * mask_data;
+
+} rmw_masked_wait_set_t;
+
 /// An rmw service request identifier
 typedef struct RMW_PUBLIC_TYPE rmw_request_id_s
 {

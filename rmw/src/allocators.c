@@ -139,3 +139,18 @@ rmw_wait_set_free(rmw_wait_set_t * wait_set)
   // Should have matching overide with rmw_wait_set_allocate
   rmw_free(wait_set);
 }
+
+rmw_masked_wait_set_t *
+rmw_masked_wait_set_allocate()
+{
+  // Could be overridden with custom (maybe static) client struct allocator
+  return (rmw_masked_wait_set_t *)rmw_allocate(sizeof(rmw_masked_wait_set_t));
+}
+
+void
+rmw_masked_wait_set_free(rmw_masked_wait_set_t * masked_wait_set)
+{
+  // Should have matching overide with rmw_masked_wait_set_allocate
+  rmw_free(masked_wait_set);
+}
+
