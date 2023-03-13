@@ -58,7 +58,7 @@ rmw_get_zero_initialized_topic_endpoint_info(void);
 
 /// Finalize a topic endpoint info data structure.
 /**
- * This function deallocates all allocated members of the given data structure,
+ * Deallocates all allocated members of the given data structure,
  * and then zero initializes it.
  * If a logical error, such as `RMW_RET_INVALID_ARGUMENT`, ensues, this function
  * will return early, leaving the given data structure unchanged.
@@ -97,8 +97,8 @@ rmw_topic_endpoint_info_fini(
 
 /// Set the topic type in the given topic endpoint info data structure.
 /**
- * This functions allocates memory and copies the value of the `topic_type`
- * argument to set the data structure `topic_type` member.
+ * Allocates memory and copies the value of the `topic_type`
+ * argument to set the data structure's `topic_type` member.
  *
  * <hr>
  * Attribute          | Adherence
@@ -140,7 +140,8 @@ rmw_topic_endpoint_info_set_topic_type(
 
 /// Set the topic type hash in the given topic endpoint info data structure.
 /**
- * This functions copies value `topic_type_hash` into data structure `topic_type_hash` member.
+ * Assigns the value of the `topic_type_hash` argument to the data structure's
+ * `topic_type_hash` member.
  *
  * <hr>
  * Attribute          | Adherence
@@ -174,8 +175,8 @@ rmw_topic_endpoint_info_set_topic_type_hash(
 
 /// Set the node name in the given topic endpoint info data structure.
 /**
- * This functions allocates memory and copies the value of the `node_name`
- * argument to set the data structure `node_name` member.
+ * Allocates memory and copies the value of the `node_name`
+ * argument to set the data structure's `node_name` member.
  *
  * <hr>
  * Attribute          | Adherence
@@ -217,8 +218,8 @@ rmw_topic_endpoint_info_set_node_name(
 
 /// Set the node namespace in the given topic endpoint info data structure.
 /**
- * This functions allocates memory and copies the value of the `node_namespace`
- * argument to set the data structure `node_namespace` member.
+ * Allocates memory and copies the value of the `node_namespace`
+ * argument to set the data structure's `node_namespace` member.
  *
  * <hr>
  * Attribute          | Adherence
@@ -260,7 +261,7 @@ rmw_topic_endpoint_info_set_node_namespace(
 
 /// Set the endpoint type in the given topic endpoint info data structure.
 /**
- * This functions assigns the value of the `type` argument to the data structure
+ * Assigns the value of the `type` argument to the data structure's
  * `endpoint_type` member.
  *
  * <hr>
@@ -293,7 +294,7 @@ rmw_topic_endpoint_info_set_endpoint_type(
 
 /// Set the endpoint gid in the given topic endpoint info data structure.
 /**
- * This functions copies the value of the `gid` argument to the data structure
+ * Copies the value of the `gid` argument to the data structure's
  * `endpoint_gid` member.
  *
  * <hr>
@@ -330,7 +331,7 @@ rmw_topic_endpoint_info_set_gid(
 
 /// Set the endpoint QoS profile in the given topic endpoint info data structure.
 /**
- * This functions assigns the value of the `qos_profile` argument to the data structure
+ * Assigns the value of the `qos_profile` argument to the data structure's
  * `qos_profile` member.
  *
  * <hr>
