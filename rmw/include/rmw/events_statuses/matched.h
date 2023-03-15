@@ -1,4 +1,4 @@
-// Copyright 2022 Sony Group Corporation.
+// Copyright 2023 Sony Group Corporation.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,35 +25,34 @@ extern "C"
 {
 #endif
 
-struct RMW_PUBLIC_TYPE rmw_matched_unmatched_status_s
+struct RMW_PUBLIC_TYPE rmw_matched_status_s
 {
+  /**
+   * For publisher, the total cumulative count of subscribers matched to the concerned publisher.
+   *
+   * For subscriber, the total cumulative count of publishers matched to the concerned subscriber.
+   */
+  size_t total_count;
+
+  /**
+   * total_count change since last time the status was read.
+   */
+  size_t total_count_change;
+
   /**
    * For publisher, the number of subscribers currently matched to the concerned publisher.
    *
    * For subscriber, the number of publishers currently matched to the concerned subscriber.
    */
-  int32_t current_matched_count;
+  size_t current_count;
 
   /**
-   * Matched or unmatched count since the last time the status was read.
-   *
-   * For publisher
-   * If you get matched status, this count means the number of subscribers matched to the
-   * concerned publisher.
-   * If you get unmatched status, this count means the number of subscribers unmatched to
-   * the concerned publisher.
-   *
-   * For subscriber
-   * If you get matched status, this count means the number of publishers matched to the
-   * concerned subscriber.
-   * If you get unmatched status, this count means the number of publishers unmatched to
-   * the concerned subscriber.
+   * The current_count change since last time the status was read.
    */
   int32_t current_count_change;
 };
 
-typedef struct rmw_matched_unmatched_status_s rmw_matched_status_t;
-typedef struct rmw_matched_unmatched_status_s rmw_unmatched_status_t;
+typedef struct rmw_matched_status_s rmw_matched_status_t;
 
 #ifdef __cplusplus
 }
