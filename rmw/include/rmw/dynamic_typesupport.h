@@ -106,6 +106,24 @@ RMW_WARN_UNUSED
 rosidl_dynamic_typesupport_dynamic_data_t *
 rmw_clone_dynamic_data(const rosidl_dynamic_typesupport_dynamic_data_t * data);
 
+// NOTE(methylDragon): The responsibility is on the user to ensure that the dynamic data's
+//                     dynamic type matches the layout of the buffer
+/// The user must provide a rosidl_dynamic_typesupport_dynamic_data_t with dynamic data impl
+/// that matches the serialization library used to serialize the buffer. It must also match the
+/// layout of the buffer if the serialization library cannot infer the layout from the buffer alone.
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_serialized_to_dynamic_data(
+  rmw_serialized_message_t * serialized_message,
+  rosidl_dynamic_typesupport_dynamic_data_t * dyn_data);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_dynamic_data_to_serialized(
+  rmw_serialized_message_t * serialized_message,
+  rosidl_dynamic_typesupport_dynamic_data_t * dyn_data);
 
 // INTERFACES FOR RMW IMPLEMENTATIONS TO FULFILL ===================================================
 RMW_PUBLIC
@@ -123,20 +141,6 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rosidl_dynamic_typesupport_serialization_support_t *
 rmw_get_serialization_support(const char * serialization_lib_name);
-
-// NOTE(methylDragon): The responsibility is on the user to ensure that the dynamic data's
-//                     dynamic type matches the layout of the buffer
-/// The user must provide a rosidl_dynamic_typesupport_dynamic_data_t with dynamic data impl
-/// that matches the serialization library used. It must also match the layout of the buffer if the
-/// serialization library cannot infer the layout from the buffer alone.
-RMW_PUBLIC
-RMW_WARN_UNUSED
-rmw_ret_t
-// TODO(methylDragon): Convert to rmw_serialized_message_to_dynamic_message
-//                     Or maybe just an additional interface?
-rmw_serialized_to_dynamic_data(
-  rmw_serialized_message_t * serialized_message,
-  rosidl_dynamic_typesupport_dynamic_data_t * dyn_data);
 
 // TODO(methylDragon): Nice to have only
 // RMW_PUBLIC

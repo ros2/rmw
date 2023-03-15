@@ -162,6 +162,35 @@ rmw_clone_dynamic_data(const rosidl_dynamic_typesupport_dynamic_data_t * data)
 }
 
 
+rmw_ret_t
+rmw_serialized_to_dynamic_data(
+  rmw_serialized_message_t * serialized_message,
+  rosidl_dynamic_typesupport_dynamic_data_t * dyn_data)
+{
+  if (rosidl_dynamic_typesupport_dynamic_data_deserialize(dyn_data, serialized_message)) {
+    return RMW_RET_OK;
+  } else {
+    RMW_SET_ERROR_MSG("could not deserialize serialized message to dynamic data: "
+                      "dynamic data not enough memory");
+    return RMW_RET_ERROR;
+  }
+}
+
+
+rmw_ret_t
+rmw_dynamic_data_to_serialized(
+  rosidl_dynamic_typesupport_dynamic_data_t * dyn_data,
+  rmw_serialized_message_t * serialized_message)
+{
+  if (rosidl_dynamic_typesupport_dynamic_data_serialize(dyn_data, serialized_message)) {
+    return RMW_RET_OK;
+  } else {
+    RMW_SET_ERROR_MSG("could not serialize dynamic data to serialized message!");
+    return RMW_RET_ERROR;
+  }
+}
+
+
 #ifdef __cplusplus
 }
 #endif
