@@ -25,7 +25,7 @@ extern "C"
 {
 #endif
 
-struct RMW_PUBLIC_TYPE rmw_matched_status_s
+typedef struct RMW_PUBLIC_TYPE rmw_matched_status_s
 {
   /**
    * For publisher, the total cumulative count of subscribers matched to the concerned publisher.
@@ -50,9 +50,7 @@ struct RMW_PUBLIC_TYPE rmw_matched_status_s
    * The current_count change since last time the status was read.
    */
   int32_t current_count_change;
-};
-
-typedef struct rmw_matched_status_s rmw_matched_status_t;
+} rmw_matched_status_t;
 
 #ifdef __cplusplus
 }
