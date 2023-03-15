@@ -58,6 +58,32 @@ TEST(test_topic_endpoint_info, set_topic_type) {
     "test_topic_type") << "Topic Type value is not as expected";
 }
 
+TEST(test_topic_endpoint_info, set_topic_type_hash) {
+  rmw_topic_endpoint_info_t topic_endpoint_info = rmw_get_zero_initialized_topic_endpoint_info();
+  rosidl_type_hash_t type_hash = rosidl_get_zero_initialized_type_hash();
+  type_hash.version = 22;
+  for (uint8_t i = 0; i < ROSIDL_TYPE_HASH_SIZE; i++) {
+    type_hash.value[i] = i;
+  }
+
+  rmw_ret_t ret = rmw_topic_endpoint_info_set_topic_type_hash(nullptr, &type_hash);
+  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
+    "Expected invalid argument for null topic_endpoint_info";
+  rmw_reset_error();
+
+  ret = rmw_topic_endpoint_info_set_topic_type_hash(&topic_endpoint_info, nullptr);
+  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null type_hash";
+  rmw_reset_error();
+
+  ret = rmw_topic_endpoint_info_set_topic_type_hash(&topic_endpoint_info, &type_hash);
+  EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
+
+  EXPECT_EQ(topic_endpoint_info.topic_type_hash.version, 22);
+  for (size_t i = 0; i < ROSIDL_TYPE_HASH_SIZE; i++) {
+    EXPECT_EQ(i, topic_endpoint_info.topic_type_hash.value[i]);
+  }
+}
+
 TEST(test_topic_endpoint_info, set_node_name) {
   rmw_topic_endpoint_info_t topic_endpoint_info = rmw_get_zero_initialized_topic_endpoint_info();
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
