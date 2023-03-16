@@ -2,6 +2,11 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Correct parameter names to match documentation (`#250 <https://github.com/ros2/rmw/issues/250>`_) (`#322 <https://github.com/ros2/rmw/issues/322>`_)
+* Contributors: mergify[bot], Geoffrey Biggs
+
 1.0.3 (2021-04-14)
 ------------------
 * Update quality declaration links (re: `ros2/docs.ros2.org#52 <https://github.com/ros2/docs.ros2.org/issues/52>`_) (`#306 <https://github.com/ros2/rmw/issues/306>`_)

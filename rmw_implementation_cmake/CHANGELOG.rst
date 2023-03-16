@@ -2,6 +2,9 @@
 Changelog for package rmw_implementation_cmake
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 1.0.3 (2021-04-14)
 ------------------
 * Update QD to QL 1 (`#291 <https://github.com/ros2/rmw/issues/291>`_)
