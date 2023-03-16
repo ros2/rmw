@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.4 (2023-03-16)
+------------------
 * Correct parameter names to match documentation (`#250 <https://github.com/ros2/rmw/issues/250>`_) (`#322 <https://github.com/ros2/rmw/issues/322>`_)
 * Contributors: mergify[bot], Geoffrey Biggs
 
