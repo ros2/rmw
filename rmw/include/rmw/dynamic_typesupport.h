@@ -46,6 +46,13 @@ extern const char * rmw_dynamic_typesupport_c__identifier;
 //
 // Ownership:
 //   - The struct owns its `description` field. It is responsible for deallocating it.
+//   - The struct owns its `serialization_support` field. It is responsible for deallocating it.
+//   - The struct owns its `dynamic_type` field. It is responsible for deallocating it.
+//   - The struct owns its `dynamic_data` field. It is responsible for deallocating it.
+//
+// Downstream classes are expected to borrow the `serialization_support` field, and potentially the
+// `dynamic_type` and `dynamic_data` fields. As such, it is important that this struct outlives
+// those downstream classes.
 typedef struct rmw_dynamic_typesupport_impl_s {
   bool take_dynamic_data;  // Take dynamic data at the middleware level
                            // Get from middleware specific link-time function:
@@ -96,7 +103,7 @@ rmw_get_dynamic_message_typesupport_handle(
   rosidl_dynamic_typesupport_serialization_support_t * serialization_support,
   bool middleware_supports_type_discovery,
   bool middleware_can_take_dynamic_data,
-  rosidl_runtime_c__type_description__TypeDescription * description);
+  const rosidl_runtime_c__type_description__TypeDescription * description);
 
 /// Finalize a rosidl_message_type_support_t obtained with
 /// rmw_get_dynamic_message_typesupport_handle
@@ -111,7 +118,7 @@ RMW_WARN_UNUSED
 rosidl_dynamic_typesupport_dynamic_type_t *
 rmw_init_dynamic_type_from_description(
   rosidl_dynamic_typesupport_serialization_support_t * serialization_support,
-  rosidl_runtime_c__type_description__TypeDescription * description);
+  const rosidl_runtime_c__type_description__TypeDescription * description);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED

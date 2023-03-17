@@ -37,7 +37,7 @@ rmw_get_dynamic_message_typesupport_handle(
   rosidl_dynamic_typesupport_serialization_support_t * serialization_support,
   bool middleware_supports_type_discovery,
   bool middleware_can_take_dynamic_data,
-  rosidl_runtime_c__type_description__TypeDescription * description)
+  const rosidl_runtime_c__type_description__TypeDescription * description)
 {
   if (!middleware_supports_type_discovery && description == NULL) {
     RCUTILS_LOG_ERROR_NAMED(rmw_dynamic_typesupport_c__identifier,
@@ -148,7 +148,7 @@ rmw_dynamic_message_typesupport_handle_fini(rosidl_message_type_support_t * ts)
 
 
 rosidl_dynamic_typesupport_dynamic_type_t *
-rmw_init_dynamic_type_from_description(rosidl_dynamic_typesupport_serialization_support_t * serialization_support, rosidl_runtime_c__type_description__TypeDescription * description)
+rmw_init_dynamic_type_from_description(rosidl_dynamic_typesupport_serialization_support_t * serialization_support, const rosidl_runtime_c__type_description__TypeDescription * description)
 {
   return rosidl_dynamic_typesupport_dynamic_type_init_from_description(serialization_support, description);
 }
