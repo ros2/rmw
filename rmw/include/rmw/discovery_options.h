@@ -71,18 +71,24 @@ RMW_WARN_UNUSED
 rmw_discovery_options_t
 rmw_get_zero_initialized_discovery_options(void);
 
-/// Compare two discovery parameter instances for equality. Equality means the
-/// automatic_discovery_range values are equal, they have the same
-/// static_peers_count value, and each entry in static_peers is evaluated as
-/// equal using strncmp.
-///
-/// NOTE: If the two parameter structs list the static peers in different orders
-/// then this will evaulate as NOT equal.
-///
-/// RMW_RET_OK will be returned when the input arguments are valid.
-/// RMW_RET_INVALID_ARGUMENT will be returned when any input is a nullptr,
-/// or if something in either struct was malformed, such as static_peers being
-/// a nullptr while static_peers_count is non-zero.
+/// Compare two discovery parameter instances for equality.
+/**
+ * Equality means the automatic_discovery_range values are equal, they have the same
+ * static_peers_count value, and each entry in static_peers is evaluated as
+ * equal using strncmp.
+ *
+ * NOTE: If the two parameter structs list the static peers in different orders
+ * then this will evaulate as NOT equal.
+ *
+ * \param[in] left - The first set of parameters to compare
+ * \param[in] right - The second set of parameters to compare
+ * \param[out] result - The result of the calculation.
+ *
+ * \return RMW_RET_OK when the input arguments are valid.
+ * \return RMW_RET_INVALID_ARGUMENT will be returned when any input is a nullptr,
+ * or if something in either struct was malformed, such as static_peers being
+ * a nullptr while static_peers_count is non-zero.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -92,9 +98,18 @@ rmw_discovery_options_equal(
   bool * result);
 
 /// Perform a deep copy of the discovery parameters from src into dst using the
-/// given allocator. The dst will be left with an owned copy of the static peers
-/// array whose string values match the src. If successful, src and dst will
-/// evaluate as equal using rmw_discovery_options_equal.
+/// given allocator.
+/**
+ * The dst will be left with an owned copy of the static peers
+ * array whose string values match the src. If successful, src and dst will
+ * evaluate as equal using rmw_discovery_options_equal.
+ * \param[in] src discovery option parameters to be copied.
+ * \param[in] allocator to use.
+ * \param[out] dst Destination parameters to use.
+ * \return RMW_RET_OK if success.
+ * \return RMW_RET_INVALID_ARGUMENT if either the src, allocator or dst is null.
+ * \return RMW_RET_BAD_ALLOC if allocation fails.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -103,6 +118,14 @@ rmw_discovery_options_copy(
   rcutils_allocator_t allocator,
   rmw_discovery_options_t * dst);
 
+/// Destructor for rmw_discovery_options_t
+/**
+ * \param[in] discovery_options to destroy
+ * \param[in] allocator to be used for destruction.
+ * \return RMW_RET_OK if success.
+ * \return RMW_RET_INVALID_ARGUMENT if allocator is invalid
+ * or discovery_options is null.
+ */
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t

@@ -89,6 +89,11 @@ rmw_discovery_options_copy(
     src->static_peers_count,
     sizeof(rmw_peer_address_t),
     allocator.state);
+
+  if (!dst->static_peers) {
+    return RMW_RET_BAD_ALLOC;
+  }
+
   for (size_t i = 0; i < src->static_peers_count; i++) {
     strncpy(
       dst->static_peers[i].peer_address,
