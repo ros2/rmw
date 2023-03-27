@@ -48,7 +48,7 @@ typedef struct rmw_peer_address_s
   char peer_address[RMW_DISCOVERY_OPTIONS_STATIC_PEERS_MAX_LENGTH];
 } rmw_peer_address_t;
 
-/// Used to specify the parameters that control how discovery is performed
+/// Used to specify the options that control how discovery is performed
 typedef struct RMW_PUBLIC_TYPE rmw_discovery_options_s
 {
   /// How far to allow discovering nodes
@@ -65,7 +65,7 @@ typedef struct RMW_PUBLIC_TYPE rmw_discovery_options_s
   size_t static_peers_count;
 } rmw_discovery_options_t;
 
-/// Return a zero-initialized discovery parameters structure.
+/// Return a zero-initialized discovery options structure.
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_discovery_options_t
@@ -80,8 +80,8 @@ rmw_get_zero_initialized_discovery_options(void);
  * NOTE: If the two parameter structs list the static peers in different orders
  * then this will evaulate as NOT equal.
  *
- * \param[in] left - The first set of parameters to compare
- * \param[in] right - The second set of parameters to compare
+ * \param[in] left - The first set of options to compare
+ * \param[in] right - The second set of options to compare
  * \param[out] result - The result of the calculation.
  *
  * \return RMW_RET_OK when the input arguments are valid.
@@ -97,15 +97,15 @@ rmw_discovery_options_equal(
   const rmw_discovery_options_t * const right,
   bool * result);
 
-/// Perform a deep copy of the discovery parameters from src into dst using the
+/// Perform a deep copy of the discovery options from src into dst using the
 /// given allocator.
 /**
  * The dst will be left with an owned copy of the static peers
  * array whose string values match the src. If successful, src and dst will
  * evaluate as equal using rmw_discovery_options_equal.
- * \param[in] src discovery option parameters to be copied.
+ * \param[in] src discovery options to be copied.
  * \param[in] allocator to use.
- * \param[out] dst Destination parameters to use.
+ * \param[out] dst Destination options to use.
  * \return RMW_RET_OK if success.
  * \return RMW_RET_INVALID_ARGUMENT if either the src, allocator or dst is null.
  * \return RMW_RET_BAD_ALLOC if allocation fails.
