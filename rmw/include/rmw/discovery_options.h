@@ -63,6 +63,9 @@ typedef struct RMW_PUBLIC_TYPE rmw_discovery_options_s
 
   /// The number of manually-specified peers
   size_t static_peers_count;
+
+  /// The allocator used to allocate static_peers
+  rcutils_allocator_t allocator;
 } rmw_discovery_options_t;
 
 /// Return a zero-initialized discovery options structure.
@@ -70,6 +73,32 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_discovery_options_t
 rmw_get_zero_initialized_discovery_options(void);
+
+/// Initialize a discovery options structure with a set number of static peers.
+/**
+ * This function initializes rmw_discovery_options_t with space for a set number of static peers.
+ *
+ * \param[in] discovery_options Pointer to a zero initialized option structure to be initialized on
+ * success, but left unchanged on failure.
+ * \param[in] size Number of static peers to allocate space for.
+ * \param[in] allocator Allocator to be used to allocate memory.
+ * \returns `RMW_RET_OK` if successful, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `discovery_options` is NULL, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `discovery_options` is not
+ *   zero initialized, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if `allocator` is invalid,
+ *   by rcutils_allocator_is_valid() definition, or
+ * \returns `RMW_BAD_ALLOC` if memory allocation fails, or
+ * \returns `RMW_RET_ERROR` when an unspecified error occurs.
+ * \remark This function sets the RMW error state on failure.
+*/
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_discovery_options_init(
+  rmw_discovery_options_t * discovery_options,
+  size_t size,
+  rcutils_allocator_t * allocator);
 
 /// Compare two discovery parameter instances for equality.
 /**
@@ -117,7 +146,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_discovery_options_copy(
   const rmw_discovery_options_t * src,
-  rcutils_allocator_t allocator,
+  rcutils_allocator_t * allocator,
   rmw_discovery_options_t * dst);
 
 /// Destructor for rmw_discovery_options_t
@@ -132,8 +161,7 @@ RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
 rmw_discovery_options_fini(
-  rmw_discovery_options_t * discovery_options,
-  rcutils_allocator_t allocator);
+  rmw_discovery_options_t * discovery_options);
 #ifdef __cplusplus
 }
 #endif
