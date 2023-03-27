@@ -100,9 +100,11 @@ rmw_discovery_options_equal(
 /// Perform a deep copy of the discovery options from src into dst using the
 /// given allocator.
 /**
- * The dst will be left with an owned copy of the static peers
- * array whose string values match the src. If successful, src and dst will
- * evaluate as equal using rmw_discovery_options_equal.
+ * The dst will be left with an owned copy of the static peers array whose
+ * string values match the src.
+ * If successful, src and dst will evaluate as equal using
+ * rmw_discovery_options_equal.
+ *
  * \param[in] src discovery options to be copied.
  * \param[in] allocator to use.
  * \param[out] dst Destination options to use.
