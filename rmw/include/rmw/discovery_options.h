@@ -26,16 +26,16 @@ extern "C"
 {
 #endif
 
-/// Used to enable or disable the use of multicast for node discovery
+/// Used to control the range that nodes will be discovered
 typedef enum RMW_PUBLIC_TYPE rmw_automatic_discovery_range_e
 {
   /// Uses ROS_LOCALHOST_ONLY environment variable.
   RMW_AUTOMATIC_DISCOVERY_RANGE_DEFAULT = 0,
-  /// Forces multicast discovery off
+  /// Force discovery off
   RMW_AUTOMATIC_DISCOVERY_RANGE_OFF = 1,
-  /// Allows multicast but only on the localhost
+  /// Allows discovering nodes on the same host
   RMW_AUTOMATIC_DISCOVERY_RANGE_LOCALHOST = 2,
-  /// Allows multicast on the reachable network
+  /// Allows discovering nodes on the same subnet
   RMW_AUTOMATIC_DISCOVERY_RANGE_SUBNET = 3,
 } rmw_automatic_discovery_range_t;
 
@@ -51,7 +51,7 @@ typedef struct rmw_peer_address_s
 /// Used to specify the parameters that control how discovery is performed
 typedef struct RMW_PUBLIC_TYPE rmw_discovery_options_s
 {
-  /// How far to allow multicast to be used
+  /// How far to allow discovering nodes
   rmw_automatic_discovery_range_t automatic_discovery_range;
 
   /// The list of manually-specified peers to perform static discovery with
