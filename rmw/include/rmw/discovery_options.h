@@ -138,7 +138,8 @@ rmw_discovery_options_equal(
  * \param[in] allocator to use.
  * \param[out] dst Destination options to use.
  * \return RMW_RET_OK if success.
- * \return RMW_RET_INVALID_ARGUMENT if either the src, allocator or dst is null.
+ * \return RMW_RET_INVALID_ARGUMENT if either the src, allocator or dst is null, or
+ * \return RMW_RET_INVALID_ARUGMENT if src and dst are the same object.
  * \return RMW_RET_BAD_ALLOC if allocation fails.
  */
 RMW_PUBLIC
