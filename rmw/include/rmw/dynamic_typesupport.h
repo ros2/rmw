@@ -37,7 +37,6 @@ extern "C"
 RMW_PUBLIC
 extern const char * rmw_dynamic_typesupport_c__identifier;
 
-
 // This struct is meant to be populated fully if the rosidl_message_type_support_t is constructed
 // with a given description on the client library end (since the descrpition is obtained via
 // services).
@@ -58,7 +57,6 @@ typedef struct rmw_dynamic_typesupport_impl_s {
                            // Get from middleware specific link-time function:
                            // rmw_middleware_can_take_dynamic_data()
 
-  const char * topic_name; // MAYBE???
   rosidl_runtime_c__type_description__TypeDescription * description;  // Might be unused if dynamic_type is obtained directly
   rosidl_dynamic_typesupport_serialization_support_t * serialization_support;
 

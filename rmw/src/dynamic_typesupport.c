@@ -19,6 +19,7 @@ extern "C"
 
 #include "rmw/dynamic_typesupport.h"
 
+#include <rcutils/allocator.h>
 #include <rcutils/logging_macros.h>
 #include <rosidl_runtime_c/message_type_support_struct.h>
 #include <rosidl_runtime_c/type_description/type_description__struct.h>
@@ -48,8 +49,9 @@ rmw_get_dynamic_message_typesupport_handle(
   }
 
   // TODO(methylDragon): Do I need to use an allocator...?
-  rosidl_message_type_support_t * ts =
-    (rosidl_message_type_support_t *)(calloc(1, sizeof(rosidl_message_type_support_t)));
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
+  rosidl_message_type_support_t * ts = allocator.zero_allocate(
+    1, sizeof(rosidl_message_type_support_t), allocator.state);
   if(!ts) {
     RCUTILS_LOG_ERROR_NAMED(rmw_dynamic_typesupport_c__identifier,
                             "Could not allocate rosidl_message_type_support_t struct");
@@ -59,7 +61,7 @@ rmw_get_dynamic_message_typesupport_handle(
   ts->typesupport_identifier = rmw_dynamic_typesupport_c__identifier;
 
   // NOTE(methylDragon): To populate dynamic_type and description if deferred, OUTSIDE
-  ts->data = calloc(1, sizeof(rmw_dynamic_typesupport_impl_t));
+  ts->data = allocator.zero_allocate(1, sizeof(rmw_dynamic_typesupport_impl_t), allocator.state);
   if(!ts) {
     RCUTILS_LOG_ERROR_NAMED(rmw_dynamic_typesupport_c__identifier,
                             "Could not allocate rmw_dynamic_typesupport_impl_t struct");
@@ -128,21 +130,19 @@ rmw_dynamic_message_typesupport_handle_fini(rosidl_message_type_support_t * ts)
 
   if (ts->data) {
     rmw_dynamic_typesupport_impl_t * ts_impl = (rmw_dynamic_typesupport_impl_t *)ts->data;
-
     if (ts_impl->description) {
       rosidl_runtime_c__type_description__TypeDescription__fini(ts_impl->description);
     }
-
     if (ts_impl->dynamic_type) {
       rosidl_dynamic_typesupport_dynamic_type_fini(ts_impl->dynamic_type);
     }
-
     if (ts_impl->dynamic_data) {
       rosidl_dynamic_typesupport_dynamic_data_fini(ts_impl->dynamic_data);
     }
   }
-  free(ts);
-
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
+  allocator.deallocate((void *)ts->data, allocator.state);
+  allocator.deallocate(ts, allocator.state);
   return RMW_RET_OK;
 }
 
