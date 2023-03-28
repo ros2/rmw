@@ -98,7 +98,7 @@ rmw_ret_t
 rmw_discovery_options_init(
   rmw_discovery_options_t * discovery_options,
   size_t size,
-  const rcutils_allocator_t * allocator);
+  rcutils_allocator_t * allocator);
 
 /// Compare two discovery parameter instances for equality.
 /**
@@ -146,7 +146,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_discovery_options_copy(
   const rmw_discovery_options_t * src,
-  const rcutils_allocator_t * allocator,
+  rcutils_allocator_t * allocator,
   rmw_discovery_options_t * dst);
 
 /// Destructor for rmw_discovery_options_t

@@ -34,7 +34,7 @@ rmw_ret_t
 rmw_discovery_options_init(
   rmw_discovery_options_t * discovery_options,
   size_t size,
-  const rcutils_allocator_t * allocator)
+  rcutils_allocator_t * allocator)
 {
   RCUTILS_CAN_RETURN_WITH_ERROR_OF(RMW_RET_INVALID_ARGUMENT);
   RCUTILS_CAN_RETURN_WITH_ERROR_OF(RMW_RET_BAD_ALLOC);
@@ -117,7 +117,7 @@ rmw_discovery_options_equal(
 rmw_ret_t
 rmw_discovery_options_copy(
   const rmw_discovery_options_t * src,
-  const rcutils_allocator_t * allocator,
+  rcutils_allocator_t * allocator,
   rmw_discovery_options_t * dst)
 {
   RMW_CHECK_ARGUMENT_FOR_NULL(src, RMW_RET_INVALID_ARGUMENT);
