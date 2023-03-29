@@ -16,6 +16,7 @@
 
 #include "rmw/init_options.h"
 #include "rmw/localhost.h"
+#include "rmw/discovery_options.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -28,10 +29,7 @@ rmw_get_zero_initialized_init_options(void)
   return (const rmw_init_options_t) {
            .domain_id = RMW_DEFAULT_DOMAIN_ID,
            .localhost_only = RMW_LOCALHOST_ONLY_DEFAULT,
-           .discovery_options = {
-             .automatic_discovery_range = RMW_AUTOMATIC_DISCOVERY_RANGE_DEFAULT,
-             .static_peers_count = 0
-           },
+           .discovery_options = rmw_get_zero_initialized_discovery_options(),
            .implementation_identifier = NULL,
            .impl = NULL,
            .instance_id = 0,

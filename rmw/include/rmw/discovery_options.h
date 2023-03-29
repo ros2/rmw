@@ -29,8 +29,8 @@ extern "C"
 /// Used to control the range that nodes will be discovered
 typedef enum RMW_PUBLIC_TYPE rmw_automatic_discovery_range_e
 {
-  /// Uses ROS_LOCALHOST_ONLY environment variable.
-  RMW_AUTOMATIC_DISCOVERY_RANGE_DEFAULT = 0,
+  /// Use discovery settings configured directly with the middleware
+  RMW_AUTOMATIC_DISCOVERY_RANGE_SYSTEM_DEFAULT = 0,
   /// Force discovery off
   RMW_AUTOMATIC_DISCOVERY_RANGE_OFF = 1,
   /// Allows discovering nodes on the same host
