@@ -29,14 +29,16 @@ extern "C"
 /// Used to control the range that nodes will be discovered
 typedef enum RMW_PUBLIC_TYPE rmw_automatic_discovery_range_e
 {
-  /// Use discovery settings configured directly with the middleware
-  RMW_AUTOMATIC_DISCOVERY_RANGE_SYSTEM_DEFAULT = 0,
+  /// The discovery range has not been set
+  RMW_AUTOMATIC_DISCOVERY_RANGE_NOT_SET = 0,
   /// Force discovery off
   RMW_AUTOMATIC_DISCOVERY_RANGE_OFF = 1,
   /// Allows discovering nodes on the same host
   RMW_AUTOMATIC_DISCOVERY_RANGE_LOCALHOST = 2,
   /// Allows discovering nodes on the same subnet
   RMW_AUTOMATIC_DISCOVERY_RANGE_SUBNET = 3,
+  /// Use discovery settings configured directly with the middleware
+  RMW_AUTOMATIC_DISCOVERY_RANGE_SYSTEM_DEFAULT = 4,
 } rmw_automatic_discovery_range_t;
 
 /// Maximum length of a peer hostname or IP address
