@@ -50,7 +50,7 @@ typedef enum RMW_PUBLIC_TYPE rmw_feature_e
   /// middleware MUST populate them on type discovery
   RMW_MIDDLEWARE_SUPPORTS_TYPE_DISCOVERY = 2,
   /// dynamic type subscriptions will use take_dynamic_message_with_info()
-  RMW_MIDDLEWARE_CAN_TAKE_DYNAMIC_DATA = 3,
+  RMW_MIDDLEWARE_CAN_TAKE_DYNAMIC_MESSAGE = 3,
 } rmw_feature_t;
 
 /// Query if a feature is supported by the rmw implementation.

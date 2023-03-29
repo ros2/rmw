@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__DYNAMIC_TYPESUPPORT_H_
-#define RMW__DYNAMIC_TYPESUPPORT_H_
+#ifndef RMW__DYNAMIC_MESSAGE_TYPESUPPORT_H_
+#define RMW__DYNAMIC_MESSAGE_TYPESUPPORT_H_
 
 #ifdef __cplusplus
 extern "C"
@@ -21,13 +21,14 @@ extern "C"
 #endif
 
 #include "rmw/features.h"
-#include "rmw/types.h"
+#include "rmw/serialized_message.h"
 #include "rmw/visibility_control.h"
 
 #include <rosidl_dynamic_typesupport/types.h>
 #include <rosidl_dynamic_typesupport/api/serialization_support.h>
 #include <rosidl_runtime_c/message_type_support_struct.h>
 #include <rosidl_runtime_c/type_description/type_description__struct.h>
+
 
 /// Interfaces for runtime interface reflection
 
@@ -37,41 +38,36 @@ extern "C"
 RMW_PUBLIC
 extern const char * rmw_dynamic_typesupport_c__identifier;
 
-// This struct is meant to be populated fully if the rosidl_message_type_support_t is constructed
-// with a given description on the client library end (since the descrpition is obtained via
-// services).
+// Every field of this struct is expected to be populated.
 //
-// Otherwise, it is deferred and MUST be populated on type discovery, if the middleware supports it
+// NOTE(methylDragon): There is an opportunity to defer the population of the members by waiting
+//                     for discovery, but this path is currently not supported.
 //
 // Ownership:
 //   - The struct owns its `description` field. It is responsible for deallocating it.
 //   - The struct owns its `serialization_support` field. It is responsible for deallocating it.
-//   - The struct owns its `dynamic_type` field. It is responsible for deallocating it.
-//   - The struct owns its `dynamic_data` field. It is responsible for deallocating it.
+//   - The struct owns its `dynamic_message_type` field. It is responsible for deallocating it.
+//   - The struct owns its `dynamic_message` field. It is responsible for deallocating it.
 //
 // Downstream classes are expected to borrow the `serialization_support` field, and potentially the
-// `dynamic_type` and `dynamic_data` fields. As such, it is important that this struct outlives
-// those downstream classes.
-typedef struct rmw_dynamic_typesupport_impl_s {
-  bool take_dynamic_data;  // Take dynamic data at the middleware level
-                           // Get from middleware specific link-time function:
-                           // rmw_middleware_can_take_dynamic_data()
-
-  rosidl_runtime_c__type_description__TypeDescription * description;  // Might be unused if dynamic_type is obtained directly
+// `dynamic_message_type` and `dynamic_message` fields. As such, it is important that this struct
+// outlives those downstream classes.
+typedef struct rmw_dynamic_message_typesupport_impl_s {
+  rosidl_runtime_c__type_description__TypeDescription * description;
   rosidl_dynamic_typesupport_serialization_support_t * serialization_support;
 
   // NOTE(methylDragon): I'm unsure if these are necessary. Though I think they are convenient.
-  //                     dynamic_type moreso than dynamic_data.
+  //                     dynamic_message_type moreso than dynamic_message.
   //
   //                     I'd err on including them to be able to support more middlewares
   //
-  //                     The dynamic_type allows us to do a one time alloc and reuse it for
+  //                     The dynamic_message_type allows us to do a one time alloc and reuse it for
   //                     subscription creation and data creation
-  //                     The dynamic_data allows us to either reuse it, or clone it, but it's
-  //                     technically redundant because data can be created from dynamic_type
-  rosidl_dynamic_typesupport_dynamic_type_t * dynamic_type;
-  rosidl_dynamic_typesupport_dynamic_data_t * dynamic_data;
-} rmw_dynamic_typesupport_impl_t;
+  //                     The dynamic_message allows us to either reuse it, or clone it, but it's
+  //                     technically redundant because data can be created from dynamic_message_type
+  rosidl_dynamic_typesupport_dynamic_type_t * dynamic_message_type;
+  rosidl_dynamic_typesupport_dynamic_data_t * dynamic_message;
+} rmw_dynamic_message_typesupport_impl_t;
 
 /// Get dynamic type message typesupport with bound message description
 /**
@@ -97,14 +93,16 @@ typedef struct rmw_dynamic_typesupport_impl_s {
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rosidl_message_type_support_t *
-rmw_get_dynamic_message_typesupport_handle(
+rmw_dynamic_message_typesupport_handle_init(
   rosidl_dynamic_typesupport_serialization_support_t * serialization_support,
   bool middleware_supports_type_discovery,
-  bool middleware_can_take_dynamic_data,
   const rosidl_runtime_c__type_description__TypeDescription * description);
 
 /// Finalize a rosidl_message_type_support_t obtained with
-/// rmw_get_dynamic_message_typesupport_handle
+/// rmw_dynamic_message_typesupport_handle_init, which has dynamically allocated members
+///
+/// NOTE: Using this on a statically allocated typesupport will cause undefined behavior!
+///       (Static memory will get freed in that case.)
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
@@ -114,21 +112,21 @@ rmw_dynamic_message_typesupport_handle_fini(rosidl_message_type_support_t * type
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rosidl_dynamic_typesupport_dynamic_type_t *
-rmw_init_dynamic_type_from_description(
+rmw_init_dynamic_message_type_from_description(
   rosidl_dynamic_typesupport_serialization_support_t * serialization_support,
   const rosidl_runtime_c__type_description__TypeDescription * description);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rosidl_dynamic_typesupport_dynamic_data_t *
-rmw_init_dynamic_data_from_dynamic_type(rosidl_dynamic_typesupport_dynamic_type_t * dynamic_type);
+rmw_init_dynamic_message_from_dynamic_message_type(rosidl_dynamic_typesupport_dynamic_type_t * dynamic_message_type);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rosidl_dynamic_typesupport_dynamic_data_t *
-rmw_clone_dynamic_data(const rosidl_dynamic_typesupport_dynamic_data_t * dynamic_data);
+rmw_clone_dynamic_message(const rosidl_dynamic_typesupport_dynamic_data_t * dynamic_message);
 
-// NOTE(methylDragon): The responsibility is on the user to ensure that the dynamic data's
+// NOTE(methylDragon): The responsibility is on the user to ensure that the dynamic message's
 //                     dynamic type matches the layout of the buffer
 /// The user must provide a rosidl_dynamic_typesupport_dynamic_data_t with dynamic data impl
 /// that matches the serialization library used to serialize the buffer. It must also match the
@@ -136,25 +134,33 @@ rmw_clone_dynamic_data(const rosidl_dynamic_typesupport_dynamic_data_t * dynamic
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_serialized_to_dynamic_data(
+rmw_serialized_to_dynamic_message(
   rmw_serialized_message_t * serialized_message,
-  rosidl_dynamic_typesupport_dynamic_data_t * dynamic_data);
+  rosidl_dynamic_typesupport_dynamic_data_t * dynamic_message);
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_dynamic_data_to_serialized(
-  rosidl_dynamic_typesupport_dynamic_data_t * dynamic_data,
+rmw_dynamic_message_to_serialized(
+  rosidl_dynamic_typesupport_dynamic_data_t * dynamic_message,
   rmw_serialized_message_t * serialized_message);
 
 // INTERFACES FOR RMW IMPLEMENTATIONS TO FULFILL ===================================================
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
+rmw_take_dynamic_message(
+  const rmw_subscription_t * subscription,
+  rosidl_dynamic_typesupport_dynamic_data_t * dynamic_message,
+  bool * taken,
+  rmw_subscription_allocation_t * allocation);
+
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
 rmw_take_dynamic_message_with_info(
   const rmw_subscription_t * subscription,
-  // TODO(methylDragon): To replace with rmw_dynamic_message_t *
-  rosidl_dynamic_typesupport_dynamic_data_t * dynamic_data,
+  rosidl_dynamic_typesupport_dynamic_data_t * dynamic_message,
   bool * taken,
   rmw_message_info_t * message_info,
   rmw_subscription_allocation_t * allocation);
@@ -172,7 +178,7 @@ rmw_get_serialization_support(const char * serialization_lib_name);
 //   const rmw_node_t * node,
 //   const char * topic_name,
 //   const rosidl_message_type_support_t type_support,
-//   rosidl_dynamic_typesupport_dynamic_type_t * dynamic_type);
+//   rosidl_dynamic_typesupport_dynamic_type_t * dynamic_message_type);
 //
 // RMW_PUBLIC
 // RMW_WARN_UNUSED
@@ -181,11 +187,11 @@ rmw_get_serialization_support(const char * serialization_lib_name);
 //   const rmw_node_t * node,
 //   const char * topic_name,
 //   const rosidl_message_type_support_t type_support,
-//   rosidl_dynamic_typesupport_dynamic_data_t * dynamic_data);
+//   rosidl_dynamic_typesupport_dynamic_data_t * dynamic_message);
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  // RMW__DYNAMIC_TYPESUPPORT_H_
+#endif  // RMW__DYNAMIC_MESSAGE_TYPESUPPORT_H_

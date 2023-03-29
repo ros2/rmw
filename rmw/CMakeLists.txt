@@ -38,7 +38,7 @@ set(rmw_sources
   "src/network_flow_endpoint.c"
   "src/publisher_options.c"
   "src/qos_string_conversions.c"
-  "src/dynamic_typesupport.c"
+  "src/dynamic_message_typesupport.c"
   "src/sanity_checks.c"
   "src/security_options.c"
   "src/subscription_content_filter_options.c"

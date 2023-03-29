@@ -17,7 +17,7 @@ extern "C"
 {
 #endif
 
-#include "rmw/dynamic_typesupport.h"
+#include "rmw/dynamic_message_typesupport.h"
 
 #include <rcutils/allocator.h>
 #include <rcutils/logging_macros.h>
@@ -26,18 +26,16 @@ extern "C"
 #include <rosidl_runtime_c/type_description/type_description__functions.h>
 
 
-const char * rmw_dynamic_typesupport_c__identifier =
-  "rmw_dynamic_typesupport_c";
+const char * rmw_dynamic_typesupport_c__identifier = "rmw_dynamic_typesupport_c";
 
 // NOTE(methylDragon): How do we test this? It depends on specific serialization support. Do I just
 //                     use the FastRTPS support then?
 
 /// Create a rosidl_message_type_support_t from a TypeDescription message
 rosidl_message_type_support_t *
-rmw_get_dynamic_message_typesupport_handle(
+rmw_dynamic_message_typesupport_handle_init(
   rosidl_dynamic_typesupport_serialization_support_t * serialization_support,
   bool middleware_supports_type_discovery,
-  bool middleware_can_take_dynamic_data,
   const rosidl_runtime_c__type_description__TypeDescription * description)
 {
   if (!middleware_supports_type_discovery && description == NULL) {
@@ -47,8 +45,20 @@ rmw_get_dynamic_message_typesupport_handle(
                             "description!");
     return NULL;
   }
+  if (description == NULL) {  // TODO: Remove if and when the deferred description path is supported
+    RCUTILS_LOG_ERROR_NAMED(
+      rmw_dynamic_typesupport_c__identifier,
+      "Deferred type description is not currently supported. You must provide a type description.");
+    return NULL;
+  }
 
-  // TODO(methylDragon): Do I need to use an allocator...?
+  if (serialization_support == NULL) {
+    RCUTILS_LOG_ERROR_NAMED(
+      rmw_dynamic_typesupport_c__identifier,
+      "serialization_support cannot be nullptr.");
+    return NULL;
+  }
+
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
   rosidl_message_type_support_t * ts = allocator.zero_allocate(
     1, sizeof(rosidl_message_type_support_t), allocator.state);
@@ -60,17 +70,17 @@ rmw_get_dynamic_message_typesupport_handle(
 
   ts->typesupport_identifier = rmw_dynamic_typesupport_c__identifier;
 
-  // NOTE(methylDragon): To populate dynamic_type and description if deferred, OUTSIDE
-  ts->data = allocator.zero_allocate(1, sizeof(rmw_dynamic_typesupport_impl_t), allocator.state);
+  ts->data =
+    allocator.zero_allocate(1, sizeof(rmw_dynamic_message_typesupport_impl_t), allocator.state);
   if(!ts) {
     RCUTILS_LOG_ERROR_NAMED(rmw_dynamic_typesupport_c__identifier,
-                            "Could not allocate rmw_dynamic_typesupport_impl_t struct");
+                            "Could not allocate rmw_dynamic_message_typesupport_impl_t struct");
     goto fail;
   }
 
-  rmw_dynamic_typesupport_impl_t * ts_impl = (rmw_dynamic_typesupport_impl_t *)ts->data;
+  rmw_dynamic_message_typesupport_impl_t * ts_impl =
+    (rmw_dynamic_message_typesupport_impl_t *)ts->data;
 
-  ts_impl->take_dynamic_data = middleware_can_take_dynamic_data;
   ts_impl->serialization_support = serialization_support;
   ts->func = get_message_typesupport_handle_function;
 
@@ -91,18 +101,18 @@ rmw_get_dynamic_message_typesupport_handle(
     }
   }
 
-  ts_impl->dynamic_type = rmw_init_dynamic_type_from_description(ts_impl->serialization_support, description);
-  if (!ts_impl->dynamic_type) {
+  ts_impl->dynamic_message_type = rmw_init_dynamic_message_type_from_description(ts_impl->serialization_support, description);
+  if (!ts_impl->dynamic_message_type) {
     RCUTILS_LOG_ERROR_NAMED(rmw_dynamic_typesupport_c__identifier,
-                            "Could not construct dynamic type for rmw_dynamic_typesupport_impl_t struct");
+                            "Could not construct dynamic type for rmw_dynamic_message_typesupport_impl_t struct");
     goto fail;
   }
 
-  ts_impl->dynamic_data =
-    rmw_init_dynamic_data_from_dynamic_type(ts_impl->dynamic_type);
-  if (!ts_impl->dynamic_data) {
+  ts_impl->dynamic_message =
+    rmw_init_dynamic_message_from_dynamic_message_type(ts_impl->dynamic_message_type);
+  if (!ts_impl->dynamic_message) {
     RCUTILS_LOG_ERROR_NAMED(rmw_dynamic_typesupport_c__identifier,
-                            "Could not construct dynamic data for rmw_dynamic_typesupport_impl_t struct");
+                            "Could not construct dynamic data for rmw_dynamic_message_typesupport_impl_t struct");
     goto fail;
   }
 
@@ -129,51 +139,56 @@ rmw_dynamic_message_typesupport_handle_fini(rosidl_message_type_support_t * ts)
   }
 
   if (ts->data) {
-    rmw_dynamic_typesupport_impl_t * ts_impl = (rmw_dynamic_typesupport_impl_t *)ts->data;
+    rmw_dynamic_message_typesupport_impl_t * ts_impl =
+      (rmw_dynamic_message_typesupport_impl_t *)ts->data;
     if (ts_impl->description) {
       rosidl_runtime_c__type_description__TypeDescription__fini(ts_impl->description);
     }
-    if (ts_impl->dynamic_type) {
-      rosidl_dynamic_typesupport_dynamic_type_fini(ts_impl->dynamic_type);
+    if (ts_impl->dynamic_message_type) {
+      rosidl_dynamic_typesupport_dynamic_type_fini(ts_impl->dynamic_message_type);
     }
-    if (ts_impl->dynamic_data) {
-      rosidl_dynamic_typesupport_dynamic_data_fini(ts_impl->dynamic_data);
+    if (ts_impl->dynamic_message) {
+      rosidl_dynamic_typesupport_dynamic_data_fini(ts_impl->dynamic_message);
     }
   }
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
   allocator.deallocate((void *)ts->data, allocator.state);
+  allocator.deallocate((void *)ts->type_hash, allocator.state);
   allocator.deallocate(ts, allocator.state);
   return RMW_RET_OK;
 }
 
 
 rosidl_dynamic_typesupport_dynamic_type_t *
-rmw_init_dynamic_type_from_description(rosidl_dynamic_typesupport_serialization_support_t * serialization_support, const rosidl_runtime_c__type_description__TypeDescription * description)
+rmw_init_dynamic_message_type_from_description(
+  rosidl_dynamic_typesupport_serialization_support_t * serialization_support,
+  const rosidl_runtime_c__type_description__TypeDescription * description)
 {
-  return rosidl_dynamic_typesupport_dynamic_type_init_from_description(serialization_support, description);
+  return rosidl_dynamic_typesupport_dynamic_type_init_from_description(
+    serialization_support, description);
 }
 
 
 rosidl_dynamic_typesupport_dynamic_data_t *
-rmw_init_dynamic_data_from_dynamic_type(rosidl_dynamic_typesupport_dynamic_type_t * dynamic_type)
+rmw_init_dynamic_message_from_dynamic_message_type(rosidl_dynamic_typesupport_dynamic_type_t * dynamic_message_type)
 {
-  return rosidl_dynamic_typesupport_dynamic_data_init_from_dynamic_type(dynamic_type);
+  return rosidl_dynamic_typesupport_dynamic_data_init_from_dynamic_type(dynamic_message_type);
 }
 
 
 rosidl_dynamic_typesupport_dynamic_data_t *
-rmw_clone_dynamic_data(const rosidl_dynamic_typesupport_dynamic_data_t * dynamic_data)
+rmw_clone_dynamic_message(const rosidl_dynamic_typesupport_dynamic_data_t * dynamic_message)
 {
-  return rosidl_dynamic_typesupport_dynamic_data_clone(dynamic_data);
+  return rosidl_dynamic_typesupport_dynamic_data_clone(dynamic_message);
 }
 
 
 rmw_ret_t
-rmw_serialized_to_dynamic_data(
+rmw_serialized_to_dynamic_message(
   rmw_serialized_message_t * serialized_message,
-  rosidl_dynamic_typesupport_dynamic_data_t * dynamic_data)
+  rosidl_dynamic_typesupport_dynamic_data_t * dynamic_message)
 {
-  if (rosidl_dynamic_typesupport_dynamic_data_deserialize(dynamic_data, serialized_message)) {
+  if (rosidl_dynamic_typesupport_dynamic_data_deserialize(dynamic_message, serialized_message)) {
     return RMW_RET_OK;
   } else {
     RCUTILS_LOG_ERROR_NAMED(rmw_dynamic_typesupport_c__identifier,
@@ -185,11 +200,11 @@ rmw_serialized_to_dynamic_data(
 
 
 rmw_ret_t
-rmw_dynamic_data_to_serialized(
-  rosidl_dynamic_typesupport_dynamic_data_t * dynamic_data,
+rmw_dynamic_message_to_serialized(
+  rosidl_dynamic_typesupport_dynamic_data_t * dynamic_message,
   rmw_serialized_message_t * serialized_message)
 {
-  if (rosidl_dynamic_typesupport_dynamic_data_serialize(dynamic_data, serialized_message)) {
+  if (rosidl_dynamic_typesupport_dynamic_data_serialize(dynamic_message, serialized_message)) {
     return RMW_RET_OK;
   } else {
     RCUTILS_LOG_ERROR_NAMED(rmw_dynamic_typesupport_c__identifier,
