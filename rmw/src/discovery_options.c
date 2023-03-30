@@ -47,6 +47,11 @@ rmw_discovery_options_init(
     return RMW_RET_INVALID_ARGUMENT;
   }
 
+  if (RMW_AUTOMATIC_DISCOVERY_RANGE_NOT_SET == discovery_options->automatic_discovery_range) {
+    // Default to localhost
+    discovery_options->automatic_discovery_range = RMW_AUTOMATIC_DISCOVERY_RANGE_LOCALHOST;
+  }
+
   if (0u == size) {
     // Nothing to do
     return RMW_RET_OK;
