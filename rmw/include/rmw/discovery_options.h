@@ -54,6 +54,11 @@ typedef struct rmw_peer_address_s
 typedef struct RMW_PUBLIC_TYPE rmw_discovery_options_s
 {
   /// How far to allow discovering nodes
+  /**
+   * This needs to be set to something other than RMW_AUTOMATIC_DISCOVERY_RANGE_NOT_SET,
+   * because that is just a sentinel value to see if this was set, but rmw
+   * implementations should error if this is what is given during context init.
+   */
   rmw_automatic_discovery_range_t automatic_discovery_range;
 
   /// The list of manually-specified peers to perform static discovery with
