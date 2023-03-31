@@ -141,12 +141,19 @@ rmw_discovery_options_copy(
   dst->automatic_discovery_range = src->automatic_discovery_range;
 
   for (size_t i = 0; i < src->static_peers_count; i++) {
+#ifdef _WIN32
+    strncpy_s(
+      dst->static_peers[i].peer_address,
+      RMW_DISCOVERY_OPTIONS_STATIC_PEERS_MAX_LENGTH,
+      src->static_peers[i].peer_address,
+      RMW_DISCOVERY_OPTIONS_STATIC_PEERS_MAX_LENGTH);
+#else
     strncpy(
       dst->static_peers[i].peer_address,
       src->static_peers[i].peer_address,
       RMW_DISCOVERY_OPTIONS_STATIC_PEERS_MAX_LENGTH);
-    dst->static_peers[i].peer_address[
-      RMW_DISCOVERY_OPTIONS_STATIC_PEERS_MAX_LENGTH - 1] = '\0';
+    dst->static_peers[i].peer_address[RMW_DISCOVERY_OPTIONS_STATIC_PEERS_MAX_LENGTH - 1] = '\0';
+#endif
   }
 
   return RMW_RET_OK;
