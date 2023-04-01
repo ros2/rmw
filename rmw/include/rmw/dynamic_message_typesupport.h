@@ -20,14 +20,14 @@ extern "C"
 {
 #endif
 
-#include "rmw/features.h"
-#include "rmw/serialized_message.h"
-#include "rmw/visibility_control.h"
-
 #include <rosidl_dynamic_typesupport/types.h>
 #include <rosidl_dynamic_typesupport/api/serialization_support.h>
 #include <rosidl_runtime_c/message_type_support_struct.h>
 #include <rosidl_runtime_c/type_description/type_description__struct.h>
+
+#include "rmw/features.h"
+#include "rmw/serialized_message.h"
+#include "rmw/visibility_control.h"
 
 
 /// Interfaces for runtime interface reflection
@@ -52,7 +52,8 @@ extern const char * rmw_dynamic_typesupport_c__identifier;
 // Downstream classes are expected to borrow the `serialization_support` field, and potentially the
 // `dynamic_message_type` and `dynamic_message` fields. As such, it is important that this struct
 // outlives those downstream classes.
-typedef struct rmw_dynamic_message_typesupport_impl_s {
+typedef struct rmw_dynamic_message_typesupport_impl_s
+{
   rosidl_runtime_c__type_description__TypeDescription * description;
   rosidl_dynamic_typesupport_serialization_support_t * serialization_support;
 
@@ -109,7 +110,8 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_dynamic_message_typesupport_handle_fini(rosidl_message_type_support_t * type_support);
 
-/// Construct serialization support-specific rosidl_dynamic_typesupport_dynamic_type_t from a given type description
+/// Construct serialization support-specific rosidl_dynamic_typesupport_dynamic_type_t from a given
+/// type description
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t

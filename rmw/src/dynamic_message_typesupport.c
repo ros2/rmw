@@ -17,15 +17,15 @@ extern "C"
 {
 #endif
 
-#include "rmw/convert_rcutils_ret_to_rmw_ret.h"
-#include "rmw/dynamic_message_typesupport.h"
-#include "rmw/error_handling.h"
-
 #include <rcutils/allocator.h>
 #include <rcutils/logging_macros.h>
 #include <rosidl_runtime_c/message_type_support_struct.h>
 #include <rosidl_runtime_c/type_description/type_description__struct.h>
 #include <rosidl_runtime_c/type_description/type_description__functions.h>
+
+#include "rmw/convert_rcutils_ret_to_rmw_ret.h"
+#include "rmw/dynamic_message_typesupport.h"
+#include "rmw/error_handling.h"
 
 
 const char * rmw_dynamic_typesupport_c__identifier = "rmw_dynamic_typesupport_c";
@@ -47,7 +47,8 @@ rmw_dynamic_message_typesupport_handle_init(
       "never be populated. You must provide a type description.");
     return RMW_RET_INVALID_ARGUMENT;
   }
-  if (description == NULL) {  // TODO: Remove if and when the deferred description path is supported
+  // TODO(methylDragon): Remove if and when the deferred description path is supported
+  if (description == NULL) {
     RMW_SET_ERROR_MSG(
       "Deferred type description is not currently supported. You must provide a type description.");
     return RMW_RET_INVALID_ARGUMENT;
