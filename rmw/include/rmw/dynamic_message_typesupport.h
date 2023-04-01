@@ -92,11 +92,12 @@ typedef struct rmw_dynamic_message_typesupport_impl_s {
  */
 RMW_PUBLIC
 RMW_WARN_UNUSED
-rosidl_message_type_support_t *
+rmw_ret_t
 rmw_dynamic_message_typesupport_handle_init(
   rosidl_dynamic_typesupport_serialization_support_t * serialization_support,
   bool middleware_supports_type_discovery,
-  const rosidl_runtime_c__type_description__TypeDescription * description);
+  const rosidl_runtime_c__type_description__TypeDescription * description,
+  rosidl_message_type_support_t ** ts);  // OUT
 
 /// Finalize a rosidl_message_type_support_t obtained with
 /// rmw_dynamic_message_typesupport_handle_init, which has dynamically allocated members
@@ -111,20 +112,25 @@ rmw_dynamic_message_typesupport_handle_fini(rosidl_message_type_support_t * type
 /// Construct serialization support-specific rosidl_dynamic_typesupport_dynamic_type_t from a given type description
 RMW_PUBLIC
 RMW_WARN_UNUSED
-rosidl_dynamic_typesupport_dynamic_type_t *
+rmw_ret_t
 rmw_init_dynamic_message_type_from_description(
   rosidl_dynamic_typesupport_serialization_support_t * serialization_support,
-  const rosidl_runtime_c__type_description__TypeDescription * description);
+  const rosidl_runtime_c__type_description__TypeDescription * description,
+  rosidl_dynamic_typesupport_dynamic_type_t ** ts);  // OUT
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
-rosidl_dynamic_typesupport_dynamic_data_t *
-rmw_init_dynamic_message_from_dynamic_message_type(rosidl_dynamic_typesupport_dynamic_type_t * dynamic_message_type);
+rmw_ret_t
+rmw_init_dynamic_message_from_dynamic_message_type(
+  rosidl_dynamic_typesupport_dynamic_type_t * dynamic_message_type,
+  rosidl_dynamic_typesupport_dynamic_data_t ** cloned_dynamic_message_type);  // OUT
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
-rosidl_dynamic_typesupport_dynamic_data_t *
-rmw_clone_dynamic_message(const rosidl_dynamic_typesupport_dynamic_data_t * dynamic_message);
+rmw_ret_t
+rmw_clone_dynamic_message(
+  const rosidl_dynamic_typesupport_dynamic_data_t * dynamic_message,
+  rosidl_dynamic_typesupport_dynamic_data_t ** cloned_dynamic_message);  // OUT
 
 // NOTE(methylDragon): The responsibility is on the user to ensure that the dynamic message's
 //                     dynamic type matches the layout of the buffer
@@ -167,8 +173,10 @@ rmw_take_dynamic_message_with_info(
 
 RMW_PUBLIC
 RMW_WARN_UNUSED
-rosidl_dynamic_typesupport_serialization_support_t *
-rmw_get_serialization_support(const char * serialization_lib_name);
+rmw_ret_t
+rmw_get_serialization_support(
+  const char * serialization_lib_name,
+  rosidl_dynamic_typesupport_serialization_support_t ** serialization_support);  // OUT
 
 // TODO(methylDragon): Nice to have only
 // RMW_PUBLIC
