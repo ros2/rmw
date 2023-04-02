@@ -27,6 +27,7 @@ extern "C"
 // map rcutils specific log levels to rmw speicfic type
 #include <rcutils/logging.h>
 
+#include "rmw/dynamic_message_typesupport_identifier.h"
 #include "rmw/events_statuses/events_statuses.h"
 #include "rmw/init.h"
 #include "rmw/init_options.h"

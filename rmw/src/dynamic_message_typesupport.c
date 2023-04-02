@@ -25,6 +25,7 @@ extern "C"
 
 #include "rmw/convert_rcutils_ret_to_rmw_ret.h"
 #include "rmw/dynamic_message_typesupport.h"
+#include "rmw/dynamic_message_typesupport_identifier.h"
 #include "rmw/error_handling.h"
 
 

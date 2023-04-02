@@ -25,6 +25,7 @@ extern "C"
 #include <rosidl_runtime_c/message_type_support_struct.h>
 #include <rosidl_runtime_c/type_description/type_description__struct.h>
 
+#include "rmw/dynamic_message_typesupport_identifier.h"
 #include "rmw/features.h"
 #include "rmw/serialized_message.h"
 #include "rmw/visibility_control.h"
@@ -33,11 +34,6 @@ extern "C"
 /// Interfaces for runtime interface reflection
 
 // RUNTIME INTERFACE REFLECTION TYPE SUPPORT =======================================================
-/// String identifying the typesupport introspection implementation in use.
-// NOTE(methylDragon): I don't know if this is supposed to be in an identifier.h file
-RMW_PUBLIC
-extern const char * rmw_dynamic_typesupport_c__identifier;
-
 // Every field of this struct is expected to be populated.
 //
 // NOTE(methylDragon): There is an opportunity to defer the population of the members by waiting
