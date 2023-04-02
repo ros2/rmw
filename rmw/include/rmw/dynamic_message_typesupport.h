@@ -98,6 +98,7 @@ rmw_dynamic_message_typesupport_handle_init(
   rosidl_dynamic_typesupport_serialization_support_t * serialization_support,
   bool middleware_supports_type_discovery,
   const rosidl_runtime_c__type_description__TypeDescription * description,
+  rosidl_type_hash_t * type_hash,
   rosidl_message_type_support_t ** ts);  // OUT
 
 /// Finalize a rosidl_message_type_support_t obtained with

@@ -39,6 +39,7 @@ rmw_dynamic_message_typesupport_handle_init(
   rosidl_dynamic_typesupport_serialization_support_t * serialization_support,
   bool middleware_supports_type_discovery,
   const rosidl_runtime_c__type_description__TypeDescription * description,
+  rosidl_type_hash_t * type_hash,
   rosidl_message_type_support_t ** ts)
 {
   if (!middleware_supports_type_discovery && description == NULL) {
@@ -54,6 +55,8 @@ rmw_dynamic_message_typesupport_handle_init(
     return RMW_RET_INVALID_ARGUMENT;
   }
   RMW_CHECK_ARGUMENT_FOR_NULL(serialization_support, RMW_RET_INVALID_ARGUMENT);
+  RMW_CHECK_ARGUMENT_FOR_NULL(type_hash, RMW_RET_INVALID_ARGUMENT);
+  RMW_CHECK_ARGUMENT_FOR_NULL(ts, RMW_RET_INVALID_ARGUMENT);
 
   rmw_ret_t ret = RMW_RET_ERROR;
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
@@ -64,6 +67,7 @@ rmw_dynamic_message_typesupport_handle_init(
   }
 
   (*ts)->typesupport_identifier = rmw_dynamic_typesupport_c__identifier;
+  (*ts)->type_hash = type_hash;
 
   (*ts)->data = allocator.zero_allocate(
     1, sizeof(rmw_dynamic_message_typesupport_impl_t), allocator.state);
