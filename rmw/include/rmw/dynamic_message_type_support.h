@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__DYNAMIC_MESSAGE_TYPESUPPORT_H_
-#define RMW__DYNAMIC_MESSAGE_TYPESUPPORT_H_
+#ifndef RMW__DYNAMIC_MESSAGE_TYPE_SUPPORT_H_
+#define RMW__DYNAMIC_MESSAGE_TYPE_SUPPORT_H_
 
 #ifdef __cplusplus
 extern "C"
@@ -24,8 +24,9 @@ extern "C"
 #include <rosidl_dynamic_typesupport/api/serialization_support.h>
 #include <rosidl_runtime_c/message_type_support_struct.h>
 #include <rosidl_runtime_c/type_description/type_description__struct.h>
+#include <rosidl_runtime_c/type_description/type_source__struct.h>
 
-#include "rmw/dynamic_message_typesupport_identifier.h"
+#include "rmw/dynamic_typesupport_identifier.h"
 #include "rmw/features.h"
 #include "rmw/serialized_message.h"
 #include "rmw/visibility_control.h"
@@ -48,9 +49,13 @@ extern "C"
 // Downstream classes are expected to borrow the `serialization_support` field, and potentially the
 // `dynamic_message_type` and `dynamic_message` fields. As such, it is important that this struct
 // outlives those downstream classes.
-typedef struct rmw_dynamic_message_typesupport_impl_s
+typedef struct rmw_dynamic_message_type_support_impl_s
 {
-  rosidl_runtime_c__type_description__TypeDescription * description;
+  rosidl_type_hash_t * type_hash;
+  rosidl_runtime_c__type_description__TypeDescription * type_description;
+
+  // NOTE(methylDragon): Unused for now, but placed here just in case
+  rosidl_runtime_c__type_description__TypeSource__Sequence * type_description_sources;
   rosidl_dynamic_typesupport_serialization_support_t * serialization_support;
 
   // NOTE(methylDragon): I'm unsure if these are necessary. Though I think they are convenient.
@@ -64,7 +69,25 @@ typedef struct rmw_dynamic_message_typesupport_impl_s
   //                     technically redundant because data can be created from dynamic_message_type
   rosidl_dynamic_typesupport_dynamic_type_t * dynamic_message_type;
   rosidl_dynamic_typesupport_dynamic_data_t * dynamic_message;
-} rmw_dynamic_message_typesupport_impl_t;
+} rmw_dynamic_message_type_support_impl_t;
+
+/// Return type_hash member in rmw_dynamic_message_type_support_impl_t
+RMW_PUBLIC
+const rosidl_type_hash_t *
+rmw_dynamic_message_type_support_get_type_hash_function(
+  const rosidl_message_type_support_t * type_support);
+
+/// Return description member in rmw_dynamic_message_type_support_impl_t
+RMW_PUBLIC
+const rosidl_runtime_c__type_description__TypeDescription *
+rmw_dynamic_message_type_support_get_type_description_function(
+  const rosidl_message_type_support_t * type_support);
+
+/// Return type_description_sources member in rmw_dynamic_message_type_support_impl_t
+RMW_PUBLIC
+const rosidl_runtime_c__type_description__TypeSource__Sequence *
+rmw_dynamic_message_type_support_get_type_description_sources_function(
+  const rosidl_message_type_support_t * type_support);
 
 /// Get dynamic type message typesupport with bound message description
 /**
@@ -90,22 +113,23 @@ typedef struct rmw_dynamic_message_typesupport_impl_s
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_dynamic_message_typesupport_handle_init(
+rmw_dynamic_message_type_support_handle_init(
   rosidl_dynamic_typesupport_serialization_support_t * serialization_support,
   bool middleware_supports_type_discovery,
-  const rosidl_runtime_c__type_description__TypeDescription * description,
-  rosidl_type_hash_t * type_hash,
+  const rosidl_type_hash_t * type_hash,
+  const rosidl_runtime_c__type_description__TypeDescription * type_description,
+  const rosidl_runtime_c__type_description__TypeSource__Sequence * type_description_sources,
   rosidl_message_type_support_t ** ts);  // OUT
 
 /// Finalize a rosidl_message_type_support_t obtained with
-/// rmw_dynamic_message_typesupport_handle_init, which has dynamically allocated members
+/// rmw_dynamic_message_type_support_handle_init, which has dynamically allocated members
 ///
 /// NOTE: Using this on a statically allocated typesupport will cause undefined behavior!
 ///       (Static memory will get freed in that case.)
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_dynamic_message_typesupport_handle_fini(rosidl_message_type_support_t * type_support);
+rmw_dynamic_message_type_support_handle_fini(rosidl_message_type_support_t * type_support);
 
 /// Construct serialization support-specific rosidl_dynamic_typesupport_dynamic_type_t from a given
 /// type description
@@ -114,7 +138,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_init_dynamic_message_type_from_description(
   rosidl_dynamic_typesupport_serialization_support_t * serialization_support,
-  const rosidl_runtime_c__type_description__TypeDescription * description,
+  const rosidl_runtime_c__type_description__TypeDescription * type_description,
   rosidl_dynamic_typesupport_dynamic_type_t ** ts);  // OUT
 
 RMW_PUBLIC
@@ -201,4 +225,4 @@ rmw_get_serialization_support(
 }
 #endif
 
-#endif  // RMW__DYNAMIC_MESSAGE_TYPESUPPORT_H_
+#endif  // RMW__DYNAMIC_MESSAGE_TYPE_SUPPORT_H_

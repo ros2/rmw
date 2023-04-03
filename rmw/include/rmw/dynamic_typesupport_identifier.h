@@ -12,9 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RMW__DYNAMIC_MESSAGE_TYPESUPPORT_IDENTIFIER_H_
-#define RMW__DYNAMIC_MESSAGE_TYPESUPPORT_IDENTIFIER_H_
+#ifndef RMW__DYNAMIC_TYPESUPPORT_IDENTIFIER_H_
+#define RMW__DYNAMIC_TYPESUPPORT_IDENTIFIER_H_
 
+#include "rmw/macros.h"
 #include "rmw/visibility_control.h"
 
 #ifdef __cplusplus
@@ -24,12 +25,20 @@ extern "C"
 
 
 /// String identifying the typesupport introspection implementation in use.
+extern const char * const rmw_dynamic_typesupport_c__identifier;
+
+/// Get the name of the rmw_dynamic_typesupport_c identifier
+/**
+ * \return Name of rmw_dynamic_typesupport_c identifier
+ */
 RMW_PUBLIC
-extern const char * rmw_dynamic_typesupport_c__identifier;
+RMW_WARN_UNUSED
+const char *
+rmw_get_dynamic_typesupport_identifier(void);
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif  // RMW__DYNAMIC_MESSAGE_TYPESUPPORT_IDENTIFIER_H_
+#endif  // RMW__DYNAMIC_TYPESUPPORT_IDENTIFIER_H_
