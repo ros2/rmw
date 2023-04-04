@@ -19,6 +19,8 @@ extern "C"
 
 #include <rcutils/allocator.h>
 #include <rcutils/logging_macros.h>
+#include <rosidl_dynamic_typesupport/dynamic_message_type_support_struct.h>
+#include <rosidl_dynamic_typesupport/identifier.h>
 #include <rosidl_runtime_c/message_type_support_struct.h>
 #include <rosidl_runtime_c/type_description/type_description__struct.h>
 #include <rosidl_runtime_c/type_description/type_description__functions.h>
@@ -26,7 +28,6 @@ extern "C"
 
 #include "rmw/convert_rcutils_ret_to_rmw_ret.h"
 #include "rmw/dynamic_message_type_support.h"
-#include "rmw/dynamic_typesupport_identifier.h"
 #include "rmw/error_handling.h"
 #include "rmw/visibility_control.h"
 
@@ -56,6 +57,7 @@ rmw_dynamic_message_type_support_handle_init(
       "Deferred type description is not currently supported. You must provide a type description.");
     return RMW_RET_INVALID_ARGUMENT;
   }
+
   RMW_CHECK_ARGUMENT_FOR_NULL(serialization_support, RMW_RET_INVALID_ARGUMENT);
   RMW_CHECK_ARGUMENT_FOR_NULL(type_hash, RMW_RET_INVALID_ARGUMENT);
   RMW_CHECK_ARGUMENT_FOR_NULL(type_description, RMW_RET_INVALID_ARGUMENT);
@@ -64,189 +66,24 @@ rmw_dynamic_message_type_support_handle_init(
   // NOTE(methylDragon): Not supported for now
   // RMW_CHECK_ARGUMENT_FOR_NULL(type_description_sources, RMW_RET_INVALID_ARGUMENT);
 
-  rmw_ret_t ret = RMW_RET_ERROR;
-  rcutils_allocator_t allocator = rcutils_get_default_allocator();
-  *ts = allocator.zero_allocate(1, sizeof(rosidl_message_type_support_t), allocator.state);
-  if (!*ts) {
-    RMW_SET_ERROR_MSG("Could not allocate rosidl_message_type_support_t struct");
-    return RMW_RET_BAD_ALLOC;
-  }
-
-  (*ts)->data = allocator.zero_allocate(
-    1, sizeof(rmw_dynamic_message_type_support_impl_t), allocator.state);
-  if (!ts) {
-    RMW_SET_ERROR_MSG("Could not allocate rmw_dynamic_message_type_support_impl_t struct");
-    ret = RMW_RET_BAD_ALLOC;
-    goto fail;
-  }
-
-  rmw_dynamic_message_type_support_impl_t * ts_impl =
-    (rmw_dynamic_message_type_support_impl_t *) (*ts)->data;
-
-  // Copy init type hash (never null (checked above))
-  ts_impl->type_hash = allocator.zero_allocate(1, sizeof(rosidl_type_hash_t), allocator.state);
-  if (!ts_impl->type_hash) {
-    RMW_SET_ERROR_MSG("Could not create type hash to assign into");
-    ret = RMW_RET_BAD_ALLOC;
-    goto fail;
-  }
-
-  ts_impl->type_hash->version = type_hash->version;
-  memcpy(ts_impl->type_hash->value, type_hash->value, sizeof(type_hash->value));
-
-  // Copy init type description (never null (checked above))
-  ts_impl->type_description = rosidl_runtime_c__type_description__TypeDescription__create();
-  if (ts_impl->type_description == NULL) {
-    RMW_SET_ERROR_MSG("Could not create type description to assign into");
-    ret = RMW_RET_BAD_ALLOC;
-    goto fail;
-  }
-
-  if (!rosidl_runtime_c__type_description__TypeDescription__copy(
-      type_description, ts_impl->type_description))
-  {
-    RMW_SET_ERROR_MSG("Could not copy type description");
-    ret = RMW_RET_ERROR;
-    goto fail;
-  }
-
-  // Copy init type description sources (might be null)
-  if (type_description_sources != NULL) {
-    ts_impl->type_description_sources =
-      rosidl_runtime_c__type_description__TypeSource__Sequence__create(
-      type_description_sources->size);
-    if (ts_impl->type_description_sources == NULL) {
-      RMW_SET_ERROR_MSG("Could not create type description sources sequence to assign into");
-      ret = RMW_RET_BAD_ALLOC;
-      goto fail;
-    }
-
-    if (!rosidl_runtime_c__type_description__TypeSource__Sequence__copy(
-        type_description_sources, ts_impl->type_description_sources))
-    {
-      RMW_SET_ERROR_MSG("Could not copy type description sources");
-      ret = RMW_RET_ERROR;
-      goto fail;
-    }
-  }
-
-  ts_impl->serialization_support = serialization_support;
-
-  (*ts)->typesupport_identifier = rmw_dynamic_typesupport_c__identifier;
-  (*ts)->func = get_message_typesupport_handle_function;
-  (*ts)->get_type_hash_func = rmw_dynamic_message_type_support_get_type_hash_function;
-  (*ts)->get_type_description_func = rmw_dynamic_message_type_support_get_type_description_function;
-  (*ts)->get_type_description_sources_func =
-    rmw_dynamic_message_type_support_get_type_description_sources_function;
-
-  ret = rmw_convert_rcutils_ret_to_rmw_ret(
-    rmw_init_dynamic_message_type_from_description(
-      ts_impl->serialization_support, type_description, &ts_impl->dynamic_message_type));
-  if (ret != RMW_RET_OK || !ts_impl->dynamic_message_type) {
-    RMW_SET_ERROR_MSG(
-      "Could not construct dynamic type for rmw_dynamic_message_type_support_impl_t struct");
-    goto fail;
-  }
-
-  ret = rmw_init_dynamic_message_from_dynamic_message_type(
-    ts_impl->dynamic_message_type, &ts_impl->dynamic_message);
-  if (ret != RMW_RET_OK || !ts_impl->dynamic_message) {
-    RMW_SET_ERROR_MSG(
-      "Could not construct dynamic data for rmw_dynamic_message_type_support_impl_t struct");
-    goto fail;
-  }
-
-  return RMW_RET_OK;
-
-fail:
-  if (rmw_dynamic_message_type_support_handle_fini(*ts) != RMW_RET_OK) {
-    RCUTILS_LOG_ERROR_NAMED(
-      rmw_dynamic_typesupport_c__identifier,
-      "Could not finalize dynamic type typesupport");
-  }
-  return ret;
-}
-
-
-const rosidl_type_hash_t *
-rmw_dynamic_message_type_support_get_type_hash_function(
-  const rosidl_message_type_support_t * type_support)
-{
-  const rosidl_message_type_support_t * ts = get_message_typesupport_handle(
-    type_support, rmw_dynamic_typesupport_c__identifier);
-  if (ts == NULL) {
-    return NULL;
-  }
-  rmw_dynamic_message_type_support_impl_t * ts_impl =
-    (rmw_dynamic_message_type_support_impl_t *) ts->data;
-  return ts_impl->type_hash;
-}
-
-
-const rosidl_runtime_c__type_description__TypeDescription *
-rmw_dynamic_message_type_support_get_type_description_function(
-  const rosidl_message_type_support_t * type_support)
-{
-  const rosidl_message_type_support_t * ts = get_message_typesupport_handle(
-    type_support, rmw_dynamic_typesupport_c__identifier);
-  if (ts == NULL) {
-    return NULL;
-  }
-  rmw_dynamic_message_type_support_impl_t * ts_impl =
-    (rmw_dynamic_message_type_support_impl_t *) ts->data;
-  return ts_impl->type_description;
-}
-
-
-const rosidl_runtime_c__type_description__TypeSource__Sequence *
-rmw_dynamic_message_type_support_get_type_description_sources_function(
-  const rosidl_message_type_support_t * type_support)
-{
-  const rosidl_message_type_support_t * ts = get_message_typesupport_handle(
-    type_support, rmw_dynamic_typesupport_c__identifier);
-  if (ts == NULL) {
-    return NULL;
-  }
-  rmw_dynamic_message_type_support_impl_t * ts_impl =
-    (rmw_dynamic_message_type_support_impl_t *) ts->data;
-  return ts_impl->type_description_sources;
+  return rmw_convert_rcutils_ret_to_rmw_ret(
+    rosidl_dynamic_message_type_support_handle_init(
+      serialization_support, type_hash, type_description, type_description_sources, ts));
 }
 
 
 rmw_ret_t
-rmw_dynamic_message_type_support_handle_fini(rosidl_message_type_support_t * ts)
+rmw_dynamic_message_type_support_handle_destroy(rosidl_message_type_support_t * ts)
 {
   RCUTILS_CHECK_ARGUMENT_FOR_NULL(ts, RMW_RET_INVALID_ARGUMENT);
+  return rmw_convert_rcutils_ret_to_rmw_ret(rosidl_dynamic_message_type_support_handle_destroy(ts));
+}
 
-  // NOTE(methylDragon): Ignores const...
-  if (ts->typesupport_identifier != rmw_dynamic_typesupport_c__identifier) {
-    RCUTILS_SET_ERROR_MSG("type support not from this implementation");
-    return RMW_RET_INVALID_ARGUMENT;
-  }
 
-  rcutils_allocator_t allocator = rcutils_get_default_allocator();
-
-  if (ts->data) {
-    rmw_dynamic_message_type_support_impl_t * ts_impl =
-      (rmw_dynamic_message_type_support_impl_t *)ts->data;
-    if (ts_impl->type_description) {
-      rosidl_runtime_c__type_description__TypeDescription__fini(ts_impl->type_description);
-    }
-    if (ts_impl->type_description_sources) {
-      rosidl_runtime_c__type_description__TypeSource__Sequence__fini(
-        ts_impl->type_description_sources);
-    }
-    if (ts_impl->dynamic_message_type) {
-      rosidl_dynamic_typesupport_dynamic_type_fini(ts_impl->dynamic_message_type);
-    }
-    if (ts_impl->dynamic_message) {
-      rosidl_dynamic_typesupport_dynamic_data_fini(ts_impl->dynamic_message);
-    }
-    allocator.deallocate(ts_impl->type_hash, allocator.state);
-  }
-  allocator.deallocate((void *)ts->data, allocator.state);
-  allocator.deallocate(ts, allocator.state);
-  return RMW_RET_OK;
+const char *
+rmw_get_dynamic_typesupport_identifier(void)
+{
+  return rosidl_dynamic_typesupport_c__identifier;
 }
 
 
