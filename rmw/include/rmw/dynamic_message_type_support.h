@@ -33,7 +33,6 @@ extern "C"
 #include "rmw/serialized_message.h"
 #include "rmw/visibility_control.h"
 
-
 /// Interfaces for runtime interface reflection
 
 // RUNTIME INTERFACE REFLECTION TYPE SUPPORT =======================================================
@@ -176,7 +175,6 @@ rmw_get_serialization_support(
 //   const char * topic_name,
 //   const rosidl_message_type_support_t type_support,
 //   rosidl_dynamic_typesupport_dynamic_data_t * dynamic_message);
-
 
 #ifdef __cplusplus
 }

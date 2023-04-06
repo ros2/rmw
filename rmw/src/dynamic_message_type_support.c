@@ -31,7 +31,6 @@ extern "C"
 #include "rmw/error_handling.h"
 #include "rmw/visibility_control.h"
 
-
 // NOTE(methylDragon): How do we test this? It depends on specific serialization support. Do I just
 //                     use the FastRTPS support then?
 
@@ -71,7 +70,6 @@ rmw_dynamic_message_type_support_handle_init(
       serialization_support, type_hash, type_description, type_description_sources, ts));
 }
 
-
 rmw_ret_t
 rmw_dynamic_message_type_support_handle_destroy(rosidl_message_type_support_t * ts)
 {
@@ -79,13 +77,11 @@ rmw_dynamic_message_type_support_handle_destroy(rosidl_message_type_support_t * 
   return rmw_convert_rcutils_ret_to_rmw_ret(rosidl_dynamic_message_type_support_handle_destroy(ts));
 }
 
-
 const char *
 rmw_get_dynamic_typesupport_identifier(void)
 {
   return rosidl_dynamic_typesupport_c__identifier;
 }
-
 
 rmw_ret_t
 rmw_init_dynamic_message_type_from_description(
@@ -98,7 +94,6 @@ rmw_init_dynamic_message_type_from_description(
       serialization_support, type_description, ts));
 }
 
-
 rmw_ret_t
 rmw_init_dynamic_message_from_dynamic_message_type(
   rosidl_dynamic_typesupport_dynamic_type_t * dynamic_message_type,
@@ -109,7 +104,6 @@ rmw_init_dynamic_message_from_dynamic_message_type(
       dynamic_message_type, cloned_dynamic_message_type));
 }
 
-
 rmw_ret_t
 rmw_clone_dynamic_message(
   const rosidl_dynamic_typesupport_dynamic_data_t * dynamic_message,
@@ -118,7 +112,6 @@ rmw_clone_dynamic_message(
   return rmw_convert_rcutils_ret_to_rmw_ret(
     rosidl_dynamic_typesupport_dynamic_data_clone(dynamic_message, cloned_dynamic_message));
 }
-
 
 rmw_ret_t
 rmw_serialized_to_dynamic_message(
@@ -140,7 +133,6 @@ rmw_serialized_to_dynamic_message(
   }
 }
 
-
 rmw_ret_t
 rmw_dynamic_message_to_serialized(
   rosidl_dynamic_typesupport_dynamic_data_t * dynamic_message,
@@ -158,7 +150,6 @@ rmw_dynamic_message_to_serialized(
     return ret;
   }
 }
-
 
 #ifdef __cplusplus
 }
