@@ -18,9 +18,9 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 find_package(ament_cmake_ros REQUIRED)
-find_package(rosidl_dynamic_typesupport REQUIRED)
 
 find_package(rcutils REQUIRED)
+find_package(rosidl_dynamic_typesupport REQUIRED)
 find_package(rosidl_runtime_c REQUIRED)
 
 include(cmake/configure_rmw_library.cmake)
@@ -72,6 +72,7 @@ configure_rmw_library(${PROJECT_NAME} LANGUAGE "C")
 
 ament_export_dependencies(
   rcutils
+  rosidl_dynamic_typesupport
   rosidl_runtime_c
 )
 
@@ -81,7 +82,6 @@ ament_export_libraries(${PROJECT_NAME})
 
 # Export modern CMake targets
 ament_export_targets(${PROJECT_NAME})
-ament_export_dependencies(rosidl_dynamic_typesupport)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
