@@ -36,7 +36,7 @@ extern "C"
 
 /// Create a rosidl_message_type_support_t from a TypeDescription message
 rmw_ret_t
-rmw_dynamic_message_type_support_handle_init(
+rmw_dynamic_message_type_support_handle_create(
   rosidl_dynamic_typesupport_serialization_support_t * serialization_support,
   bool middleware_supports_type_discovery,
   const rosidl_type_hash_t * type_hash,
@@ -66,7 +66,7 @@ rmw_dynamic_message_type_support_handle_init(
   // RMW_CHECK_ARGUMENT_FOR_NULL(type_description_sources, RMW_RET_INVALID_ARGUMENT);
 
   return rmw_convert_rcutils_ret_to_rmw_ret(
-    rosidl_dynamic_message_type_support_handle_init(
+    rosidl_dynamic_message_type_support_handle_create(
       serialization_support, type_hash, type_description, type_description_sources, ts));
 }
 
@@ -84,23 +84,23 @@ rmw_get_dynamic_typesupport_identifier(void)
 }
 
 rmw_ret_t
-rmw_init_dynamic_message_type_from_description(
+rmw_create_dynamic_message_type_from_description(
   rosidl_dynamic_typesupport_serialization_support_t * serialization_support,
   const rosidl_runtime_c__type_description__TypeDescription * type_description,
   rosidl_dynamic_typesupport_dynamic_type_t ** ts)
 {
   return rmw_convert_rcutils_ret_to_rmw_ret(
-    rosidl_dynamic_typesupport_dynamic_type_init_from_description(
+    rosidl_dynamic_typesupport_dynamic_type_create_from_description(
       serialization_support, type_description, ts));
 }
 
 rmw_ret_t
-rmw_init_dynamic_message_from_dynamic_message_type(
+rmw_create_dynamic_message_from_dynamic_message_type(
   rosidl_dynamic_typesupport_dynamic_type_t * dynamic_message_type,
   rosidl_dynamic_typesupport_dynamic_data_t ** cloned_dynamic_message_type)
 {
   return rmw_convert_rcutils_ret_to_rmw_ret(
-    rosidl_dynamic_typesupport_dynamic_data_init_from_dynamic_type(
+    rosidl_dynamic_typesupport_dynamic_data_create_from_dynamic_type(
       dynamic_message_type, cloned_dynamic_message_type));
 }
 

@@ -60,7 +60,7 @@ extern "C"
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_dynamic_message_type_support_handle_init(
+rmw_dynamic_message_type_support_handle_create(
   rosidl_dynamic_typesupport_serialization_support_t * serialization_support,
   bool middleware_supports_type_discovery,
   const rosidl_type_hash_t * type_hash,
@@ -69,7 +69,7 @@ rmw_dynamic_message_type_support_handle_init(
   rosidl_message_type_support_t ** ts);  // OUT
 
 /// Destroy a rosidl_message_type_support_t obtained with
-/// rmw_dynamic_message_type_support_handle_init, which has dynamically allocated members
+/// `rmw_dynamic_message_type_support_handle_create()`, which has dynamically allocated members
 ///
 /// NOTE: Using this on a statically allocated typesupport will cause undefined behavior!
 ///       (Static memory will get freed in that case.)
@@ -92,7 +92,7 @@ rmw_get_dynamic_typesupport_identifier(void);
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_init_dynamic_message_type_from_description(
+rmw_create_dynamic_message_type_from_description(
   rosidl_dynamic_typesupport_serialization_support_t * serialization_support,
   const rosidl_runtime_c__type_description__TypeDescription * type_description,
   rosidl_dynamic_typesupport_dynamic_type_t ** ts);  // OUT
@@ -100,7 +100,7 @@ rmw_init_dynamic_message_type_from_description(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_init_dynamic_message_from_dynamic_message_type(
+rmw_create_dynamic_message_from_dynamic_message_type(
   rosidl_dynamic_typesupport_dynamic_type_t * dynamic_message_type,
   rosidl_dynamic_typesupport_dynamic_data_t ** cloned_dynamic_message_type);  // OUT
 
