@@ -20,6 +20,7 @@ endif()
 find_package(ament_cmake_ros REQUIRED)
 
 find_package(rcutils REQUIRED)
+find_package(rosidl_dynamic_typesupport REQUIRED)
 find_package(rosidl_runtime_c REQUIRED)
 
 include(cmake/configure_rmw_library.cmake)
@@ -28,6 +29,7 @@ set(rmw_sources
   "src/allocators.c"
   "src/convert_rcutils_ret_to_rmw_ret.c"
   "src/discovery_options.c"
+  "src/dynamic_message_type_support.c"
   "src/event.c"
   "src/init.c"
   "src/init_options.c"
@@ -54,6 +56,9 @@ add_library(${PROJECT_NAME} ${rmw_sources})
 target_include_directories(${PROJECT_NAME} PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
+target_link_libraries(${PROJECT_NAME}
+  rosidl_dynamic_typesupport::rosidl_dynamic_typesupport
+)
 
 if(BUILD_TESTING AND NOT RCUTILS_DISABLE_FAULT_INJECTION)
   target_compile_definitions(${PROJECT_NAME} PUBLIC RCUTILS_ENABLE_FAULT_INJECTION)
@@ -67,6 +72,7 @@ configure_rmw_library(${PROJECT_NAME} LANGUAGE "C")
 
 ament_export_dependencies(
   rcutils
+  rosidl_dynamic_typesupport
   rosidl_runtime_c
 )
 
