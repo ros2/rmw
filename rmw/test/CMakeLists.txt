@@ -20,6 +20,15 @@ if(TARGET test_convert_rcutils_ret_to_rmw_ret)
   target_link_libraries(test_convert_rcutils_ret_to_rmw_ret ${PROJECT_NAME})
 endif()
 
+ament_add_gmock(test_discovery_options
+  test_discovery_options.cpp
+  # Append the directory of librmw so it is found at test time.
+  APPEND_LIBRARY_DIRS "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+)
+if(TARGET test_discovery_options)
+  target_link_libraries(test_discovery_options ${PROJECT_NAME})
+endif()
+
 ament_add_gmock(test_event
   test_event.cpp
   # Append the directory of librmw so it is found at test time.
