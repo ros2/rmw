@@ -20,6 +20,8 @@ extern "C"
 {
 #endif
 
+#include <rcutils/allocator.h>
+
 #include <rosidl_dynamic_typesupport/api/serialization_support.h>
 #include <rosidl_dynamic_typesupport/dynamic_message_type_support_struct.h>
 #include <rosidl_dynamic_typesupport/identifier.h>
@@ -57,9 +59,10 @@ rmw_take_dynamic_message_with_info(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_get_serialization_support(
+rmw_serialization_support_init(
   const char * serialization_lib_name,
-  rosidl_dynamic_typesupport_serialization_support_t ** serialization_support);  // OUT
+  rcutils_allocator_t * allocator,
+  rosidl_dynamic_typesupport_serialization_support_t * serialization_support);  // OUT
 
 // TODO(methylDragon): Nice to have only
 // RMW_PUBLIC
