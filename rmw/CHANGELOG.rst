@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+7.1.0 (2023-04-12)
+------------------
 * Dynamic Subscription (BONUS: Allocators): rmw (`#353 <https://github.com/ros2/rmw/issues/353>`_)
 * Runtime Interface Reflection: rmw (`#340 <https://github.com/ros2/rmw/issues/340>`_)
 * [rmw] Improve handling of dynamic discovery (`#338 <https://github.com/ros2/rmw/issues/338>`_)
