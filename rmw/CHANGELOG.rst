@@ -2,6 +2,19 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Dynamic Subscription (BONUS: Allocators): rmw (`#353 <https://github.com/ros2/rmw/issues/353>`_)
+* Runtime Interface Reflection: rmw (`#340 <https://github.com/ros2/rmw/issues/340>`_)
+* [rmw] Improve handling of dynamic discovery (`#338 <https://github.com/ros2/rmw/issues/338>`_)
+* rmw_send_reqponse returns RMW_RET_TIMEOUT. (`#350 <https://github.com/ros2/rmw/issues/350>`_)
+* Add a note about asynchronicity of discovery. (`#352 <https://github.com/ros2/rmw/issues/352>`_)
+* Add matched event support (`#331 <https://github.com/ros2/rmw/issues/331>`_)
+* Add type hash to rmw_topic_endpoint_info_t (rep2011) (`#348 <https://github.com/ros2/rmw/issues/348>`_)
+* Add in inconsistent topic defines and data structures. (`#339 <https://github.com/ros2/rmw/issues/339>`_)
+* Update documented expectations for GIDs (`#335 <https://github.com/ros2/rmw/issues/335>`_)
+* Contributors: Barry Xu, Chris Lalancette, Emerson Knapp, Geoffrey Biggs, Jacob Perron, Tomoya Fujita, William Woodall, methylDragon
+
 7.0.1 (2023-02-24)
 ------------------
 * Fix rmw->rwm typo (`#347 <https://github.com/ros2/rmw/issues/347>`_)
