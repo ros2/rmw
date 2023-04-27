@@ -2,6 +2,9 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.2.0 (2023-04-27)
+------------------
+
 7.1.0 (2023-04-12)
 ------------------
 * Dynamic Subscription (BONUS: Allocators): rmw (`#353 <https://github.com/ros2/rmw/issues/353>`_)

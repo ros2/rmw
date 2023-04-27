@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="2">
   <name>rmw</name>
-  <version>7.1.0</version>
+  <version>7.2.0</version>
   <description>Contains the ROS middleware API.</description>
 
   <maintainer email="brandon@openrobotics.org">Brandon Ong</maintainer>
