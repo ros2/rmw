@@ -43,7 +43,7 @@ rmw_discovery_options_init(
   RCUTILS_CHECK_ALLOCATOR(allocator, return RMW_RET_INVALID_ARGUMENT);
 
   if (0 != discovery_options->static_peers_count || NULL != discovery_options->static_peers) {
-    RMW_SET_ERROR_MSG("discovery_options must be zero intialized");
+    RMW_SET_ERROR_MSG("discovery_options must be zero initialized");
     return RMW_RET_INVALID_ARGUMENT;
   }
 
