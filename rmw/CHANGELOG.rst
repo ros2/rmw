@@ -2,6 +2,11 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* typo fix. (`#355 <https://github.com/ros2/rmw/issues/355>`_)
+* Contributors: Tomoya Fujita
+
 7.2.0 (2023-04-27)
 ------------------
 
