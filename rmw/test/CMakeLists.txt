@@ -176,9 +176,6 @@ if(TARGET test_validate_namespace)
   if(UNIX AND NOT APPLE AND NOT ANDROID)
     target_link_libraries(test_validate_namespace pthread)
   endif()
-  if(NOT WIN32)
-    set_target_properties(test_validate_namespace PROPERTIES COMPILE_FLAGS "-std=c++14")
-  endif()
 endif()
 
 ament_add_gmock(test_topic_endpoint_info_array
