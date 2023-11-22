@@ -55,18 +55,16 @@ add_library(${PROJECT_NAME} ${rmw_sources})
 target_include_directories(${PROJECT_NAME} PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
-target_link_libraries(${PROJECT_NAME}
+target_link_libraries(${PROJECT_NAME} PUBLIC
+  rcutils::rcutils
   rosidl_dynamic_typesupport::rosidl_dynamic_typesupport
+  rosidl_runtime_c::rosidl_runtime_c
 )
 
 if(BUILD_TESTING AND NOT RCUTILS_DISABLE_FAULT_INJECTION)
   target_compile_definitions(${PROJECT_NAME} PUBLIC RCUTILS_ENABLE_FAULT_INJECTION)
 endif()
 
-ament_target_dependencies(${PROJECT_NAME}
-  "rcutils"
-  "rosidl_runtime_c"
-)
 configure_rmw_library(${PROJECT_NAME} LANGUAGE "C")
 
 ament_export_dependencies(
