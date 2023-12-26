@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+7.3.0 (2023-12-26)
+------------------
 * Switch to target_link_libraries. (`#361 <https://github.com/ros2/rmw/issues/361>`_)
 * Remove unnecessary c++14 flag. (`#360 <https://github.com/ros2/rmw/issues/360>`_)
 * Contributors: Chris Lalancette
