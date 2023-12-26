@@ -2,6 +2,12 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Switch to target_link_libraries. (`#361 <https://github.com/ros2/rmw/issues/361>`_)
+* Remove unnecessary c++14 flag. (`#360 <https://github.com/ros2/rmw/issues/360>`_)
+* Contributors: Chris Lalancette
+
 7.2.2 (2023-11-06)
 ------------------
 * definition of local means being in the same context. (`#359 <https://github.com/ros2/rmw/issues/359>`_)
