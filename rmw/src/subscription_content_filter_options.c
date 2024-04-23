@@ -20,7 +20,7 @@
 #include "rmw/subscription_content_filter_options.h"
 
 rmw_subscription_content_filter_options_t
-rmw_get_zero_initialized_content_filter_options()
+rmw_get_zero_initialized_content_filter_options(void)
 {
   return (const rmw_subscription_content_filter_options_t) {
            .filter_expression = NULL,

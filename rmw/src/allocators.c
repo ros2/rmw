@@ -42,7 +42,7 @@ rmw_free(void * pointer)
 }
 
 rmw_node_t *
-rmw_node_allocate()
+rmw_node_allocate(void)
 {
   // Could be overridden with custom (maybe static) node struct allocator
   return (rmw_node_t *)rmw_allocate(sizeof(rmw_node_t));
@@ -56,7 +56,7 @@ rmw_node_free(rmw_node_t * node)
 }
 
 rmw_publisher_t *
-rmw_publisher_allocate()
+rmw_publisher_allocate(void)
 {
   // Could be overridden with custom (maybe static) publisher struct allocator
   return (rmw_publisher_t *)rmw_allocate(sizeof(rmw_publisher_t));
@@ -70,7 +70,7 @@ rmw_publisher_free(rmw_publisher_t * publisher)
 }
 
 rmw_subscription_t *
-rmw_subscription_allocate()
+rmw_subscription_allocate(void)
 {
   // Could be overridden with custom (maybe static) subscription struct allocator
   return (rmw_subscription_t *)rmw_allocate(sizeof(rmw_subscription_t));
@@ -84,7 +84,7 @@ rmw_subscription_free(rmw_subscription_t * subscription)
 }
 
 rmw_guard_condition_t *
-rmw_guard_condition_allocate()
+rmw_guard_condition_allocate(void)
 {
   // Could be overridden with custom (maybe static) guard_condition
   // struct allocator
@@ -99,7 +99,7 @@ rmw_guard_condition_free(rmw_guard_condition_t * guard_condition)
 }
 
 rmw_client_t *
-rmw_client_allocate()
+rmw_client_allocate(void)
 {
   // Could be overridden with custom (maybe static) client struct allocator
   return (rmw_client_t *)rmw_allocate(sizeof(rmw_client_t));
@@ -113,7 +113,7 @@ rmw_client_free(rmw_client_t * client)
 }
 
 rmw_service_t *
-rmw_service_allocate()
+rmw_service_allocate(void)
 {
   // Could be overridden with custom (maybe static) client struct allocator
   return (rmw_service_t *)rmw_allocate(sizeof(rmw_service_t));
@@ -127,7 +127,7 @@ rmw_service_free(rmw_service_t * service)
 }
 
 rmw_wait_set_t *
-rmw_wait_set_allocate()
+rmw_wait_set_allocate(void)
 {
   // Could be overridden with custom (maybe static) client struct allocator
   return (rmw_wait_set_t *)rmw_allocate(sizeof(rmw_wait_set_t));
