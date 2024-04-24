@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+7.3.1 (2024-04-24)
+------------------
 * Removed warnings - strict-prototypes (`#365 <https://github.com/ros2/rmw/issues/365>`_) (`#366 <https://github.com/ros2/rmw/issues/366>`_)
 * Contributors: mergify[bot]
 
