@@ -2,6 +2,11 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Removed warnings - strict-prototypes (`#365 <https://github.com/ros2/rmw/issues/365>`_)
+* Contributors: Alejandro Hernández Cordero
+
 7.3.0 (2023-12-26)
 ------------------
 * Switch to target_link_libraries. (`#361 <https://github.com/ros2/rmw/issues/361>`_)
