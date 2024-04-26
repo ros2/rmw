@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+7.4.0 (2024-04-26)
+------------------
 * Removed warnings - strict-prototypes (`#365 <https://github.com/ros2/rmw/issues/365>`_)
 * Contributors: Alejandro Hernández Cordero
 
