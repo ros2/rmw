@@ -2,6 +2,11 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+6.1.2 (2024-05-15)
+------------------
+* rmw_send_reqponse returns RMW_RET_TIMEOUT. (`#350 <https://github.com/ros2/rmw/issues/350>`_) (`#367 <https://github.com/ros2/rmw/issues/367>`_)
+* Contributors: mergify[bot]
+
 6.1.1 (2022-11-07)
 ------------------
 * callback can be NULL to clear in Listener APIs. (`#332 <https://github.com/ros2/rmw/issues/332>`_) (`#333 <https://github.com/ros2/rmw/issues/333>`_)
