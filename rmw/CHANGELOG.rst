@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+7.4.1 (2024-06-17)
+------------------
 * add mingw support (`#370 <https://github.com/ros2/rmw/issues/370>`_)
 * Minor typo fix (`#368 <https://github.com/ros2/rmw/issues/368>`_)
 * Contributors: Felix F Xu, G.A. vd. Hoorn
