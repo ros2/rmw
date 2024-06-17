@@ -2,6 +2,9 @@
 Changelog for package rmw_implementation_cmake
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 7.4.0 (2024-04-26)
 ------------------
 

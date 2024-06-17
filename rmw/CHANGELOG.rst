@@ -2,6 +2,12 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* add mingw support (`#370 <https://github.com/ros2/rmw/issues/370>`_)
+* Minor typo fix (`#368 <https://github.com/ros2/rmw/issues/368>`_)
+* Contributors: Felix F Xu, G.A. vd. Hoorn
+
 7.4.0 (2024-04-26)
 ------------------
 * Removed warnings - strict-prototypes (`#365 <https://github.com/ros2/rmw/issues/365>`_)
