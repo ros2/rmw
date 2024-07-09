@@ -2,6 +2,11 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.4.2 (2024-07-09)
+------------------
+* removed deprecated rmw_node_assert_liveliness() (`#373 <https://github.com/ros2/rmw/issues/373>`_)
+* Contributors: Alejandro Hernández Cordero
+
 7.4.1 (2024-06-17)
 ------------------
 * add mingw support (`#370 <https://github.com/ros2/rmw/issues/370>`_)
