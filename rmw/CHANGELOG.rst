@@ -2,6 +2,13 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.4.3 (2024-07-29)
+------------------
+* remove rmw_localhost_only_t. (`#376 <https://github.com/ros2/rmw/issues/376>`_)
+* Fix typo with RMW_DURATION_UNSPECIFIED (`#375 <https://github.com/ros2/rmw/issues/375>`_)
+* Fix typo in rmw_validate\_*_with_size() doc (`#374 <https://github.com/ros2/rmw/issues/374>`_)
+* Contributors: Christophe Bedard, Tomoya Fujita
+
 7.4.2 (2024-07-09)
 ------------------
 * removed deprecated rmw_node_assert_liveliness() (`#373 <https://github.com/ros2/rmw/issues/373>`_)
