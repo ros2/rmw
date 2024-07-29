@@ -15,7 +15,6 @@
 #include <stddef.h>
 
 #include "rmw/init_options.h"
-#include "rmw/localhost.h"
 #include "rmw/discovery_options.h"
 
 #ifdef __cplusplus
@@ -28,7 +27,6 @@ rmw_get_zero_initialized_init_options(void)
 {
   return (const rmw_init_options_t) {
            .domain_id = RMW_DEFAULT_DOMAIN_ID,
-           .localhost_only = RMW_LOCALHOST_ONLY_DEFAULT,
            .discovery_options = rmw_get_zero_initialized_discovery_options(),
            .implementation_identifier = NULL,
            .impl = NULL,
