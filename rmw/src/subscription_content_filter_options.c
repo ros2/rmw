@@ -22,10 +22,11 @@
 rmw_subscription_content_filter_options_t
 rmw_get_zero_initialized_content_filter_options(void)
 {
-  return (const rmw_subscription_content_filter_options_t) {
-           .filter_expression = NULL,
-           .expression_parameters = rcutils_get_zero_initialized_string_array()
-  };  // NOLINT(readability/braces): false positive
+  static rmw_subscription_content_filter_options_t zero = {
+    .filter_expression = NULL,
+    .expression_parameters = {0, NULL, {NULL, NULL, NULL, NULL, NULL}}
+  };
+  return zero;
 }
 
 rmw_ret_t

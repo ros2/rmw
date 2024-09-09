@@ -28,7 +28,6 @@ rmw_get_zero_initialized_names_and_types(void)
     .names = {0, NULL, {NULL, NULL, NULL, NULL, NULL}},
     .types = NULL,
   };
-  zero.names = rcutils_get_zero_initialized_string_array();
   return zero;
 }
 
