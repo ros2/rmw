@@ -22,10 +22,8 @@
 rmw_subscription_content_filter_options_t
 rmw_get_zero_initialized_content_filter_options(void)
 {
-  static rmw_subscription_content_filter_options_t zero = {
-    .filter_expression = NULL,
-    .expression_parameters = {0, NULL, {NULL, NULL, NULL, NULL, NULL}}
-  };
+  // All members are initialized to 0 or NULL by C99 6.7.8/10.
+  static const rmw_subscription_content_filter_options_t zero;
   return zero;
 }
 

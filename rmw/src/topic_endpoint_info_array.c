@@ -19,14 +19,8 @@
 rmw_topic_endpoint_info_array_t
 rmw_get_zero_initialized_topic_endpoint_info_array(void)
 {
-#ifdef __clang__
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wmissing-field-initializers"
-#endif
-  rmw_topic_endpoint_info_array_t zero = {0};
-#ifdef __clang__
-# pragma clang diagnostic pop
-#endif
+  // All members are initialized to 0 or NULL by C99 6.7.8/10.
+  static const rmw_topic_endpoint_info_array_t zero;
   return zero;
 }
 

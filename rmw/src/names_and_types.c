@@ -24,10 +24,8 @@
 rmw_names_and_types_t
 rmw_get_zero_initialized_names_and_types(void)
 {
-  static rmw_names_and_types_t zero = {
-    .names = {0, NULL, {NULL, NULL, NULL, NULL, NULL}},
-    .types = NULL,
-  };
+  // All members are initialized to 0 or NULL by C99 6.7.8/10.
+  static const rmw_names_and_types_t zero;
   return zero;
 }
 
