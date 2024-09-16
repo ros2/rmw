@@ -22,10 +22,9 @@
 rmw_subscription_content_filter_options_t
 rmw_get_zero_initialized_content_filter_options(void)
 {
-  return (const rmw_subscription_content_filter_options_t) {
-           .filter_expression = NULL,
-           .expression_parameters = rcutils_get_zero_initialized_string_array()
-  };  // NOLINT(readability/braces): false positive
+  // All members are initialized to 0 or NULL by C99 6.7.8/10.
+  static const rmw_subscription_content_filter_options_t zero;
+  return zero;
 }
 
 rmw_ret_t

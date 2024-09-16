@@ -22,7 +22,8 @@
 rmw_network_flow_endpoint_t
 rmw_get_zero_initialized_network_flow_endpoint(void)
 {
-  rmw_network_flow_endpoint_t network_flow_endpoint = {0};
+  // All members are initialized to 0 or NULL by C99 6.7.8/10.
+  static const rmw_network_flow_endpoint_t network_flow_endpoint;
   return network_flow_endpoint;
 }
 

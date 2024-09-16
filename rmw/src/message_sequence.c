@@ -18,13 +18,8 @@
 rmw_message_sequence_t
 rmw_get_zero_initialized_message_sequence(void)
 {
-  static rmw_message_sequence_t message_sequence = {
-    .data = NULL,
-    .size = 0u,
-    .capacity = 0u,
-    .allocator = NULL
-  };
-
+  // All members are initialized to 0 or NULL by C99 6.7.8/10.
+  static const rmw_message_sequence_t message_sequence;
   return message_sequence;
 }
 
@@ -75,13 +70,8 @@ rmw_message_sequence_fini(rmw_message_sequence_t * sequence)
 rmw_message_info_sequence_t
 rmw_get_zero_initialized_message_info_sequence(void)
 {
-  static rmw_message_info_sequence_t message_info_sequence = {
-    .data = NULL,
-    .size = 0u,
-    .capacity = 0u,
-    .allocator = NULL
-  };
-
+  // All members are initialized to 0 or NULL by C99 6.7.8/10.
+  static const rmw_message_info_sequence_t message_info_sequence;
   return message_info_sequence;
 }
 

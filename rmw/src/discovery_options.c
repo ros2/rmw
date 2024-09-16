@@ -21,10 +21,8 @@
 rmw_discovery_options_t
 rmw_get_zero_initialized_discovery_options(void)
 {
-  rmw_discovery_options_t result = (rmw_discovery_options_t) {
-    .automatic_discovery_range = RMW_AUTOMATIC_DISCOVERY_RANGE_NOT_SET,
-    .static_peers_count = 0,
-  };  // NOLINT(readability/braces): false positive
+  // All members are initialized to 0 or NULL by C99 6.7.8/10.
+  static const rmw_discovery_options_t result;
   return result;
 }
 
