@@ -3030,6 +3030,43 @@ rmw_count_services(
   const char * service_name,
   size_t * count);
 
+/// Get the number of messages ready for a subscription
+/**
+ * This function returns the number of messages ready for a given subscriber
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | Yes
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] implementation defined, check the implementation documentation</i>
+ *
+ * \par Thread-safety
+ *   Subscriptions are thread-safe objects, and so are all operations on them except for
+ *   finalization.
+ *   Therefore, it is safe to get the messages ready from the same subscription concurrently.
+ *   However, access to the messages is not synchronized.
+ *   It is not safe to read or write `count` while rmw_count_messages_ready() uses it.
+ *
+ * \pre Given `subscription` must be a valid subscription, as returned by
+ *  rmw_create_subscription().
+ *
+ * \param[in] subscription Subscription which is meant to be queried for messages ready
+ * \param[out] count Number of messages that are ready for the given subscription.
+ * \return `RMW_RET_OK` if the query was successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `subscription` is NULL, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if `count` is NULL, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if the `subscription` implementation
+ *   identifier does not match this implementation, or
+ * \return `RMW_RET_ERROR` if an unspecified error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_count_messages_ready(const rmw_subscripion_t * subscription, size_t * count);
+
 /// Get the globally unique identifier (GID) of a publisher.
 /**
  * <hr>
