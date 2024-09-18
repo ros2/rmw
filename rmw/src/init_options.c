@@ -25,8 +25,14 @@ extern "C"
 rmw_init_options_t
 rmw_get_zero_initialized_init_options(void)
 {
-  // TODO(@fujitatomoya): This is not exatly zero initialized structure.
-  /// We should introduce xxx_get_default_init_optionst to return the default values.
+  // All members are initialized to 0 or NULL by C99 6.7.8/10.
+  static const rmw_init_options_t init_option;
+  return init_option;
+}
+
+rmw_init_options_t
+rmw_get_default_init_options(void)
+{
   static const rmw_init_options_t init_option = {
     .domain_id = RMW_DEFAULT_DOMAIN_ID,
     .discovery_options = {RMW_AUTOMATIC_DISCOVERY_RANGE_NOT_SET, 0},

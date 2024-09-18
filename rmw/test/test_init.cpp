@@ -15,9 +15,22 @@
 #include "gmock/gmock.h"
 #include "rmw/init.h"
 
-TEST(rmw_init_options, get_zero_initialized_init_options)
+TEST(rmw_init_options, get_zero_initialized_context)
 {
   const rmw_context_t context = rmw_get_zero_initialized_context();
   EXPECT_EQ(context.instance_id, 0u);
+  EXPECT_EQ(context.implementation_identifier, nullptr);
+  EXPECT_EQ(context.options.domain_id, 0u);
+  EXPECT_EQ(context.actual_domain_id, 0u);
+  EXPECT_EQ(context.impl, nullptr);
+}
+
+TEST(rmw_init_options, get_default_context)
+{
+  const rmw_context_t context = rmw_get_default_context();
+  EXPECT_EQ(context.instance_id, 0u);
+  EXPECT_EQ(context.implementation_identifier, nullptr);
+  EXPECT_EQ(context.options.domain_id, RMW_DEFAULT_DOMAIN_ID);
+  EXPECT_EQ(context.actual_domain_id, 0u);
   EXPECT_EQ(context.impl, nullptr);
 }

@@ -20,6 +20,14 @@ TEST(rmw_event, get_zero_initialized_event)
   const rmw_event_t actual = rmw_get_zero_initialized_event();
   EXPECT_EQ(nullptr, actual.implementation_identifier);
   EXPECT_EQ(nullptr, actual.data);
+  EXPECT_EQ(0u, actual.event_type);
+}
+
+TEST(rmw_event, get_default_event)
+{
+  const rmw_event_t actual = rmw_get_default_event();
+  EXPECT_EQ(nullptr, actual.implementation_identifier);
+  EXPECT_EQ(nullptr, actual.data);
   EXPECT_EQ(RMW_EVENT_INVALID, actual.event_type);
 }
 
@@ -36,5 +44,5 @@ TEST(rmw_event, event_fini)
   EXPECT_EQ(rmw_event_fini(&event), RMW_RET_OK);
   EXPECT_EQ(nullptr, event.implementation_identifier);
   EXPECT_EQ(nullptr, event.data);
-  EXPECT_EQ(RMW_EVENT_INVALID, event.event_type);
+  EXPECT_EQ(0u, event.event_type);
 }

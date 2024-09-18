@@ -71,6 +71,12 @@ RMW_WARN_UNUSED
 rmw_init_options_t
 rmw_get_zero_initialized_init_options(void);
 
+/// Return a default init options structure.
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_init_options_t
+rmw_get_default_init_options(void);
+
 /// Initialize given init options with the default values and implementation specific values.
 /**
  * The given allocator is used, if required, during setup of the init options,
