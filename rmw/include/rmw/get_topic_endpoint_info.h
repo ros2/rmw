@@ -191,11 +191,17 @@ rmw_get_subscriptions_info_by_topic(
  * This function returns an array of endpoint information for each client
  * of a given service, as discovered so far by the given node.
  * Endpoint information includes the client's node name and namespace,
- * the associated topic type, the client's gid, and the client QoS profile.
- * Names of non-existent topics are allowed, in which case an empty array will be returned.
+ * the associated service type, the client's gid, and the client QoS profile.
+ * Names of non-existent services are allowed, in which case an empty array will be returned.
  *
  * Depending on the RMW in use, discovery may be asynchronous.  Therefore, creating a client
  * and then calling this API may not show the newly created client immediately.
+ *
+ * \par Internal behavior
+ * In ROS middleware (RMW), service endpoints are internally handled as topics.
+ * Specifically, the client acts as a DataReader and the server as a DataWriter,
+ * populating the corresponding topic endpoint information. Therefore, all fields of
+ * `rmw_topic_endpoint_info_t` can be filled in by querying the graph cache.
  *
  * \par QoS that are correctly read
  * Not all QoS may be read correctly, \sa rmw_get_publishers_info_by_topic() for more details.
@@ -271,11 +277,17 @@ rmw_get_clients_info_by_service(
  * This function returns an array of endpoint information for each server
  * of a given service, as discovered so far by the given node.
  * Endpoint information includes the server's node name and namespace,
- * the associated topic type, the server's gid, and the server QoS profile.
- * Names of non-existent topics are allowed, in which case an empty array will be returned.
+ * the associated service type, the server's gid, and the server QoS profile.
+ * Names of non-existent services are allowed, in which case an empty array will be returned.
  *
  * Depending on the RMW in use, discovery may be asynchronous.  Therefore, creating a server
  * and then calling this API may not show the newly created server immediately.
+ *
+ * \par Internal behavior
+ * In ROS middleware (RMW), service endpoints are internally handled as topics.
+ * Specifically, the client acts as a DataReader and the server as a DataWriter,
+ * populating the corresponding topic endpoint information. Therefore, all fields of
+ * `rmw_topic_endpoint_info_t` can be filled in by querying the graph cache.
  *
  * \par QoS that are correctly read
  * Not all QoS may be read correctly, \sa rmw_get_publishers_info_by_topic() for more details.
