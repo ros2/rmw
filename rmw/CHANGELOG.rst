@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+7.5.0 (2024-10-03)
+------------------
 * Initialize the NULL strucutre with static value. (`#378 <https://github.com/ros2/rmw/issues/378>`_)
 * Contributors: Tomoya Fujita
 
