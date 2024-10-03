@@ -2,6 +2,11 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Initialize the NULL strucutre with static value. (`#378 <https://github.com/ros2/rmw/issues/378>`_)
+* Contributors: Tomoya Fujita
+
 7.4.3 (2024-07-29)
 ------------------
 * remove rmw_localhost_only_t. (`#376 <https://github.com/ros2/rmw/issues/376>`_)
