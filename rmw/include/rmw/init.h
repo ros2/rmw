@@ -55,6 +55,12 @@ RMW_WARN_UNUSED
 rmw_context_t
 rmw_get_zero_initialized_context(void);
 
+/// Return a default context structure.
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_context_t
+rmw_get_default_context(void);
+
 /// Initialize the middleware with the given options, and yielding an context.
 /**
  * Context is filled with middleware specific data upon success of this function.

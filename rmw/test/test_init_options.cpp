@@ -18,7 +18,19 @@
 TEST(rmw_init_options, get_zero_initialized_init_options)
 {
   const rmw_init_options_t options = rmw_get_zero_initialized_init_options();
+  EXPECT_EQ(options.domain_id, 0u);
   EXPECT_EQ(options.instance_id, 0u);
   EXPECT_EQ(options.implementation_identifier, nullptr);
   EXPECT_EQ(options.impl, nullptr);
+  EXPECT_EQ(options.enclave, nullptr);
+}
+
+TEST(rmw_init_options, get_default_init_options)
+{
+  const rmw_init_options_t options = rmw_get_default_init_options();
+  EXPECT_EQ(options.domain_id, RMW_DEFAULT_DOMAIN_ID);
+  EXPECT_EQ(options.instance_id, 0u);
+  EXPECT_EQ(options.implementation_identifier, nullptr);
+  EXPECT_EQ(options.impl, nullptr);
+  EXPECT_EQ(options.enclave, nullptr);
 }

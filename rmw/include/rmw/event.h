@@ -68,6 +68,12 @@ RMW_WARN_UNUSED
 rmw_event_t
 rmw_get_zero_initialized_event(void);
 
+/// Return a default event structure.
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_event_t
+rmw_get_default_event(void);
+
 /// Initialize a rmw publisher event.
 /**
  * \param[inout] rmw_event to initialize
