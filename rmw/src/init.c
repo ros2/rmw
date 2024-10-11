@@ -26,13 +26,9 @@ extern "C"
 rmw_context_t
 rmw_get_zero_initialized_context(void)
 {
-  return (const rmw_context_t) {
-           .instance_id = 0,
-           .implementation_identifier = NULL,
-           .options = rmw_get_zero_initialized_init_options(),
-           .actual_domain_id = 0u,
-           .impl = NULL
-  };  // NOLINT(readability/braces): false positive
+  // All members are initialized to 0 or NULL by C99 6.7.8/10.
+  static const rmw_context_t context;
+  return context;
 }
 
 #ifdef __cplusplus
