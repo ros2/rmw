@@ -24,13 +24,8 @@ extern "C" {
 rmw_event_t
 rmw_get_zero_initialized_event(void)
 {
-  // TODO(@fujitatomoya): This is not exatly zero initialized structure.
-  /// We should introduce xxx_get_default_event to return the default values.
-  static const rmw_event_t event = {
-    .implementation_identifier = NULL,
-    .data = NULL,
-    .event_type = RMW_EVENT_INVALID
-  };
+  // All members are initialized to 0 or NULL by C99 6.7.8/10.
+  static const rmw_event_t event;
   return event;
 }
 
