@@ -29,6 +29,8 @@ rmw_validate_namespace(
   int * validation_result,
   size_t * invalid_index)
 {
+  RCUTILS_CHECK_ARGUMENT_FOR_NULL(namespace_, RMW_RET_INVALID_ARGUMENT);
+
   return rmw_validate_namespace_with_size(
     namespace_, strlen(namespace_), validation_result, invalid_index);
 }
