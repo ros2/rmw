@@ -29,9 +29,8 @@ rmw_validate_namespace(
   int * validation_result,
   size_t * invalid_index)
 {
-  if (!namespace_) {
-    return RMW_RET_INVALID_ARGUMENT;
-  }
+  RCUTILS_CHECK_ARGUMENT_FOR_NULL(namespace_, RMW_RET_INVALID_ARGUMENT);
+
   return rmw_validate_namespace_with_size(
     namespace_, strlen(namespace_), validation_result, invalid_index);
 }
@@ -43,12 +42,8 @@ rmw_validate_namespace_with_size(
   int * validation_result,
   size_t * invalid_index)
 {
-  if (!namespace_) {
-    return RMW_RET_INVALID_ARGUMENT;
-  }
-  if (!validation_result) {
-    return RMW_RET_INVALID_ARGUMENT;
-  }
+  RCUTILS_CHECK_ARGUMENT_FOR_NULL(namespace_, RMW_RET_INVALID_ARGUMENT);
+  RCUTILS_CHECK_ARGUMENT_FOR_NULL(validation_result, RMW_RET_INVALID_ARGUMENT);
 
   // Special case for root namepsace
   if (namespace_length == 1 && namespace_[0] == '/') {
