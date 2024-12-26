@@ -58,7 +58,7 @@ rmw_names_and_types_init(
   RCUTILS_CAN_RETURN_WITH_ERROR_OF(RMW_RET_INVALID_ARGUMENT);
   RCUTILS_CAN_RETURN_WITH_ERROR_OF(RMW_RET_BAD_ALLOC);
 
-  if (!allocator) {
+  if (!rcutils_allocator_is_valid(allocator)) {
     RMW_SET_ERROR_MSG("allocator is null");
     return RMW_RET_INVALID_ARGUMENT;
   }

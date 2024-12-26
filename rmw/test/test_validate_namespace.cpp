@@ -24,8 +24,10 @@ TEST(test_validate_namespace, invalid_parameters) {
   size_t invalid_index;
   rmw_ret_t ret = rmw_validate_namespace(nullptr, &validation_result, &invalid_index);
   ASSERT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
+  rmw_reset_error();
   ret = rmw_validate_namespace("/test", nullptr, &invalid_index);
   ASSERT_EQ(RMW_RET_INVALID_ARGUMENT, ret);
+  rmw_reset_error();
 
   // name is null pointer,
   ret = rmw_validate_namespace_with_size(nullptr, 0u, &validation_result, &invalid_index);
