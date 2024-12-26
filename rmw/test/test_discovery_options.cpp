@@ -32,11 +32,15 @@ TEST(discovery_options, init_invalid_args) {
   auto allocator = rcutils_get_default_allocator();
 
   EXPECT_EQ(RMW_RET_INVALID_ARGUMENT, rmw_discovery_options_init(NULL, 0, &allocator));
+  rmw_reset_error();
   EXPECT_EQ(RMW_RET_INVALID_ARGUMENT, rmw_discovery_options_init(&dopts, 0, NULL));
+  rmw_reset_error();
   EXPECT_EQ(RMW_RET_INVALID_ARGUMENT, rmw_discovery_options_init(NULL, 0, NULL));
+  rmw_reset_error();
 
   EXPECT_EQ(RMW_RET_OK, rmw_discovery_options_init(&dopts_valid, 5, &allocator));
   EXPECT_EQ(RMW_RET_INVALID_ARGUMENT, rmw_discovery_options_init(&dopts_valid, 5, &allocator));
+  rmw_reset_error();
 
   EXPECT_EQ(RMW_RET_OK, rmw_discovery_options_fini(&dopts_valid));
 }
@@ -131,13 +135,23 @@ TEST(discovery_options, copy_invalid_args) {
   EXPECT_EQ(RMW_RET_OK, rmw_discovery_options_init(&dopts1, 1, &allocator));
 
   EXPECT_EQ(RMW_RET_INVALID_ARGUMENT, rmw_discovery_options_copy(NULL, &allocator, &dopts2));
+  rmw_reset_error();
   EXPECT_EQ(RMW_RET_INVALID_ARGUMENT, rmw_discovery_options_copy(NULL, NULL, &dopts2));
+  rmw_reset_error();
   EXPECT_EQ(RMW_RET_INVALID_ARGUMENT, rmw_discovery_options_copy(NULL, &allocator, NULL));
+  rmw_reset_error();
   EXPECT_EQ(RMW_RET_INVALID_ARGUMENT, rmw_discovery_options_copy(NULL, NULL, NULL));
+  rmw_reset_error();
   EXPECT_EQ(RMW_RET_INVALID_ARGUMENT, rmw_discovery_options_copy(&dopts1, NULL, &dopts2));
+  rmw_reset_error();
   EXPECT_EQ(RMW_RET_INVALID_ARGUMENT, rmw_discovery_options_copy(&dopts1, NULL, NULL));
+  rmw_reset_error();
   EXPECT_EQ(RMW_RET_INVALID_ARGUMENT, rmw_discovery_options_copy(&dopts1, &allocator, NULL));
+  rmw_reset_error();
   EXPECT_EQ(RMW_RET_INVALID_ARGUMENT, rmw_discovery_options_copy(&dopts1, &allocator, &dopts1));
+  rmw_reset_error();
   EXPECT_EQ(RMW_RET_INVALID_ARGUMENT, rmw_discovery_options_copy(&dopts2, &allocator, &dopts1));
+  rmw_reset_error();
   EXPECT_EQ(RMW_RET_INVALID_ARGUMENT, rmw_discovery_options_copy(&dopts2, &allocator, &dopts2));
+  rmw_reset_error();
 }

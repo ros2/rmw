@@ -41,20 +41,24 @@ TEST(rmw_security_options, options_copy) {
   EXPECT_EQ(
     RMW_RET_INVALID_ARGUMENT,
     rmw_security_options_copy(nullptr, &allocator, &destination));
+  rmw_reset_error();
 
   EXPECT_EQ(
     RMW_RET_INVALID_ARGUMENT,
     rmw_security_options_copy(&source, nullptr, &destination));
+  rmw_reset_error();
 
   EXPECT_EQ(
     RMW_RET_INVALID_ARGUMENT,
     rmw_security_options_copy(&source, &allocator, nullptr));
+  rmw_reset_error();
 
   rcutils_allocator_t failing_allocator = get_time_bomb_allocator();
   set_time_bomb_allocator_malloc_count(failing_allocator, 0);
   EXPECT_EQ(
     RMW_RET_BAD_ALLOC,
     rmw_security_options_copy(&source, &failing_allocator, &destination));
+  rmw_reset_error();
 
   EXPECT_EQ(
     RMW_RET_OK,

@@ -75,6 +75,13 @@ TEST(rmw_names_and_types, rmw_names_and_types_init) {
   EXPECT_EQ(result, RMW_RET_INVALID_ARGUMENT);
   rmw_reset_error();
 
+  // allocator is not null, but still invalid
+  rcutils_allocator_t invalid_allocator = get_time_bomb_allocator();
+  invalid_allocator.deallocate = nullptr;
+  result = rmw_names_and_types_init(&names_and_types, size, &invalid_allocator);
+  EXPECT_EQ(result, RMW_RET_INVALID_ARGUMENT);
+  rmw_reset_error();
+
   // names_and_types is null
   result = rmw_names_and_types_init(nullptr, size, &allocator);
   EXPECT_EQ(result, RMW_RET_INVALID_ARGUMENT);
@@ -95,7 +102,7 @@ TEST(rmw_names_and_types, rmw_names_and_types_init) {
 
   // Fails to deallocate names after failing to zero allocate types
   set_time_bomb_allocator_calloc_count(failing_allocator, 1);
-  failing_allocator.deallocate = nullptr;
+  set_time_bomb_allocator_free_count(failing_allocator, 1);
 
   // Logging is initialized during this code path and would need to be shutdown.
   ASSERT_EQ(rcutils_logging_initialize(), RCUTILS_RET_OK);
