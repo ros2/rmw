@@ -20,7 +20,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "rcutils/error_handling.h"
+#include "rmw/error_handling.h"
 #include "rmw/types.h"
 
 #include "rmw_security_common/security.hpp"
@@ -155,11 +155,20 @@ rmw_ret_t get_security_files_support_pkcs(
     }
   }
 
-  rcutils_ret_t ret;
+  rmw_ret_t ret;
   ret = rcutils_string_map_reserve(result, result_std.size());
+
+  if (ret != RMW_RET_OK) {
+    RMW_SET_ERROR_MSG("failed to reserve memory for the string map");
+    return RMW_RET_ERROR;
+  }
 
   for (const auto & [key, value] : result_std) {
     ret = rcutils_string_map_set(result, key.c_str(), value.c_str());
+    RMW_SET_ERROR_MSG("failed to insert value in the string map");
+    if (ret != RMW_RET_OK) {
+      return RMW_RET_ERROR;
+    }
   }
 
   return RMW_RET_OK;
