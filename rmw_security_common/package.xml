@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>rmw_security_common</name>
+  <version>7.5.1</version>
+  <description>Define a common rmw secutiry utils</description>
+
+  <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez Cordero</maintainer>
+
+  <license>Apache License 2.0</license>
+
+  <author email="alejandro@openrobotics.org">Alejandro Hernandez Cordero</author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rcutils</depend>
+  <depend>rmw</depend>
+
+  <test_depend>ament_cmake_gmock</test_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
