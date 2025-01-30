@@ -59,8 +59,6 @@ rmw_ret_t get_security_files(
   const char * prefix,
   const char * secure_root,
   rcutils_string_map_t * result);
-  // const std::string & prefix, const std::string & secure_root,
-  // std::unordered_map<std::string, std::string> & result);
 
 /// Get the set of security files in a security enclave.
 /**
