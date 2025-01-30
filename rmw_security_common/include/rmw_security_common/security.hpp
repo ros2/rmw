@@ -1,4 +1,4 @@
-// Copyright 2021 Open Source Robotics Foundation, Inc.
+// Copyright 2025 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -50,7 +50,9 @@ extern "C"
  * \param[in]  prefix An optional prefix to apply to the filenames when storing them.
  * \param[in]  secure_root The path to the security enclave to look at.
  * \param[out] result The map where the friendly name -> filename pairs are stored.
- * \return `true` if all required files exist in the security enclave, `false` otherwise.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if any argument are invalid, or
+ * \return `RMW_RET_ERROR` an unexpected error occurs.
  */
 RMW_SECURITY_COMMON_PUBLIC
 rmw_ret_t get_security_files(
@@ -83,7 +85,9 @@ rmw_ret_t get_security_files(
  * \param[in]  prefix An optional prefix to apply to the filenames when storing them.
  * \param[in]  secure_root The path to the security enclave to look at.
  * \param[out] result The map where the friendly name -> filename pairs are stored.
- * \return `true` if all required files exist in the security enclave, `false` otherwise.
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if any argument are invalid, or
+ * \return `RMW_RET_ERROR` an unexpected error occurs.
  */
 RMW_SECURITY_COMMON_PUBLIC
 rmw_ret_t get_security_files_support_pkcs(

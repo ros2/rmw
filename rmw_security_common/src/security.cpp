@@ -1,4 +1,4 @@
-// Copyright 2021 Open Source Robotics Foundation, Inc.
+// Copyright 2025 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -165,8 +165,8 @@ rmw_ret_t get_security_files_support_pkcs(
 
   for (const auto & [key, value] : result_std) {
     ret = rcutils_string_map_set(result, key.c_str(), value.c_str());
-    RMW_SET_ERROR_MSG("failed to insert value in the string map");
     if (ret != RMW_RET_OK) {
+      RMW_SET_ERROR_MSG("failed to insert value in the string map");
       return RMW_RET_ERROR;
     }
   }
