@@ -23,4 +23,12 @@ TEST(rmw_init_options, get_zero_initialized_init_options)
   EXPECT_EQ(options.implementation_identifier, nullptr);
   EXPECT_EQ(options.impl, nullptr);
   EXPECT_EQ(options.enclave, nullptr);
+  EXPECT_EQ(
+    options.security_options.enforce_security,
+    RMW_SECURITY_ENFORCEMENT_PERMISSIVE);
+  EXPECT_EQ(
+    options.security_options.security_root_path, nullptr);
+  EXPECT_EQ(
+    options.discovery_options.automatic_discovery_range,
+    RMW_AUTOMATIC_DISCOVERY_RANGE_NOT_SET);
 }

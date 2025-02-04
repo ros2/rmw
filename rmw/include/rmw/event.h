@@ -32,8 +32,8 @@ extern "C"
 /// Define publisher/subscription events
 typedef enum rmw_event_type_e
 {
-  // initial value
-  RMW_EVENT_INVALID,
+  // must be zero or rmw_get_zero_initialized_event will break
+  RMW_EVENT_INVALID = 0,
 
   // subscription events
   RMW_EVENT_LIVELINESS_CHANGED,
