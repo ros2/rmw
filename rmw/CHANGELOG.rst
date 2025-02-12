@@ -2,6 +2,18 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.6.0 (2025-01-31)
+------------------
+* move qos_profile_rosout_default from rcl. (`#381 <https://github.com/ros2/rmw/issues/381>`_)
+* Fix ugly overwritten warning messages on error paths. (`#387 <https://github.com/ros2/rmw/issues/387>`_)
+  This mostly has to do with calling rmw_reset_error() in
+  the proper time in the tests, but we also change one
+  test for an allocator to properly check for a valid allocator.
+* Fix rmw_validate_namespace{_with_size} error handling. (`#386 <https://github.com/ros2/rmw/issues/386>`_)
+  * Fix rmw_validate_namespace{_with_size} error handling.
+  It should always set an error, even on invalid arguments.
+* Contributors: Chris Lalancette, Tomoya Fujita
+
 7.5.1 (2024-12-20)
 ------------------
 * Fix arg name in rmw_take_response() doc (`#384 <https://github.com/ros2/rmw/issues/384>`_)
