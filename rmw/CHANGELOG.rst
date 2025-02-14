@@ -2,6 +2,15 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.7.0 (2025-02-14)
+------------------
+* get_zero_initialized_xxx functions return zero initialized structure. (`#380 <https://github.com/ros2/rmw/issues/380>`_)
+  * get_zero_initialized_xxx functions return zero initialized structure.
+  * introduce RMW_EVENT_TYPE_MAX in rmw_event_type_t.
+  * add a comment and more tests for rmw_event_type.
+  ---------
+* Contributors: Tomoya Fujita
+
 7.6.0 (2025-01-31)
 ------------------
 * move qos_profile_rosout_default from rcl. (`#381 <https://github.com/ros2/rmw/issues/381>`_)
