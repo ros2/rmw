@@ -29,6 +29,7 @@ set(rmw_sources
   "src/allocators.c"
   "src/convert_rcutils_ret_to_rmw_ret.c"
   "src/discovery_options.c"
+  "src/enclave.c"
   "src/event.c"
   "src/init.c"
   "src/init_options.c"
