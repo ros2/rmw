@@ -2,6 +2,13 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.8.0 (2025-03-05)
+------------------
+* add enclave option functions. (`#393 <https://github.com/ros2/rmw/issues/393>`_)
+* a couple of typo fixes for doc section. (`#391 <https://github.com/ros2/rmw/issues/391>`_)
+* update cmake version (`#389 <https://github.com/ros2/rmw/issues/389>`_)
+* Contributors: Alejandro Hernández Cordero, Tomoya Fujita
+
 7.7.0 (2025-02-14)
 ------------------
 * get_zero_initialized_xxx functions return zero initialized structure. (`#380 <https://github.com/ros2/rmw/issues/380>`_)
