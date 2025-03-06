@@ -134,7 +134,7 @@ rmw_ret_t
 rmw_event_fini(rmw_event_t * event);
 
 
-/// Check if an event is supported by the rmw
+/// Check if an event type is supported by the RMW implementation.
 /*
  * \param[in] rmw_event_type to check
  * \return True if the event is supported false otherwise.
@@ -142,7 +142,7 @@ rmw_event_fini(rmw_event_t * event);
 RMW_PUBLIC
 RMW_WARN_UNUSED
 bool
-rmw_event_check_compatible(rmw_event_type_t rmw_event_type);
+rmw_event_type_is_supported(rmw_event_type_t rmw_event_type);
 
 #ifdef __cplusplus
 }
