@@ -2,6 +2,11 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.8.1 (2025-03-11)
+------------------
+* Added rmw_event_type_is_supported (`#395 <https://github.com/ros2/rmw/issues/395>`_)
+* Contributors: Alejandro Hernández Cordero
+
 7.8.0 (2025-03-05)
 ------------------
 * add enclave option functions. (`#393 <https://github.com/ros2/rmw/issues/393>`_)

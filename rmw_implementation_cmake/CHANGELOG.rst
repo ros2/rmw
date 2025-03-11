@@ -2,6 +2,9 @@
 Changelog for package rmw_implementation_cmake
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.8.1 (2025-03-11)
+------------------
+
 7.8.0 (2025-03-05)
 ------------------
 * update cmake version (`#389 <https://github.com/ros2/rmw/issues/389>`_)
