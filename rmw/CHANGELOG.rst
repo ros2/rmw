@@ -2,6 +2,16 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.3.2 (2025-03-12)
+------------------
+* Added rmw_event_type_is_supported (`#395 <https://github.com/ros2/rmw/issues/395>`_) (`#396 <https://github.com/ros2/rmw/issues/396>`_)
+  (cherry picked from commit 5cf8420511fbf64a741e94c493445adccf05e272)
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* a couple of typo fixes for doc section. (`#391 <https://github.com/ros2/rmw/issues/391>`_) (`#392 <https://github.com/ros2/rmw/issues/392>`_)
+  (cherry picked from commit 95ac9726e5fea128d9e825775d3e5eccaf0a0713)
+  Co-authored-by: Tomoya Fujita <Tomoya.Fujita@sony.com>
+* Contributors: mergify[bot]
+
 7.3.1 (2024-04-24)
 ------------------
 * Removed warnings - strict-prototypes (`#365 <https://github.com/ros2/rmw/issues/365>`_) (`#366 <https://github.com/ros2/rmw/issues/366>`_)
