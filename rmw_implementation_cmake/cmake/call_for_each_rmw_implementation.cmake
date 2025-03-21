@@ -30,6 +30,7 @@
 #   target_suffix independent of how many RMW implementations are available
 # :type GENERATE_DEFAULT: option
 #
+
 macro(call_for_each_rmw_implementation macro_name)
   if(macro_name STREQUAL "")
     message(FATAL_ERROR
@@ -54,14 +55,30 @@ macro(call_for_each_rmw_implementation macro_name)
     get_default_rmw_implementation(rmw_implementation)
     find_package("${rmw_implementation}" REQUIRED)
     set(target_suffix)
+    if(rmw_implementation STREQUAL "rmw_zenoh_cpp")
+      set(ENV{ZENOH_ROUTER_CHECK_ATTEMPTS} "-1")
+      set(ENV{RUST_LOG} "z=error")
+      set(ENV{ZENOH_CONFIG_OVERRIDE} "scouting/multicast/enabled=true")
+    endif()
     include("${_filename}")
+    unset(ENV{ZENOH_ROUTER_CHECK_ATTEMPTS})
+    unset(ENV{RUST_LOG})
+    unset(ENV{ZENOH_CONFIG_OVERRIDE})
   endif()
   # call macro for each RMW implementation with a target suffix
   foreach(rmw_implementation ${_rmw_implementations})
     find_package("${rmw_implementation}" QUIET)
     if(${rmw_implementation}_FOUND)
       set(target_suffix "__${rmw_implementation}")
+      if(rmw_implementation STREQUAL "rmw_zenoh_cpp")
+      set(ENV{ZENOH_ROUTER_CHECK_ATTEMPTS} "-1")
+        set(ENV{RUST_LOG} "z=error")
+        set(ENV{ZENOH_CONFIG_OVERRIDE} "scouting/multicast/enabled=true")
+      endif()
       include("${_filename}")
+      unset(ENV{ZENOH_ROUTER_CHECK_ATTEMPTS})
+      unset(ENV{RUST_LOG})
+      unset(ENV{ZENOH_CONFIG_OVERRIDE})
     endif()
   endforeach()
 endmacro()
