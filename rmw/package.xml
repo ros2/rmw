@@ -13,7 +13,8 @@
 
   <author email="dthomas@openrobotics.org">Dirk Thomas</author>
 
-  <buildtool_depend>ament_cmake_ros</buildtool_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_ros_core</buildtool_depend>
   <buildtool_depend>ament_cmake_version</buildtool_depend>
 
   <build_depend>rcutils</build_depend>
