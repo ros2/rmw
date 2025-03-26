@@ -3360,7 +3360,7 @@ rmw_event_set_callback(
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_ret_t
-rmw_isolation_start();
+rmw_test_isolation_start();
 
 /// Cease isolation of ROS communication in this process.
 /**
@@ -3372,7 +3372,7 @@ rmw_isolation_start();
  */
 RMW_PUBLIC
 rmw_ret_t
-rmw_isolation_stop();
+rmw_test_isolation_stop();
 
 #ifdef __cplusplus
 }
