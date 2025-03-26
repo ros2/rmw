@@ -3347,13 +3347,6 @@ rmw_event_set_callback(
  * Perform neccessary changes to the process and/or environment so that any
  * attempted ROS communication will be isolated from other processes.
  *
- * If the rmw implementation does not provide an implementation of this
- * function, the default isolation mechanism changes the ROS_DOMAIN_ID to a
- * value not already in use by the mechanism. This is typically sufficient to
- * pass tests, but may not always be sufficient to fully isolate the test,
- * which is why rmw implementations are encouraged to provide a stronger
- * mechanism.
- *
  * \return `RMW_RET_OK` if successful, or
  * \return `RMW_RET_ERROR` if an unexpected error occurs.
  */
