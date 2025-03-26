@@ -3342,6 +3342,38 @@ rmw_event_set_callback(
   rmw_event_callback_t callback,
   const void * user_data);
 
+/// Begin isolating ROS communication in this process.
+/**
+ * Perform neccessary changes to the process and/or environment so that any
+ * attempted ROS communication will be isolated from other processes.
+ *
+ * If the rmw implementation does not provide an implementation of this
+ * function, the default isolation mechanism changes the ROS_DOMAIN_ID to a
+ * value not already in use by the mechanism. This is typically sufficient to
+ * pass tests, but may not always be sufficient to fully isolate the test,
+ * which is why rmw implementations are encouraged to provide a stronger
+ * mechanism.
+ *
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_isolation_start();
+
+/// Cease isolation of ROS communication in this process.
+/**
+ * Restore the process and/or environment to the previous state and deallocate
+ * any resources previously allocated by rmw_isolator_start().
+ *
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
+RMW_PUBLIC
+rmw_ret_t
+rmw_isolation_stop();
+
 #ifdef __cplusplus
 }
 #endif
