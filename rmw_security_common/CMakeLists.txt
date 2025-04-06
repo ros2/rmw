@@ -24,6 +24,7 @@ find_package(rmw REQUIRED)
 
 ament_add_default_options()
 ament_export_dependencies(rcutils)
+ament_export_dependencies(rmw)
 
 add_library(${PROJECT_NAME}_library
   src/security.cpp)
