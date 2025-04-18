@@ -2,6 +2,11 @@
 Changelog for package rmw_security_common
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.8.2 (2025-04-18)
+------------------
+* Export rmw dependency (`#400 <https://github.com/ros2/rmw/issues/400>`_)
+* Contributors: yadunund
+
 7.8.1 (2025-03-11)
 ------------------
 

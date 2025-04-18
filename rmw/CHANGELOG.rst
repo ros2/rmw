@@ -2,6 +2,11 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.8.2 (2025-04-18)
+------------------
+* Switch to ament_cmake_ros_core package (`#397 <https://github.com/ros2/rmw/issues/397>`_)
+* Contributors: Michael Carroll
+
 7.8.1 (2025-03-11)
 ------------------
 * Added rmw_event_type_is_supported (`#395 <https://github.com/ros2/rmw/issues/395>`_)
