@@ -2,6 +2,9 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.9.0 (2025-04-28)
+------------------
+
 7.8.2 (2025-04-18)
 ------------------
 * Switch to ament_cmake_ros_core package (`#397 <https://github.com/ros2/rmw/issues/397>`_)
