@@ -12,10 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "rmw/service_endpoint_info.h"
+#include <stdint.h>
+#include <stddef.h>
+#include <string.h>
 
 #include "rcutils/macros.h"
 #include "rcutils/strdup.h"
+
+#include "rmw/service_endpoint_info.h"
 #include "rmw/error_handling.h"
 #include "rmw/types.h"
 

@@ -20,6 +20,8 @@ extern "C"
 {
 #endif
 
+#include <stddef.h>
+
 #include "rcutils/allocator.h"
 #include "rmw/service_endpoint_info.h"
 #include "rmw/visibility_control.h"
