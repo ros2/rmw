@@ -5,7 +5,7 @@ The ROS 2 Middleware Interface provides an abstraction layer to different DDS im
 For more information, see https://design.ros2.org/articles/ros_middleware_interface.html
 
 ## Interface and Features
-For specific information about the rmw interface and features, see its [api docs](http://docs.ros2.org/latest/api/rmw/).
+For specific information about the rmw interface and features, see its [api docs](https://docs.ros.org/en/rolling/p/rmw/generated/).
 
 ## Quality Declaration
 
