@@ -72,7 +72,13 @@ typedef enum RMW_PUBLIC_TYPE rmw_endpoint_type_e
   RMW_ENDPOINT_PUBLISHER,
 
   /// Listens for and receives messages from a topic
-  RMW_ENDPOINT_SUBSCRIPTION
+  RMW_ENDPOINT_SUBSCRIPTION,
+
+  /// Sends requests and receives responses as part of a service client
+  RMW_ENDPOINT_CLIENT,
+
+  /// Receives requests and sends responses as part of a service server
+  RMW_ENDPOINT_SERVER
 } rmw_endpoint_type_t;
 
 /// Unique network flow endpoints requirement enumeration
