@@ -2,6 +2,14 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.9.1 (2025-11-18)
+------------------
+* add: get clients, servers info (`#371 <https://github.com/ros2/rmw//issues/371>`_)
+* Fix REP url locations (`#406 <https://github.com/ros2/rmw//issues/406>`_)
+* Update link to rmw API docs (`#405 <https://github.com/ros2/rmw//issues/405>`_)
+* Don't assume a DDS-based implementation in function docs (`#402 <https://github.com/ros2/rmw//issues/402>`_)
+* Contributors: Christophe Bedard, Minju, Lee, Tim Clephas
+
 7.9.0 (2025-04-28)
 ------------------
 
