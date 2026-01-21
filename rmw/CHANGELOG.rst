@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+7.3.3 (2026-01-21)
+------------------
 * Fix REP url locations (`#406 <https://github.com/ros2/rmw/issues/406>`_) (`#408 <https://github.com/ros2/rmw/issues/408>`_)
   This popped up in my global replace
   (cherry picked from commit afa7d196c704e2a22be2b460d498872a05df5212)
