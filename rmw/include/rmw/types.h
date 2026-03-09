@@ -213,6 +213,9 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_s
 
   /// Indicates whether content filtered topic of this subscription is enabled
   bool is_cft_enabled;
+
+  /// Indicates whether the subscription support content filtered topic feature
+  bool is_cft_supported;
 } rmw_subscription_t;
 
 /// A handle to an rmw service
