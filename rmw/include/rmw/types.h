@@ -184,6 +184,17 @@ typedef struct RMW_PUBLIC_TYPE rmw_subscription_options_s
 
   /// Used to create a content filter options during subscription creation.
   rmw_subscription_content_filter_options_t * content_filter_options;
+
+  /// Comma-separated list of acceptable buffer backend names for this endpoint.
+  /**
+   * NULL, empty string, or "cpu" all mean CPU-only (default for backward compat).
+   * "any" means all installed backends are acceptable.
+   * Comma-separated for specific backends, e.g. "cuda,demo".
+   * CPU is always implicitly acceptable regardless of this value.
+   * The RMW will validate that each specified backend is installed and will
+   * report an error if any are not available.
+   */
+  const char * acceptable_buffer_backends;
 } rmw_subscription_options_t;
 
 typedef struct RMW_PUBLIC_TYPE rmw_subscription_s
