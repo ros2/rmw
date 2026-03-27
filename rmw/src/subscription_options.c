@@ -27,6 +27,7 @@ rmw_get_default_subscription_options(void)
     .ignore_local_publications = false,
     .require_unique_network_flow_endpoints = RMW_UNIQUE_NETWORK_FLOW_ENDPOINTS_NOT_REQUIRED,
     .content_filter_options = NULL,
+    .acceptable_buffer_backends = NULL,
   };
   return subscription_options;
 }
