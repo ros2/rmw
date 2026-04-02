@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+7.10.0 (2026-04-02)
+-------------------
 * Add acceptable_buffer_backends field in rmw_subscription_options_s (`#416 <https://github.com/ros2/rmw/issues/416>`_)
 * Add is_cft_supported field to rmw_subscription_t for content filtering support (`#415 <https://github.com/ros2/rmw/issues/415>`_)
 * Remove default from switch with enum, so that compiler warns. (`#414 <https://github.com/ros2/rmw/issues/414>`_)
