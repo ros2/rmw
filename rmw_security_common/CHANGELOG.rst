@@ -2,6 +2,9 @@
 Changelog for package rmw_security_common
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 7.9.1 (2025-11-18)
 ------------------
 
