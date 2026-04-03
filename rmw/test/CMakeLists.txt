@@ -1,4 +1,5 @@
 find_package(ament_cmake_gmock REQUIRED)
+find_package(ament_cmake_gtest REQUIRED)
 find_package(osrf_testing_tools_cpp REQUIRED)
 
 
