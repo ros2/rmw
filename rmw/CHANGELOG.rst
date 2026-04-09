@@ -2,6 +2,11 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.10.1 (2026-04-09)
+-------------------
+* find_package ament_cmake_gtest (`#417 <https://github.com/ros2/rmw/issues/417>`_)
+* Contributors: Shane Loretz
+
 7.10.0 (2026-04-02)
 -------------------
 * Add acceptable_buffer_backends field in rmw_subscription_options_s (`#416 <https://github.com/ros2/rmw/issues/416>`_)
