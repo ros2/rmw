@@ -2,6 +2,9 @@
 Changelog for package rmw_security_common
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 7.10.1 (2026-04-09)
 -------------------
 
