@@ -21,6 +21,7 @@ extern "C"
 #endif
 
 #include "rcutils/allocator.h"
+#include "rcutils/types/string_map.h"
 #include "rosidl_runtime_c/type_hash.h"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
@@ -44,6 +45,8 @@ typedef struct RMW_PUBLIC_TYPE rmw_topic_endpoint_info_s
   uint8_t endpoint_gid[RMW_GID_STORAGE_SIZE];
   /// QoS profile of the endpoint
   rmw_qos_profile_t qos_profile;
+  /// Buffer backend metadata advertised for this endpoint
+  rcutils_string_map_t buffer_backend_metadata;
 } rmw_topic_endpoint_info_t;
 
 /// Return zero initialized topic endpoint info data structure.
@@ -362,6 +365,42 @@ rmw_ret_t
 rmw_topic_endpoint_info_set_qos_profile(
   rmw_topic_endpoint_info_t * topic_endpoint_info,
   const rmw_qos_profile_t * qos_profile);
+
+/// Set buffer backend metadata in the given topic endpoint info data structure.
+/**
+ * Copies all key/value pairs from `buffer_backend_metadata` into the topic endpoint info.
+ * Keys are backend names and values are backend-specific metadata strings.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | Yes
+ * Thread-Safe        | No
+ * Uses Atomics       | No
+ * Lock-Free          | No
+ *
+ * \par Thread-safety
+ *   Setting a member is a reentrant procedure, but access to the
+ *   topic endpoint info data structure is not synchronized.
+ *   It is not safe to read or write the `buffer_backend_metadata` member of the
+ *   given `topic_endpoint` while setting it.
+ *
+ * \param[inout] topic_endpoint_info Data structure to be populated.
+ * \param[in] buffer_backend_metadata Buffer backend metadata to be copied.
+ * \param[in] allocator Allocator to be used.
+ * \returns `RMW_RET_OK` if successful, or
+ * \returns `RMW_RET_INVALID_ARGUMENT` if any arguments are invalid, or
+ * \returns `RMW_RET_BAD_ALLOC` if memory allocation fails, or
+ * \returns `RMW_RET_ERROR` when an unspecified error occurs.
+ * \remark This function sets the RMW error state on failure.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_topic_endpoint_info_set_buffer_backend_metadata(
+  rmw_topic_endpoint_info_t * topic_endpoint_info,
+  const rcutils_string_map_t * buffer_backend_metadata,
+  rcutils_allocator_t * allocator);
 
 #ifdef __cplusplus
 }

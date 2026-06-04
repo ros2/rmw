@@ -15,6 +15,7 @@
 #include "gmock/gmock.h"
 #include "osrf_testing_tools_cpp/scope_exit.hpp"
 #include "rcutils/allocator.h"
+#include "rcutils/types/string_map.h"
 
 #include "rmw/error_handling.h"
 #include "rmw/topic_endpoint_info.h"
@@ -217,6 +218,47 @@ TEST(test_topic_endpoint_info, set_qos_profile) {
     false) << "Unequal avoid namespace conventions";
 }
 
+TEST(test_topic_endpoint_info, set_buffer_backend_metadata) {
+  rmw_topic_endpoint_info_t topic_endpoint_info = rmw_get_zero_initialized_topic_endpoint_info();
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
+  rcutils_string_map_t metadata = rcutils_get_zero_initialized_string_map();
+  rcutils_ret_t rcutils_ret = rcutils_string_map_init(&metadata, 1, allocator);
+  ASSERT_EQ(rcutils_ret, RCUTILS_RET_OK);
+  OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT(
+  {
+    rcutils_ret_t fini_ret = rcutils_string_map_fini(&metadata);
+    EXPECT_EQ(fini_ret, RCUTILS_RET_OK);
+  });
+  rcutils_ret = rcutils_string_map_set(&metadata, "cuda", "version=1.0");
+  ASSERT_EQ(rcutils_ret, RCUTILS_RET_OK);
+
+  rmw_ret_t ret =
+    rmw_topic_endpoint_info_set_buffer_backend_metadata(&topic_endpoint_info, &metadata, nullptr);
+  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null allocator";
+  rmw_reset_error();
+
+  ret = rmw_topic_endpoint_info_set_buffer_backend_metadata(
+    &topic_endpoint_info, nullptr, &allocator);
+  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null metadata";
+  rmw_reset_error();
+
+  ret = rmw_topic_endpoint_info_set_buffer_backend_metadata(nullptr, &metadata, &allocator);
+  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
+    "Expected invalid argument for null topic_endpoint_info";
+  rmw_reset_error();
+
+  ret = rmw_topic_endpoint_info_set_buffer_backend_metadata(
+    &topic_endpoint_info, &metadata, &allocator);
+  EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
+  EXPECT_STREQ(
+    rcutils_string_map_get(&topic_endpoint_info.buffer_backend_metadata, "cuda"),
+    "version=1.0");
+
+  ret = rmw_topic_endpoint_info_fini(&topic_endpoint_info, &allocator);
+  EXPECT_EQ(ret, RMW_RET_OK);
+  EXPECT_FALSE(topic_endpoint_info.buffer_backend_metadata.impl);
+}
+
 TEST(test_topic_endpoint_info, zero_init) {
   rmw_topic_endpoint_info_t topic_endpoint_info = rmw_get_zero_initialized_topic_endpoint_info();
   EXPECT_FALSE(topic_endpoint_info.node_name);
@@ -245,6 +287,7 @@ TEST(test_topic_endpoint_info, zero_init) {
   EXPECT_EQ(
     topic_endpoint_info.qos_profile.avoid_ros_namespace_conventions,
     false) << "Non-zero avoid namespace conventions";
+  EXPECT_FALSE(topic_endpoint_info.buffer_backend_metadata.impl);
 }
 
 TEST(test_topic_endpoint_info, fini) {
@@ -279,6 +322,16 @@ TEST(test_topic_endpoint_info, fini) {
   EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid node_name arguments";
   ret = rmw_topic_endpoint_info_set_topic_type(&topic_endpoint_info, "type", &allocator);
   EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid topic_type arguments";
+  rcutils_string_map_t metadata = rcutils_get_zero_initialized_string_map();
+  rcutils_ret_t rcutils_ret = rcutils_string_map_init(&metadata, 1, allocator);
+  ASSERT_EQ(rcutils_ret, RCUTILS_RET_OK);
+  rcutils_ret = rcutils_string_map_set(&metadata, "cuda", "");
+  ASSERT_EQ(rcutils_ret, RCUTILS_RET_OK);
+  ret = rmw_topic_endpoint_info_set_buffer_backend_metadata(
+    &topic_endpoint_info, &metadata, &allocator);
+  EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid buffer backend metadata";
+  rcutils_ret = rcutils_string_map_fini(&metadata);
+  EXPECT_EQ(rcutils_ret, RCUTILS_RET_OK);
   ret = rmw_topic_endpoint_info_fini(&topic_endpoint_info, nullptr);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null allocator";
   rmw_reset_error();
@@ -314,4 +367,5 @@ TEST(test_topic_endpoint_info, fini) {
     "Non-zero liveliness lease duration nsec";
   EXPECT_EQ(topic_endpoint_info.qos_profile.avoid_ros_namespace_conventions, false) <<
     "Non-zero avoid namespace conventions";
+  EXPECT_FALSE(topic_endpoint_info.buffer_backend_metadata.impl);
 }
