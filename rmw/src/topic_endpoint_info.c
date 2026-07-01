@@ -15,10 +15,7 @@
 #include "rmw/topic_endpoint_info.h"
 
 #include "rcutils/macros.h"
-#include "rcutils/error_handling.h"
 #include "rcutils/strdup.h"
-#include "rcutils/types/string_map.h"
-#include "rmw/convert_rcutils_ret_to_rmw_ret.h"
 #include "rmw/error_handling.h"
 #include "rmw/types.h"
 
@@ -65,6 +62,15 @@ _rmw_topic_endpoint_info_fini_topic_type(
 }
 
 rmw_ret_t
+_rmw_topic_endpoint_info_fini_buffer_backend_metadata(
+  rmw_topic_endpoint_info_t * topic_endpoint_info,
+  rcutils_allocator_t * allocator)
+{
+  return _rmw_topic_endpoint_info_fini_str(
+    &topic_endpoint_info->buffer_backend_metadata, allocator);
+}
+
+rmw_ret_t
 rmw_topic_endpoint_info_fini(
   rmw_topic_endpoint_info_t * topic_endpoint_info,
   rcutils_allocator_t * allocator)
@@ -93,12 +99,9 @@ rmw_topic_endpoint_info_fini(
   if (ret != RMW_RET_OK) {
     return ret;
   }
-  rcutils_ret_t rcutils_ret =
-    rcutils_string_map_fini(&topic_endpoint_info->buffer_backend_metadata);
-  if (rcutils_ret != RCUTILS_RET_OK) {
-    RMW_SET_ERROR_MSG(rcutils_get_error_string().str);
-    rcutils_reset_error();
-    return rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret);
+  ret = _rmw_topic_endpoint_info_fini_buffer_backend_metadata(topic_endpoint_info, allocator);
+  if (ret != RMW_RET_OK) {
+    return ret;
   }
 
   *topic_endpoint_info = rmw_get_zero_initialized_topic_endpoint_info();
@@ -260,63 +263,17 @@ rmw_topic_endpoint_info_set_qos_profile(
 rmw_ret_t
 rmw_topic_endpoint_info_set_buffer_backend_metadata(
   rmw_topic_endpoint_info_t * topic_endpoint_info,
-  const rcutils_string_map_t * buffer_backend_metadata,
+  const char * buffer_backend_metadata,
   rcutils_allocator_t * allocator)
 {
   RCUTILS_CAN_RETURN_WITH_ERROR_OF(RMW_RET_INVALID_ARGUMENT);
-  RCUTILS_CAN_RETURN_WITH_ERROR_OF(RMW_RET_BAD_ALLOC);
 
   if (!topic_endpoint_info) {
     RMW_SET_ERROR_MSG("topic_endpoint_info is null");
     return RMW_RET_INVALID_ARGUMENT;
   }
-  if (!buffer_backend_metadata) {
-    RMW_SET_ERROR_MSG("buffer_backend_metadata is null");
-    return RMW_RET_INVALID_ARGUMENT;
-  }
-  if (!allocator) {
-    RMW_SET_ERROR_MSG("allocator is null");
-    return RMW_RET_INVALID_ARGUMENT;
-  }
-
-  size_t size = 0;
-  rcutils_ret_t rcutils_ret = rcutils_string_map_get_size(buffer_backend_metadata, &size);
-  if (rcutils_ret != RCUTILS_RET_OK) {
-    RMW_SET_ERROR_MSG(rcutils_get_error_string().str);
-    rcutils_reset_error();
-    return rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret);
-  }
-
-  if (topic_endpoint_info->buffer_backend_metadata.impl) {
-    rcutils_ret = rcutils_string_map_fini(&topic_endpoint_info->buffer_backend_metadata);
-    if (rcutils_ret != RCUTILS_RET_OK) {
-      RMW_SET_ERROR_MSG(rcutils_get_error_string().str);
-      rcutils_reset_error();
-      return rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret);
-    }
-  }
-
-  topic_endpoint_info->buffer_backend_metadata = rcutils_get_zero_initialized_string_map();
-  rcutils_ret = rcutils_string_map_init(
-    &topic_endpoint_info->buffer_backend_metadata, size, *allocator);
-  if (rcutils_ret != RCUTILS_RET_OK) {
-    RMW_SET_ERROR_MSG(rcutils_get_error_string().str);
-    rcutils_reset_error();
-    return rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret);
-  }
-
-  rcutils_ret = rcutils_string_map_copy(
+  return _rmw_topic_endpoint_info_copy_str(
+    &topic_endpoint_info->buffer_backend_metadata,
     buffer_backend_metadata,
-    &topic_endpoint_info->buffer_backend_metadata);
-  if (rcutils_ret != RCUTILS_RET_OK) {
-    rcutils_ret_t fini_ret =
-      rcutils_string_map_fini(&topic_endpoint_info->buffer_backend_metadata);
-    (void)fini_ret;
-    topic_endpoint_info->buffer_backend_metadata = rcutils_get_zero_initialized_string_map();
-    RMW_SET_ERROR_MSG(rcutils_get_error_string().str);
-    rcutils_reset_error();
-    return rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret);
-  }
-
-  return RMW_RET_OK;
+    allocator);
 }
