@@ -2,6 +2,12 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.11.1 (2026-07-15)
+-------------------
+* use C++ 20 in default. (`#422 <https://github.com/ros2/rmw/issues/422>`_)
+* Only apply fvisibility-inlines-hidden when language is CXX (`#418 <https://github.com/ros2/rmw/issues/418>`_)
+* Contributors: Maurice Alexander Purnawan, Tomoya Fujita
+
 7.11.0 (2026-05-06)
 -------------------
 
