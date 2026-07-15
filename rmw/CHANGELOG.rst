@@ -2,6 +2,12 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+6.1.3 (2026-07-15)
+------------------
+* (Humble) Fix cmake deprecation (`#420 <https://github.com/ros2/rmw/issues/420>`_)
+* Fix REP url locations (`#406 <https://github.com/ros2/rmw/issues/406>`_) (`#409 <https://github.com/ros2/rmw/issues/409>`_)
+* Contributors: mergify[bot], mosfet80
+
 6.1.2 (2024-05-15)
 ------------------
 * rmw_send_reqponse returns RMW_RET_TIMEOUT. (`#350 <https://github.com/ros2/rmw/issues/350>`_) (`#367 <https://github.com/ros2/rmw/issues/367>`_)

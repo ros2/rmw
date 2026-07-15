@@ -2,6 +2,11 @@
 Changelog for package rmw_implementation_cmake
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+6.1.3 (2026-07-15)
+------------------
+* (Humble) Fix cmake deprecation (`#420 <https://github.com/ros2/rmw/issues/420>`_)
+* Contributors: mosfet80
+
 6.1.2 (2024-05-15)
 ------------------
 
