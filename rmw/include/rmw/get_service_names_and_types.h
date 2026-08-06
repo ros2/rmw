@@ -25,9 +25,9 @@ extern "C"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
 
-/// Return all service names and types in the ROS graph.
+/// Return all service names, types, and type hashes in the ROS graph.
 /**
- * This function returns an array of all service names and types in the ROS graph
+ * This function returns an array of all service names, types, and type hashes in the ROS graph
  * i.e. for which a server and/or client exists, as discovered so far by the given
  * local node.
  *
@@ -50,20 +50,20 @@ extern "C"
  * \par Thread-safety
  *   Nodes are thread-safe objects, and so are all operations on them except for finalization.
  *   Therefore, it is safe to query the ROS graph using the same node concurrently.
- *   However, when querying services names and types:
- *   - Access to the array of names and types is not synchronized.
+ *   However, when querying services names, types, and type hashes:
+ *   - Access to the array of names, types, and type hashes is not synchronized.
  *     It is not safe to read or write `service_names_and_types`
  *     while rmw_get_service_names_and_types() uses it.
  *   - The default allocators are thread-safe objects, but any custom `allocator` may not be.
  *     Check your allocator documentation for further reference.
  *
  * \pre Given `node` must be a valid node handle, as returned by rmw_create_node().
- * \pre Given `services_names_and_types` must be a zero-initialized array of names and types,
+ * \pre Given `services_names_and_types` must be a zero-initialized array of names, types, and type hashes,
  *   as returned by rmw_get_zero_initialized_names_and_types().
  *
  * \param[in] node Node to query the ROS graph.
  * \param[in] allocator Allocator to be used when populating the `service_names_and_types` array.
- * \param[out] service_names_and_types Array of service names and their types,
+ * \param[out] service_names_and_types Array of service names, their types, and their type hashes,
  *   populated on success but left unchanged on failure.
  *   If populated, it is up to the caller to finalize this array later
  *   on using rmw_names_and_types_fini().

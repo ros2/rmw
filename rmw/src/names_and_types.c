@@ -46,6 +46,10 @@ rmw_names_and_types_check_zero(rmw_names_and_types_t * names_and_types)
     RMW_SET_ERROR_MSG("types array is not NULL");
     return RMW_RET_INVALID_ARGUMENT;
   }
+  if (names_and_types->type_hashes != 0) {
+    RMW_SET_ERROR_MSG("type_hashes array is not NULL");
+    return RMW_RET_INVALID_ARGUMENT;
+  }
   return RMW_RET_OK;
 }
 
@@ -66,9 +70,16 @@ rmw_names_and_types_init(
     RMW_SET_ERROR_MSG("names_and_types is null");
     return RMW_RET_INVALID_ARGUMENT;
   }
+  if (rmw_names_and_types_check_zero(names_and_types) != RMW_RET_OK) {
+    // rmw_names_and_types_check_zero already sets the error message
+    return RMW_RET_INVALID_ARGUMENT;
+  }
   rcutils_ret_t rcutils_ret = rcutils_string_array_init(&names_and_types->names, size, allocator);
   if (rcutils_ret != RCUTILS_RET_OK) {
     RMW_SET_ERROR_MSG(rcutils_get_error_string().str);
+    // rcutils_string_array_init may leave the array in a partial state on failure;
+    // restore the zero-initialized post-condition so the caller can re-init.
+    names_and_types->names = rcutils_get_zero_initialized_string_array();
     return rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret);
   }
   names_and_types->types =
@@ -79,6 +90,18 @@ rmw_names_and_types_init(
       RCUTILS_LOG_ERROR("error while reporting error: %s", rcutils_get_error_string().str);
     }
     RMW_SET_ERROR_MSG("failed to allocate memory for types");
+    return RMW_RET_BAD_ALLOC;
+  }
+  names_and_types->type_hashes =
+    allocator->zero_allocate(size, sizeof(rosidl_type_hash_t *), allocator->state);
+  if (!names_and_types->type_hashes && size != 0) {
+    allocator->deallocate(names_and_types->types, allocator->state);
+    names_and_types->types = NULL;
+    rcutils_ret = rcutils_string_array_fini(&names_and_types->names);
+    if (rcutils_ret != RCUTILS_RET_OK) {
+      RCUTILS_LOG_ERROR("error while reporting error: %s", rcutils_get_error_string().str);
+    }
+    RMW_SET_ERROR_MSG("failed to allocate type_hashes array");
     return RMW_RET_BAD_ALLOC;
   }
   return RMW_RET_OK;
@@ -92,12 +115,13 @@ rmw_names_and_types_fini(rmw_names_and_types_t * names_and_types)
     return RMW_RET_INVALID_ARGUMENT;
   }
   rcutils_ret_t rcutils_ret;
-  if (names_and_types->types) {
+  if (names_and_types->types || names_and_types->type_hashes || names_and_types->names.data) {
     RCUTILS_CHECK_ALLOCATOR_WITH_MSG(
       &names_and_types->names.allocator,
       "allocator is invalid",
       return RMW_RET_INVALID_ARGUMENT);
-
+  }
+  if (names_and_types->types) {
     // Cleanup string arrays for types first
     size_t i;
     for (i = 0; i < names_and_types->names.size; ++i) {
@@ -107,14 +131,30 @@ rmw_names_and_types_fini(rmw_names_and_types_t * names_and_types)
         return rmw_convert_rcutils_ret_to_rmw_ret(rcutils_ret);
       }
     }
-
     // Use the allocator in the names string array
     // (prevents this data structure from having to also store it)
     names_and_types->names.allocator.deallocate(
       names_and_types->types, names_and_types->names.allocator.state);
     names_and_types->types = NULL;
   }
-  // Cleanup names string array
+
+  // Cleanup type hashes array
+  if (names_and_types->type_hashes) {
+    size_t i;
+    for (i = 0; i < names_and_types->names.size; ++i) {
+      if (names_and_types->type_hashes[i]) {
+        names_and_types->names.allocator.deallocate(
+          names_and_types->type_hashes[i], names_and_types->names.allocator.state);
+        names_and_types->type_hashes[i] = NULL;
+      }
+    }
+    names_and_types->names.allocator.deallocate(
+      names_and_types->type_hashes, names_and_types->names.allocator.state);
+    names_and_types->type_hashes = NULL;
+  }
+  // Cleanup names string array.
+  // Safe on a zero-initialized names array; rcutils_string_array_fini is a
+  // no-op when data is NULL and does not touch the embedded allocator.
   rcutils_ret = rcutils_string_array_fini(&names_and_types->names);
   if (rcutils_ret != RCUTILS_RET_OK) {
     RMW_SET_ERROR_MSG(rcutils_get_error_string().str);

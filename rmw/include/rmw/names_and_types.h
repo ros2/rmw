@@ -27,8 +27,9 @@ extern "C"
 #include "rmw/macros.h"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
+#include "rosidl_runtime_c/type_hash.h"
 
-/// Associative array of topic or service names and types.
+/// Associative array of topic or service names, types, and type hashes.
 typedef struct RMW_PUBLIC_TYPE rmw_names_and_types_s
 {
   /// Array of names
@@ -36,9 +37,13 @@ typedef struct RMW_PUBLIC_TYPE rmw_names_and_types_s
 
   /// Dynamic array of arrays of type names, with the same length as `names`
   rcutils_string_array_t * types;
+
+  /// Array of arrays of type hashes, with the same length as `names`.
+  /// `type_hashes[i][j]` corresponds to `types[i].data[j]`.
+  rosidl_type_hash_t ** type_hashes;
 } rmw_names_and_types_t;
 
-/// Return a zero initialized array of names and types.
+/// Return a zero initialized array of names, types, and type hashes.
 RMW_PUBLIC
 RMW_WARN_UNUSED
 rmw_names_and_types_t
@@ -55,7 +60,7 @@ rmw_get_zero_initialized_names_and_types(void);
  * Lock-Free          | Yes
  *
  * \par Thread-safety
- *   Access to the array of names and types is read-only, but it is not synchronized.
+ *   Access to the array of names, types, and type hashes is read-only, but it is not synchronized.
  *   Concurrent `names_and_types` reads are safe, but concurrent reads and writes are not.
  *
  * \param[in] names_and_types Array to be checked.
@@ -67,7 +72,7 @@ RMW_WARN_UNUSED
 rmw_ret_t
 rmw_names_and_types_check_zero(rmw_names_and_types_t * names_and_types);
 
-/// Initialize an array of names and types.
+/// Initialize an array of names, types, and type hashes.
 /**
  * This function initializes the string array for the names and allocates space
  * for all the string arrays for the types according to the given size, but
@@ -84,10 +89,13 @@ rmw_names_and_types_check_zero(rmw_names_and_types_t * names_and_types);
  *
  * \par Thread-safety
  *   Initialization is a reentrant procedure, but:
- *   - Access to arrays of names and types is not synchronized.
+ *   - Access to arrays of names, types, and type hashes is not synchronized.
  *     It is not safe to read or write `names_and_types` during initialization.
  *   - The default allocators are thread-safe objects, but any custom `allocator` may not be.
  *     Check your allocator documentation for further reference.
+ *
+ * \pre Given `names_and_types` must be a zero-initialized array,
+ *   as returned by rmw_get_zero_initialized_names_and_types().
  *
  * \param[inout] names_and_types Array to be initialized on success,
  *   but left unchanged on failure.
@@ -111,7 +119,7 @@ rmw_names_and_types_init(
   size_t size,
   rcutils_allocator_t * allocator);
 
-/// Finalize an array of names and types.
+/// Finalize an array of names, types, and type hashes.
 /**
  * This function deallocates the string array of names and the array of string arrays of types,
  * and zero initializes the given array.
@@ -128,7 +136,7 @@ rmw_names_and_types_init(
  * Lock-Free          | Yes
  *
  * \par Thread-safety
- *   Finalization is a reentrant procedure, but access to arrays of names and types
+ *   Finalization is a reentrant procedure, but access to arrays of names, types, and type hashes
  *   is not synchronized.
  *   It is not safe to read or write `names_and_types` during initialization.
  *

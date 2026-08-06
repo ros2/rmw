@@ -25,9 +25,9 @@ extern "C"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
 
-/// Return all topic names and types for which a given remote node has subscriptions.
+/// Return all topic names, types, and type hashes for which a given remote node has subscriptions.
 /**
- * This function returns an array of topic names and types for which a given remote
+ * This function returns an array of topic names, types, and type hashes for which a given remote
  * node has subscriptions, as discovered so far by the given local node.
  *
  * <hr>
@@ -49,8 +49,8 @@ extern "C"
  * \par Thread-safety
  *   Nodes are thread-safe objects, and so are all operations on them except for finalization.
  *   Therefore, it is safe to query the ROS graph using the same node concurrently.
- *   However, when querying subscribed topic names and types:
- *   - Access to the array of names and types is not synchronized.
+ *   However, when querying subscribed topic names, types, and type hashes:
+ *   - Access to the array of names, types, and type hashes is not synchronized.
  *     It is not safe to read or write `topic_names_and_types`
  *     while rmw_get_subscriber_names_and_types_by_node() uses it.
  *   - Access to node name and namespace is read-only but it is not synchronized.
@@ -60,7 +60,7 @@ extern "C"
  *     Check your allocator documentation for further reference.
  *
  * \pre Given `node` must be a valid node handle, as returned by rmw_create_node().
- * \pre Given `topic_names_and_types` must be a zero-initialized array of names and types,
+ * \pre Given `topic_names_and_types` must be a zero-initialized array of names, types, and type hashes,
  *   as returned by rmw_get_zero_initialized_names_and_types().
  *
  * \param[in] node Local node to query the ROS graph.
@@ -68,7 +68,7 @@ extern "C"
  * \param[in] node_name Name of the remote node to get information for.
  * \param[in] node_namespace Namespace of the remote node to get information for.
  * \param[in] no_demangle Whether to demangle all topic names following ROS conventions or not.
- * \param[out] topic_names_and_types Array of topic names and types the remote node has created
+ * \param[out] topic_names_and_types Array of topic names, types, and type hashes the remote node has created
  *   a subscription for, populated on success but left unchanged on failure.
  *   If populated, it is up to the caller to finalize this array later on
  *   using rmw_names_and_types_fini().
@@ -100,9 +100,9 @@ rmw_get_subscriber_names_and_types_by_node(
   bool no_demangle,
   rmw_names_and_types_t * topic_names_and_types);
 
-/// Return all topic names and types for which a given remote node has publishers.
+/// Return all topic names, types, and type hashes for which a given remote node has publishers.
 /**
- * This function returns an array of topic names and types for which a given remote
+ * This function returns an array of topic names, types, and type hashes for which a given remote
  * node has created publishers, as discovered so far by the given local node.
  *
  * <hr>
@@ -124,8 +124,8 @@ rmw_get_subscriber_names_and_types_by_node(
  * \par Thread-safety
  *   Nodes are thread-safe objects, and so are all operations on them except for finalization.
  *   Therefore, it is safe to query the ROS graph using the same node concurrently.
- *   However, when querying published topic names and types:
- *   - Access to the array of names and types is not synchronized.
+ *   However, when querying published topic names, types, and type hashes:
+ *   - Access to the array of names, types, and type hashes is not synchronized.
  *     It is not safe to read or write `topic_names_and_types`
  *     while rmw_get_publisher_names_and_types_by_node() uses it.
  *   - Access to node name and namespace is read-only but it is not synchronized.
@@ -135,7 +135,7 @@ rmw_get_subscriber_names_and_types_by_node(
  *     Check your allocator documentation for further reference.
  *
  * \pre Given `node` must be a valid node handle, as returned by rmw_create_node().
- * \pre Given `topic_names_and_types` must be a zero-initialized array of names and types,
+ * \pre Given `topic_names_and_types` must be a zero-initialized array of names, types, and type hashes,
  *   as returned by rmw_get_zero_initialized_names_and_types().
  *
  * \param[in] node Local node to query the ROS graph.
@@ -143,7 +143,7 @@ rmw_get_subscriber_names_and_types_by_node(
  * \param[in] node_name Name of the remote node to get information for.
  * \param[in] node_namespace Namespace of the remote node to get information for.
  * \param[in] no_demangle Whether to demangle all topic names following ROS conventions or not.
- * \param[out] topic_names_and_types Array of topic names and types the remote node has created
+ * \param[out] topic_names_and_types Array of topic names, types, and type hashes the remote node has created
  *   a publisher for, populated on success but left unchanged on failure.
  *   If populated, it is up to the caller to finalize this array later on
  *   using rmw_names_and_types_fini().
@@ -175,9 +175,9 @@ rmw_get_publisher_names_and_types_by_node(
   bool no_demangle,
   rmw_names_and_types_t * topic_names_and_types);
 
-/// Return all service names and types for which a given remote node has servers.
+/// Return all service names, types, and type hashes for which a given remote node has servers.
 /**
- * This function returns an array of service names and types for which a given remote
+ * This function returns an array of service names, types, and type hashes for which a given remote
  * node has servers, as discovered so far by the given local node.
  *
  * <hr>
@@ -199,8 +199,8 @@ rmw_get_publisher_names_and_types_by_node(
  * \par Thread-safety
  *   Nodes are thread-safe objects, and so are all operations on them except for finalization.
  *   Therefore, it is safe to query the ROS graph using the same node concurrently.
- *   However, when querying served service names and types:
- *   - Access to the array of names and types is not synchronized.
+ *   However, when querying served service names, types, and type hashes:
+ *   - Access to the array of names, types, and type hashes is not synchronized.
  *     It is not safe to read or write `service_names_and_types`
  *     while rmw_get_service_names_and_types_by_node() uses it.
  *   - Access to node name and namespace is read-only but it is not synchronized.
@@ -213,7 +213,7 @@ rmw_get_publisher_names_and_types_by_node(
  * \param[in] allocator Allocator to be used when populating the `service_names_and_types` array.
  * \param[in] node_name Name of the remote node to get information for.
  * \param[in] node_namespace Namespace of the remote node to get information for.
- * \param[out] service_names_and_types Array of service names and types the remote node has
+ * \param[out] service_names_and_types Array of service names, types, and type hashes the remote node has
  *   created a service server for, populated on success but left unchanged on failure.
  *   If populated, it is up to the caller to finalize this array later on
  *   using rmw_names_and_types_fini().
@@ -244,9 +244,9 @@ rmw_get_service_names_and_types_by_node(
   const char * node_namespace,
   rmw_names_and_types_t * service_names_and_types);
 
-/// Return all service names and types for which a given remote node has clients.
+/// Return all service names, types, and type hashes for which a given remote node has clients.
 /**
- * This function returns an array of service names and types for which a given remote
+ * This function returns an array of service names, types, and type hashes for which a given remote
  * node has clients, as discovered so far by the given local node.
  *
  * <hr>
@@ -268,8 +268,8 @@ rmw_get_service_names_and_types_by_node(
  * \par Thread-safety
  *   Nodes are thread-safe objects, and so are all operations on them except for finalization.
  *   Therefore, it is safe to query the ROS graph using the same node concurrently.
- *   However, when querying served service names and types:
- *   - Access to the array of names and types is not synchronized.
+ *   However, when querying served service names, types, and type hashes:
+ *   - Access to the array of names, types, and type hashes is not synchronized.
  *     It is not safe to read or write `service_names_and_types`
  *     while rmw_get_client_names_and_types_by_node() uses it.
  *   - Access to C-style string arguments is read-only but it is not synchronized.
@@ -282,7 +282,7 @@ rmw_get_service_names_and_types_by_node(
  * \param[in] allocator Allocator to be used when populating the `service_names_and_types` array.
  * \param[in] node_name Name of the remote node to get information for.
  * \param[in] node_namespace Namespace of the remote node to get information for.
- * \param[out] service_names_and_types Array of service names and types the remote node has
+ * \param[out] service_names_and_types Array of service names, types, and type hashes the remote node has
  *   created a service client for, populated on success but left unchanged on failure.
  *   If populated, it is up to the caller to finalize this array later on
  *   using rmw_names_and_types_fini().

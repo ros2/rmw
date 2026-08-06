@@ -60,13 +60,20 @@ TEST(rmw_names_and_types, rmw_names_and_types_check_zero) {
   names_and_types.types = nullptr;
   rmw_reset_error();
 
+  // type_hashes is not null
+  rosidl_type_hash_t * hash_ptr = reinterpret_cast<rosidl_type_hash_t *>(0x1);
+  names_and_types.type_hashes = &hash_ptr;
+  EXPECT_EQ(rmw_names_and_types_check_zero(&names_and_types), RMW_RET_INVALID_ARGUMENT);
+  names_and_types.type_hashes = nullptr;
+  rmw_reset_error();
+
   // OK
   names_and_types = rmw_get_zero_initialized_names_and_types();
   EXPECT_EQ(rmw_names_and_types_check_zero(&names_and_types), RMW_RET_OK);
 }
 
 TEST(rmw_names_and_types, rmw_names_and_types_init) {
-  rmw_names_and_types_t names_and_types;
+  rmw_names_and_types_t names_and_types = rmw_get_zero_initialized_names_and_types();
   rcutils_allocator_t allocator = rcutils_get_default_allocator();
   size_t size = 100;
 
@@ -78,6 +85,7 @@ TEST(rmw_names_and_types, rmw_names_and_types_init) {
   // allocator is not null, but still invalid
   rcutils_allocator_t invalid_allocator = get_time_bomb_allocator();
   invalid_allocator.deallocate = nullptr;
+  names_and_types = rmw_get_zero_initialized_names_and_types();
   result = rmw_names_and_types_init(&names_and_types, size, &invalid_allocator);
   EXPECT_EQ(result, RMW_RET_INVALID_ARGUMENT);
   rmw_reset_error();
@@ -90,14 +98,30 @@ TEST(rmw_names_and_types, rmw_names_and_types_init) {
   // allocator fails to allocate memory to names
   rcutils_allocator_t failing_allocator = get_time_bomb_allocator();
   set_time_bomb_allocator_calloc_count(failing_allocator, 0);
+  names_and_types = rmw_get_zero_initialized_names_and_types();
   result = rmw_names_and_types_init(&names_and_types, size, &failing_allocator);
   EXPECT_EQ(result, RMW_RET_BAD_ALLOC);
+  rmw_reset_error();
+  // After BAD_ALLOC the struct must be back to zero so the caller can re-init.
+  EXPECT_EQ(rmw_names_and_types_check_zero(&names_and_types), RMW_RET_OK);
   rmw_reset_error();
 
   // allocator fails to allocate memory to types
   set_time_bomb_allocator_calloc_count(failing_allocator, 1);
+  names_and_types = rmw_get_zero_initialized_names_and_types();
   result = rmw_names_and_types_init(&names_and_types, size, &failing_allocator);
   EXPECT_EQ(result, RMW_RET_BAD_ALLOC);
+  rmw_reset_error();
+  EXPECT_EQ(rmw_names_and_types_check_zero(&names_and_types), RMW_RET_OK);
+  rmw_reset_error();
+
+  // allocator fails to allocate memory to type_hashes
+  set_time_bomb_allocator_calloc_count(failing_allocator, 2);
+  names_and_types = rmw_get_zero_initialized_names_and_types();
+  result = rmw_names_and_types_init(&names_and_types, size, &failing_allocator);
+  EXPECT_EQ(result, RMW_RET_BAD_ALLOC);
+  rmw_reset_error();
+  EXPECT_EQ(rmw_names_and_types_check_zero(&names_and_types), RMW_RET_OK);
   rmw_reset_error();
 
   // Fails to deallocate names after failing to zero allocate types
@@ -111,6 +135,7 @@ TEST(rmw_names_and_types, rmw_names_and_types_init) {
     // If logging shutdown is not called, there's a small memory leak
     EXPECT_EQ(rcutils_logging_shutdown(), RCUTILS_RET_OK);
   });
+  names_and_types = rmw_get_zero_initialized_names_and_types();
   result = rmw_names_and_types_init(&names_and_types, size, &failing_allocator);
   EXPECT_EQ(result, RMW_RET_BAD_ALLOC);
   rmw_reset_error();
@@ -120,10 +145,12 @@ TEST(rmw_names_and_types, rmw_names_and_types_init) {
   ASSERT_EQ(rcutils_string_array_fini(&names_and_types.names), RMW_RET_OK);
 
   // Size == 0 is Ok
+  names_and_types = rmw_get_zero_initialized_names_and_types();
   result = rmw_names_and_types_init(&names_and_types, 0, &allocator);
   EXPECT_EQ(result, RMW_RET_OK);
   EXPECT_EQ(rmw_names_and_types_fini(&names_and_types), RMW_RET_OK);
 
+  names_and_types = rmw_get_zero_initialized_names_and_types();
   result = rmw_names_and_types_init(&names_and_types, size, &allocator);
   EXPECT_EQ(result, RMW_RET_OK);
   EXPECT_EQ(rmw_names_and_types_fini(&names_and_types), RMW_RET_OK);
