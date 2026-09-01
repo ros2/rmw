@@ -2,6 +2,11 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.10.2 (2026-08-31)
+-------------------
+* Add missing stdbool.h include to time.h (`#425 <https://github.com/ros2/rmw/issues/425>`_)
+* Contributors: banerjs-overland
+
 7.10.1 (2026-04-09)
 -------------------
 * find_package ament_cmake_gtest (`#417 <https://github.com/ros2/rmw/issues/417>`_)
