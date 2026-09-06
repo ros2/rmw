@@ -2,8 +2,8 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+6.1.4 (2026-09-06)
+------------------
 * Add missing stdbool.h include to time.h (`#423 <https://github.com/ros2/rmw/issues/423>`_) (`#428 <https://github.com/ros2/rmw/issues/428>`_)
 * Contributors: mergify[bot]
 
