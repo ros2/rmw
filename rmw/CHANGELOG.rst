@@ -2,6 +2,11 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.11.2 (2026-09-07)
+-------------------
+* Add missing stdbool.h include to time.h (`#423 <https://github.com/ros2/rmw/issues/423>`_)
+* Contributors: banerjs-overland
+
 7.11.1 (2026-07-15)
 -------------------
 * use C++ 20 in default. (`#422 <https://github.com/ros2/rmw/issues/422>`_)
