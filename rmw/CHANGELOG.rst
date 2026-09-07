@@ -2,6 +2,11 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.3.4 (2026-09-07)
+------------------
+* Add missing stdbool.h include to time.h (`#423 <https://github.com/ros2/rmw/issues/423>`_) (`#427 <https://github.com/ros2/rmw/issues/427>`_)
+* Contributors: mergify[bot]
+
 7.3.3 (2026-01-21)
 ------------------
 * Fix REP url locations (`#406 <https://github.com/ros2/rmw/issues/406>`_) (`#408 <https://github.com/ros2/rmw/issues/408>`_)
