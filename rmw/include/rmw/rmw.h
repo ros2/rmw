@@ -650,6 +650,35 @@ rmw_publisher_count_matched_subscriptions(
   const rmw_publisher_t * publisher,
   size_t * subscription_count);
 
+/// Retrieve the number of non local matched subscriptions to a publisher.
+/**
+ * Query the underlying middleware to determine how many non local subscriptions are
+ * matched to a given publisher.
+ *
+ * <hr>
+ * Attribute          | Adherence
+ * ------------------ | -------------
+ * Allocates Memory   | No
+ * Thread-Safe        | No
+ * Uses Atomics       | Maybe [1]
+ * Lock-Free          | Maybe [1]
+ * <i>[1] rmw implementation defined, check the implementation documentation</i>
+ *
+ * \param[in] publisher the publisher object to inspect
+ * \param[out] non_local_subscription_count the number of non local subscriptions matched
+ * \return `RMW_RET_OK` if successful, or
+ * \return `RMW_RET_INVALID_ARGUMENT` if either argument is null, or
+ * \return `RMW_RET_INCORRECT_RMW_IMPLEMENTATION` if publisher
+ *   implementation identifier does not match, or
+ * \return `RMW_RET_ERROR` if an unexpected error occurs.
+ */
+RMW_PUBLIC
+RMW_WARN_UNUSED
+rmw_ret_t
+rmw_publisher_count_non_local_matched_subscriptions(
+  const rmw_publisher_t * publisher,
+  size_t * non_local_subscription_count);
+
 /// Retrieve the actual qos settings of the publisher.
 /**
  * Query the underlying middleware to determine the qos settings
