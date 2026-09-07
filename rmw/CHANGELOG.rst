@@ -2,6 +2,12 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.8.3 (2026-09-07)
+------------------
+* Add missing stdbool.h include to time.h (`#423 <https://github.com/ros2/rmw/issues/423>`_) (`#426 <https://github.com/ros2/rmw/issues/426>`_)
+* Fix REP url locations (`#406 <https://github.com/ros2/rmw/issues/406>`_) (`#407 <https://github.com/ros2/rmw/issues/407>`_)
+* Contributors: mergify[bot]
+
 7.8.2 (2025-04-18)
 ------------------
 * Switch to ament_cmake_ros_core package (`#397 <https://github.com/ros2/rmw/issues/397>`_)
