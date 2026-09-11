@@ -62,6 +62,15 @@ _rmw_topic_endpoint_info_fini_topic_type(
 }
 
 rmw_ret_t
+_rmw_topic_endpoint_info_fini_buffer_backend_metadata(
+  rmw_topic_endpoint_info_t * topic_endpoint_info,
+  rcutils_allocator_t * allocator)
+{
+  return _rmw_topic_endpoint_info_fini_str(
+    &topic_endpoint_info->buffer_backend_metadata, allocator);
+}
+
+rmw_ret_t
 rmw_topic_endpoint_info_fini(
   rmw_topic_endpoint_info_t * topic_endpoint_info,
   rcutils_allocator_t * allocator)
@@ -87,6 +96,10 @@ rmw_topic_endpoint_info_fini(
     return ret;
   }
   ret = _rmw_topic_endpoint_info_fini_topic_type(topic_endpoint_info, allocator);
+  if (ret != RMW_RET_OK) {
+    return ret;
+  }
+  ret = _rmw_topic_endpoint_info_fini_buffer_backend_metadata(topic_endpoint_info, allocator);
   if (ret != RMW_RET_OK) {
     return ret;
   }
@@ -245,4 +258,22 @@ rmw_topic_endpoint_info_set_qos_profile(
 
   topic_endpoint_info->qos_profile = *qos_profile;
   return RMW_RET_OK;
+}
+
+rmw_ret_t
+rmw_topic_endpoint_info_set_buffer_backend_metadata(
+  rmw_topic_endpoint_info_t * topic_endpoint_info,
+  const char * buffer_backend_metadata,
+  rcutils_allocator_t * allocator)
+{
+  RCUTILS_CAN_RETURN_WITH_ERROR_OF(RMW_RET_INVALID_ARGUMENT);
+
+  if (!topic_endpoint_info) {
+    RMW_SET_ERROR_MSG("topic_endpoint_info is null");
+    return RMW_RET_INVALID_ARGUMENT;
+  }
+  return _rmw_topic_endpoint_info_copy_str(
+    &topic_endpoint_info->buffer_backend_metadata,
+    buffer_backend_metadata,
+    allocator);
 }

@@ -12,11 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <cstdlib>
+#include <cstring>
+#include <map>
+#include <string>
+
 #include "gmock/gmock.h"
 #include "osrf_testing_tools_cpp/scope_exit.hpp"
 #include "rcutils/allocator.h"
-
 #include "rmw/error_handling.h"
+#include "rmw/impl/cpp/buffer_backend_metadata.hpp"
 #include "rmw/topic_endpoint_info.h"
 #include "rmw/types.h"
 
@@ -217,6 +222,61 @@ TEST(test_topic_endpoint_info, set_qos_profile) {
     false) << "Unequal avoid namespace conventions";
 }
 
+TEST(test_topic_endpoint_info, set_buffer_backend_metadata) {
+  rmw_topic_endpoint_info_t topic_endpoint_info = rmw_get_zero_initialized_topic_endpoint_info();
+  rcutils_allocator_t allocator = rcutils_get_default_allocator();
+  char * val = get_mallocd_string("backends:test:version=1.0");
+
+  rmw_ret_t ret =
+    rmw_topic_endpoint_info_set_buffer_backend_metadata(&topic_endpoint_info, val, nullptr);
+  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null allocator";
+  rmw_reset_error();
+
+  ret = rmw_topic_endpoint_info_set_buffer_backend_metadata(
+    &topic_endpoint_info, nullptr, &allocator);
+  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null metadata";
+  rmw_reset_error();
+
+  ret = rmw_topic_endpoint_info_set_buffer_backend_metadata(nullptr, val, &allocator);
+  EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) <<
+    "Expected invalid argument for null topic_endpoint_info";
+  rmw_reset_error();
+
+  OSRF_TESTING_TOOLS_CPP_SCOPE_EXIT(
+  {
+    allocator.deallocate(
+      const_cast<char *>(topic_endpoint_info.buffer_backend_metadata),
+      allocator.state);
+  });
+  ret = rmw_topic_endpoint_info_set_buffer_backend_metadata(
+    &topic_endpoint_info, val, &allocator);
+  EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid arguments";
+  free(val);
+  EXPECT_STREQ(topic_endpoint_info.buffer_backend_metadata, "backends:test:version=1.0");
+}
+
+TEST(test_topic_endpoint_info, buffer_backend_metadata_serialization) {
+  std::map<std::string, std::string> metadata{
+    {"test", "version=1.0"},
+    {"cpu", ""},
+    {"with:colon", "semi;slash/percent%"},
+  };
+
+  const std::string serialized =
+    rmw::impl::cpp::serialize_buffer_backend_metadata(metadata);
+  EXPECT_EQ(
+    serialized,
+    "backends:cpu:;test:version=1.0;with%3Acolon:semi%3Bslash%2Fpercent%25");
+
+  EXPECT_EQ(rmw::impl::cpp::parse_buffer_backend_metadata(serialized.c_str()), metadata);
+  EXPECT_TRUE(
+    rmw::impl::cpp::serialize_buffer_backend_metadata(
+      std::map<std::string, std::string>{}).empty());
+  EXPECT_TRUE(rmw::impl::cpp::parse_buffer_backend_metadata(nullptr).empty());
+  EXPECT_TRUE(rmw::impl::cpp::parse_buffer_backend_metadata("").empty());
+  EXPECT_TRUE(rmw::impl::cpp::parse_buffer_backend_metadata("not-backends:cpu:").empty());
+}
+
 TEST(test_topic_endpoint_info, zero_init) {
   rmw_topic_endpoint_info_t topic_endpoint_info = rmw_get_zero_initialized_topic_endpoint_info();
   EXPECT_FALSE(topic_endpoint_info.node_name);
@@ -245,6 +305,7 @@ TEST(test_topic_endpoint_info, zero_init) {
   EXPECT_EQ(
     topic_endpoint_info.qos_profile.avoid_ros_namespace_conventions,
     false) << "Non-zero avoid namespace conventions";
+  EXPECT_FALSE(topic_endpoint_info.buffer_backend_metadata);
 }
 
 TEST(test_topic_endpoint_info, fini) {
@@ -279,6 +340,9 @@ TEST(test_topic_endpoint_info, fini) {
   EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid node_name arguments";
   ret = rmw_topic_endpoint_info_set_topic_type(&topic_endpoint_info, "type", &allocator);
   EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid topic_type arguments";
+  ret = rmw_topic_endpoint_info_set_buffer_backend_metadata(
+    &topic_endpoint_info, "backends:test:", &allocator);
+  EXPECT_EQ(ret, RMW_RET_OK) << "Expected OK for valid buffer backend metadata";
   ret = rmw_topic_endpoint_info_fini(&topic_endpoint_info, nullptr);
   EXPECT_EQ(ret, RMW_RET_INVALID_ARGUMENT) << "Expected invalid argument for null allocator";
   rmw_reset_error();
@@ -314,4 +378,5 @@ TEST(test_topic_endpoint_info, fini) {
     "Non-zero liveliness lease duration nsec";
   EXPECT_EQ(topic_endpoint_info.qos_profile.avoid_ros_namespace_conventions, false) <<
     "Non-zero avoid namespace conventions";
+  EXPECT_FALSE(topic_endpoint_info.buffer_backend_metadata);
 }
