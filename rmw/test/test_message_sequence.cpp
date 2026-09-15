@@ -19,6 +19,7 @@
 #include "./time_bomb_allocator_testing_utils.h"
 #include "rmw/error_handling.h"
 #include "rmw/message_sequence.h"
+#include "rmw/ret_types.h"
 
 TEST(test_message_info_sequence, default_initialization) {
   auto info_sequence = rmw_get_zero_initialized_message_info_sequence();

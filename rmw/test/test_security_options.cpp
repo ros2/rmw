@@ -13,9 +13,11 @@
 // limitations under the License.
 
 #include "gmock/gmock.h"
+#include "rcutils/allocator.h"
 
 #include "./time_bomb_allocator_testing_utils.h"
 #include "rmw/error_handling.h"
+#include "rmw/ret_types.h"
 #include "rmw/security_options.h"
 
 TEST(rmw_security_options, get_zero_init)

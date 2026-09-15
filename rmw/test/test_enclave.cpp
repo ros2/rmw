@@ -13,10 +13,12 @@
 // limitations under the License.
 
 #include "gmock/gmock.h"
+#include "rcutils/allocator.h"
 
 #include "./time_bomb_allocator_testing_utils.h"
 #include "rmw/enclave.h"
 #include "rmw/error_handling.h"
+#include "rmw/ret_types.h"
 
 TEST(rmw_enclave_options, options_copy) {
   rcutils_allocator_t allocator = rcutils_get_default_allocator();

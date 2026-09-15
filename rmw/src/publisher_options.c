@@ -14,6 +14,8 @@
 
 #include "rmw/publisher_options.h"
 
+#include <stddef.h>
+
 #ifdef __cplusplus
 extern "C"
 {

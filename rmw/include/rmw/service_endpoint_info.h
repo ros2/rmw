@@ -20,8 +20,12 @@ extern "C"
 {
 #endif
 
+#include <stdint.h>
+
 #include "rcutils/allocator.h"
 #include "rosidl_runtime_c/type_hash.h"
+#include "rmw/macros.h"
+#include "rmw/ret_types.h"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
 

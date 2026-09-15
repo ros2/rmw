@@ -12,12 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <cstddef>
+
 #include "gmock/gmock.h"
 
 #include "rmw/discovery_options.h"
 
 #include "rcutils/allocator.h"
 #include "rmw/error_handling.h"
+#include "rmw/ret_types.h"
 
 TEST(discovery_options, zero_init_fini) {
   rmw_discovery_options_t dopts = rmw_get_zero_initialized_discovery_options();

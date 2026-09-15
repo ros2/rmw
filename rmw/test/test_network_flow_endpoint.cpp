@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <cstddef>
+#include <cstdint>
+#include <cstring>
+
 #include "gmock/gmock.h"
 #include "osrf_testing_tools_cpp/scope_exit.hpp"
 
@@ -20,6 +24,7 @@
 
 #include "rmw/error_handling.h"
 #include "rmw/network_flow_endpoint.h"
+#include "rmw/ret_types.h"
 #include "rmw/types.h"
 
 TEST(test_network_flow_endpoint, zero_init) {

@@ -12,11 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <cstddef>
+#include <cstdint>
+#include <cstdlib>
+#include <cstring>
+
 #include "gmock/gmock.h"
 #include "osrf_testing_tools_cpp/scope_exit.hpp"
 #include "rcutils/allocator.h"
+#include "rosidl_runtime_c/type_hash.h"
 
 #include "rmw/error_handling.h"
+#include "rmw/ret_types.h"
 #include "rmw/topic_endpoint_info.h"
 #include "rmw/types.h"
 

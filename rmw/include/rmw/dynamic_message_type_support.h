@@ -32,7 +32,10 @@ extern "C"
 #include <rosidl_runtime_c/type_description/type_source__struct.h>
 
 #include "rmw/features.h"
+#include "rmw/macros.h"
+#include "rmw/ret_types.h"
 #include "rmw/serialized_message.h"
+#include "rmw/types.h"
 #include "rmw/visibility_control.h"
 
 /// Interfaces for runtime interface reflection

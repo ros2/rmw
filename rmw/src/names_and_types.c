@@ -14,8 +14,10 @@
 
 #include "rmw/names_and_types.h"
 
+#include "rcutils/error_handling.h"
 #include "rcutils/logging_macros.h"
 #include "rcutils/macros.h"
+#include "rcutils/types/rcutils_ret.h"
 #include "rcutils/types/string_array.h"
 #include "rmw/error_handling.h"
 #include "rmw/convert_rcutils_ret_to_rmw_ret.h"

@@ -13,6 +13,10 @@
 // limitations under the License.
 
 #include "rmw/message_sequence.h"
+
+#include <assert.h>
+
+#include "rcutils/error_handling.h"
 #include "rmw/types.h"
 
 rmw_message_sequence_t

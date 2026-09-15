@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <rcutils/error_handling.h>
 #include <rcutils/snprintf.h>
 
 #include "rmw/error_handling.h"

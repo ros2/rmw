@@ -14,7 +14,9 @@
 
 #include <stddef.h>
 
+#include "rcutils/error_handling.h"
 #include "rcutils/strdup.h"
+#include "rcutils/types/rcutils_ret.h"
 
 #include "rmw/error_handling.h"
 #include "rmw/subscription_content_filter_options.h"

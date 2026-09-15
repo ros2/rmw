@@ -21,6 +21,8 @@ extern "C"
 #endif
 
 #include "rcutils/allocator.h"
+#include "rmw/macros.h"
+#include "rmw/ret_types.h"
 #include "rmw/topic_endpoint_info.h"
 #include "rmw/visibility_control.h"
 

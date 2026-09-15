@@ -15,6 +15,7 @@
 #ifndef RMW__QOS_STRING_CONVERSIONS_H_
 #define RMW__QOS_STRING_CONVERSIONS_H_
 
+#include "rmw/qos_policy_kind.h"
 #include "rmw/types.h"
 #include "rmw/visibility_control.h"
 
