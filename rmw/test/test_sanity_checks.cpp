@@ -13,8 +13,10 @@
 // limitations under the License.
 
 #include "gmock/gmock.h"
+#include "rcutils/types/string_array.h"
 
 #include "rmw/error_handling.h"
+#include "rmw/ret_types.h"
 #include "rmw/sanity_checks.h"
 
 TEST(rmw_sanity_checks, check_zero_rmw_string_array)

@@ -17,7 +17,9 @@
 
 #include <stddef.h>
 
+#include "rcutils/allocator.h"
 #include "rmw/macros.h"
+#include "rmw/ret_types.h"
 #include "rmw/visibility_control.h"
 #include "rmw/types.h"
 

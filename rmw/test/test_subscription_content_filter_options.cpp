@@ -12,12 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <cstddef>
+
 #include "gmock/gmock.h"
 
+#include "rcutils/allocator.h"
+#include "rcutils/error_handling.h"
 #include "rcutils/strdup.h"
+#include "rcutils/types/rcutils_ret.h"
+#include "rcutils/types/string_array.h"
 
 #include "./time_bomb_allocator_testing_utils.h"
 #include "rmw/error_handling.h"
+#include "rmw/ret_types.h"
 #include "rmw/subscription_content_filter_options.h"
 
 TEST(rmw_subscription_content_filter_options, get_zero_init)

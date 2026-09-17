@@ -15,7 +15,7 @@
 #ifndef RMW__EVENTS_STATUSES__OFFERED_DEADLINE_MISSED_H_
 #define RMW__EVENTS_STATUSES__OFFERED_DEADLINE_MISSED_H_
 
-#include <stddef.h>
+#include <stdint.h>
 
 #include "rmw/visibility_control.h"
 

@@ -12,13 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <cstddef>
+
 #include "gmock/gmock.h"
 #include "osrf_testing_tools_cpp/scope_exit.hpp"
 
 #include "./time_bomb_allocator_testing_utils.h"
+#include "rcutils/allocator.h"
 #include "rcutils/error_handling.h"
+#include "rcutils/logging.h"
+#include "rcutils/types/rcutils_ret.h"
+#include "rcutils/types/string_array.h"
 #include "rmw/error_handling.h"
 #include "rmw/names_and_types.h"
+#include "rmw/ret_types.h"
 
 TEST(rmw_names_and_types, get_zero_init)
 {

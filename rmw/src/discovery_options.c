@@ -15,6 +15,7 @@
 #include <stddef.h>
 #include <string.h>
 
+#include "rcutils/macros.h"
 #include "rmw/discovery_options.h"
 #include "rmw/error_handling.h"
 

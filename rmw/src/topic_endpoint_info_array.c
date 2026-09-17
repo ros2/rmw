@@ -13,6 +13,9 @@
 // limitations under the License.
 
 #include "rmw/topic_endpoint_info_array.h"
+
+#include <stddef.h>
+
 #include "rmw/error_handling.h"
 #include "rmw/types.h"
 

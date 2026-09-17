@@ -20,7 +20,11 @@ extern "C"
 {
 #endif
 
+#include "rcutils/allocator.h"
+#include "rmw/macros.h"
+#include "rmw/ret_types.h"
 #include "rmw/topic_endpoint_info_array.h"
+#include "rmw/types.h"
 #include "rmw/visibility_control.h"
 
 /// Retrieve endpoint information for each known publisher of a given topic.

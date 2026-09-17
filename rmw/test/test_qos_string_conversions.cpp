@@ -14,6 +14,9 @@
 
 #include <gtest/gtest.h>
 
+#include <cstddef>
+
+#include "rmw/qos_policy_kind.h"
 #include "rmw/qos_string_conversions.h"
 #include "rmw/types.h"
 

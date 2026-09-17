@@ -13,7 +13,9 @@
 // limitations under the License.
 
 #include "gmock/gmock.h"
+#include "rcutils/types/rcutils_ret.h"
 #include "rmw/convert_rcutils_ret_to_rmw_ret.h"
+#include "rmw/ret_types.h"
 
 TEST(test_convert_rcutils_ret_to_rmw_ret, convert_rcutils_ret)
 {

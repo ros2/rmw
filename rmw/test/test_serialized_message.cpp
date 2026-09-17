@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <cstddef>
+#include <cstdint>
+#include <cstring>
+
 #include "gmock/gmock.h"
 
 #include "osrf_testing_tools_cpp/memory_tools/testing_helpers.hpp"
@@ -19,6 +23,8 @@
 #include "rcutils/allocator.h"
 
 #include "rmw/error_handling.h"
+#include "rmw/ret_types.h"
+#include "rmw/serialized_message.h"
 #include "rmw/types.h"
 
 #include "./time_bomb_allocator_testing_utils.h"

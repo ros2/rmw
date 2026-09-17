@@ -21,8 +21,10 @@ extern "C"
 #endif
 
 #include "rmw/macros.h"
+#include "rmw/ret_types.h"
 #include "rmw/types.h"
 #include "rmw/validate_full_topic_name.h"
+#include "rmw/visibility_control.h"
 
 #define RMW_NAMESPACE_VALID 0
 #define RMW_NAMESPACE_INVALID_IS_EMPTY_STRING 1

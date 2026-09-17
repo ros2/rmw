@@ -15,6 +15,8 @@
 #ifndef RMW__IMPL__CPP__KEY_VALUE_HPP_
 #define RMW__IMPL__CPP__KEY_VALUE_HPP_
 
+#include <cctype>
+#include <cstdint>
 #include <map>
 #include <string>
 #include <vector>

@@ -20,7 +20,10 @@ extern "C"
 {
 #endif
 
+#include "rmw/macros.h"
+#include "rmw/ret_types.h"
 #include "rmw/types.h"
+#include "rmw/visibility_control.h"
 
 static const rmw_qos_profile_t rmw_qos_profile_sensor_data =
 {
