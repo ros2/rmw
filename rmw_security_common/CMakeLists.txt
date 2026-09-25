@@ -26,7 +26,7 @@ target_link_libraries(${PROJECT_NAME}_library PUBLIC
   rmw::rmw
   # Note we link public on purpose, as we want to export
   # the used C++ version as minimum to all consuming packages
-  ament_cmake_ros_core::ament_ros_defaults
+  ament_cmake_ros_core::ament_ros_defaults)
 target_include_directories(${PROJECT_NAME}_library
   PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
