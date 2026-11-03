@@ -2,6 +2,11 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.10.3 (2026-11-03)
+-------------------
+* Only apply fvisibility-inlines-hidden when language is CXX (`#418 <https://github.com/ros2/rmw/issues/418>`_) (`#435 <https://github.com/ros2/rmw/issues/435>`_)
+* Contributors: mergify[bot]
+
 7.10.2 (2026-08-31)
 -------------------
 * Add missing stdbool.h include to time.h (`#425 <https://github.com/ros2/rmw/issues/425>`_)
