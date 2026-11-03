@@ -2,6 +2,13 @@
 Changelog for package rmw
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.11.3 (2026-11-03)
+-------------------
+* Remove custom ament_cppcheck usage. (`#436 <https://github.com/ros2/rmw/issues/436>`_)
+* Use the SPDX identifier Apache-2.0 in package.xml license tags (`#430 <https://github.com/ros2/rmw/issues/430>`_)
+* Include what you use (`#429 <https://github.com/ros2/rmw/issues/429>`_)
+* Contributors: Alejandro Hernández Cordero, Chris Lalancette, Michael Carroll
+
 7.11.2 (2026-09-07)
 -------------------
 * Add missing stdbool.h include to time.h (`#423 <https://github.com/ros2/rmw/issues/423>`_)

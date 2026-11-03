@@ -2,6 +2,11 @@
 Changelog for package rmw_implementation_cmake
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.11.3 (2026-11-03)
+-------------------
+* Use the SPDX identifier Apache-2.0 in package.xml license tags (`#430 <https://github.com/ros2/rmw/issues/430>`_)
+* Contributors: Michael Carroll
+
 7.11.2 (2026-09-07)
 -------------------
 
