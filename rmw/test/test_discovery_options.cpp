@@ -128,6 +128,9 @@ TEST(discovery_options, copy_equal) {
   bool result = false;
   EXPECT_EQ(RMW_RET_OK, rmw_discovery_options_equal(&dopts1, &dopts2, &result));
   EXPECT_TRUE(result);
+
+  EXPECT_EQ(RMW_RET_OK, rmw_discovery_options_fini(&dopts1));
+  EXPECT_EQ(RMW_RET_OK, rmw_discovery_options_fini(&dopts2));
 }
 
 TEST(discovery_options, copy_invalid_args) {
@@ -157,4 +160,6 @@ TEST(discovery_options, copy_invalid_args) {
   rmw_reset_error();
   EXPECT_EQ(RMW_RET_INVALID_ARGUMENT, rmw_discovery_options_copy(&dopts2, &allocator, &dopts2));
   rmw_reset_error();
+
+  EXPECT_EQ(RMW_RET_OK, rmw_discovery_options_fini(&dopts1));
 }
