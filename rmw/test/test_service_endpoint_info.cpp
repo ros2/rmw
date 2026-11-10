@@ -276,6 +276,8 @@ TEST(test_service_endpoint_info, set_gids) {
       "Gid value is not as expected";
   }
 
+  // The setters don't free a previous value.
+  allocator.deallocate(service_endpoint_info.endpoint_gids, allocator.state);
   uint8_t reader_writer_gid[2][RMW_GID_STORAGE_SIZE];
   for (uint8_t i = 0; i < RMW_GID_STORAGE_SIZE; i++) {
     reader_writer_gid[0][i] = i + 1;
@@ -385,6 +387,8 @@ TEST(test_service_endpoint_info, set_qos_profiles) {
   writer_qos_profile.liveliness_lease_duration = {4, 0};
   writer_qos_profile.avoid_ros_namespace_conventions = true;
 
+  // The setters don't free a previous value.
+  allocator.deallocate(service_endpoint_info.qos_profiles, allocator.state);
   rmw_qos_profile_t qos_profiles[2] = {reader_qos_profile, writer_qos_profile};
   ret = rmw_service_endpoint_info_set_qos_profiles(
     &service_endpoint_info,
