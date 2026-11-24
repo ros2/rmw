@@ -2429,7 +2429,7 @@ rmw_ret_t
 rmw_send_response(
   const rmw_service_t * service,
   rmw_request_id_t * request_header,
-  void * ros_response);
+  const void * ros_response);
 
 /// Retrieve the actual qos settings of the service's request subscription.
 /**
