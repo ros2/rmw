@@ -2,10 +2,6 @@ cmake_minimum_required(VERSION 3.14)
 
 project(rmw)
 
-# Default to C99
-if(NOT CMAKE_C_STANDARD)
-  set(CMAKE_C_STANDARD 99)
-endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -59,7 +55,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
   rosidl_runtime_c::rosidl_runtime_c
   # Note we link public on purpose, as we want to export
   # the used C++ version as minimum to all consuming packages
-  ament_cmake_ros_core::ament_ros_cxx_standard
+  ament_cmake_ros_core::ament_ros_defaults
 )
 
 if(BUILD_TESTING AND NOT RCUTILS_DISABLE_FAULT_INJECTION)
